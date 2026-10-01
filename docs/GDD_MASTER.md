@@ -30,6 +30,7 @@ A concepção também prevê história próxima aos acontecimentos do filme. O e
 **FECHADO**
 
 - Jogar como Rumi, Mira e Zoey, cujos estilos de gameplay devem ser distintos.
+- Jogar solo quando aplicável ou em cooperação com até três jogadores/personagens simultâneos na mesma sessão; cada jogador controla um integrante da equipe.
 - Combater demônios em encontros terrestres e aéreos.
 - Resgatar fãs e contar com um sistema global Honmoon; a relação mecânica entre ambos permanece em aberto.
 - Usar o Special da HUNTR/X e um recurso simples de comida.
@@ -39,7 +40,21 @@ A concepção também prevê história próxima aos acontecimentos do filme. O e
 
 **EM ABERTO**
 
-Os pilares formais de design, as prioridades do MVP e as métricas de diversão serão fechados, respectivamente, nos itens 02, 03 e 05 do backlog. A lista acima consolida intenções já registradas, mas não substitui esses itens.
+As prioridades do MVP e as métricas de diversão serão fechadas, respectivamente, nos itens 03 e 05 do backlog. A lista acima consolida intenções já registradas, mas não substitui esses itens.
+
+## 2.1 Pilares de design
+
+**FECHADO — princípios orientadores**
+
+1. **Ação 2D:** priorizar resposta imediata, game feel, legibilidade e simplicidade de controle. Movimento, combate, troca de personagem, dash, salto, ataque e Special são áreas abrangidas; comandos, regras e valores continuam em aberto nos itens de gameplay.
+2. **Fandom:** personagens, identidade visual, música e relações são parte central da experiência. O conteúdo deve permanecer separável dos sistemas técnicos para permitir evolução independente.
+3. **Proteção:** proteger personagens, aliados e objetivos é um eixo mecânico e narrativo. Risco/recompensa e cooperação orientam o design, sem fixar regras ou recompensas neste item. A adaptação etária deve ajustar intensidade, violência, linguagem e dificuldade sem mudar a identidade do jogo.
+4. **Música dinâmica:** a música pode reagir a exploração, combate, tensão, Special e espetáculo. Regras de gameplay devem permanecer desacopladas do sistema de áudio; gatilhos e transições específicas ficam em aberto.
+5. **Espetáculo:** combate, Special, transformações e eventos devem ter impacto visual claro, preservando responsividade, acessibilidade e orçamento mobile.
+
+**FECHADO — cooperação como requisito de design:** prever até três jogadores/personagens simultâneos na mesma sessão, com cada jogador controlando um personagem da equipe; manter a experiência solo quando aplicável. Combate, câmera, inimigos, proteção, Special, música, progressão, dificuldade e entradas por teclado, gamepad e touch devem considerar os modos de 1, 2 e 3 jogadores, conforme as plataformas.
+
+**EM ABERTO:** decidir antes da implementação de rede se a cooperação será local, online ou ambas. Câmera, sincronização, entrada, balanceamento, comportamento de inimigos, progressão e regras para a experiência solo permanecem decisões de cards próprios. Este requisito não define arquitetura de rede.
 
 ## 3. Loop de jogo
 
@@ -132,7 +147,7 @@ Estrutura e quantidade de perfis, salvamento automático, capítulos, replay, ob
 
 **EM ABERTO**
 
-Faixas etárias além de 4–8 anos, classificação indicativa, diferenças de violência visual, diálogos, cutscenes e dificuldade por perfil, opções de acessibilidade, dados coletados, recursos online e controles parentais. Nenhuma funcionalidade online é assumida neste documento. Os itens 85–91 detalham esses requisitos.
+Faixas etárias além de 4–8 anos, classificação indicativa, diferenças de violência visual, diálogos, cutscenes e dificuldade por perfil, opções de acessibilidade, dados coletados, modalidade de cooperação (local/online) e controles parentais. Recursos online e requisitos de segurança associados não estão definidos. Os itens 85–91 detalham esses requisitos.
 
 ## 11. Direção visual e áudio
 
@@ -172,7 +187,7 @@ Versões mínimas de sistema operacional e dispositivos, resolução/câmera, co
 
 | Tema | Estado neste GDD | Próximo item do Trello |
 |---|---|---|
-| Pilares de design | Consolidados como intenções; falta formalização | 02 |
+| Pilares de design | Cinco princípios e cooperação para até 3 jogadores registrados; modalidade local/online em aberto | 02 |
 | Escopo do MVP | Não fechado neste item | 03 |
 | Definition of Done | Não redefinida neste item | 04 |
 | Métricas de diversão | A validar | 05 |

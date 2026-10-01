@@ -216,7 +216,7 @@ Versões mínimas de sistema operacional e dispositivos, resolução/câmera, co
 |---|---|---|
 | Pilares de design | Cinco princípios e cooperação para até 3 jogadores registrados; modalidade local/online em aberto | 02 |
 | Escopo do MVP | MVP de validação definido como Vertical Slice; cooperação permanece gate explícito | 03 |
-| Definition of Done | Não redefinida neste item | 04 |
+| Definition of Done | Gates comuns e por tipo registrados em `docs/governance/DEFINITION_OF_DONE.md` | 04 |
 | Métricas de diversão | A validar | 05 |
 | Estilo visual | Direção conceitual; detalhes abertos | 06 |
 | Resolução e câmera | Em aberto | 07 |

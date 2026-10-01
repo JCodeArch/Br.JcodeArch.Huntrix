@@ -13,7 +13,7 @@ Este GDD registra a visão aprovada no projeto e separa o nível de certeza de c
 - **EM ABERTO** — decisão ainda não tomada; será resolvida no item correspondente do backlog.
 - **RECOMENDAÇÃO** — proposta para orientar a discussão. Não deve ser tratada como decisão sem aprovação.
 
-Quando faltar detalhe, este documento registra a lacuna em vez de preenchê-la com uma mecânica presumida. As cartas 02–05 do Trello continuam responsáveis por formalizar pilares, escopo do MVP, Definition of Done e métricas de diversão.
+Quando faltar detalhe, este documento registra a lacuna em vez de preenchê-la com uma mecânica presumida. Os pilares e o escopo do MVP estão formalizados nas cartas 02 e 03; a Definition of Done e as métricas de diversão serão tratadas, respectivamente, nas cartas 04 e 05.
 
 ## 1. Visão do jogo
 
@@ -40,7 +40,7 @@ A concepção também prevê história próxima aos acontecimentos do filme. O e
 
 **EM ABERTO**
 
-As prioridades do MVP e as métricas de diversão serão fechadas, respectivamente, nos itens 03 e 05 do backlog. A lista acima consolida intenções já registradas, mas não substitui esses itens.
+O escopo do MVP está detalhado na seção 2.2. Os critérios de conclusão e as métricas de diversão serão definidos, respectivamente, nos itens 04 e 05 do backlog. A lista acima consolida intenções já registradas, mas não substitui esses itens.
 
 ## 2.1 Pilares de design
 
@@ -55,6 +55,33 @@ As prioridades do MVP e as métricas de diversão serão fechadas, respectivamen
 **FECHADO — cooperação como requisito de design:** prever até três jogadores/personagens simultâneos na mesma sessão, com cada jogador controlando um personagem da equipe; manter a experiência solo quando aplicável. Combate, câmera, inimigos, proteção, Special, música, progressão, dificuldade e entradas por teclado, gamepad e touch devem considerar os modos de 1, 2 e 3 jogadores, conforme as plataformas.
 
 **EM ABERTO:** decidir antes da implementação de rede se a cooperação será local, online ou ambas. Câmera, sincronização, entrada, balanceamento, comportamento de inimigos, progressão e regras para a experiência solo permanecem decisões de cards próprios. Este requisito não define arquitetura de rede.
+
+## 2.2 Escopo do MVP
+
+**FECHADO — finalidade:** neste projeto, “MVP” significa a primeira versão integrada para validar a diversão e os pilares do jogo por meio do Vertical Slice. Não significa lançamento comercial mínimo nem substitui o escopo completo planejado para o produto. O teste deve ocorrer antes de escalar a produção.
+
+### Obrigatório para a validação do MVP
+
+- Uma build jogável de validação, com a fundação Unity e a Combat Lab dos itens 12–18 limitadas ao que o slice exige. A ordem de configuração inicial de Windows/Android permanece conforme o backlog; incluir em 13 somente pacotes justificados pelo experimento.
+- Respeitar a sequência de pré-produção do backlog, sem pular gates: 04 Definition of Done → 05 métricas e limiar do teste → 06 direção visual → 07 resolução/câmera → 08 controles do protótipo → 09 decidir se o recorte exige save/perfil e qual parte demonstrar → 10 pipeline de assets → 11 riscos. Fechar cada decisão antes do ponto de implementação ou validação que dela depende.
+- O recorte jogável descrito nos itens 61–68: avião, ramen, primeiro resgate de fãs, horda com Honmoon/Special, mini-boss, transição de paraquedas, show e playtest de 60 segundos. Cada beat incluído deve servir a um momento de gameplay e permitir observar os pilares; sequência e conteúdo detalhado continuam sujeitos às cartas próprias.
+- O núcleo de ação necessário para jogar esse recorte (movimento, salto, dash e combate base), incluindo a identidade distinta das três integrantes e a troca quando necessária ao teste. Inimigos terrestres/aéreos, horda e mini-boss ficam limitados às variantes necessárias para os encontros do slice.
+- Demonstração integrada de proteção/resgate, fãs, Honmoon, Special, Performance e música dinâmica, sem exigir ainda todo o catálogo, balanceamento final ou conteúdo completo do jogo.
+- Restrições transversais de acessibilidade, adaptação etária e Child Safety devem orientar o protótipo desde o início; o slice não introduz chat, loot boxes, stamina, anúncios intrusivos ou coleta desnecessária. A validação completa de perfis e opções pertence aos itens 85–103 antes de qualquer lançamento público.
+- O requisito de cooperação para até três jogadores permanece obrigatório para o produto. O modo local/online/ambos, quantos jogadores o experimento do slice precisa suportar e como esse requisito será demonstrado continuam **EM ABERTO**; registrar e resolver esses gates antes de implementar dependências de rede ou declarar o MVP validado quanto à cooperação. Não tratar cooperação como pós-lançamento por omissão.
+- Os itens 04 e 05 definem, pela ordem do Trello, critérios de conclusão e indicadores/limiar para o playtest. Este escopo não antecipa números de balanceamento, metas de FPS, dispositivos mínimos, câmera ou arquitetura.
+
+### Desejável após a validação do slice e antes da versão completa do produto
+
+- Expandir a campanha às áreas e momentos narrativos planejados (itens 55–60 e 80–84), o elenco completo de inimigos/bosses (33–41), kits e conteúdo além do necessário para distinguir as três personagens (28–32), estados e variações adicionais de fãs/Honmoon/recursos (42–50), progressão, replay e rankings (51–54).
+- Expandir arte, animação, áudio e narrativa à produção completa (69–84); fechar e validar todos os perfis etários e recursos de acessibilidade, controles parentais e QA de cada perfil (85–103); estabelecer tiers/metas de performance e pipelines completos de mobile, QA e builds de release (92–111).
+- Esses itens são expansão pós-validação ou preparação da versão completa, não remoção silenciosa de requisitos já registrados para o produto. Windows, Android e iOS permanecem plataformas-alvo; o pipeline iOS pode ocorrer após validar o slice e antes de lançamento, conforme item 98.
+
+### Pós-lançamento
+
+- Permanecem nesta categoria os itens explicitamente registrados no card 116: Boss Rush, Time Attack, novos modos e melhorias futuras. Não se acrescentam recursos ao pós-lançamento por inferência neste card.
+
+**EM ABERTO — gates de produto:** a modalidade e prova de cooperação, os beats mínimos e o limiar de aprovação do slice, a necessidade de save/perfil no experimento, plataformas/dispositivos e metas técnicas, e a cobertura completa de idade/acessibilidade são refinados nos itens correspondentes (04–11, 68, 85–104). Direitos/licenciamento continuam condição para distribuição, não hipótese resolvida pelo MVP.
 
 ## 3. Loop de jogo
 
@@ -188,7 +215,7 @@ Versões mínimas de sistema operacional e dispositivos, resolução/câmera, co
 | Tema | Estado neste GDD | Próximo item do Trello |
 |---|---|---|
 | Pilares de design | Cinco princípios e cooperação para até 3 jogadores registrados; modalidade local/online em aberto | 02 |
-| Escopo do MVP | Não fechado neste item | 03 |
+| Escopo do MVP | MVP de validação definido como Vertical Slice; cooperação permanece gate explícito | 03 |
 | Definition of Done | Não redefinida neste item | 04 |
 | Métricas de diversão | A validar | 05 |
 | Estilo visual | Direção conceitual; detalhes abertos | 06 |

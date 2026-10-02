@@ -224,7 +224,7 @@ Versões mínimas de sistema operacional e dispositivos, pacotes Unity, estrutur
 | Resolução e câmera | Referência 16:9/1920×1080, 100 PPU, câmera ortográfica e regra de adaptação definidos; parâmetros de tuning aguardam build | 07 |
 | Controles multiplataforma | Ações lógicas e mapa inicial de teclado/gamepad/touch registrados; validação, remapeamento e arquitetura de pacote em aberto | 08; 13; 85–103 |
 | Salvamento e perfis | Contrato lógico de perfis independentes, autosave, progresso por capítulo e replay definido; formato, gestão, sync e regras de coop abertos | 09; 27; 52–54; 85–103 |
-| Pipeline de assets e riscos | Fluxo e gates de produção/integração/validação definidos; decisões de direitos e riscos permanecem abertas | 10–11 |
+| Pipeline e riscos | Fluxo de assets definido em `docs/art/ASSET_PIPELINE.md`; riscos, respostas e gates registrados em `docs/governance/RISK_REGISTER.md`; direitos e decisões futuras continuam abertos | 10–11 |
 | Fundação Unity, gameplay e personagens | Em aberto | 12–54 |
 | Level design e Vertical Slice | Em aberto | 55–68 |
 | Arte, áudio, história, idade e acessibilidade | Em aberto | 69–91 |
@@ -232,12 +232,7 @@ Versões mínimas de sistema operacional e dispositivos, pacotes Unity, estrutur
 
 ## 15. Riscos conhecidos
 
-- **Direitos e licenciamento:** a proximidade com o filme e o uso de personagens, música e identidade visual exigem confirmação de permissões para distribuição.
-- **Escopo:** definir limites do MVP antes de produzir conteúdo em escala.
-- **Diversão:** testar o Combat Lab e o slice antes de produzir dezenas de fases, sprites e cutscenes.
-- **Performance:** considerar dispositivos móveis durante arquitetura e produção; metas mensuráveis ainda estão em aberto.
-- **Arte e áudio:** conteúdo final depende de pipeline, consistência e licenciamento.
-- **Publicação e segurança infantil:** requisitos devem ser especificados e validados antes do lançamento.
+O plano inicial, os gatilhos, respostas e gates estão em [`docs/governance/RISK_REGISTER.md`](governance/RISK_REGISTER.md). Direitos autorais/marcas/licenças, modalidade de cooperação, resultados de diversão, metas de desempenho, arte/áudio finais e requisitos de idade/publicação continuam abertos até que os cards próprios produzam evidência. Nenhuma permissão, medição, classificação, conformidade ou mitigação é declarada como concluída pelo simples registro do risco.
 
 ## 16. Critérios de manutenção do GDD
 
@@ -254,6 +249,6 @@ Uma futura alteração deve preservar o rótulo de estado, registrar a decisão 
 - Trello: [card 08 — Definir controles multiplataforma](https://trello.com/c/ltBsR8f7/8-08-definir-controles-multiplataforma) e proposta de mapeamento em `docs/architecture/INPUT_CONTROLS.md`.
 - Trello: [card 09 — Definir estrutura de save](https://trello.com/c/54w6st2I/9-09-definir-estrutura-de-save) e contrato em `docs/architecture/SAVE_AND_PROFILES.md`.
 - Trello: [card 10 — Definir pipeline de assets](https://trello.com/c/QCjoqgpG/10-10-definir-pipeline-de-assets) e fluxo em `docs/art/ASSET_PIPELINE.md`.
+- Trello: [card 11 — Criar plano de riscos](https://trello.com/c/vlFLYHBd/11-11-criar-plano-de-riscos) e registro inicial em `docs/governance/RISK_REGISTER.md`.
 - Repositório: `docs/architecture/AGENT_PIPELINE.md` e `docs/governance/DEFINITION_OF_DONE.md`.
-
 

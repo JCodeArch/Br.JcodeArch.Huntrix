@@ -180,11 +180,9 @@ Faixas etárias além de 4–8 anos, classificação indicativa, diferenças de 
 
 ## 11. Direção visual e áudio
 
-**RECOMENDAÇÃO:** “2D HD estilizado” foi sugerido como direção de arte.
+**FECHADO — direção visual:** ilustração 2D HD estilizada, com acabamento gráfico de cel painting e composição cinematográfica. Silhuetas, contraste, hierarquia de traço, planos de luz/sombra e leitura de ação seguem as regras de [`docs/art/VISUAL_STYLE_GUIDE.md`](art/VISUAL_STYLE_GUIDE.md), definidas no item 06.
 
-**EM ABERTO:** o estilo visual final e as regras de consistência devem ser fechados no item 06.
-
-**EM ABERTO:** resolução lógica, escala, proporção de tela, câmera, dimensões de sprites, técnica final de animação/rig e regras de consistência. A decisão formal está no item 06; os itens 07 e 69–74 detalham câmera, personagens, animação, VFX e ambientes.
+**EM ABERTO:** resolução lógica, escala, aspect ratios e câmera (item 07); identidade e paletas específicas das personagens (69–70); técnica de animação (71); composição de ambientes (74). Direitos/licenciamento dos elementos reconhecíveis de terceiros continuam sem validação, conforme o risco registrado neste GDD.
 
 **FECHADO:** haverá música dinâmica, áudio de combate e resposta de torcida como áreas de trabalho.
 
@@ -220,7 +218,7 @@ Versões mínimas de sistema operacional e dispositivos, resolução/câmera, co
 | Escopo do MVP | MVP de validação definido como Vertical Slice; cooperação permanece gate explícito | 03 |
 | Definition of Done | Gates comuns e por tipo registrados em `docs/governance/DEFINITION_OF_DONE.md` | 04 |
 | Métricas de diversão | Protocolo/alvos provisórios definidos; resultados aguardam build e playtest | 05 e 68 |
-| Estilo visual | Direção conceitual; detalhes abertos | 06 |
+| Estilo visual | Direção geral 2D HD estilizada e regras de consistência definidas; detalhes por asset nos cards de arte | 06; 69–74 |
 | Resolução e câmera | Em aberto | 07 |
 | Controles multiplataforma | Em aberto | 08 |
 | Salvamento e perfis | Conceito aprovado; regras em aberto | 09 |
@@ -249,6 +247,7 @@ Uma futura alteração deve preservar o rótulo de estado, registrar a decisão 
 - Conversa do projeto **“Criar agentes especializados”** — princípios de arquitetura e pipeline de agentes.
 - Trello: [HUNTR/X — Honmoon](https://trello.com/b/O5yAS8lM/huntr-x-honmoon) e [card 01 — Consolidar GDD Mestre](https://trello.com/c/TOpMQvI6/1-01-consolidar-gdd-mestre).
 - Trello: [card 05 — Definir métricas de diversão](https://trello.com/c/DEkBR4PB/5-05-definir-m%C3%A9tricas-de-divers%C3%A3o) e [card 68 — Playtest de 60 segundos](https://trello.com/c/XxeFEI8g/58-68-playtest-de-60-segundos).
+- Trello: [card 06 — Definir estilo visual 2D](https://trello.com/c/NQl7W8MA/6-06-definir-estilo-visual-2d) e guia de estilo em `docs/art/VISUAL_STYLE_GUIDE.md`.
 - Repositório: `docs/architecture/AGENT_PIPELINE.md` e `docs/governance/DEFINITION_OF_DONE.md`.
 
 

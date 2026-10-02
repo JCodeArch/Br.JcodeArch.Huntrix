@@ -40,7 +40,7 @@ A concepção também prevê história próxima aos acontecimentos do filme. O e
 
 **EM ABERTO**
 
-O escopo do MVP está detalhado na seção 2.2. Os critérios de conclusão e as métricas de diversão serão definidos, respectivamente, nos itens 04 e 05 do backlog. A lista acima consolida intenções já registradas, mas não substitui esses itens.
+O escopo do MVP está detalhado na seção 2.2. Os critérios de conclusão estão em `docs/governance/DEFINITION_OF_DONE.md`, definidos no item 04; o protocolo e os alvos provisórios de diversão estão em `docs/qa/PLAYTEST_60S.md`, definidos no item 05. Os resultados do playtest ainda dependem de uma build e de participantes (item 68).
 
 ## 2.1 Pilares de design
 
@@ -69,7 +69,7 @@ O escopo do MVP está detalhado na seção 2.2. Os critérios de conclusão e as
 - Demonstração integrada de proteção/resgate, fãs, Honmoon, Special, Performance e música dinâmica, sem exigir ainda todo o catálogo, balanceamento final ou conteúdo completo do jogo.
 - Restrições transversais de acessibilidade, adaptação etária e Child Safety devem orientar o protótipo desde o início; o slice não introduz chat, loot boxes, stamina, anúncios intrusivos ou coleta desnecessária. A validação completa de perfis e opções pertence aos itens 85–103 antes de qualquer lançamento público.
 - O requisito de cooperação para até três jogadores permanece obrigatório para o produto. O modo local/online/ambos, quantos jogadores o experimento do slice precisa suportar e como esse requisito será demonstrado continuam **EM ABERTO**; registrar e resolver esses gates antes de implementar dependências de rede ou declarar o MVP validado quanto à cooperação. Não tratar cooperação como pós-lançamento por omissão.
-- Os itens 04 e 05 definem, pela ordem do Trello, critérios de conclusão e indicadores/limiar para o playtest. Este escopo não antecipa números de balanceamento, metas de FPS, dispositivos mínimos, câmera ou arquitetura.
+- O item 04 define a Definition of Done e o item 05 define o protocolo e alvos provisórios de Game Feel; o item 68 coleta resultados antes de expandir produção. Este escopo não antecipa números de balanceamento, metas de FPS, dispositivos mínimos, câmera ou arquitetura.
 
 ### Desejável após a validação do slice e antes da versão completa do produto
 
@@ -81,7 +81,7 @@ O escopo do MVP está detalhado na seção 2.2. Os critérios de conclusão e as
 
 - Permanecem nesta categoria os itens explicitamente registrados no card 116: Boss Rush, Time Attack, novos modos e melhorias futuras. Não se acrescentam recursos ao pós-lançamento por inferência neste card.
 
-**EM ABERTO — gates de produto:** a modalidade e prova de cooperação, os beats mínimos e o limiar de aprovação do slice, a necessidade de save/perfil no experimento, plataformas/dispositivos e metas técnicas, e a cobertura completa de idade/acessibilidade são refinados nos itens correspondentes (04–11, 68, 85–104). Direitos/licenciamento continuam condição para distribuição, não hipótese resolvida pelo MVP.
+**EM ABERTO — gates de produto:** a modalidade e prova de cooperação, os beats mínimos e os critérios de aprovação do slice/build, a necessidade de save/perfil no experimento, plataformas/dispositivos e metas técnicas, e a cobertura completa de idade/acessibilidade são refinados nos itens correspondentes (04–11, 68, 85–104). Os alvos provisórios do protocolo de 60 segundos são hipóteses para investigar e iterar; não aprovam o slice/build nem substituem os critérios que serão executados no item 68. Direitos/licenciamento continuam condição para distribuição, não hipótese resolvida pelo MVP.
 
 ## 3. Loop de jogo
 
@@ -133,6 +133,8 @@ O Performance System deve refletir a execução do combate e contribuir para o e
 **EM ABERTO**
 
 Ações avaliadas, faixas ou estados de performance, benefícios, penalidades, feedback visual/sonoro e regras de transição musical. A relação entre música e performance deve apoiar o combate sem exigir sincronização rítmica do jogador. O backlog correspondente é 51 e 75–79.
+
+**FECHADO — protocolo formativo:** o teste de 60 segundos e os indicadores/limiares provisórios de Game Feel estão em [`docs/qa/PLAYTEST_60S.md`](qa/PLAYTEST_60S.md). Eles medem apenas a build/trecho/configuração testados. Nenhum resultado foi coletado; o protocolo não representa aprovação de diversão ou validação da audiência.
 
 ## 7. Inimigos e confrontos
 
@@ -208,7 +210,7 @@ Versões mínimas de sistema operacional e dispositivos, resolução/câmera, co
 
 **RECOMENDAÇÃO:** a sequência discutida para o slice é avião → combate → ramen → horda → resgate de fãs → Special → mini-boss → paraquedas → show/estádio. Também foi proposto que o slice demonstre movimento, combate terrestre e aéreo, troca de personagens, fãs, Honmoon, música dinâmica e espetáculo.
 
-**EM ABERTO:** sequência final, duração, conteúdos obrigatórios, critérios de aceitação e como provar que o combate é divertido. O backlog 61–68 contém os cartões do Vertical Slice e do playtest de 60 segundos. A métrica e o critério de avanço ficam para esses itens e para o item 05.
+**EM ABERTO:** sequência e duração totais do slice, conteúdo exato de cada build e resultado observado de diversão. Os itens 61–67 especificam a construção dos beats; o item 05 registra protocolo/alvos provisórios e o item 68 executará o playtest e decidirá a próxima iteração com base em dados reais.
 
 ## 14. Registro de decisões e itens relacionados
 
@@ -217,7 +219,7 @@ Versões mínimas de sistema operacional e dispositivos, resolução/câmera, co
 | Pilares de design | Cinco princípios e cooperação para até 3 jogadores registrados; modalidade local/online em aberto | 02 |
 | Escopo do MVP | MVP de validação definido como Vertical Slice; cooperação permanece gate explícito | 03 |
 | Definition of Done | Gates comuns e por tipo registrados em `docs/governance/DEFINITION_OF_DONE.md` | 04 |
-| Métricas de diversão | A validar | 05 |
+| Métricas de diversão | Protocolo/alvos provisórios definidos; resultados aguardam build e playtest | 05 e 68 |
 | Estilo visual | Direção conceitual; detalhes abertos | 06 |
 | Resolução e câmera | Em aberto | 07 |
 | Controles multiplataforma | Em aberto | 08 |
@@ -246,6 +248,7 @@ Uma futura alteração deve preservar o rótulo de estado, registrar a decisão 
 - Conversa do projeto **“Aprimorar ideia de jogo”** — concepção aprovada, sistemas previstos e hipóteses do Vertical Slice.
 - Conversa do projeto **“Criar agentes especializados”** — princípios de arquitetura e pipeline de agentes.
 - Trello: [HUNTR/X — Honmoon](https://trello.com/b/O5yAS8lM/huntr-x-honmoon) e [card 01 — Consolidar GDD Mestre](https://trello.com/c/TOpMQvI6/1-01-consolidar-gdd-mestre).
+- Trello: [card 05 — Definir métricas de diversão](https://trello.com/c/DEkBR4PB/5-05-definir-m%C3%A9tricas-de-divers%C3%A3o) e [card 68 — Playtest de 60 segundos](https://trello.com/c/XxeFEI8g/58-68-playtest-de-60-segundos).
 - Repositório: `docs/architecture/AGENT_PIPELINE.md` e `docs/governance/DEFINITION_OF_DONE.md`.
 
 

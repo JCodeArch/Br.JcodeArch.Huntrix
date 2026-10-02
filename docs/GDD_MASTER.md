@@ -182,7 +182,7 @@ Faixas etárias além de 4–8 anos, classificação indicativa, diferenças de 
 
 **FECHADO — direção visual:** ilustração 2D HD estilizada, com acabamento gráfico de cel painting e composição cinematográfica. Silhuetas, contraste, hierarquia de traço, planos de luz/sombra e leitura de ação seguem as regras de [`docs/art/VISUAL_STYLE_GUIDE.md`](art/VISUAL_STYLE_GUIDE.md), definidas no item 06.
 
-**EM ABERTO:** resolução lógica, escala, aspect ratios e câmera (item 07); identidade e paletas específicas das personagens (69–70); técnica de animação (71); composição de ambientes (74). Direitos/licenciamento dos elementos reconhecíveis de terceiros continuam sem validação, conforme o risco registrado neste GDD.
+**EM ABERTO:** identidade e paletas específicas das personagens (69–70); técnica de animação (71); composição de ambientes (74). Resolução, escala de autoria, proporções suportadas e comportamento-base da câmera foram definidos no item 07 e em [`docs/architecture/RESOLUTION_AND_CAMERA.md`](architecture/RESOLUTION_AND_CAMERA.md). Direitos/licenciamento dos elementos reconhecíveis de terceiros continuam sem validação, conforme o risco registrado neste GDD.
 
 **FECHADO:** haverá música dinâmica, áudio de combate e resposta de torcida como áreas de trabalho.
 
@@ -200,7 +200,7 @@ Faixas etárias além de 4–8 anos, classificação indicativa, diferenças de 
 
 **EM ABERTO**
 
-Versões mínimas de sistema operacional e dispositivos, resolução/câmera, controles por plataforma, pacotes Unity, estrutura concreta de pastas, formato de dados, save, integração contínua, metas de FPS/memória e distribuição. Esses detalhes pertencem aos itens de pré-produção e Fundação Unity; não são requisitos técnicos fixados aqui.
+Versões mínimas de sistema operacional e dispositivos, controles por plataforma, pacotes Unity, estrutura concreta de pastas, formato de dados, save, integração contínua, metas de FPS/memória e distribuição. Resolução lógica, escala e câmera 2D seguem o contrato do item 07 em `docs/architecture/RESOLUTION_AND_CAMERA.md`; os demais detalhes pertencem aos itens de pré-produção e Fundação Unity.
 
 ## 13. Vertical Slice
 
@@ -219,7 +219,7 @@ Versões mínimas de sistema operacional e dispositivos, resolução/câmera, co
 | Definition of Done | Gates comuns e por tipo registrados em `docs/governance/DEFINITION_OF_DONE.md` | 04 |
 | Métricas de diversão | Protocolo/alvos provisórios definidos; resultados aguardam build e playtest | 05 e 68 |
 | Estilo visual | Direção geral 2D HD estilizada e regras de consistência definidas; detalhes por asset nos cards de arte | 06; 69–74 |
-| Resolução e câmera | Em aberto | 07 |
+| Resolução e câmera | Referência 16:9/1920×1080, 100 PPU, câmera ortográfica e regra de adaptação definidos; parâmetros de tuning aguardam build | 07 |
 | Controles multiplataforma | Em aberto | 08 |
 | Salvamento e perfis | Conceito aprovado; regras em aberto | 09 |
 | Pipeline de assets e riscos | Em aberto | 10–11 |
@@ -248,6 +248,7 @@ Uma futura alteração deve preservar o rótulo de estado, registrar a decisão 
 - Trello: [HUNTR/X — Honmoon](https://trello.com/b/O5yAS8lM/huntr-x-honmoon) e [card 01 — Consolidar GDD Mestre](https://trello.com/c/TOpMQvI6/1-01-consolidar-gdd-mestre).
 - Trello: [card 05 — Definir métricas de diversão](https://trello.com/c/DEkBR4PB/5-05-definir-m%C3%A9tricas-de-divers%C3%A3o) e [card 68 — Playtest de 60 segundos](https://trello.com/c/XxeFEI8g/58-68-playtest-de-60-segundos).
 - Trello: [card 06 — Definir estilo visual 2D](https://trello.com/c/NQl7W8MA/6-06-definir-estilo-visual-2d) e guia de estilo em `docs/art/VISUAL_STYLE_GUIDE.md`.
+- Trello: [card 07 — Definir resolução e câmera](https://trello.com/c/Xw7OlxdN/7-07-definir-resolu%C3%A7%C3%A3o-e-c%C3%A2mera) e contrato em `docs/architecture/RESOLUTION_AND_CAMERA.md`.
 - Repositório: `docs/architecture/AGENT_PIPELINE.md` e `docs/governance/DEFINITION_OF_DONE.md`.
 
 

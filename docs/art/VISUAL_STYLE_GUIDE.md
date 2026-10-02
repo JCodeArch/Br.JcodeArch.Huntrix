@@ -16,7 +16,7 @@ A prioridade visual segue esta ordem: leitura da ação e do perigo; identidade 
 2. **Hierarquia de traço:** contornos externos e linhas internas seguem uma hierarquia estável por cena e escala; detalhes internos ficam subordinados à forma principal. A espessura final será validada após a resolução e a câmera do item 07.
 3. **Luz e volume:** agrupar sombra e luz em planos legíveis; reservar gradações, textura e brilho para volumes, materiais ou momentos de espetáculo que ganhem clareza com eles. Manter uma fonte de luz coerente dentro de cada plano/cena.
 4. **Cor funcional:** cada cena define papéis de cor para personagens jogáveis, aliados/objetivos, ameaças, perigos e feedback. Contraste de valor e forma acompanha a diferença cromática; informação essencial nunca depende apenas de distinguir matizes.
-5. **Separação de planos:** personagens e perigos que afetam o gameplay mantêm contraste suficiente contra o fundo. Cenários usam profundidade e atmosfera sem competir com silhuetas, sinais de ataque ou objetivos.
+5. **Separação de planos:** personagens e perigos que afetam o gameplay mantêm contraste suficiente contra o fundo. Cenários usam profundidade e atmosfera sem competir com silhuetas, sinais de ataque ou objetivos. Usar enquadramento e zona segura definidos em `docs/architecture/RESOLUTION_AND_CAMERA.md`.
 6. **Efeitos com leitura temporal:** movimento, preparação, impacto e resultado usam formas visuais coerentes. Efeitos apoiam a ação sem cobrir personagens, ameaças ou sinais antecipados de ataque por tempo maior que o necessário à leitura.
 7. **Detalhe compatível com escala:** texturas e ornamentos preservam a hierarquia de leitura quando a arte é vista no enquadramento real do jogo. O item 07 decide escala, resolução lógica e câmera antes do acabamento final dos assets.
 8. **Variação com unidade:** personagens e ambientes podem ter paletas, materiais e motivos próprios, mantendo o mesmo tratamento de contorno, luz/sombra, nível de detalhe e contraste estabelecido para a cena.
@@ -41,7 +41,7 @@ Usar referências para estudar princípios gerais de composição, forma, cor ou
 ## Limites e próximos cards
 
 - A **direção geral HD 2D estilizada** e as regras acima estão fechadas para orientar pré-produção.
-- Resolução lógica, escala, proporções de tela e câmera permanecem para o item 07.
+- Resolução de referência, escala de autoria, proporções de tela e comportamento-base da câmera foram definidos no item 07 e em `docs/architecture/RESOLUTION_AND_CAMERA.md`; o tuning visual aguarda o protótipo.
 - Identidade, cores específicas, figurinos, proporções, expressões e referências de Rumi, Mira, Zoey e antagonistas pertencem ao Character Bible e model sheets (itens 69–70).
 - A escolha frame-by-frame, rig ou híbrida pertence ao item 71. Ambientes e composição de cada cenário pertencem ao item 74.
 - Paletas finais por personagem/cena e parâmetros de produção podem ser refinados nos cards de arte correspondentes, sem contrariar as regras de leitura e consistência deste guia.

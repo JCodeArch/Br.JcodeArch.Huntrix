@@ -161,11 +161,11 @@ Quais acontecimentos são obrigatórios, adaptáveis ou excluídos; sequência, 
 
 **FECHADO**
 
-O projeto prevê progressão por perfil e equipamentos/peças de evolução. A progressão de roupas ou equipamentos começa depois da sequência inicial.
+O projeto prevê progressão por perfil e equipamentos/peças de evolução. A progressão de roupas ou equipamentos começa depois da sequência inicial. O contrato lógico de perfis, autosave, progresso por capítulo e replay foi definido no item 09 em [`docs/architecture/SAVE_AND_PROFILES.md`](architecture/SAVE_AND_PROFILES.md): progresso independente por perfil, salvamento em transições duráveis e replay que preserva a campanha.
 
 **EM ABERTO**
 
-Estrutura e quantidade de perfis, salvamento automático, capítulos, replay, obtenção e efeitos de equipamentos, rankings e persistência entre dispositivos. A sequência visual “pijama → equipamento → peças de show → forma máxima” foi discutida como possibilidade, mas permanece **RECOMENDAÇÃO**, não regra fechada. Ver itens 52–54 e 09 do backlog.
+Continuam em aberto o limite e a gestão de perfis, preferências por perfil/dispositivo, vínculo com perfil etário, checkpoints concretos, formato/storage/migração/backup, sincronização entre dispositivos, regras de coop e detalhes de replay. Obtenção e efeitos de equipamentos e rankings pertencem aos itens 52–54. A sequência visual “pijama → equipamento → peças de show → forma máxima” foi discutida como possibilidade, mas permanece **RECOMENDAÇÃO**, não regra fechada.
 
 ## 10. Público, idade, acessibilidade e segurança
 
@@ -222,7 +222,7 @@ Versões mínimas de sistema operacional e dispositivos, pacotes Unity, estrutur
 | Estilo visual | Direção geral 2D HD estilizada e regras de consistência definidas; detalhes por asset nos cards de arte | 06; 69–74 |
 | Resolução e câmera | Referência 16:9/1920×1080, 100 PPU, câmera ortográfica e regra de adaptação definidos; parâmetros de tuning aguardam build | 07 |
 | Controles multiplataforma | Ações lógicas e mapa inicial de teclado/gamepad/touch registrados; validação, remapeamento e arquitetura de pacote em aberto | 08; 13; 85–103 |
-| Salvamento e perfis | Conceito aprovado; regras em aberto | 09 |
+| Salvamento e perfis | Contrato lógico de perfis independentes, autosave, progresso por capítulo e replay definido; formato, gestão, sync e regras de coop abertos | 09; 27; 52–54; 85–103 |
 | Pipeline de assets e riscos | Em aberto | 10–11 |
 | Fundação Unity, gameplay e personagens | Em aberto | 12–54 |
 | Level design e Vertical Slice | Em aberto | 55–68 |
@@ -251,6 +251,7 @@ Uma futura alteração deve preservar o rótulo de estado, registrar a decisão 
 - Trello: [card 06 — Definir estilo visual 2D](https://trello.com/c/NQl7W8MA/6-06-definir-estilo-visual-2d) e guia de estilo em `docs/art/VISUAL_STYLE_GUIDE.md`.
 - Trello: [card 07 — Definir resolução e câmera](https://trello.com/c/Xw7OlxdN/7-07-definir-resolu%C3%A7%C3%A3o-e-c%C3%A2mera) e contrato em `docs/architecture/RESOLUTION_AND_CAMERA.md`.
 - Trello: [card 08 — Definir controles multiplataforma](https://trello.com/c/ltBsR8f7/8-08-definir-controles-multiplataforma) e proposta de mapeamento em `docs/architecture/INPUT_CONTROLS.md`.
+- Trello: [card 09 — Definir estrutura de save](https://trello.com/c/54w6st2I/9-09-definir-estrutura-de-save) e contrato em `docs/architecture/SAVE_AND_PROFILES.md`.
 - Repositório: `docs/architecture/AGENT_PIPELINE.md` e `docs/governance/DEFINITION_OF_DONE.md`.
 
 

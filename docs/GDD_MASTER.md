@@ -1,4 +1,3 @@
-
 # GDD Mestre — HUNTR/X: Honmoon
 
 **Versão:** 0.1 — consolidação da visão aprovada  
@@ -183,6 +182,8 @@ Faixas etárias além de 4–8 anos, classificação indicativa, diferenças de 
 
 **FECHADO — direção visual:** ilustração 2D HD estilizada, com acabamento gráfico de cel painting e composição cinematográfica. Silhuetas, contraste, hierarquia de traço, planos de luz/sombra e leitura de ação seguem as regras de [`docs/art/VISUAL_STYLE_GUIDE.md`](art/VISUAL_STYLE_GUIDE.md), definidas no item 06.
 
+**FECHADO — processo de assets:** brief/conceito → arte final aprovada → handoff de sprite/rig conforme método futuro → integração Unity → validação; manifesto, gates de proveniência, revisão visual, importação e evidências estão em [`docs/art/ASSET_PIPELINE.md`](art/ASSET_PIPELINE.md), definidos no item 10. O fluxo não escolhe formatos, técnica de animação, estrutura Unity ou presets ainda dependentes de cards próprios.
+
 **EM ABERTO:** identidade e paletas específicas das personagens (69–70); técnica de animação (71); composição de ambientes (74). Resolução, escala de autoria, proporções suportadas e comportamento-base da câmera foram definidos no item 07 e em [`docs/architecture/RESOLUTION_AND_CAMERA.md`](architecture/RESOLUTION_AND_CAMERA.md). Direitos/licenciamento dos elementos reconhecíveis de terceiros continuam sem validação, conforme o risco registrado neste GDD.
 
 **FECHADO:** haverá música dinâmica, áudio de combate e resposta de torcida como áreas de trabalho.
@@ -223,7 +224,7 @@ Versões mínimas de sistema operacional e dispositivos, pacotes Unity, estrutur
 | Resolução e câmera | Referência 16:9/1920×1080, 100 PPU, câmera ortográfica e regra de adaptação definidos; parâmetros de tuning aguardam build | 07 |
 | Controles multiplataforma | Ações lógicas e mapa inicial de teclado/gamepad/touch registrados; validação, remapeamento e arquitetura de pacote em aberto | 08; 13; 85–103 |
 | Salvamento e perfis | Contrato lógico de perfis independentes, autosave, progresso por capítulo e replay definido; formato, gestão, sync e regras de coop abertos | 09; 27; 52–54; 85–103 |
-| Pipeline de assets e riscos | Em aberto | 10–11 |
+| Pipeline de assets e riscos | Fluxo e gates de produção/integração/validação definidos; decisões de direitos e riscos permanecem abertas | 10–11 |
 | Fundação Unity, gameplay e personagens | Em aberto | 12–54 |
 | Level design e Vertical Slice | Em aberto | 55–68 |
 | Arte, áudio, história, idade e acessibilidade | Em aberto | 69–91 |
@@ -252,6 +253,7 @@ Uma futura alteração deve preservar o rótulo de estado, registrar a decisão 
 - Trello: [card 07 — Definir resolução e câmera](https://trello.com/c/Xw7OlxdN/7-07-definir-resolu%C3%A7%C3%A3o-e-c%C3%A2mera) e contrato em `docs/architecture/RESOLUTION_AND_CAMERA.md`.
 - Trello: [card 08 — Definir controles multiplataforma](https://trello.com/c/ltBsR8f7/8-08-definir-controles-multiplataforma) e proposta de mapeamento em `docs/architecture/INPUT_CONTROLS.md`.
 - Trello: [card 09 — Definir estrutura de save](https://trello.com/c/54w6st2I/9-09-definir-estrutura-de-save) e contrato em `docs/architecture/SAVE_AND_PROFILES.md`.
+- Trello: [card 10 — Definir pipeline de assets](https://trello.com/c/QCjoqgpG/10-10-definir-pipeline-de-assets) e fluxo em `docs/art/ASSET_PIPELINE.md`.
 - Repositório: `docs/architecture/AGENT_PIPELINE.md` e `docs/governance/DEFINITION_OF_DONE.md`.
 
 

@@ -100,8 +100,8 @@
 - [x] Obtain System Architect, SOLID, Performance, and QA reviews; resolve findings and record justified N/A gates. System Architect: APPROVED (invalid serialized faction recommendation implemented and retested); SOLID: APPROVED; Performance: APPROVED (reused HashSet and cached stable references; trigger parent lookup remains contact-driven); QA: APPROVED; documentation audit: APPROVED; final independent integration review: APPROVED after removing generated ProjectSettings changes.
 - [x] N/A gates recorded: device benchmark has no approved device/metric target in this card/backlog; evidence is full Unity EditMode/PlayMode regression plus static hot-path review. UI/accessibility input testing is N/A because this card adds no UI, device binding, or accessibility option. Age/privacy/content-rights review finds no authored art/audio/text content, personal data, or licensed material changed; existing Child Safety and rights requirements remain applicable to future content cards.
 - [x] Review full diff, Unity metadata, branch ancestry, Definition of Done, and test evidence; integration reviewer confirmed feature branch merge-base at origin/develop 536e47c and reports 25/25 controller, 63/63 data/health, 11/11 EditMode, 141/141 PlayMode.
-- [ ] Commit card #24 on `feature/card-24-base-combat`, fast-forward/push `develop`, and verify remote refs and clean tree.
-- [ ] Update Trello evidence/checklist and mark complete only after integration verification.
+- [x] Commit card #24 as `b7c0bba` on `feature/card-24-base-combat`, fast-forward/push `develop`, and verify both remote refs at `b7c0bba` with a clean tree.
+- [x] Update Trello evidence/checklist with commit, test results, reviews, and N/A gates; all 14 DoD items checked, moved to `🏆 18 — Concluído`, and marked complete after integration verification.
 
 ## Self-review
 

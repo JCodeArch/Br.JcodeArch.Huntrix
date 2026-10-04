@@ -17,6 +17,7 @@
 - Mira's protected area uses a child CircleCollider2D centered at local zero on the owner's Rigidbody2D.
 - The area registers existing overlaps synchronously on activation and maintains membership through trigger callbacks; do not add per-frame overlap scans.
 - A Protected contact is deduplicated for the rest of the current attack activation; a later hitbox activation checks protection again.
+- DamageProtection2D.IsProtected validates its already-registered source/collider pairs on demand with collider distance checks and active/enabled guards; it does not scan every frame.
 - Existing validity, self/faction, dash-invulnerability, and parry rules retain their current order; parry resolves before field protection.
 - Do not add fan lifecycle/rescue rules, Honmoon, costs, cooldown, physical input, character switching/respawn, co-op/network behavior, or final art.
 - Reuse existing movement/combo/parry definitions as provisional basic combat fixtures; no unique attack choreography or final tuning is claimed.
@@ -26,6 +27,7 @@
 - Invalid or missing profile/collider/owner dependencies must fail activation without partially enabling the field. Test in Task 2.
 - A receiver with multiple colliders stays protected until its final collider exits; a target without DamageProtection2D never opts in. Test in Task 2.
 - Receivers already inside are protected synchronously; a Protected contact remains deduplicated if the field expires mid-activation, while a later activation follows current protection. Test in Task 2.
+- A target or the field can move before the first physics simulation after activation; on-demand collider distance checks must prevent stale out-of-area protection without per-frame scans. Test in Task 2.
 - Overlapping fields and disable/destroy cleanup must remove only their own registrations. Test in Task 2.
 - Dash and parry precedence, event silence for Protected contacts, and unchanged damage/knockback after expiry must hold. Test in Tasks 2–3.
 
@@ -59,7 +61,7 @@
 - Test: Assets/Tests/PlayMode/MiraProtectionFieldTests.cs and its Unity .meta file
 
 **Interfaces:**
-- DamageProtection2D exposes bool IsProtected; internal Register(MiraProtectionField2D source, Collider2D overlap), Unregister(MiraProtectionField2D source, Collider2D overlap), and UnregisterSource(MiraProtectionField2D source) maintain bidirectional multi-collider membership.
+- DamageProtection2D exposes bool IsProtected; internal Register(MiraProtectionField2D source, Collider2D overlap), Unregister(MiraProtectionField2D source, Collider2D overlap), and UnregisterSource(MiraProtectionField2D source) maintain bidirectional multi-collider membership. IsProtected checks the current geometry of its registered pairs on demand.
 - MiraProtectionField2D exposes MiraProtectionDefinition Definition, bool IsActive, and bool TryActivate(). It uses a root DamageReceiver2D and a child trigger CircleCollider2D.
 - CombatContactResult adds Protected as a distinct result.
 - DamageReceiver2D checks the optional protection receiver after its current validity/faction/self/dash checks and after ParryController2D resolution.
@@ -70,6 +72,7 @@
 - [ ] Write failing tests for multiple colliders, overlapping sources, and bidirectional disable/destroy cleanup; implement per-source collider membership and teardown; run these tests and verify they pass.
 - [ ] Write failing tests for trigger entry/exit and protection after movement; implement trigger membership updates without per-frame scans; run these tests and verify they pass.
 - [ ] Write failing tests for scaled duration expiry and repeated activation; implement FixedUpdate timing where repeated activation does not refresh duration; run these tests and verify they pass.
+- [ ] Write failing tests for movement of the target and field before the first physics simulation; implement on-demand geometry checks over registered pairs; run these tests and verify stale membership never protects an out-of-area target.
 - [ ] Write failing tests for Protected resolution, health/knockback/event silence, and parry/dash precedence; implement the result in DamageReceiver2D and AttackHitbox2D after parry; run these tests and verify they pass.
 - [ ] Write failing tests for same-activation dedupe across expiry/exit and a later activation rechecking protection; implement activation-scoped reservation; run these tests and verify they pass.
 - [ ] Run the focused PlayMode suite; verify every behavior and event assertion.

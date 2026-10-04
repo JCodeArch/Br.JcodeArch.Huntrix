@@ -19,6 +19,11 @@ namespace HuntrX.Tests.PlayMode
         [UnityTearDown]
         public IEnumerator TearDown()
         {
+            if (Time.timeScale == 0f)
+            {
+                yield return new WaitForSecondsRealtime(0.35f);
+            }
+
             for (int i = createdObjects.Count - 1; i >= 0; i--)
             {
                 if (createdObjects[i] != null)
@@ -40,6 +45,263 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(attacker.HitboxCollider.enabled, Is.False);
         }
 
+        [UnityTest]
+        public IEnumerator GroundedStartSelectsGroundedSequence()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            AttackDefinition groundedFirst = CreateAttackDefinition(0f, 0.2f, 0f, 5f);
+            AttackDefinition aerialFirst = CreateAttackDefinition(0f, 0.2f, 0f, 6f);
+            SetPrivateField(groundedFirst, "hitboxSize", new Vector2(1.1f, 0.7f));
+            SetPrivateField(aerialFirst, "hitboxSize", new Vector2(1.9f, 0.7f));
+            SetComboSequences(attacker.Combo,
+                new[] { LinkStep(groundedFirst), FinalStep(groundedFirst) },
+                new[] { LinkStep(aerialFirst), FinalStep(aerialFirst) });
+
+            Assert.That(attacker.Controller.TryStartAttack(1f, true), Is.True);
+            yield return new WaitForFixedUpdate();
+
+            Assert.That(attacker.HitboxCollider.size.x, Is.EqualTo(1.1f).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator AirborneStartSelectsAerialSequence()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            AttackDefinition groundedFirst = CreateAttackDefinition(0f, 0.2f, 0f, 5f);
+            AttackDefinition aerialFirst = CreateAttackDefinition(0f, 0.2f, 0f, 6f);
+            SetPrivateField(groundedFirst, "hitboxSize", new Vector2(1.1f, 0.7f));
+            SetPrivateField(aerialFirst, "hitboxSize", new Vector2(1.9f, 0.7f));
+            SetComboSequences(attacker.Combo,
+                new[] { LinkStep(groundedFirst), FinalStep(groundedFirst) },
+                new[] { LinkStep(aerialFirst), FinalStep(aerialFirst) });
+
+            Assert.That(attacker.Controller.TryStartAttack(1f, false), Is.True);
+            yield return new WaitForFixedUpdate();
+
+            Assert.That(attacker.HitboxCollider.size.x, Is.EqualTo(1.9f).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator OnePressAdvancesOneStepAtATimeAndFinalStepCannotChain()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            AttackDefinition first = CreateAttackDefinition(0f, 0.2f, 0f, 5f);
+            AttackDefinition second = CreateAttackDefinition(0f, 0.2f, 0f, 6f);
+            AttackDefinition third = CreateAttackDefinition(0f, 0.2f, 0f, 7f);
+            SetComboSequences(attacker.Combo,
+                new[] { LinkStep(first), LinkStep(second), FinalStep(third) },
+                new[] { LinkStep(first), LinkStep(second), FinalStep(third) });
+
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(0));
+            Assert.That(attacker.Controller.TryStartAttack(-1f, false), Is.True);
+            Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(1));
+            Assert.That(attacker.Controller.TryStartAttack(1f, true), Is.True);
+            Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(2));
+            Assert.That(attacker.Controller.TryStartAttack(1f, true), Is.False);
+            Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(2));
+
+            yield return new WaitForFixedUpdate();
+            Assert.That(attacker.HitboxCollider.size.x, Is.EqualTo(third.HitboxSize.x).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator WhiffCanStillAdvanceToNextComboStep()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            SetComboSequences(attacker.Combo,
+                new[] { LinkStep(attacker.Definition), FinalStep(attacker.Definition) },
+                new[] { LinkStep(attacker.Definition), FinalStep(attacker.Definition) });
+
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(1));
+            Assert.That(Object.FindObjectsByType<Hurtbox2D>(FindObjectsSortMode.None), Is.Empty);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator LinkWindowIncludesStartBoundaryAndExcludesEndBoundary()
+        {
+            AttackFixture atStart = CreateAttacker(0f, 0.2f, 0f);
+            ComboStep[] steps = BoundaryTestSteps(atStart.Definition);
+            SetComboSequences(atStart.Combo, steps, steps);
+            Assert.That(atStart.Controller.TryStartAttack(1f), Is.True);
+            yield return new WaitForFixedUpdate();
+            yield return new WaitForFixedUpdate();
+            Assert.That(atStart.Controller.TryStartAttack(-1f), Is.True,
+                "A press at the sampled start boundary is included.");
+            Assert.That(atStart.Controller.CurrentComboStepIndex, Is.EqualTo(1));
+
+            AttackFixture atEnd = CreateAttacker(0f, 0.2f, 0f);
+            steps = BoundaryTestSteps(atEnd.Definition);
+            SetComboSequences(atEnd.Combo, steps, steps);
+            Assert.That(atEnd.Controller.TryStartAttack(1f), Is.True);
+            for (int i = 0; i < 4; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+            Assert.That(atEnd.Controller.TryStartAttack(-1f), Is.False,
+                "A press at the sampled end boundary is excluded.");
+            Assert.That(atEnd.Controller.CurrentComboStepIndex, Is.EqualTo(0));
+        }
+
+        [UnityTest]
+        public IEnumerator PressBeforeLinkWindowIsDiscardedWithoutQueueing()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            SetComboSequences(attacker.Combo, BoundaryTestSteps(attacker.Definition),
+                BoundaryTestSteps(attacker.Definition));
+
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            Assert.That(attacker.Controller.TryStartAttack(-1f), Is.False);
+            for (int i = 0; i < 4; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(0),
+                "An early press must not be buffered for the later window.");
+        }
+
+        [UnityTest]
+        public IEnumerator BusyGroundAirContextDoesNotSwitchAndFacingIsRecapturedForNextStep()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            AttackDefinition groundedFirst = CreateAttackDefinition(0f, 0.2f, 0f, 5f);
+            AttackDefinition groundedSecond = CreateAttackDefinition(0f, 0.2f, 0f, 6f);
+            AttackDefinition aerialFirst = CreateAttackDefinition(0f, 0.2f, 0f, 7f);
+            AttackDefinition aerialSecond = CreateAttackDefinition(0f, 0.2f, 0f, 8f);
+            SetPrivateField(groundedSecond, "hitboxSize", new Vector2(2.2f, 0.7f));
+            SetPrivateField(groundedSecond, "hitboxOffset", new Vector2(0.8f, 0.1f));
+            SetPrivateField(aerialSecond, "hitboxSize", new Vector2(3.2f, 0.7f));
+            SetComboSequences(attacker.Combo,
+                new[] { LinkStep(groundedFirst), new ComboStep(groundedSecond, float.NaN, float.PositiveInfinity, 0.13f) },
+                new[] { LinkStep(aerialFirst), FinalStep(aerialSecond) });
+
+            Assert.That(attacker.Controller.TryStartAttack(1f, true), Is.True);
+            Assert.That(attacker.Controller.TryStartAttack(-1f, false), Is.True);
+            yield return new WaitForFixedUpdate();
+
+            Assert.That(attacker.HitboxCollider.size.x, Is.EqualTo(2.2f).Within(0.001f),
+                "The ground chain stays selected even though the caller now reports airborne.");
+            Assert.That(attacker.HitboxCollider.offset.x, Is.EqualTo(-0.8f).Within(0.001f),
+                "The accepted link press supplies the new facing direction.");
+            Assert.That(attacker.Hitbox.ComboStepIndex, Is.EqualTo(1));
+            Assert.That(attacker.Hitbox.HitStopDuration, Is.EqualTo(0.13f).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator AcceptedLinkClosesActiveHitboxAndBeginsNextStepWithItsContext()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            AttackDefinition first = CreateAttackDefinition(0f, 0.2f, 0f, 5f);
+            AttackDefinition second = CreateAttackDefinition(0f, 0.2f, 0f, 6f);
+            SetPrivateField(first, "hitboxSize", new Vector2(1.2f, 0.7f));
+            SetPrivateField(second, "hitboxSize", new Vector2(2.2f, 0.7f));
+            SetComboSequences(attacker.Combo,
+                new[] { new ComboStep(first, 0f, 0.18f, 0.07f), FinalStep(second) },
+                new[] { new ComboStep(first, 0f, 0.18f, 0.07f), FinalStep(second) });
+
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            yield return new WaitForFixedUpdate();
+            Assert.That(attacker.HitboxCollider.enabled, Is.True);
+            Assert.That(attacker.Hitbox.ComboStepIndex, Is.EqualTo(0));
+            Assert.That(attacker.Hitbox.HitStopDuration, Is.EqualTo(0.07f).Within(0.001f));
+
+            Assert.That(attacker.Controller.TryStartAttack(-1f), Is.True);
+            Assert.That(attacker.HitboxCollider.enabled, Is.False,
+                "Transition closes the previous active hitbox immediately.");
+            yield return new WaitForFixedUpdate();
+
+            Assert.That(attacker.HitboxCollider.enabled, Is.True);
+            Assert.That(attacker.HitboxCollider.size.x, Is.EqualTo(2.2f).Within(0.001f));
+            Assert.That(attacker.Hitbox.ComboStepIndex, Is.EqualTo(1));
+        }
+
+        [UnityTest]
+        public IEnumerator FreshChainSamplesGroundedContextAgainAfterCompletion()
+        {
+            AttackFixture attacker = CreateAttacker(0f, Time.fixedDeltaTime, 0f);
+            AttackDefinition groundedFirst = CreateAttackDefinition(0f, Time.fixedDeltaTime, 0f, 5f);
+            AttackDefinition groundedSecond = CreateAttackDefinition(0f, Time.fixedDeltaTime, 0f, 6f);
+            AttackDefinition aerialFirst = CreateAttackDefinition(0f, 0.12f, 0f, 7f);
+            AttackDefinition aerialSecond = CreateAttackDefinition(0f, 0.12f, 0f, 8f);
+            SetPrivateField(groundedFirst, "hitboxSize", new Vector2(1.1f, 0.7f));
+            SetPrivateField(aerialFirst, "hitboxSize", new Vector2(2.1f, 0.7f));
+            SetComboSequences(attacker.Combo,
+                new[] { LinkStep(groundedFirst), FinalStep(groundedSecond) },
+                new[] { LinkStep(aerialFirst), FinalStep(aerialSecond) });
+
+            Assert.That(attacker.Controller.TryStartAttack(1f, true), Is.True);
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            yield return WaitForState(attacker.Controller, AttackState2D.Idle);
+
+            Assert.That(attacker.Controller.TryStartAttack(1f, false), Is.True);
+            yield return new WaitForFixedUpdate();
+
+            Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(0));
+            Assert.That(attacker.HitboxCollider.size.x, Is.EqualTo(2.1f).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator HitStopFreezesComboClockButStillAcceptsAnOpenLinkPress()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            SetComboSequences(attacker.Combo,
+                new[] { LinkStep(attacker.Definition, 0f, 0.08f), FinalStep(attacker.Definition) },
+                new[] { LinkStep(attacker.Definition, 0f, 0.08f), FinalStep(attacker.Definition) });
+            HitStopService service = HitStopService.EnsureInstance();
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            service.RequestHitStop(0.2f);
+            Assert.That(Time.timeScale, Is.EqualTo(0f));
+
+            Assert.That(attacker.Controller.TryStartAttack(-1f, false), Is.True);
+            Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(1));
+            Assert.That(Time.timeScale, Is.EqualTo(0f));
+            yield return new WaitForSecondsRealtime(0.25f);
+            Assert.That(Time.timeScale, Is.GreaterThan(0f));
+        }
+
+        [UnityTest]
+        public IEnumerator HitStopFreezesComboClockAndRejectsPressOutsideLinkWindow()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            SetComboSequences(attacker.Combo,
+                new[] { LinkStep(attacker.Definition, 0.06f, 0.14f), FinalStep(attacker.Definition) },
+                new[] { LinkStep(attacker.Definition, 0.06f, 0.14f), FinalStep(attacker.Definition) });
+            HitStopService service = HitStopService.EnsureInstance();
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            service.RequestHitStop(0.2f);
+            Assert.That(Time.timeScale, Is.EqualTo(0f));
+
+            Assert.That(attacker.Controller.TryStartAttack(-1f, false), Is.False);
+            Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(0));
+            yield return new WaitForSecondsRealtime(0.25f);
+            Assert.That(Time.timeScale, Is.GreaterThan(0f));
+        }
+
+        [UnityTest]
+        public IEnumerator DisablingControllerCancelsActiveComboAndReenableStartsAtFirstStep()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            AttackDefinition first = CreateAttackDefinition(0f, 0.2f, 0f, 5f);
+            AttackDefinition second = CreateAttackDefinition(0f, 0.2f, 0f, 6f);
+            SetComboSequences(attacker.Combo,
+                new[] { LinkStep(first), FinalStep(second) }, new[] { LinkStep(first), FinalStep(second) });
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(1));
+            yield return new WaitForFixedUpdate();
+            Assert.That(attacker.HitboxCollider.enabled, Is.True);
+
+            attacker.Controller.enabled = false;
+            Assert.That(attacker.Controller.State, Is.EqualTo(AttackState2D.Idle));
+            Assert.That(attacker.HitboxCollider.enabled, Is.False);
+            attacker.Controller.enabled = true;
+            Assert.That(attacker.Controller.TryStartAttack(-1f), Is.True);
+            Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(0));
+        }
         [UnityTest]
         public IEnumerator ControllerActivatesOnlyItsOwnRootHitbox()
         {
@@ -67,20 +329,51 @@ namespace HuntrX.Tests.PlayMode
         }
 
         [UnityTest]
-        public IEnumerator RequestsInEveryBusyPhaseAreDiscardedWithoutQueueing()
+        public IEnumerator RequestsOutsideConfiguredBusyWindowAreDiscardedWithoutQueueing()
         {
             AttackFixture attacker = CreateAttacker(0.06f, 0.06f, 0.06f);
+            ComboStep[] steps = { LinkStep(attacker.Definition, 0.1f, 0.12f), FinalStep(attacker.Definition) };
+            SetComboSequences(attacker.Combo, steps, steps);
             Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
 
             Assert.That(attacker.Controller.TryStartAttack(-1f), Is.False);
             yield return WaitForState(attacker.Controller, AttackState2D.Active);
             Assert.That(attacker.Controller.TryStartAttack(-1f), Is.False);
             yield return WaitForState(attacker.Controller, AttackState2D.Recovery);
-            Assert.That(attacker.Controller.TryStartAttack(-1f), Is.False);
+            Assert.That(attacker.Controller.TryStartAttack(-1f), Is.False,
+                "The end boundary is exclusive, so the press is still outside the configured window.");
             yield return WaitForState(attacker.Controller, AttackState2D.Idle);
 
             Assert.That(attacker.Controller.State, Is.EqualTo(AttackState2D.Idle));
             Assert.That(attacker.Controller.TryStartAttack(-1f), Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator OpenLinkWindowCanAcceptPressDuringActivePhase()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            ComboStep[] steps = { LinkStep(attacker.Definition, 0.02f, 0.12f), FinalStep(attacker.Definition) };
+            SetComboSequences(attacker.Combo, steps, steps);
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            yield return new WaitForFixedUpdate();
+            yield return new WaitForFixedUpdate();
+
+            Assert.That(attacker.Controller.State, Is.EqualTo(AttackState2D.Active));
+            Assert.That(attacker.Controller.TryStartAttack(-1f), Is.True);
+            Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(1));
+        }
+
+        [UnityTest]
+        public IEnumerator OpenLinkWindowCanAcceptPressDuringRecoveryPhase()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.04f, 0.2f);
+            ComboStep[] steps = { LinkStep(attacker.Definition, 0.04f, 0.2f), FinalStep(attacker.Definition) };
+            SetComboSequences(attacker.Combo, steps, steps);
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            yield return WaitForState(attacker.Controller, AttackState2D.Recovery);
+
+            Assert.That(attacker.Controller.TryStartAttack(-1f), Is.True);
+            Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(1));
         }
 
         [UnityTest]
@@ -308,7 +601,7 @@ namespace HuntrX.Tests.PlayMode
         {
             AttackFixture attacker = CreateAttacker(0f, 0.1f, 0f);
             SetPrivateField(attacker.Definition, "damage", 0f);
-            LogAssert.Expect(LogType.Error, "AttackController2D requires a valid AttackDefinition.");
+            LogAssert.Expect(LogType.Error, "AttackController2D requires a valid CombatComboDefinition.");
 
             Assert.That(attacker.Controller.TryStartAttack(1f), Is.False);
             Assert.That(attacker.Controller.TryStartAttack(1f), Is.False);
@@ -378,7 +671,10 @@ namespace HuntrX.Tests.PlayMode
             float maximumHealth = target.MaximumHealth;
             Physics2D.SyncTransforms();
             Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
-            Assert.That(attacker.HitboxCollider.enabled, Is.False);
+            yield return new WaitForFixedUpdate();
+            Assert.That(attacker.HitboxCollider.enabled, Is.True);
+            float healthAfterAcceptedHit = target.CurrentHealth;
+            Assert.That(healthAfterAcceptedHit, Is.LessThan(maximumHealth));
 
             Object.Destroy(attacker.Root);
             for (int i = 0; i < 20; i++)
@@ -386,7 +682,7 @@ namespace HuntrX.Tests.PlayMode
                 yield return new WaitForFixedUpdate();
             }
 
-            Assert.That(target.CurrentHealth, Is.EqualTo(maximumHealth));
+            Assert.That(target.CurrentHealth, Is.EqualTo(healthAfterAcceptedHit));
         }
 
         private AttackFixture CreateAttacker(float startup, float active, float recovery,
@@ -414,14 +710,48 @@ namespace HuntrX.Tests.PlayMode
             }
             SetPrivateField(hitbox, "hitboxCollider", hitboxCollider);
 
+            CombatComboDefinition combo = CreateDefaultComboDefinition(definition);
             AttackController2D controller = root.AddComponent<AttackController2D>();
-            SetPrivateField(controller, "attackDefinition", definition);
+            SetPrivateField(controller, "comboDefinition", combo);
             root.SetActive(true);
-            createdObjects.Add(definition);
             Physics2D.SyncTransforms();
-            return new AttackFixture(root, receiver, definition, controller, hitbox, hitboxCollider);
+            return new AttackFixture(root, receiver, definition, combo, controller, hitbox, hitboxCollider);
         }
 
+        private CombatComboDefinition CreateDefaultComboDefinition(AttackDefinition definition)
+        {
+            var combo = ScriptableObject.CreateInstance<CombatComboDefinition>();
+            createdObjects.Add(combo);
+            float totalDuration = definition.StartupDuration + definition.ActiveDuration + definition.RecoveryDuration;
+            var link = new ComboStep(definition, totalDuration * 0.75f, totalDuration, 0.05f);
+            var final = FinalStep(definition);
+            SetComboSequences(combo, new[] { link, final }, new[] { link, final });
+            return combo;
+        }
+
+        private static ComboStep LinkStep(AttackDefinition attack, float windowStart = 0f, float windowEnd = -1f)
+        {
+            if (windowEnd < 0f)
+            {
+                windowEnd = attack.StartupDuration + attack.ActiveDuration + attack.RecoveryDuration;
+            }
+            return new ComboStep(attack, windowStart, windowEnd, 0.05f);
+        }
+
+        private static ComboStep FinalStep(AttackDefinition attack) =>
+            new ComboStep(attack, float.NaN, float.PositiveInfinity, 0.05f);
+
+        private static ComboStep[] BoundaryTestSteps(AttackDefinition attack)
+        {
+            float step = Time.fixedDeltaTime;
+            return new[] { LinkStep(attack, 2f * step, 4f * step), FinalStep(attack) };
+        }
+
+        private static void SetComboSequences(CombatComboDefinition combo, ComboStep[] grounded, ComboStep[] aerial)
+        {
+            SetPrivateField(combo, "groundedSteps", grounded);
+            SetPrivateField(combo, "aerialSteps", aerial);
+        }
         private DamageReceiver2D CreateTarget(Vector2 position, CombatFaction2D faction = CombatFaction2D.Demon,
             bool withDash = false, bool withMovement = false, float dashDuration = 2f)
         {
@@ -511,11 +841,13 @@ namespace HuntrX.Tests.PlayMode
         private sealed class AttackFixture
         {
             public AttackFixture(GameObject root, DamageReceiver2D receiver, AttackDefinition definition,
-                AttackController2D controller, AttackHitbox2D hitbox, BoxCollider2D hitboxCollider)
+                CombatComboDefinition combo, AttackController2D controller, AttackHitbox2D hitbox,
+                BoxCollider2D hitboxCollider)
             {
                 Root = root;
                 Receiver = receiver;
                 Definition = definition;
+                Combo = combo;
                 Controller = controller;
                 Hitbox = hitbox;
                 HitboxCollider = hitboxCollider;
@@ -524,6 +856,7 @@ namespace HuntrX.Tests.PlayMode
             public GameObject Root { get; }
             public DamageReceiver2D Receiver { get; }
             public AttackDefinition Definition { get; set; }
+            public CombatComboDefinition Combo { get; }
             public AttackController2D Controller { get; }
             public AttackHitbox2D Hitbox { get; }
             public BoxCollider2D HitboxCollider { get; }

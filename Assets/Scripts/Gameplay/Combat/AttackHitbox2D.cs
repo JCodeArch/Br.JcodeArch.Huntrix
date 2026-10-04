@@ -13,9 +13,13 @@ namespace HuntrX.Gameplay.Combat
         private AttackDefinition attack;
         private DamageReceiver2D attacker;
         private float facingDirection;
+        private int comboStepIndex;
+        private float hitStopDuration;
         private bool activationActive;
 
         public bool IsConfigurationValid { get; private set; }
+        public int ComboStepIndex => comboStepIndex;
+        public float HitStopDuration => hitStopDuration;
 
         private void Awake()
         {
@@ -34,11 +38,13 @@ namespace HuntrX.Gameplay.Combat
             }
         }
 
-        public void BeginActivation(AttackDefinition attack, DamageReceiver2D attacker, float facingDirection)
+        public void BeginActivation(AttackDefinition attack, DamageReceiver2D attacker, float facingDirection,
+            int comboStepIndex = 0, float hitStopDuration = 0f)
         {
             EndActivation();
             if (!IsConfigurationValid || hitboxCollider == null || attack == null || attacker == null ||
-                facingDirection == 0f)
+                facingDirection == 0f || !IsFinite(facingDirection) || comboStepIndex < 0 ||
+                !IsFiniteNonnegative(hitStopDuration))
             {
                 return;
             }
@@ -46,6 +52,8 @@ namespace HuntrX.Gameplay.Combat
             this.attack = attack;
             this.attacker = attacker;
             this.facingDirection = Mathf.Sign(facingDirection);
+            this.comboStepIndex = comboStepIndex;
+            this.hitStopDuration = hitStopDuration;
             acceptedReceivers.Clear();
             activationActive = true;
             hitboxCollider.size = attack.HitboxSize;
@@ -64,6 +72,8 @@ namespace HuntrX.Gameplay.Combat
             acceptedReceivers.Clear();
             attack = null;
             attacker = null;
+            comboStepIndex = 0;
+            hitStopDuration = 0f;
         }
 
         private void OnTriggerEnter2D(Collider2D other) => ProcessContact(other);
@@ -90,5 +100,9 @@ namespace HuntrX.Gameplay.Combat
         }
 
         private void OnDisable() => EndActivation();
+
+        private static bool IsFiniteNonnegative(float value) => IsFinite(value) && value >= 0f;
+
+        private static bool IsFinite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
     }
 }

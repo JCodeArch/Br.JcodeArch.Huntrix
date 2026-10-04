@@ -1,0 +1,11 @@
+{
+  "name": "HuntrX.PlayModeTests",
+  "rootNamespace": "HuntrX.Tests.PlayMode",
+  "references": [
+    "HuntrX.Runtime"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

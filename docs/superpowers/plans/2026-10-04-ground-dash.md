@@ -12,4 +12,4 @@
 
 **QA:** Unity 6000.6.4f1: EditMode 10/10 and PlayMode 25/25, zero failures/skips and zero C# compiler warnings/errors. `git diff --check` passed; all 61 Unity asset meta GUIDs are unique.
 
-**Integration:** [ ] Commit on `feature/card-21-dash`, publish, fast-forward to `develop`, verify `origin/develop`, update Trello, and confirm the next item in original list order.
+**Integration:** [x] Implementation commit `7a032ac14a344bca9c729a0744c97adb83369b9c` published on `feature/card-21-dash`; fast-forwarded to `develop` and pushed. Final remote equality, Trello completion, and #22 as the next original-order card are confirmed in the card delivery record.

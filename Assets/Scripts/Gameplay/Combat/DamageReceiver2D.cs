@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using HuntrX.Data;
 using HuntrX.Gameplay.Dash;
+using HuntrX.Gameplay.Protection;
 
 namespace HuntrX.Gameplay.Combat
 {
@@ -15,6 +16,7 @@ namespace HuntrX.Gameplay.Combat
         private Rigidbody2D body;
         private DashController2D dashController;
         private ParryController2D parryController;
+        private DamageProtection2D damageProtection;
         private bool configurationReported;
 
         public CombatFaction2D Faction => faction;
@@ -31,12 +33,15 @@ namespace HuntrX.Gameplay.Combat
             body = GetComponent<Rigidbody2D>();
             dashController = GetComponent<DashController2D>();
             parryController = GetComponent<ParryController2D>();
+            damageProtection = GetComponent<DamageProtection2D>();
             InitializeConfiguration();
         }
 
         /// <summary>Compatibility API: returns true only when damage was applied.</summary>
         public bool TryReceiveHit(AttackDefinition attack, DamageReceiver2D attacker, float facingDirection) =>
             ResolveHit(attack, attacker, facingDirection, 0, out _) == CombatContactResult.Damaged;
+
+        internal void RegisterProtection(DamageProtection2D protection) => damageProtection = protection;
 
         internal void RegisterParryController(ParryController2D controller)
         {
@@ -61,6 +66,11 @@ namespace HuntrX.Gameplay.Combat
                 parryController.TryConsumeParry(attacker, attack, comboStepIndex, out parryEvent))
             {
                 return CombatContactResult.Parried;
+            }
+
+            if (damageProtection != null && damageProtection.IsProtected)
+            {
+                return CombatContactResult.Protected;
             }
 
             float healthBeforeHit = CurrentHealth;

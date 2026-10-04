@@ -5,6 +5,7 @@ namespace HuntrX.Gameplay.Combat
     {
         Rejected = 0,
         Damaged = 1,
-        Parried = 2
+        Parried = 2,
+        Protected = 3
     }
 }

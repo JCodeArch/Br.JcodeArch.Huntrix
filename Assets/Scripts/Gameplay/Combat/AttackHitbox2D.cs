@@ -100,13 +100,18 @@ namespace HuntrX.Gameplay.Combat
             CombatContactResult result = hurtbox.ResolveHit(attack, attacker, facingDirection, comboStepIndex,
                 out DamageReceiver2D receiver, out CombatParryEvent parryEvent);
             if (receiver == null ||
-                (result != CombatContactResult.Damaged && result != CombatContactResult.Parried))
+                (result != CombatContactResult.Damaged && result != CombatContactResult.Parried &&
+                 result != CombatContactResult.Protected))
             {
                 return;
             }
 
             // Reserve the receiver before callbacks so re-entry cannot apply another result in this activation.
             resolvedReceivers.Add(receiver);
+            if (result == CombatContactResult.Protected)
+            {
+                return;
+            }
             if (result == CombatContactResult.Parried)
             {
                 DispatchParried(parryEvent);

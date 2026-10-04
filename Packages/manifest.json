@@ -53,6 +53,8 @@
     "com.unity.modules.vehicles": "1.0.0",
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
+    "com.unity.modules.xr": "1.0.0",
+    "com.unity.cinemachine": "6.6.0",
+    "com.unity.localization": "1.5.13"
   }
 }

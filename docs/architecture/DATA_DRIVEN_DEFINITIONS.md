@@ -29,10 +29,14 @@ ProfileDefinition represents static template metadata only and currently contain
 
 - Character attributes, skills, abilities, and switch rules: gameplay cards #28–32.
 - Enemy stats, AI, attack patterns, and encounter behavior: cards #33–41.
-- Attack costs, range progression, combos, parry, and balance/tuning decisions: cards #19-27 and their dependent combat cards. Card #24 defines only the base attack data contract; authored assets and final values remain deferred.
+- Attack costs, range progression, parry, and balance/tuning decisions: cards #19-27 and their dependent combat cards. Combo templates are defined by card #25 and described in COMBO_COMBAT.md. Card #24 defines only the base attack data contract; authored assets and final values remain deferred.
 - Food acquisition, use, and effects: cards #42–50.
 - Stage scene references, sequence, and authored level content: level-design cards; card #18 only sets up Combat Lab.
 - Save-slot count and management, preferences, serialization, migration, cloud sync, and co-op save rules: cards #9 and subsequent save/profile decisions.
 - Age-specific configuration and accessibility: card #85 and the related QA cards.
 
 No sample assets are created by this card. The architecture waits for the relevant backlog decisions before these fields or authored content are added.
+
+## Combo definitions
+
+Card #25 adds `CombatComboDefinition` and serializable `ComboStep` as static combat templates. They reference existing `AttackDefinition` assets for grounded/aerial sequences; runtime chain state, health, input state, and save progress remain outside ScriptableObjects. Validation and runtime behavior are documented in [COMBO_COMBAT.md](COMBO_COMBAT.md).

@@ -2,7 +2,7 @@
 
 ## Scope
 
-Card #24 adds a single configurable attack activation for the same character on the ground and in the air. The caller forwards the logical Attack press edge to `AttackController2D.TryStartAttack(float facingDirection)`. This controller does not read device input. Combos, buffering, repeated attacks, hit stop, feedback, parry, counterattacks, death, and respawn belong to later cards.
+Card #24 adds a single configurable attack activation for the same character on the ground and in the air. The caller forwards the logical Attack press edge to `AttackController2D.TryStartAttack(float facingDirection)`. This controller does not read device input. Card #25 adds combo chains, hit stop, and accepted-impact feedback as described in COMBO_COMBAT.md; buffering, repeated attacks, parry, counterattacks, death, and respawn belong to later cards.
 
 ## Data and health
 
@@ -25,3 +25,7 @@ An accepted hit applies `Rigidbody2D.AddForce` with `ForceMode2D.Impulse`. Horiz
 ## Verification and limits
 
 PlayMode tests cover data ranges, health initialization, attack state boundaries, inactive/active hitbox behavior, mirrored offsets, repeated input, target deduplication, multiple targets, faction/self filtering, damage clamp, dash rejection and persistent overlap, knockback direction, and movement interaction. Tests use synthetic physics values. This card does not verify device performance, final game feel, character/enemy integration, authored values, platform input, art/audio/animation, or network/co-op policy.
+
+## Card #25 extension
+
+Card #25 adds configurable ground/aerial sequences, per-step hitbox activation, accepted-impact notification, and hit stop. These contracts and their ownership boundaries are documented in [COMBO_COMBAT.md](COMBO_COMBAT.md). Card #24 remains the owner of base attack acceptance, damage, deduplication semantics, dash invulnerability, and knockback.

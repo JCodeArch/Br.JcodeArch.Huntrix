@@ -105,6 +105,23 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(movement.State, Is.EqualTo(HorizontalMovementState.Idle));
         }
 
+        [UnityTest]
+        public IEnumerator HorizontalVelocityOverrideIsOwnedAndMovementResumesWhenCleared()
+        {
+            HorizontalMovement2D movement = CreateMovement(6f, 10f, 12f);
+            HorizontalMovement2D otherOwner = CreateMovement(6f, 10f, 12f);
+            Rigidbody2D body = movement.GetComponent<Rigidbody2D>();
+
+            Assert.That(movement.TrySetHorizontalVelocityOverride(movement, 5f), Is.True);
+            Assert.That(movement.TrySetHorizontalVelocityOverride(otherOwner, 2f), Is.False);
+            movement.ClearHorizontalVelocityOverride(otherOwner);
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityX, Is.EqualTo(5f).Within(0.001f));
+
+            movement.ClearHorizontalVelocityOverride(movement);
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityX, Is.LessThan(5f));
+        }
         private HorizontalMovement2D CreateMovement(float maxSpeed, float acceleration, float deceleration)
         {
             var gameObject = new GameObject("HorizontalMovementTestSubject");

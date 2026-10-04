@@ -10,6 +10,7 @@ namespace HuntrX.Gameplay.Movement
 
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Rigidbody2D))]
+    [DefaultExecutionOrder(-100)]
     public sealed class HorizontalMovement2D : MonoBehaviour
     {
         [SerializeField, Min(0f)] private float maxHorizontalSpeed;
@@ -19,6 +20,9 @@ namespace HuntrX.Gameplay.Movement
         private Rigidbody2D body;
         private float horizontalInput;
         private bool invalidSettingsReported;
+        private MonoBehaviour horizontalVelocityOverrideOwner;
+        private float horizontalVelocityOverride;
+        private bool hasHorizontalVelocityOverride;
 
         public HorizontalMovementState State { get; private set; } = HorizontalMovementState.Idle;
 
@@ -36,12 +40,61 @@ namespace HuntrX.Gameplay.Movement
             horizontalInput = IsFinite(horizontal) ? Mathf.Clamp(horizontal, -1f, 1f) : 0f;
         }
 
+        /// <summary>
+        /// Temporarily gives one component ownership of horizontal velocity. The owner must clear the override.
+        /// </summary>
+        public bool TrySetHorizontalVelocityOverride(MonoBehaviour owner, float speed)
+        {
+            if (owner == null || !IsFinite(speed))
+            {
+                return false;
+            }
+
+            if (hasHorizontalVelocityOverride && horizontalVelocityOverrideOwner != owner)
+            {
+                return false;
+            }
+
+            horizontalVelocityOverrideOwner = owner;
+            horizontalVelocityOverride = speed;
+            hasHorizontalVelocityOverride = true;
+            return true;
+        }
+
+        /// <summary>
+        /// Clears the override only when called by the component that currently owns it.
+        /// </summary>
+        public void ClearHorizontalVelocityOverride(MonoBehaviour owner)
+        {
+            if (hasHorizontalVelocityOverride && horizontalVelocityOverrideOwner == owner)
+            {
+                hasHorizontalVelocityOverride = false;
+                horizontalVelocityOverrideOwner = null;
+            }
+        }
+
         private void FixedUpdate()
         {
             if (body == null)
             {
                 ReportInvalidSettings("HorizontalMovement2D requires a Rigidbody2D component.");
                 return;
+            }
+
+            if (hasHorizontalVelocityOverride)
+            {
+                if (horizontalVelocityOverrideOwner == null)
+                {
+                    hasHorizontalVelocityOverride = false;
+                }
+                else
+                {
+                    body.linearVelocityX = horizontalVelocityOverride;
+                    State = Mathf.Approximately(horizontalVelocityOverride, 0f)
+                        ? HorizontalMovementState.Idle
+                        : HorizontalMovementState.Moving;
+                    return;
+                }
             }
 
             if (!HasValidSettings())

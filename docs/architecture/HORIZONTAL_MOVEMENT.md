@@ -6,13 +6,13 @@
 
 The component requires a `Rigidbody2D` and updates its horizontal velocity in `FixedUpdate` using Unity 6's `Rigidbody2D.linearVelocityX` ([Unity API reference](https://docs.unity3d.com/6000.0/ScriptReference/Rigidbody2D-linearVelocityX.html)). The vertical velocity is left to gravity and other systems. Input is clamped to [-1, 1]. Acceleration moves velocity toward the target while increasing speed in the same direction or starting from rest. Releasing or reversing direction uses deceleration until the target is reached.
 
-`State` is `Idle` when horizontal speed is approximately zero and `Moving` otherwise. It does not represent grounded/airborne state, animation state, or a gameplay action. The component caches its `Rigidbody2D` once in `Awake`; invalid tuning is diagnosed once and does not apply horizontal input.
+`State` is `Idle` when horizontal speed is approximately zero and `Moving` otherwise. It does not represent grounded/airborne state, animation state, or a gameplay action. The component caches its `Rigidbody2D` once in `Awake` and runs at execution order -100 so dash velocity is applied before the dash timer advances. Invalid tuning is diagnosed once and does not apply horizontal input.
 
 ## Tuning and deferred decisions
 
 `maxHorizontalSpeed`, `acceleration`, and `deceleration` must all be configured as finite positive values. No product defaults are selected because neither the GDD nor card #19 approves movement numbers. Test fixtures use synthetic values only to check algorithm behavior. Tune actual characters in the Combat Lab when character contracts and playtest evidence exist.
 
-The component is not wired into a player object yet; character implementation is later in the backlog. Jumping, grounded/airborne state, animation, facing, slope/ground detection, dash, and wall jump remain in their own cards. Knockback will be introduced by combat cards; those cards must define how external horizontal impulses coexist with this movement controller before wiring the systems together.
+The component is not wired into a player object yet; character implementation is later in the backlog. Jumping, grounded/airborne state, animation, facing, slope/ground detection, dash, and wall jump remain in their own cards. Dash can take a temporary source-owned horizontal-velocity override through `TrySetHorizontalVelocityOverride(MonoBehaviour, float)`. Only the owning component can clear it; during ownership the shared motor applies the override and preserves the vertical velocity. The dash owns its duration and releases this override at the end. Knockback will be introduced by combat cards; those cards must define how external horizontal impulses coexist with this movement controller before wiring the systems together.
 
 ## QA
 

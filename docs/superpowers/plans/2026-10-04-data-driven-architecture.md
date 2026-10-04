@@ -62,5 +62,5 @@
 
 - [x] Unity 6000.6.4f1: EditMode 9/9 and PlayMode 5/5 passed; no failures, skips, or C# warnings.
 - [x] Self-review: responsibilities stay split between runtime definitions and explicit Editor tooling; no per-frame/startup work, and validation is linear in the definitions scanned. Source diff checked; no duplicate asset GUIDs or unintended generated files. Independent reviewer agents hit their usage limit; Antigravity has no accessible UI/CLI in this session, so no external approval is claimed.
-- [ ] Commit the card once on feature/card-17-data-driven-architecture, publish, fast-forward integrate to develop, and verify origin/develop.
-- [ ] Record the result and the first next card in Trello.
+- [x] Implementation commit 04821810779781ec618d80a68f7564d1ee11955c published on feature/card-17-data-driven-architecture, fast-forward integrated to develop, and verified against origin/develop.
+- [x] Trello card 17 marked complete; #18 — Configurar cena Combat Lab confirmed as the next open card in the original list order.

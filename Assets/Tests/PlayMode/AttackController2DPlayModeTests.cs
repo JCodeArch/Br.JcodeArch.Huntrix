@@ -132,7 +132,7 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
             Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
             Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(1));
-            Assert.That(Object.FindObjectsByType<Hurtbox2D>(FindObjectsSortMode.None), Is.Empty);
+            Assert.That(Object.FindObjectsByType<Hurtbox2D>(FindObjectsInactive.Exclude), Is.Empty);
             yield return null;
         }
 

@@ -6,7 +6,7 @@ Card #17 establishes typed Unity assets for static, authored data. Later gamepla
 
 ## Runtime contracts
 
-The runtime assembly exposes nine ScriptableObject types in the HuntrX.Data namespace:
+The runtime assembly exposes ten ScriptableObject types in the HuntrX.Data namespace:
 
 | Definition | Asset menu |
 |---|---|
@@ -17,6 +17,7 @@ The runtime assembly exposes nine ScriptableObject types in the HuntrX.Data name
 | AttackDefinition | HUNTR/X/Data/Attack |
 | CombatComboDefinition | HUNTR/X/Data/Combat Combo |
 | ParryDefinition | HUNTR/X/Data/Parry |
+| MiraProtectionDefinition | HUNTR/X/Data/Mira Protection |
 | FoodDefinition | HUNTR/X/Data/Food |
 | ProfileDefinition | HUNTR/X/Data/Profile |
 
@@ -49,3 +50,9 @@ Card #26 adds `ParryDefinition` as static template timing for a parry window. It
 ## Character prototype — card #28
 
 Card #28 extends `CharacterDefinition` with a display name and static references to movement, combo, and parry definitions. `CharacterMovementDefinition` stores the validated movement, jump, and dash values currently consumed by shared controllers. The Rumi sample assets and `Rumi_Prototype` prefab demonstrate these contracts; all numeric values are provisional integration fixtures. The character applier configures existing controllers and owns no input, save, health, respawn, or character-selection state. See [RUMI_CHARACTER.md](RUMI_CHARACTER.md) for composition and verification.
+
+## Mira protection definition — card #29
+
+`MiraProtectionDefinition` adds finite positive duration and radius as authored data only. Its active timer, overlap membership, and protection state belong to runtime components. The Mira field asset is referenced separately by `MiraProtectionField2D`, rather than extending every `CharacterDefinition` with a Mira-specific reference. The actual Mira profile and Resources prefab reuse the existing Rumi movement/basic combat definitions as provisional shared fixtures and compose a distinct defensive field. All values remain provisional; no final tuning or unique basic attack choreography is claimed.
+
+`DamageProtection2D` is an explicit target opt-in contract, with multiple fields and per-collider membership; the existing combat faction enum does not determine field eligibility. Actual fan integration, health and rescue rules remain dependent on cards #42–50. See [MIRA_CHARACTER.md](MIRA_CHARACTER.md) for lifecycle, damage precedence, same-activation reservation, prefab composition, validation, and performance limits.

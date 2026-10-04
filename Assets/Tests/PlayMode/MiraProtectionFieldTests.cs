@@ -16,12 +16,10 @@ namespace HuntrX.Tests.PlayMode
         private readonly List<Object> objects = new List<Object>();
         private const BindingFlags Flags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
         private float previousScale;
-        private bool previousAutoSyncTransforms;
-        [SetUp] public void SetUp() { previousScale = Time.timeScale; Time.timeScale = 1f; previousAutoSyncTransforms = Physics2D.autoSyncTransforms; Physics2D.autoSyncTransforms = false; }
+        [SetUp] public void SetUp() { previousScale = Time.timeScale; Time.timeScale = 1f; }
         [UnityTearDown] public IEnumerator TearDown()
         {
             Time.timeScale = previousScale;
-            Physics2D.autoSyncTransforms = previousAutoSyncTransforms;
             for (int i = objects.Count - 1; i >= 0; --i) if (objects[i] != null) Object.Destroy(objects[i]);
             objects.Clear();
             yield return null;

@@ -106,7 +106,11 @@ A ordem, a causalidade entre resgates, energia, Performance e Honmoon, e as cond
 
 **EM ABERTO:** habilidades, atributos, ataques, funções complementares, disponibilidade e condições para trocar de personagem. O backlog separa a implementação individual e a troca nos itens 28–32; movimento e combate base estão nos itens 19–27.
 
-**PROTÓTIPO — item 28:** Rumi foi composta com os controladores compartilhados de movimento, combate direto com espada, combos terrestre/aéreo e aparo. Os valores dos assets são provisórios para integração; não fecham habilidades, atributos ou balanceamento, nem substituem playtest ou aprovação visual. O estado técnico está em [`docs/architecture/RUMI_CHARACTER.md`](architecture/RUMI_CHARACTER.md). A identidade de Mira/Zoey, seleção e troca continuam abertas para os itens seguintes.
+**PROTÓTIPO — item 28:** Rumi foi composta com os controladores compartilhados de movimento, combate direto com espada, combos terrestre/aéreo e aparo. Os valores dos assets são provisórios para integração; não fecham habilidades, atributos ou balanceamento, nem substituem playtest ou aprovação visual. O estado técnico está em [`docs/architecture/RUMI_CHARACTER.md`](architecture/RUMI_CHARACTER.md). A identidade de Zoey, seleção e troca continuam abertas para os itens seguintes.
+
+**PROTÓTIPO — item 29:** Mira foi composta com um campo circular temporário que protege receptores de combate com adesão explícita (`DamageProtection2D`) contra dano e knockback. O aparo existente mantém precedência; um contato protegido fica reservado até o fim da ativação do ataque, e a ativação seguinte reavalia a proteção. Movimento e combate básico compartilham os assets provisórios de Rumi; a ação distintiva implementada é o campo defensivo. Duração/raio e valores de combate são fixtures de integração, sem balanceamento ou coreografia básica própria aprovados. O contrato técnico e limites estão em [`docs/architecture/MIRA_CHARACTER.md`](architecture/MIRA_CHARACTER.md).
+
+**EM ABERTO — integração de fãs:** o campo foi verificado com receptores aliados genéricos; não existe entidade de fã neste item. Os itens 42–50 devem compor/adaptar o contrato e verificar que um fã protegido não perde vida antes de declarar proteção de fãs integrada. Estados, resgate, recompensas, Honmoon, Special/custos, cooldowns, controles físicos, troca/respawn e cooperação continuam nos cards próprios.
 
 ### Combate
 

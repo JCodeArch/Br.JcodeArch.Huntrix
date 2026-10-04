@@ -2,16 +2,17 @@
 
 ## Scope and ownership
 
-Card #25 extends the base attack contract from [BASE_COMBAT.md](BASE_COMBAT.md) with authored ground and air chains, global hit stop, and a typed event for accepted impacts. The card adds runtime contracts and tests only; it does not create sample attack/combo assets, tune final combat values, wire presentation, or add parry/reward behavior.
+Card #25 extends the base attack contract from [BASE_COMBAT.md](BASE_COMBAT.md) with authored ground and air chains, global hit stop, and a typed event for accepted impacts. The card adds runtime contracts and tests only; it does not create sample attack/combo assets, tune final combat values, wire presentation, or add parry/reward behavior. Card #26 adds parry as a separate resolution result and does not change the accepted-impact contract.
 
 | Responsibility | Owner |
 |---|---|
 | Static chain and step configuration | `CombatComboDefinition`, `ComboStep` |
 | Chain selection, phases, timing, and transitions | `AttackController2D` |
 | Candidate contacts and per-step target deduplication | `AttackHitbox2D` |
-| Health acceptance, damage, invulnerability, knockback | `DamageReceiver2D` |
+| Health acceptance, damage, invulnerability, knockback, and pre-damage parry resolution | `DamageReceiver2D` + optional `ParryController2D` |
 | Global pause/hit-stop time-scale ownership | `HitStopService` |
 | Public accepted-impact notification | `AttackController2D.ImpactOccurred` |
+| Public successful-parry notification | `AttackController2D.ParryOccurred` |
 
 ## Definition contract
 
@@ -55,3 +56,7 @@ Changing the controller's serialized definition from a single `AttackDefinition`
 - VFX, SFX, animation, contact-point effects, and scene/prefab presentation wiring.
 - Physical input bindings, buffering, hold-repeat, parry/counterattack/rewards.
 - Network/co-op policy and device performance targets.
+
+## Parry resolution (card #26)
+
+`DamageReceiver2D` first applies the existing validation gates, including defender dash invulnerability, then asks an optional `ParryController2D` to consume an active window before changing health or applying knockback. The result is explicitly rejected, damaged, or parried. The parry window uses scaled fixed time. Its requested duration is rounded up to whole physics steps, with any positive duration providing at least one simulation step; the window closes on the next `FixedUpdate` before another simulation. It cannot start while its owner is dead or dash-invulnerable. Missing/invalid definition prevents activation. `AttackHitbox2D` deduplicates accepted damage and parry per activation before callbacks; rejected contacts remain eligible for reevaluation. `AttackController2D.ParryOccurred` forwards the distinct payload (defender, attacker, attack, zero-based combo step), without hit stop or `ImpactOccurred`. Listener exceptions are isolated. The event is a future counter/reward hook; this card does not apply counter damage or economy rewards.

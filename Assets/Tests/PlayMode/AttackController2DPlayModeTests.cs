@@ -942,6 +942,149 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(target.CurrentHealth, Is.EqualTo(healthAfterAcceptedHit));
         }
 
+        [Test]
+        public void ParryWindowRequiresValidDefinitionAndClearsWhenDisabled()
+        {
+            DamageReceiver2D target = CreateTarget(Vector2.zero);
+            ParryController2D parry = target.gameObject.AddComponent<ParryController2D>();
+            Assert.That(parry.TryStartParry(), Is.False);
+            Assert.That(parry.IsWindowActive, Is.False);
+            SetPrivateField(parry, "definition", CreateParryDefinition(0.2f));
+            Assert.That(parry.TryStartParry(), Is.True);
+            Assert.That(parry.TryStartParry(), Is.False, "An open window cannot be refreshed by a second press.");
+            parry.enabled = false;
+            Assert.That(parry.IsWindowActive, Is.False);
+        }
+
+        [UnityTest]
+        public IEnumerator SuccessfulParryPreventsDamageAndPublishesOnlyParryEvent()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            SetFirstStepHitStop(attacker, 0.25f);
+            DamageReceiver2D defender = CreateTarget(new Vector2(0.8f, 0f));
+            ParryController2D parry = defender.gameObject.AddComponent<ParryController2D>();
+            SetPrivateField(parry, "definition", CreateParryDefinition(0.2f));
+            Assert.That(parry.TryStartParry(), Is.True);
+            int firstListenerCalls = 0;
+            int laterListenerCalls = 0;
+            int impactCount = 0;
+            CombatParryEvent observed = default;
+            attacker.Controller.ParryOccurred += value =>
+            {
+                firstListenerCalls++;
+                observed = value;
+                attacker.Hitbox.SendMessage("OnTriggerStay2D", defender.GetComponent<Collider2D>(),
+                    SendMessageOptions.DontRequireReceiver);
+            };
+            var exceptionMessage = new System.Text.RegularExpressions.Regex("first parry listener failed");
+            attacker.Controller.ParryOccurred += _ =>
+                throw new System.InvalidOperationException("first parry listener failed");
+            attacker.Controller.ParryOccurred += _ => laterListenerCalls++;
+            attacker.Controller.ImpactOccurred += _ => impactCount++;
+            AddExtraHurtboxCollider(defender.transform);
+            ComboStep[] steps =
+            {
+                LinkStep(attacker.Definition),
+                FinalStep(attacker.Definition)
+            };
+            SetComboSequences(attacker.Combo, steps, steps);
+            UnityEngine.TestTools.LogAssert.Expect(LogType.Exception, exceptionMessage);
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(1));
+            for (int i = 0; i < 5 && laterListenerCalls == 0; i++) yield return new WaitForFixedUpdate();
+            Assert.That(Time.timeScale, Is.EqualTo(timeScaleBeforeTest), "Parry must not request hit stop.");
+            Assert.That(defender.CurrentHealth, Is.EqualTo(defender.MaximumHealth));
+            Assert.That(defender.GetComponent<Rigidbody2D>().linearVelocity, Is.EqualTo(Vector2.zero));
+            Assert.That(firstListenerCalls, Is.EqualTo(1));
+            Assert.That(laterListenerCalls, Is.EqualTo(1));
+            Assert.That(impactCount, Is.Zero);
+            Assert.That(observed.Defender, Is.SameAs(defender));
+            Assert.That(observed.Attacker, Is.SameAs(attacker.Receiver));
+            Assert.That(observed.AttackDefinition, Is.SameAs(attacker.Definition));
+            Assert.That(observed.ComboStepIndex, Is.EqualTo(1));
+        }
+        [UnityTest]
+        public IEnumerator ParryWindowExpiresUsingScaledFixedTime()
+        {
+            DamageReceiver2D target = CreateTarget(Vector2.zero);
+            ParryController2D parry = target.gameObject.AddComponent<ParryController2D>();
+            SetPrivateField(parry, "definition", CreateParryDefinition(Time.fixedDeltaTime * 2f));
+            Assert.That(parry.TryStartParry(), Is.True);
+            yield return new WaitForFixedUpdate();
+            Assert.That(parry.IsWindowActive, Is.True);
+            yield return new WaitForFixedUpdate();
+            Assert.That(parry.IsWindowActive, Is.True);
+            yield return new WaitForFixedUpdate();
+            Assert.That(parry.IsWindowActive, Is.False);
+        }
+
+        [UnityTest]
+        public IEnumerator PositiveWindowShorterThanFixedStepGetsOnePhysicsStep()
+        {
+            DamageReceiver2D target = CreateTarget(Vector2.zero);
+            ParryController2D parry = target.gameObject.AddComponent<ParryController2D>();
+            SetPrivateField(parry, "definition", CreateParryDefinition(Time.fixedDeltaTime * 0.25f));
+            Assert.That(parry.TryStartParry(), Is.True);
+            yield return new WaitForFixedUpdate();
+            Assert.That(parry.IsWindowActive, Is.True);
+            yield return new WaitForFixedUpdate();
+            Assert.That(parry.IsWindowActive, Is.False);
+        }
+
+        [UnityTest]
+        public IEnumerator ParryWindowFreezesWhileScaledTimeIsPaused()
+        {
+            DamageReceiver2D target = CreateTarget(Vector2.zero);
+            ParryController2D parry = target.gameObject.AddComponent<ParryController2D>();
+            SetPrivateField(parry, "definition", CreateParryDefinition(Time.fixedDeltaTime * 2f));
+            Assert.That(parry.TryStartParry(), Is.True);
+            Time.timeScale = 0f;
+            yield return new WaitForSecondsRealtime(0.08f);
+            Assert.That(parry.IsWindowActive, Is.True);
+            Time.timeScale = timeScaleBeforeTest;
+            for (int i = 0; i < 5 && parry.IsWindowActive; i++) yield return new WaitForFixedUpdate();
+            Assert.That(parry.IsWindowActive, Is.False);
+        }
+
+        [Test]
+        public void ParryCannotStartDuringDashInvulnerability()
+        {
+            DamageReceiver2D target = CreateTarget(Vector2.zero, CombatFaction2D.Demon, true);
+            DashController2D dash = target.GetComponent<DashController2D>();
+            dash.SetGrounded(true);
+            Assert.That(dash.TryStartDash(1f), Is.True);
+            ParryController2D parry = target.gameObject.AddComponent<ParryController2D>();
+            SetPrivateField(parry, "definition", CreateParryDefinition(0.2f));
+            Assert.That(parry.TryStartParry(), Is.False);
+            Assert.That(parry.IsWindowActive, Is.False);
+        }
+
+        [UnityTest]
+        public IEnumerator RejectedContactDoesNotConsumeTheWindowOrDeduplication()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            DamageReceiver2D defender = CreateTarget(new Vector2(0.8f, 0f), CombatFaction2D.HuntrX);
+            ParryController2D parry = defender.gameObject.AddComponent<ParryController2D>();
+            SetPrivateField(parry, "definition", CreateParryDefinition(0.2f));
+            Assert.That(parry.TryStartParry(), Is.True);
+            int parryCount = 0;
+            attacker.Controller.ParryOccurred += _ => parryCount++;
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            yield return new WaitForFixedUpdate();
+            Assert.That(parryCount, Is.Zero, "The same-faction contact must be rejected without publishing parry.");
+            SetPrivateField(attacker.Receiver, "faction", CombatFaction2D.Demon);
+            yield return new WaitForFixedUpdate();
+            Assert.That(parryCount, Is.EqualTo(1));
+            Assert.That(defender.CurrentHealth, Is.EqualTo(defender.MaximumHealth));
+        }
+        private ParryDefinition CreateParryDefinition(float duration)
+        {
+            var definition = ScriptableObject.CreateInstance<ParryDefinition>();
+            createdObjects.Add(definition);
+            SetPrivateField(definition, "windowDuration", duration);
+            return definition;
+        }
         private AttackFixture CreateAttacker(float startup, float active, float recovery,
             bool includeHitboxCollider = true, bool hitboxIsTrigger = true)
         {

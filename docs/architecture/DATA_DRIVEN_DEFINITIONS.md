@@ -40,3 +40,5 @@ No sample assets are created by this card. The architecture waits for the releva
 ## Combo definitions
 
 Card #25 adds `CombatComboDefinition` and serializable `ComboStep` as static combat templates. They reference existing `AttackDefinition` assets for grounded/aerial sequences; runtime chain state, health, input state, and save progress remain outside ScriptableObjects. Validation and runtime behavior are documented in [COMBO_COMBAT.md](COMBO_COMBAT.md).
+
+Card #26 adds `ParryDefinition` as static template timing for a parry window. It contains no runtime cooldown/window state, no authored sample asset, and no default balance value; invalid or absent definitions prevent activation.

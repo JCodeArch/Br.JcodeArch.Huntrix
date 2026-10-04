@@ -22,6 +22,8 @@ namespace HuntrX.Gameplay.Combat
         private bool activeHitboxPendingEnable;
         private Action<CombatImpactEvent> impactOccurred;
         private Action<CombatImpactEvent>[] impactListeners = Array.Empty<Action<CombatImpactEvent>>();
+        private Action<CombatParryEvent> parryOccurred;
+        private Action<CombatParryEvent>[] parryListeners = Array.Empty<Action<CombatParryEvent>>();
 
         public AttackState2D State { get; private set; } = AttackState2D.Idle;
         public int CurrentComboStepIndex { get; private set; }
@@ -42,6 +44,22 @@ namespace HuntrX.Gameplay.Combat
             }
         }
 
+        public event Action<CombatParryEvent> ParryOccurred
+        {
+            add
+            {
+                if (value == null) return;
+                parryOccurred += value;
+                RefreshParryListeners();
+            }
+            remove
+            {
+                if (value == null) return;
+                parryOccurred -= value;
+                RefreshParryListeners();
+            }
+        }
+
         private void Awake()
         {
             attacker = GetComponent<DamageReceiver2D>();
@@ -59,6 +77,8 @@ namespace HuntrX.Gameplay.Combat
             {
                 attackHitbox.AcceptedHit -= HandleAcceptedHit;
                 attackHitbox.AcceptedHit += HandleAcceptedHit;
+                attackHitbox.ParriedHit -= HandleParriedHit;
+                attackHitbox.ParriedHit += HandleParriedHit;
             }
         }
 
@@ -248,6 +268,7 @@ namespace HuntrX.Gameplay.Combat
             if (attackHitbox != null)
             {
                 attackHitbox.AcceptedHit -= HandleAcceptedHit;
+                attackHitbox.ParriedHit -= HandleParriedHit;
             }
             activeSequence = null;
             activeHitboxPendingEnable = false;
@@ -276,6 +297,33 @@ namespace HuntrX.Gameplay.Combat
                     Debug.LogException(exception, this);
                 }
             }
+        }
+
+        private void HandleParriedHit(CombatParryEvent parryEvent)
+        {
+            Action<CombatParryEvent>[] listeners = parryListeners;
+            for (int i = 0; i < listeners.Length; i++)
+            {
+                try { listeners[i](parryEvent); }
+                catch (Exception exception) { Debug.LogException(exception, this); }
+            }
+        }
+
+        private void RefreshParryListeners()
+        {
+            if (parryOccurred == null)
+            {
+                parryListeners = Array.Empty<Action<CombatParryEvent>>();
+                return;
+            }
+
+            Delegate[] invocationList = parryOccurred.GetInvocationList();
+            var listeners = new Action<CombatParryEvent>[invocationList.Length];
+            for (int i = 0; i < invocationList.Length; i++)
+            {
+                listeners[i] = (Action<CombatParryEvent>)invocationList[i];
+            }
+            parryListeners = listeners;
         }
 
         private void RefreshImpactListeners()

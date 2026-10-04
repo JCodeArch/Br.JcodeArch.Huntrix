@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using HuntrX.Data;
 using UnityEngine;
 
@@ -10,7 +10,7 @@ namespace HuntrX.Gameplay.Combat
     {
         [SerializeField] private BoxCollider2D hitboxCollider;
 
-        private readonly HashSet<DamageReceiver2D> acceptedReceivers = new HashSet<DamageReceiver2D>();
+        private readonly HashSet<DamageReceiver2D> resolvedReceivers = new HashSet<DamageReceiver2D>();
         private AttackDefinition attack;
         private DamageReceiver2D attacker;
         private float facingDirection;
@@ -19,6 +19,7 @@ namespace HuntrX.Gameplay.Combat
         private bool activationActive;
 
         internal event Action<CombatImpactEvent, float> AcceptedHit;
+        internal event Action<CombatParryEvent> ParriedHit;
 
         public bool IsConfigurationValid { get; private set; }
         public int ComboStepIndex => comboStepIndex;
@@ -57,7 +58,7 @@ namespace HuntrX.Gameplay.Combat
             this.facingDirection = Mathf.Sign(facingDirection);
             this.comboStepIndex = comboStepIndex;
             this.hitStopDuration = hitStopDuration;
-            acceptedReceivers.Clear();
+            resolvedReceivers.Clear();
             activationActive = true;
             hitboxCollider.size = attack.HitboxSize;
             hitboxCollider.offset = new Vector2(attack.HitboxOffset.x * this.facingDirection,
@@ -72,7 +73,7 @@ namespace HuntrX.Gameplay.Combat
             {
                 hitboxCollider.enabled = false;
             }
-            acceptedReceivers.Clear();
+            resolvedReceivers.Clear();
             attack = null;
             attacker = null;
             comboStepIndex = 0;
@@ -91,19 +92,35 @@ namespace HuntrX.Gameplay.Combat
             }
 
             Hurtbox2D hurtbox = other.GetComponentInParent<Hurtbox2D>();
-            if (hurtbox == null || hurtbox.Receiver == null || acceptedReceivers.Contains(hurtbox.Receiver))
+            if (hurtbox == null || hurtbox.Receiver == null || resolvedReceivers.Contains(hurtbox.Receiver))
             {
                 return;
             }
 
-            if (hurtbox.TryReceiveHit(attack, attacker, facingDirection, out DamageReceiver2D receiver) && receiver != null)
+            CombatContactResult result = hurtbox.ResolveHit(attack, attacker, facingDirection, comboStepIndex,
+                out DamageReceiver2D receiver, out CombatParryEvent parryEvent);
+            if (receiver == null ||
+                (result != CombatContactResult.Damaged && result != CombatContactResult.Parried))
             {
-                acceptedReceivers.Add(receiver);
-                AcceptedHit?.Invoke(new CombatImpactEvent(attacker, receiver, attack, comboStepIndex),
-                    hitStopDuration);
+                return;
             }
+
+            // Reserve the receiver before callbacks so re-entry cannot apply another result in this activation.
+            resolvedReceivers.Add(receiver);
+            if (result == CombatContactResult.Parried)
+            {
+                DispatchParried(parryEvent);
+                return;
+            }
+
+            DispatchAccepted(new CombatImpactEvent(attacker, receiver, attack, comboStepIndex), hitStopDuration);
         }
 
+        private void DispatchAccepted(CombatImpactEvent impact, float duration) =>
+            AcceptedHit?.Invoke(impact, duration);
+
+        private void DispatchParried(CombatParryEvent parryEvent) =>
+            ParriedHit?.Invoke(parryEvent);
         private void OnDisable() => EndActivation();
 
         private static bool IsFiniteNonnegative(float value) => IsFinite(value) && value >= 0f;

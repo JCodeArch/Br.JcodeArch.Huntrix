@@ -13,6 +13,7 @@ namespace HuntrX.Gameplay.Combat
 
         private Rigidbody2D body;
         private DashController2D dashController;
+        private ParryController2D parryController;
         private bool configurationReported;
 
         public CombatFaction2D Faction => faction;
@@ -25,17 +26,37 @@ namespace HuntrX.Gameplay.Combat
         {
             body = GetComponent<Rigidbody2D>();
             dashController = GetComponent<DashController2D>();
+            parryController = GetComponent<ParryController2D>();
             InitializeConfiguration();
         }
 
-        public bool TryReceiveHit(AttackDefinition attack, DamageReceiver2D attacker, float facingDirection)
+        /// <summary>Compatibility API: returns true only when damage was applied.</summary>
+        public bool TryReceiveHit(AttackDefinition attack, DamageReceiver2D attacker, float facingDirection) =>
+            ResolveHit(attack, attacker, facingDirection, 0, out _) == CombatContactResult.Damaged;
+
+        internal void RegisterParryController(ParryController2D controller)
         {
+            if (controller != null)
+            {
+                parryController = controller;
+            }
+        }
+        internal CombatContactResult ResolveHit(AttackDefinition attack, DamageReceiver2D attacker,
+            float facingDirection, int comboStepIndex, out CombatParryEvent parryEvent)
+        {
+            parryEvent = default;
             if (!IsConfigurationValid || !IsAlive || attacker == null || !attacker.IsConfigurationValid ||
                 attack == null || !attack.IsValid(out _) || attacker.transform.root == transform.root ||
                 attacker.Faction == Faction || !IsFinite(facingDirection) || facingDirection == 0f ||
                 (dashController != null && dashController.IsInvulnerable))
             {
-                return false;
+                return CombatContactResult.Rejected;
+            }
+
+            if (parryController != null &&
+                parryController.TryConsumeParry(attacker, attack, comboStepIndex, out parryEvent))
+            {
+                return CombatContactResult.Parried;
             }
 
             CurrentHealth = Mathf.Max(0f, CurrentHealth - attack.Damage);
@@ -48,7 +69,7 @@ namespace HuntrX.Gameplay.Combat
                 horizontalDirection * attack.HorizontalKnockbackImpulse,
                 attack.UpwardKnockbackImpulse);
             body.AddForce(impulse, ForceMode2D.Impulse);
-            return true;
+            return CombatContactResult.Damaged;
         }
 
         private void InitializeConfiguration()

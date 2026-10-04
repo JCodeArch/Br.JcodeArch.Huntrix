@@ -22,6 +22,7 @@ namespace HuntrX.Gameplay.Jump
         private bool jumpCutApplied;
         private bool gravityConfigured;
         private bool invalidConfigurationReported;
+        private bool jumpSuppressed;
 
         private void Awake()
         {
@@ -40,9 +41,31 @@ namespace HuntrX.Gameplay.Jump
             }
         }
 
+        /// <summary>Temporarily suppresses jump starts and cuts while a higher-priority action is active.</summary>
+        public void SetJumpSuppressed(bool suppressed)
+        {
+            jumpSuppressed = suppressed;
+            if (!suppressed)
+            {
+                return;
+            }
+
+            jumpHeld = false;
+            hasBufferedJump = false;
+            jumpBufferTimeRemaining = 0f;
+            coyoteTimeRemaining = 0f;
+            hasActiveJump = false;
+            jumpCutApplied = true;
+        }
+
         /// <summary>Queues the logical Jump action until grounded or its buffer expires.</summary>
         public void PressJump()
         {
+            if (jumpSuppressed)
+            {
+                return;
+            }
+
             jumpHeld = true;
             jumpBufferTimeRemaining = jumpBufferTime;
             hasBufferedJump = true;
@@ -73,6 +96,11 @@ namespace HuntrX.Gameplay.Jump
             {
                 body.gravityScale = gravityScale;
                 gravityConfigured = true;
+            }
+
+            if (jumpSuppressed)
+            {
+                return;
             }
 
             float fixedDeltaTime = Time.fixedDeltaTime;

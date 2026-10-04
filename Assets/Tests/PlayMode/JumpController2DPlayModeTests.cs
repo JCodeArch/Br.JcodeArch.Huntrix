@@ -166,6 +166,33 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(jump.GetComponent<Rigidbody2D>().linearVelocityY, Is.LessThanOrEqualTo(0f));
         }
 
+        [UnityTest]
+        public IEnumerator JumpSuppressionDiscardsBufferedAndActiveJumpAndCanResume()
+        {
+            JumpController2D jump = CreateJump(8f, 1f, 0.15f, 0.15f, 0.5f);
+            Rigidbody2D body = jump.GetComponent<Rigidbody2D>();
+            jump.SetGrounded(true);
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityY, Is.GreaterThan(7f));
+
+            jump.ReleaseJump();
+            jump.SetJumpSuppressed(true);
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            float suppressedVelocity = body.linearVelocityY;
+            Assert.That(suppressedVelocity, Is.GreaterThan(7f));
+
+            jump.SetJumpSuppressed(false);
+            jump.SetGrounded(true);
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityY, Is.LessThan(suppressedVelocity));
+
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityY, Is.GreaterThan(7f));
+        }
+
         private JumpController2D CreateJump(
             float jumpVelocity,
             float gravityScale,

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using HuntrX.Gameplay.Movement;
 using HuntrX.Gameplay.Dash;
+using HuntrX.Gameplay.Jump;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -138,7 +139,228 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(dash.IsInvulnerable, Is.False);
         }
 
-        private DashController2D CreateDash(float dashSpeed, float dashDuration)
+        [UnityTest]
+        public IEnumerator AirDashNormalizesDirectionLocksHorizontalVelocityAndLeavesGravityOnVerticalVelocity()
+        {
+            DashController2D dash = CreateDash(12f, 0.1f, 10f, 0.2f);
+            Rigidbody2D body = dash.GetComponent<Rigidbody2D>();
+            body.gravityScale = 1f;
+            dash.SetGrounded(false);
+
+            Assert.That(dash.TryStartAirDash(Vector2.one), Is.True);
+            Assert.That(dash.IsDashing, Is.True);
+            Assert.That(dash.IsInvulnerable, Is.True);
+
+            yield return new WaitForFixedUpdate();
+
+            Assert.That(body.linearVelocityX, Is.EqualTo(10f / Mathf.Sqrt(2f)).Within(0.01f));
+            Assert.That(body.linearVelocityY, Is.LessThan(10f / Mathf.Sqrt(2f)));
+            Assert.That(body.linearVelocityY, Is.GreaterThan(0f));
+        }
+
+        [UnityTest]
+        public IEnumerator AirDashCanBeUsedOnceUntilGroundedSignalRechargesIt()
+        {
+            DashController2D dash = CreateDash(12f, 0.04f, 8f, 0.04f);
+            dash.SetGrounded(false);
+
+            Assert.That(dash.TryStartAirDash(Vector2.right), Is.True);
+            for (int i = 0; i < 5 && dash.IsDashing; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(dash.IsDashing, Is.False);
+            Assert.That(dash.TryStartAirDash(Vector2.left), Is.False);
+
+            dash.SetGrounded(true);
+            dash.SetGrounded(false);
+            Assert.That(dash.TryStartAirDash(Vector2.left), Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator LandingDuringAirDashRechargesWithoutEndingTheActiveDash()
+        {
+            DashController2D dash = CreateDash(12f, 0.1f, 8f, 0.1f);
+            dash.SetGrounded(false);
+            Assert.That(dash.TryStartAirDash(Vector2.up), Is.True);
+
+            dash.SetGrounded(true);
+            Assert.That(dash.IsDashing, Is.True);
+            Assert.That(dash.TryStartAirDash(Vector2.right), Is.False);
+
+            for (int i = 0; i < 10 && dash.IsDashing; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            dash.SetGrounded(false);
+            Assert.That(dash.TryStartAirDash(Vector2.right), Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator InvalidAirDirectionDoesNotConsumeCharge()
+        {
+            DashController2D dash = CreateDash(12f, 0.1f, 8f, 0.1f);
+            dash.SetGrounded(false);
+            LogAssert.Expect(LogType.Error,
+                "DashController2D requires a finite, non-zero air dash direction.");
+
+            Assert.That(dash.TryStartAirDash(Vector2.zero), Is.False);
+            Assert.That(dash.TryStartAirDash(new Vector2(float.NaN, 1f)), Is.False);
+            Assert.That(dash.TryStartAirDash(new Vector2(float.PositiveInfinity, 1f)), Is.False);
+            Assert.That(dash.TryStartAirDash(Vector2.right), Is.True);
+            Assert.That(dash.IsInvulnerable, Is.True);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator InvalidAirDashSettingsDoNotStartOrConsumeCharge()
+        {
+            DashController2D dash = CreateDash(12f, 0.1f, 0f, 0.1f);
+            dash.SetGrounded(false);
+            LogAssert.Expect(LogType.Error,
+                "DashController2D requires positive air dash speed and duration values.");
+
+            Assert.That(dash.TryStartAirDash(Vector2.right), Is.False);
+            Assert.That(dash.IsDashing, Is.False);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator AirDashCannotTakeHorizontalOverrideFromAnotherOwner()
+        {
+            DashController2D dash = CreateDash(12f, 0.1f, 8f, 0.1f);
+            HorizontalMovement2D movement = dash.GetComponent<HorizontalMovement2D>();
+            dash.SetGrounded(false);
+            Assert.That(movement.TrySetHorizontalVelocityOverride(movement, 3f), Is.True);
+
+            Assert.That(dash.TryStartAirDash(Vector2.right), Is.False);
+            movement.ClearHorizontalVelocityOverride(movement);
+            Assert.That(dash.TryStartAirDash(Vector2.right), Is.True);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator AirDashSuppressesJumpCutAndBufferedJumpUntilDashEnds()
+        {
+            DashController2D dash = CreateDash(12f, 0.1f, 8f, 0.1f);
+            JumpController2D jump = dash.gameObject.AddComponent<JumpController2D>();
+            SetField(jump, "jumpVelocity", 8f);
+            SetField(jump, "gravityScale", 0.01f);
+            SetField(jump, "coyoteTime", 0.15f);
+            SetField(jump, "jumpBufferTime", 0.15f);
+            SetField(jump, "jumpCutMultiplier", 0.5f);
+            Rigidbody2D body = dash.GetComponent<Rigidbody2D>();
+
+            dash.SetGrounded(true);
+            jump.SetGrounded(true);
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityY, Is.GreaterThan(7f));
+
+            jump.ReleaseJump();
+            dash.SetGrounded(false);
+            jump.SetGrounded(false);
+            Assert.That(dash.TryStartAirDash(Vector2.right), Is.True);
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+
+            Assert.That(body.linearVelocityY, Is.LessThan(0f));
+            Assert.That(body.linearVelocityY, Is.GreaterThan(-0.1f));
+
+            for (int i = 0; i < 10 && dash.IsDashing; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(dash.IsDashing, Is.False);
+            jump.SetGrounded(true);
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityY, Is.LessThan(0f));
+
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityY, Is.GreaterThan(7f));
+        }
+
+        [UnityTest]
+        public IEnumerator DisablingAirDashClearsOverrideReleasesJumpAndPairsStateEvents()
+        {
+            DashController2D dash = CreateDash(12f, 0.1f, 8f, 0.2f);
+            JumpController2D jump = dash.gameObject.AddComponent<JumpController2D>();
+            SetField(jump, "jumpVelocity", 8f);
+            SetField(jump, "gravityScale", 0.01f);
+            SetField(jump, "coyoteTime", 0.15f);
+            SetField(jump, "jumpBufferTime", 0.15f);
+            SetField(jump, "jumpCutMultiplier", 0.5f);
+            HorizontalMovement2D movement = dash.GetComponent<HorizontalMovement2D>();
+            Rigidbody2D body = dash.GetComponent<Rigidbody2D>();
+            var transitions = new List<bool>();
+            dash.DashStateChanged += transitions.Add;
+            dash.SetGrounded(false);
+
+            Assert.That(dash.TryStartAirDash(Vector2.right), Is.True);
+            dash.enabled = false;
+
+            Assert.That(dash.IsDashing, Is.False);
+            Assert.That(dash.IsInvulnerable, Is.False);
+            CollectionAssert.AreEqual(new[] { true, false }, transitions);
+
+            jump.SetGrounded(true);
+            jump.PressJump();
+            movement.SetMovementInput(Vector2.left);
+            yield return new WaitForFixedUpdate();
+
+            Assert.That(body.linearVelocityX, Is.LessThan(8f));
+            Assert.That(body.linearVelocityY, Is.GreaterThan(7f));
+        }
+
+        [UnityTest]
+        public IEnumerator AirDashExpiryPairsEventsAndRequiresLeavingGroundAfterRecharge()
+        {
+            DashController2D dash = CreateDash(12f, 0.1f, 8f, 0.04f);
+            var transitions = new List<bool>();
+            dash.DashStateChanged += transitions.Add;
+            dash.SetGrounded(false);
+
+            Assert.That(dash.TryStartAirDash(Vector2.right), Is.True);
+            Assert.That(dash.IsInvulnerable, Is.True);
+            for (int i = 0; i < 5 && dash.IsDashing; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(dash.IsDashing, Is.False);
+            Assert.That(dash.IsInvulnerable, Is.False);
+            CollectionAssert.AreEqual(new[] { true, false }, transitions);
+
+            dash.SetGrounded(true);
+            Assert.That(dash.TryStartAirDash(Vector2.left), Is.False);
+            dash.SetGrounded(false);
+            Assert.That(dash.TryStartAirDash(Vector2.left), Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator InfiniteAirDashSpeedIsRejectedWithoutConsumingCharge()
+        {
+            DashController2D dash = CreateDash(12f, 0.1f, float.PositiveInfinity, 0.1f);
+            dash.SetGrounded(false);
+            LogAssert.Expect(LogType.Error,
+                "DashController2D requires positive air dash speed and duration values.");
+
+            Assert.That(dash.TryStartAirDash(Vector2.right), Is.False);
+            Assert.That(dash.IsDashing, Is.False);
+            SetField(dash, "airDashSpeed", 8f);
+            Assert.That(dash.TryStartAirDash(Vector2.right), Is.True);
+            yield return null;
+        }
+
+        private DashController2D CreateDash(
+            float dashSpeed,
+            float dashDuration,
+            float airDashSpeed = 8f,
+            float airDashDuration = 0.1f)
         {
             var gameObject = new GameObject("DashTestSubject");
             createdObjects.Add(gameObject);
@@ -154,6 +376,8 @@ namespace HuntrX.Tests.PlayMode
             DashController2D dash = gameObject.AddComponent<DashController2D>();
             SetField(dash, "dashSpeed", dashSpeed);
             SetField(dash, "dashDuration", dashDuration);
+            SetField(dash, "airDashSpeed", airDashSpeed);
+            SetField(dash, "airDashDuration", airDashDuration);
             return dash;
         }
 

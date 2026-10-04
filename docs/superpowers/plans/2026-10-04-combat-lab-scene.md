@@ -10,4 +10,4 @@
 
 **Self-review:** Architecture preserves scene-owned composition and startup behavior. SOLID and runtime performance changes are N/A: this card adds scene data and test-only assertions, no production code or per-frame work. Independent reviewer agents were unavailable after hitting their usage limit; Antigravity UI/CLI was not accessible in this session, so no external approval is claimed.
 
-**Integration:** [ ] Commit on `feature/card-18-combat-lab`, publish, fast-forward to `develop`, verify `origin/develop`, and record result/next item in Trello.
+**Integration:** [x] Implementation commit `bd202107bb3ae9fe0a69f7bd2faa98a5e7d20701` was published on `feature/card-18-combat-lab`, fast-forward integrated to `develop`, and verified against `origin/develop`. Trello DoD was completed; #19 — Implementar movimento base was confirmed as the first open item in the next backlog list.

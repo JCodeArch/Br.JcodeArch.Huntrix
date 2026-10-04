@@ -10,4 +10,4 @@
 
 **Review:** System Architect self-review approved: grounded signal, timers, velocity axes, and per-body gravity ownership are explicit. SOLID self-review found one cohesive jump controller with no new dependency. Performance self-review: cached Rigidbody2D, fixed-step scalar operations, no per-step allocations or scene searches. Independent specialist agents hit their usage limit; Antigravity UI/CLI was unavailable in this session, so no external review is claimed.
 
-**Integration:** [ ] Commit on `feature/card-20-jump`, publish, fast-forward to `develop`, verify `origin/develop`, update Trello, and confirm next item.
+**Integration:** [x] Implementation commit `27208b9f74483c38ec2f8688035b06a5984e4af2` published on `feature/card-20-jump`, fast-forward integrated to `develop`, and verified against `origin/develop`. Trello DoD was completed; #21 — Implementar dash was confirmed as the next open card.

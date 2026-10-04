@@ -102,10 +102,13 @@
 - Create: docs/architecture/MIRA_CHARACTER.md
 - Modify: docs/architecture/DATA_DRIVEN_DEFINITIONS.md
 - Modify: docs/GDD_MASTER.md
+- Modify: Assets/Tests/PlayMode/MiraProtectionFieldTests.cs to remove the deprecated autoSyncTransforms setting toggle; the explicit-pose collider distance regression does not depend on global auto-sync, and the project uses m_AutoSyncTransforms=0.
+- Modify: Assets/Tests/PlayMode/AttackController2DPlayModeTests.cs to replace the deprecated FindObjectsSortMode overload with the active-only FindObjectsInactive.Exclude overload, preserving existing behavior.
 - Modify: this implementation plan with completed task and verification checkboxes
 
 - [ ] Document the Mira field, provisional shared basic-combat profile, target opt-in contract, actual fan integration dependency, and non-goals.
-- [ ] Run the complete Unity 6.6.4f1 EditMode and PlayMode suites; record exact totals and logs.
+- [ ] Remove the two observed CS0618 test-only API warnings with behavior-preserving overload/fixture cleanup; verify the regressions remain meaningful.
+- [ ] Run the complete Unity 6.6.4f1 EditMode and PlayMode suites; record exact totals and logs, including zero compiler errors/warnings.
 - [ ] Verify all new Unity .meta GUIDs are present and unique; inspect the complete branch diff and working tree.
 - [ ] Obtain SOLID, Performance, and QA reviews; fix blockers and record limited N/A/risks. Attempt Antigravity read-only review if an authenticated session is available.
 - [ ] Commit the architecture/GDD/review record as the card's own final docs commit.

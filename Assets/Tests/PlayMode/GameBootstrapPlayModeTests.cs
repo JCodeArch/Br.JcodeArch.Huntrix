@@ -98,7 +98,7 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(loadOperation, Is.Not.Null);
             yield return loadOperation;
 
-            GameBootstrap[] bootstraps = Object.FindObjectsByType<GameBootstrap>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+            GameBootstrap[] bootstraps = Object.FindObjectsByType<GameBootstrap>(FindObjectsInactive.Exclude);
             Assert.That(bootstraps, Has.Length.EqualTo(1));
             Assert.That(bootstraps[0].enabled, Is.True);
             Assert.That(bootstraps[0].gameObject.activeInHierarchy, Is.True);

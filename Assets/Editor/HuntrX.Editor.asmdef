@@ -1,0 +1,11 @@
+{
+  "name": "HuntrX.Editor",
+  "rootNamespace": "HuntrX.Editor",
+  "references": [
+    "HuntrX.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "autoReferenced": false
+}

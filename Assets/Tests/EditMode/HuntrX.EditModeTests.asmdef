@@ -1,0 +1,15 @@
+{
+  "name": "HuntrX.EditModeTests",
+  "rootNamespace": "HuntrX.Tests.EditMode",
+  "references": [
+    "HuntrX.Runtime",
+    "HuntrX.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

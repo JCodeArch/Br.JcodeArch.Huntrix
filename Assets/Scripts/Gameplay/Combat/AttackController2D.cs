@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using HuntrX.Data;
 using UnityEngine;
@@ -19,14 +20,46 @@ namespace HuntrX.Gameplay.Combat
         private bool invalidDefinitionReported;
         private bool invalidHitboxReported;
         private bool activeHitboxPendingEnable;
+        private Action<CombatImpactEvent> impactOccurred;
+        private Action<CombatImpactEvent>[] impactListeners = Array.Empty<Action<CombatImpactEvent>>();
 
         public AttackState2D State { get; private set; } = AttackState2D.Idle;
         public int CurrentComboStepIndex { get; private set; }
+
+        public event Action<CombatImpactEvent> ImpactOccurred
+        {
+            add
+            {
+                if (value == null) return;
+                impactOccurred += value;
+                RefreshImpactListeners();
+            }
+            remove
+            {
+                if (value == null) return;
+                impactOccurred -= value;
+                RefreshImpactListeners();
+            }
+        }
 
         private void Awake()
         {
             attacker = GetComponent<DamageReceiver2D>();
             attackHitbox = GetComponent<AttackHitbox2D>();
+        }
+
+        private void OnEnable()
+        {
+            if (attackHitbox == null)
+            {
+                attackHitbox = GetComponent<AttackHitbox2D>();
+            }
+
+            if (attackHitbox != null)
+            {
+                attackHitbox.AcceptedHit -= HandleAcceptedHit;
+                attackHitbox.AcceptedHit += HandleAcceptedHit;
+            }
         }
 
         /// <summary>
@@ -212,12 +245,54 @@ namespace HuntrX.Gameplay.Combat
         private void OnDisable()
         {
             attackHitbox?.EndActivation();
+            if (attackHitbox != null)
+            {
+                attackHitbox.AcceptedHit -= HandleAcceptedHit;
+            }
             activeSequence = null;
             activeHitboxPendingEnable = false;
             remainingPhaseDuration = 0f;
             stepElapsedTime = 0f;
             CurrentComboStepIndex = 0;
             State = AttackState2D.Idle;
+        }
+
+        private void HandleAcceptedHit(CombatImpactEvent impact, float hitStopDuration)
+        {
+            if (hitStopDuration > 0f)
+            {
+                HitStopService.EnsureInstance().RequestHitStop(hitStopDuration);
+            }
+
+            Action<CombatImpactEvent>[] listeners = impactListeners;
+            for (int i = 0; i < listeners.Length; i++)
+            {
+                try
+                {
+                    listeners[i](impact);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception, this);
+                }
+            }
+        }
+
+        private void RefreshImpactListeners()
+        {
+            if (impactOccurred == null)
+            {
+                impactListeners = Array.Empty<Action<CombatImpactEvent>>();
+                return;
+            }
+
+            Delegate[] invocationList = impactOccurred.GetInvocationList();
+            var listeners = new Action<CombatImpactEvent>[invocationList.Length];
+            for (int i = 0; i < invocationList.Length; i++)
+            {
+                listeners[i] = (Action<CombatImpactEvent>)invocationList[i];
+            }
+            impactListeners = listeners;
         }
 
         private static bool IsFinite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);

@@ -15,15 +15,19 @@ namespace HuntrX.Tests.PlayMode
     {
         private static readonly BindingFlags PrivateInstance = BindingFlags.Instance | BindingFlags.NonPublic;
         private readonly List<Object> createdObjects = new List<Object>();
+        private float timeScaleBeforeTest;
+        private float fixedDeltaTimeBeforeTest;
+
+        [SetUp]
+        public void SetUp()
+        {
+            timeScaleBeforeTest = Time.timeScale;
+            fixedDeltaTimeBeforeTest = Time.fixedDeltaTime;
+        }
 
         [UnityTearDown]
         public IEnumerator TearDown()
         {
-            if (Time.timeScale == 0f)
-            {
-                yield return new WaitForSecondsRealtime(0.35f);
-            }
-
             for (int i = createdObjects.Count - 1; i >= 0; i--)
             {
                 if (createdObjects[i] != null)
@@ -32,6 +36,18 @@ namespace HuntrX.Tests.PlayMode
                 }
             }
             createdObjects.Clear();
+            HitStopService[] services = Object.FindObjectsByType<HitStopService>(FindObjectsInactive.Include);
+            foreach (HitStopService service in services)
+            {
+                if (service != null)
+                {
+                    Object.Destroy(service.gameObject);
+                }
+            }
+
+            yield return null;
+            Time.timeScale = timeScaleBeforeTest;
+            Time.fixedDeltaTime = fixedDeltaTimeBeforeTest;
             yield return null;
         }
 
@@ -279,6 +295,247 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(attacker.Controller.CurrentComboStepIndex, Is.EqualTo(0));
             yield return new WaitForSecondsRealtime(0.25f);
             Assert.That(Time.timeScale, Is.GreaterThan(0f));
+        }
+
+        [UnityTest]
+        public IEnumerator AcceptedLinkedHitPublishesTypedPayloadAfterHitStop()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            AttackDefinition first = CreateAttackDefinition(0f, 0.2f, 0f, 5f);
+            AttackDefinition linked = CreateAttackDefinition(0f, 0.2f, 0f, 7f);
+            SetComboSequences(attacker.Combo,
+                new[] { LinkStep(first, 0f, 0.2f), new ComboStep(linked, float.NaN, float.PositiveInfinity, 0.2f) },
+                new[] { LinkStep(first, 0f, 0.2f), new ComboStep(linked, float.NaN, float.PositiveInfinity, 0.2f) });
+            DamageReceiver2D target = CreateTarget(new Vector2(0.8f, 0f));
+            HitStopService service = HitStopService.EnsureInstance();
+            var impacts = new List<CombatImpactEvent>();
+            float timeScaleWhenPublished = -1f;
+            attacker.Controller.ImpactOccurred += impact =>
+            {
+                impacts.Add(impact);
+                timeScaleWhenPublished = Time.timeScale;
+            };
+            Physics2D.SyncTransforms();
+
+            Assert.That(attacker.Controller.TryStartAttack(-1f), Is.True);
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            for (int i = 0; i < 5 && impacts.Count == 0; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(impacts, Has.Count.EqualTo(1));
+            Assert.That(impacts[0].Attacker, Is.SameAs(attacker.Receiver));
+            Assert.That(impacts[0].Receiver, Is.SameAs(target));
+            Assert.That(impacts[0].AttackDefinition, Is.SameAs(linked));
+            Assert.That(impacts[0].ComboStepIndex, Is.EqualTo(1));
+            Assert.That(timeScaleWhenPublished, Is.Zero,
+                "Hit stop must be requested before the public impact notification is dispatched.");
+            Assert.That(target.CurrentHealth, Is.EqualTo(target.MaximumHealth - linked.Damage).Within(0.001f));
+            Assert.That(service, Is.Not.Null);
+        }
+
+        [UnityTest]
+        public IEnumerator DuplicateHurtboxesPublishOneImpactAndApplyDamageOnce()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            SetFirstStepHitStop(attacker, 0f);
+            DamageReceiver2D target = CreateTarget(new Vector2(0.8f, 0f));
+            AddExtraHurtboxCollider(target.transform);
+            var impacts = new List<CombatImpactEvent>();
+            attacker.Controller.ImpactOccurred += impacts.Add;
+            Physics2D.SyncTransforms();
+
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            for (int i = 0; i < 6 && attacker.Controller.State != AttackState2D.Idle; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(impacts, Has.Count.EqualTo(1));
+            Assert.That(target.CurrentHealth, Is.EqualTo(target.MaximumHealth - attacker.Definition.Damage).Within(0.001f));
+            Assert.That(Time.timeScale, Is.GreaterThan(0f), "A zero-duration hit stop must not pause time.");
+        }
+
+        [UnityTest]
+        public IEnumerator SameFactionContactDoesNotPublishImpactOrRequestHitStop()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            SetFirstStepHitStop(attacker, 0.25f);
+            DamageReceiver2D ally = CreateTarget(new Vector2(0.8f, 0f), CombatFaction2D.HuntrX);
+            yield return AssertRejectedContactHasNoImpactOrHitStop(attacker, ally);
+        }
+
+        [UnityTest]
+        public IEnumerator SelfContactDoesNotPublishImpactOrRequestHitStop()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            SetFirstStepHitStop(attacker, 0.25f);
+            CreateSelfHurtbox(attacker);
+            yield return AssertRejectedContactHasNoImpactOrHitStop(attacker, attacker.Receiver);
+        }
+
+        [UnityTest]
+        public IEnumerator DeadReceiverContactDoesNotPublishImpactOrRequestHitStop()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            SetFirstStepHitStop(attacker, 0.25f);
+            DamageReceiver2D dead = CreateTarget(new Vector2(0.8f, 0f));
+            AttackDefinition lethal = CreateAttackDefinition(0f, 0.1f, 0f, dead.MaximumHealth);
+            Assert.That(dead.TryReceiveHit(lethal, attacker.Receiver, 1f), Is.True);
+            dead.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
+
+            yield return AssertRejectedContactHasNoImpactOrHitStop(attacker, dead);
+        }
+
+        [UnityTest]
+        public IEnumerator DashInvulnerableContactDoesNotPublishImpactOrRequestHitStop()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            SetFirstStepHitStop(attacker, 0.25f);
+            DamageReceiver2D dashingTarget = CreateTarget(new Vector2(0.8f, 0f), CombatFaction2D.Demon, true,
+                dashDuration: 1f);
+            DashController2D dash = dashingTarget.GetComponent<DashController2D>();
+            SetPrivateField(dash, "dashSpeed", 0.1f);
+            dash.SetGrounded(true);
+            Assert.That(dash.TryStartDash(1f), Is.True);
+            Assert.That(dash.IsInvulnerable, Is.True);
+
+            yield return AssertRejectedContactHasNoImpactOrHitStop(attacker, dashingTarget);
+        }
+
+        [UnityTest]
+        public IEnumerator ControllerDisableCancelsHitboxAndReenableDoesNotDuplicateInternalSubscription()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            SetFirstStepHitStop(attacker, 0f);
+            DamageReceiver2D target = CreateTarget(new Vector2(0.8f, 0f));
+            var impacts = new List<CombatImpactEvent>();
+            attacker.Controller.ImpactOccurred += impacts.Add;
+            Physics2D.SyncTransforms();
+
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            attacker.Controller.enabled = false;
+            Assert.That(attacker.HitboxCollider.enabled, Is.False);
+            yield return new WaitForFixedUpdate();
+            Assert.That(target.CurrentHealth, Is.EqualTo(target.MaximumHealth));
+            Assert.That(impacts, Is.Empty);
+
+            attacker.Controller.enabled = true;
+            attacker.Controller.enabled = false;
+            attacker.Controller.enabled = true;
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            for (int i = 0; i < 5 && impacts.Count == 0; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(attacker.HitboxCollider.enabled, Is.True);
+            Assert.That(impacts, Has.Count.EqualTo(1));
+            Assert.That(target.CurrentHealth, Is.EqualTo(target.MaximumHealth - attacker.Definition.Damage).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator ImpactConsumerCanUnsubscribeWhileDisabledAndResubscribeWhenEnabled()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            SetFirstStepHitStop(attacker, 0f);
+            DamageReceiver2D target = CreateTarget(new Vector2(0.8f, 0f));
+            int consumerCalls = 0;
+            System.Action<CombatImpactEvent> consumer = _ => consumerCalls++;
+
+            // Consumers own their own enable/disable subscription lifecycle.
+            attacker.Controller.ImpactOccurred += consumer;
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            yield return WaitForState(attacker.Controller, AttackState2D.Idle);
+            Assert.That(consumerCalls, Is.EqualTo(1));
+
+            attacker.Controller.ImpactOccurred -= consumer;
+            ResetTargetAtHitbox(target);
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            yield return WaitForState(attacker.Controller, AttackState2D.Idle);
+            Assert.That(consumerCalls, Is.EqualTo(1));
+
+            attacker.Controller.ImpactOccurred += consumer;
+            ResetTargetAtHitbox(target);
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            yield return WaitForState(attacker.Controller, AttackState2D.Idle);
+            Assert.That(consumerCalls, Is.EqualTo(2));
+            Assert.That(target.CurrentHealth,
+                Is.EqualTo(target.MaximumHealth - (3f * attacker.Definition.Damage)).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator ImpactListenerReentryCannotDuplicateDamageOrImpact()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            SetFirstStepHitStop(attacker, 0f);
+            DamageReceiver2D target = CreateTarget(new Vector2(0.8f, 0f));
+            BoxCollider2D targetCollider = target.GetComponent<Collider2D>() as BoxCollider2D;
+            var impacts = new List<CombatImpactEvent>();
+            bool reentered = false;
+            attacker.Controller.ImpactOccurred += impact =>
+            {
+                impacts.Add(impact);
+                if (!reentered)
+                {
+                    reentered = true;
+                    attacker.Hitbox.SendMessage("OnTriggerStay2D", targetCollider,
+                        SendMessageOptions.DontRequireReceiver);
+                }
+            };
+            Physics2D.SyncTransforms();
+
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            for (int i = 0; i < 5 && impacts.Count == 0; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(reentered, Is.True);
+            Assert.That(impacts, Has.Count.EqualTo(1));
+            Assert.That(target.CurrentHealth, Is.EqualTo(target.MaximumHealth - attacker.Definition.Damage).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator ThrowingImpactListenerDoesNotSuppressDamageHitStopOrLaterListeners()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            SetFirstStepHitStop(attacker, 0.25f);
+            DamageReceiver2D target = CreateTarget(new Vector2(0.8f, 0f));
+            BoxCollider2D targetCollider = target.GetComponent<Collider2D>() as BoxCollider2D;
+            var exceptionMessage = new System.Text.RegularExpressions.Regex("first impact listener failed");
+            var service = HitStopService.EnsureInstance();
+            int firstListenerCalls = 0;
+            int laterListenerCalls = 0;
+            float scaleSeenByLaterListener = -1f;
+            attacker.Controller.ImpactOccurred += _ =>
+            {
+                firstListenerCalls++;
+                attacker.Hitbox.SendMessage("OnTriggerStay2D", targetCollider,
+                    SendMessageOptions.DontRequireReceiver);
+                throw new System.InvalidOperationException("first impact listener failed");
+            };
+            attacker.Controller.ImpactOccurred += _ =>
+            {
+                laterListenerCalls++;
+                scaleSeenByLaterListener = Time.timeScale;
+            };
+            UnityEngine.TestTools.LogAssert.Expect(LogType.Exception, exceptionMessage);
+            Physics2D.SyncTransforms();
+
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            for (int i = 0; i < 5 && laterListenerCalls == 0; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(firstListenerCalls, Is.EqualTo(1));
+            Assert.That(laterListenerCalls, Is.EqualTo(1));
+            Assert.That(scaleSeenByLaterListener, Is.Zero);
+            Assert.That(Time.timeScale, Is.Zero);
+            Assert.That(target.CurrentHealth, Is.EqualTo(target.MaximumHealth - attacker.Definition.Damage).Within(0.001f));
+            Assert.That(service, Is.Not.Null);
         }
 
         [UnityTest]
@@ -727,6 +984,59 @@ namespace HuntrX.Tests.PlayMode
             var final = FinalStep(definition);
             SetComboSequences(combo, new[] { link, final }, new[] { link, final });
             return combo;
+        }
+
+        private static void SetFirstStepHitStop(AttackFixture attacker, float duration)
+        {
+            float totalDuration = attacker.Definition.StartupDuration + attacker.Definition.ActiveDuration +
+                attacker.Definition.RecoveryDuration;
+            ComboStep[] steps =
+            {
+                new ComboStep(attacker.Definition, 0f, totalDuration, duration),
+                FinalStep(attacker.Definition)
+            };
+            SetComboSequences(attacker.Combo, steps, steps);
+        }
+
+        private IEnumerator AssertRejectedContactHasNoImpactOrHitStop(AttackFixture attacker,
+            DamageReceiver2D target)
+        {
+            var impacts = new List<CombatImpactEvent>();
+            attacker.Controller.ImpactOccurred += impacts.Add;
+            float healthBefore = target.CurrentHealth;
+            float scaleBefore = Time.timeScale;
+            Physics2D.SyncTransforms();
+
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            for (int i = 0; i < 6; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(impacts, Is.Empty);
+            Assert.That(target.CurrentHealth, Is.EqualTo(healthBefore).Within(0.001f));
+            Assert.That(Time.timeScale, Is.EqualTo(scaleBefore).Within(0.001f));
+        }
+
+        private void CreateSelfHurtbox(AttackFixture attacker)
+        {
+            var child = new GameObject("self hurtbox");
+            child.transform.SetParent(attacker.Root.transform, false);
+            child.transform.localPosition = new Vector3(0.8f, 0f, 0f);
+            Rigidbody2D body = child.AddComponent<Rigidbody2D>();
+            body.bodyType = RigidbodyType2D.Kinematic;
+            BoxCollider2D collider = child.AddComponent<BoxCollider2D>();
+            collider.size = new Vector2(0.7f, 0.7f);
+            child.AddComponent<Hurtbox2D>();
+            createdObjects.Add(child);
+            Physics2D.SyncTransforms();
+        }
+
+        private static void ResetTargetAtHitbox(DamageReceiver2D target)
+        {
+            target.transform.position = new Vector2(0.8f, 0f);
+            target.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
+            Physics2D.SyncTransforms();
         }
 
         private static ComboStep LinkStep(AttackDefinition attack, float windowStart = 0f, float windowEnd = -1f)

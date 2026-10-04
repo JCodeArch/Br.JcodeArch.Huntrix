@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using HuntrX.Data;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ namespace HuntrX.Gameplay.Combat
         private int comboStepIndex;
         private float hitStopDuration;
         private bool activationActive;
+
+        internal event Action<CombatImpactEvent, float> AcceptedHit;
 
         public bool IsConfigurationValid { get; private set; }
         public int ComboStepIndex => comboStepIndex;
@@ -96,6 +99,8 @@ namespace HuntrX.Gameplay.Combat
             if (hurtbox.TryReceiveHit(attack, attacker, facingDirection, out DamageReceiver2D receiver) && receiver != null)
             {
                 acceptedReceivers.Add(receiver);
+                AcceptedHit?.Invoke(new CombatImpactEvent(attacker, receiver, attack, comboStepIndex),
+                    hitStopDuration);
             }
         }
 

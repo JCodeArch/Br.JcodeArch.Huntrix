@@ -41,4 +41,4 @@ A suíte PlayMode valida direção, gravidade, posse e conflito de X, duração,
 - Unity 6000.6.4f1 final full runs: EditMode 11/11 passed, 0 failed, 0 skipped; PlayMode 36/36 passed, 0 failed, 0 skipped.
 - Git whitespace check: clean. Unity compiler errors/warnings: none in captured logs.
 - Antigravity: agy CLI is installed and accessible. The requested code-review prompt was rejected by automatic approval review because it would disclose private repository files to an external model. No Antigravity code review is claimed; a written user approval for that specific disclosure is needed before trying again.
-- Integration gate: feature commit, develop fast-forward/push, and Trello completion are recorded after they are verified.
+- Integration: feature commit `0618753bb004c2c55cca251bec0fc0b2476476b6` was pushed to `origin/feature/card-22-air-dash`; `develop` was fast-forwarded and pushed; `HEAD`, `origin/develop`, and `origin/feature/card-22-air-dash` all resolve to the same SHA. Working tree is clean after integration.

@@ -9,7 +9,7 @@
 1. **Múltiplos perfis independentes:** cada perfil mantém sua própria campanha e referências de progressão. O limite de perfis, nome/avatar, ações de criar/copiar/renomear/apagar e forma de seleção continuam em aberto para a UI e os cards de acessibilidade.
 2. **RECOMENDAÇÃO para o protótipo — save local sem conta:** preferir salvar e carregar progresso nesta instalação sem exigir cadastro, conexão de rede ou sincronização entre dispositivos. É uma direção provisória, não um requisito de produto aprovado; backend/persistência local e eventual cloud sync dependem das decisões de plataforma e release.
 3. **Progresso por capítulo:** guardar identificador do capítulo atual/de retomada, capítulos liberados e capítulos concluídos. A ordem narrativa e as condições que liberam cada capítulo pertencem ao conteúdo/level design; o save persiste o resultado desses sistemas e não os decide.
-4. **Autosave em transições duráveis:** salvar ao criar um perfil, ao concluir um capítulo, quando uma mudança aprovada de progressão libera conteúdo e nos checkpoints que os cards de gameplay definirem. Não salvar estado transitório de combate a cada frame/ação. Até que checkpoints sejam definidos, retomar capítulo em andamento pelo início dele, preservando os capítulos concluídos.
+4. **Autosave em transições duráveis:** salvar ao criar um perfil, ao concluir um capítulo, quando uma mudança aprovada de progressão libera conteúdo e nos checkpoints que os cards de gameplay definirem. Não salvar estado transitório de combate a cada frame/ação. O card 27 define ativação e seleção de checkpoint no runtime e publica seu ID em `CheckpointActivated`. Até que haja um consumidor de save e storage implementado, o ID existe apenas em memória; depois de reiniciar, o capítulo em andamento continua retomando do início, preservando capítulos concluídos.
 5. **Replay separado da campanha:** permitir iniciar novamente capítulos já liberados/concluídos sem apagar o progresso da campanha. Métricas, recordes, critérios de ranking e efeitos de replay são do item 54; obtenção de equipamentos pertence ao item 52 e seus efeitos ao item 53. Este item não define prêmios repetíveis.
 6. **Sem dados pessoais no save:** usar um identificador opaco local para distinguir perfis; não guardar nome civil, data de nascimento, contato, conta ou identificadores de rede. Vínculo com faixa etária e suas opções só pode ser definido pelos cards 85–103, respeitando privacidade e Child Safety.
 
@@ -34,7 +34,7 @@ Configurações de controle, acessibilidade, áudio e idioma precisam de uma dec
 - Gravar depois de transições de progresso estáveis e consistentes, não durante atualização de frame nem no meio de uma ação de combate.
 - Ao carregar, validar a versão/esquema e a integridade estrutural antes de aplicar progresso. Migração, recuperação de arquivo inválido e política de backup precisam ser definidas e verificadas quando a serialização/storage forem implementadas.
 - Perfil sem progresso começa no primeiro conteúdo jogável. Perfil existente carrega apenas os dados daquele identificador. Troca de perfil não pode direcionar escrita ao perfil anterior depois da mudança.
-- Se não houver checkpoint aprovado para o capítulo atual, retomar pelo início desse capítulo; não prometer retomada do quadro exato ou de inimigos em combate.
+- O card 27 fornece a seleção de checkpoint e o evento com seu ID, mas ainda não confirma esse ID em um save. Até storage/consumidor aprovados e implementados, retomar o capítulo em andamento pelo início; não prometer persistência após reinício, retomada do quadro exato ou estado de inimigos em combate.
 
 ## Gates para implementação e QA
 
@@ -47,7 +47,7 @@ Configurações de controle, acessibilidade, áudio e idioma precisam de uma dec
 
 - [Card 04 — Definition of Done](https://trello.com/c/oDEBZawI/4-04-definir-definition-of-done): gates de QA, integração e evidência.
 - [Card 09 — estrutura de save](https://trello.com/c/54w6st2I/9-09-definir-estrutura-de-save): origem deste contrato.
-- [Card 27 — Implementar checkpoints](https://trello.com/c/k43sA6MK/27-27-implementar-checkpoints): define respawn, recuperação de estado e fluxo de tentativa; este card persiste somente o checkpoint aprovado por ele.
+- [Card 27 — Implementar checkpoints](https://trello.com/c/k43sA6MK/27-27-implementar-checkpoints): define seleção de checkpoint e pedido de respawn em memória; a implementação não persiste o ID.
 - [Card 52 — Implementar progressão de equipamentos](https://trello.com/c/um3Ke7Ob/52-52-implementar-progress%C3%A3o-de-equipamentos): aquisição de peças em pontos narrativos.
 - [Card 53 — Definir efeitos das peças](https://trello.com/c/FJ58KiwC/53-53-definir-efeitos-das-pe%C3%A7as): efeitos mecânicos de cada peça.
 - [Card 54 — replay e rankings](https://trello.com/c/N7UiMtCh/54-54-implementar-replay-e-rankings): critérios e dados de recordes.

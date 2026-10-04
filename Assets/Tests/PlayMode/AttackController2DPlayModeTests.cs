@@ -336,6 +336,67 @@ namespace HuntrX.Tests.PlayMode
         }
 
         [UnityTest]
+        public IEnumerator NonLethalDamageDoesNotPublishDeath()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            AttackDefinition attack = CreateAttackDefinition(0f, 0.2f, 0f, 10f);
+            SetComboSequences(attacker.Combo,
+                new[] { LinkStep(attack, 0f, 0.2f), FinalStep(attack) },
+                new[] { LinkStep(attack, 0f, 0.2f), FinalStep(attack) });
+            SetFirstStepHitStop(attacker, 0f);
+            DamageReceiver2D target = CreateTarget(new Vector2(0.8f, 0f));
+            int deathEvents = 0;
+            target.Died += _ => deathEvents++;
+            Physics2D.SyncTransforms();
+
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            for (int i = 0; i < 5 && target.CurrentHealth == target.MaximumHealth; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(target.CurrentHealth, Is.LessThan(target.MaximumHealth));
+            Assert.That(target.IsAlive, Is.True);
+            Assert.That(deathEvents, Is.Zero);
+        }
+        [UnityTest]
+        public IEnumerator LethalDamagePublishesDeathOnceAfterImpactAndLaterHitsAreIgnored()
+        {
+            AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);
+            AttackDefinition lethal = attacker.Definition;
+            SetPrivateField(lethal, "damage", 150f);
+            SetComboSequences(attacker.Combo,
+                new[] { LinkStep(lethal, 0f, 0.2f), FinalStep(lethal) },
+                new[] { LinkStep(lethal, 0f, 0.2f), FinalStep(lethal) });
+            SetFirstStepHitStop(attacker, 0f);
+            DamageReceiver2D target = CreateTarget(new Vector2(0.8f, 0f));
+            int deathEvents = 0;
+            target.Died += _ => deathEvents++;
+            Physics2D.SyncTransforms();
+
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            for (int i = 0; i < 5 && deathEvents == 0; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(target.CurrentHealth, Is.Zero);
+            Assert.That(deathEvents, Is.EqualTo(1));
+
+            for (int i = 0; i < 5 && attacker.Controller.State != AttackState2D.Idle; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+            Assert.That(attacker.Controller.TryStartAttack(1f), Is.True);
+            for (int i = 0; i < 5 && attacker.Controller.State != AttackState2D.Idle; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            Assert.That(deathEvents, Is.EqualTo(1));
+        }
+
+        [UnityTest]
         public IEnumerator DuplicateHurtboxesPublishOneImpactAndApplyDamageOnce()
         {
             AttackFixture attacker = CreateAttacker(0f, 0.2f, 0f);

@@ -110,7 +110,9 @@ A ordem, a causalidade entre resgates, energia, Performance e Honmoon, e as cond
 
 **FECHADO:** o jogo inclui combate terrestre e aéreo, com inimigos que podem voar.
 
-**EM ABERTO:** combos, parry e checkpoints aparecem como tópicos nos cartões de gameplay do backlog; sua aprovação, comportamento e critérios ainda precisam ser definidos nos respectivos itens.
+**FECHADO — card 27:** checkpoint de fase tem ID estável, ativação explícita, vence o último ativado e fornece fallback no início da fase. Morte aceita encerra uma tentativa uma vez e emite um pedido de respawn para integração do CharacterManager no card 31. Este contrato é runtime e em memória; não implementa persistência nem recuperação fim a fim.
+
+**EM ABERTO:** detalhes de combos/parry, valores e balanceamento seguem os cards correspondentes; storage, autosave concreto e retomada após reinício continuam em aberto no item 09.
 
 **EM ABERTO:** comandos, janelas, alcance, dano, hitboxes, hurtboxes, knockback, tempos, custos, limites de inimigos simultâneos e parâmetros de balanceamento. Esses valores devem vir de protótipos e testes, não de suposições neste GDD.
 
@@ -164,7 +166,7 @@ O projeto prevê progressão por perfil e equipamentos/peças de evolução. A p
 
 **EM ABERTO**
 
-Continuam em aberto o limite e a gestão de perfis, preferências por perfil/dispositivo, vínculo com perfil etário, checkpoints concretos, formato/storage/migração/backup, sincronização entre dispositivos, regras de coop e detalhes de replay. Obtenção e efeitos de equipamentos e rankings pertencem aos itens 52–54. A sequência visual “pijama → equipamento → peças de show → forma máxima” foi discutida como possibilidade, mas permanece **RECOMENDAÇÃO**, não regra fechada.
+Continuam em aberto o limite e a gestão de perfis, preferências por perfil/dispositivo, vínculo com perfil etário, formato/storage/migração/backup dos checkpoints, sincronização entre dispositivos, regras de coop e detalhes de replay. A seleção em runtime é definida no card 27; sua persistência ainda não está implementada. Obtenção e efeitos de equipamentos e rankings pertencem aos itens 52–54. A sequência visual “pijama → equipamento → peças de show → forma máxima” foi discutida como possibilidade, mas permanece **RECOMENDAÇÃO**, não regra fechada.
 
 ## 10. Público, idade, acessibilidade e segurança
 

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using HuntrX.Data;
 using HuntrX.Gameplay.Dash;
@@ -21,6 +22,9 @@ namespace HuntrX.Gameplay.Combat
         public float CurrentHealth { get; private set; }
         public bool IsAlive => IsConfigurationValid && CurrentHealth > 0f;
         public bool IsConfigurationValid { get; private set; }
+
+        /// <summary>Raised once after accepted damage changes this receiver from alive to dead.</summary>
+        public event Action<DamageReceiver2D> Died;
 
         private void Awake()
         {
@@ -59,6 +63,7 @@ namespace HuntrX.Gameplay.Combat
                 return CombatContactResult.Parried;
             }
 
+            float healthBeforeHit = CurrentHealth;
             CurrentHealth = Mathf.Max(0f, CurrentHealth - attack.Damage);
             float horizontalDistance = transform.position.x - attacker.transform.position.x;
             float horizontalDirection = Mathf.Approximately(horizontalDistance, 0f)
@@ -69,9 +74,35 @@ namespace HuntrX.Gameplay.Combat
                 horizontalDirection * attack.HorizontalKnockbackImpulse,
                 attack.UpwardKnockbackImpulse);
             body.AddForce(impulse, ForceMode2D.Impulse);
+
+            if (healthBeforeHit > 0f && CurrentHealth <= 0f)
+            {
+                PublishDied();
+            }
+
             return CombatContactResult.Damaged;
         }
 
+        private void PublishDied()
+        {
+            Action<DamageReceiver2D> handlers = Died;
+            if (handlers == null)
+            {
+                return;
+            }
+
+            foreach (Action<DamageReceiver2D> handler in handlers.GetInvocationList())
+            {
+                try
+                {
+                    handler(this);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception, this);
+                }
+            }
+        }
         private void InitializeConfiguration()
         {
             if (faction != CombatFaction2D.HuntrX && faction != CombatFaction2D.Demon)

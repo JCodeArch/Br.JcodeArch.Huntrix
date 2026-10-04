@@ -36,6 +36,7 @@ namespace HuntrX.Gameplay.Protection
                 !fieldCollider.gameObject.activeInHierarchy || fieldCollider.transform == transform ||
                 !fieldCollider.transform.IsChildOf(transform) || fieldCollider.offset != Vector2.zero ||
                 fieldCollider.transform.localPosition != Vector3.zero ||
+                fieldCollider.transform.position != transform.position ||
                 fieldCollider.attachedRigidbody != owner.GetComponent<Rigidbody2D>())
             {
                 return false;
@@ -52,7 +53,7 @@ namespace HuntrX.Gameplay.Protection
             float worldRadius = fieldCollider.radius * Mathf.Max(
                 Mathf.Abs(fieldCollider.transform.lossyScale.x), Mathf.Abs(fieldCollider.transform.lossyScale.y));
             Physics2D.OverlapCircle(fieldCollider.transform.TransformPoint(fieldCollider.offset), worldRadius,
-                new ContactFilter2D().NoFilter(), overlaps);
+                ContactFilter2D.noFilter, overlaps);
             foreach (Collider2D overlap in overlaps)
             {
                 RegisterOverlap(overlap);
@@ -61,10 +62,29 @@ namespace HuntrX.Gameplay.Protection
             return true;
         }
 
-        internal bool ContainsOverlap(Collider2D overlap) => IsActive && isActiveAndEnabled &&
-            fieldCollider != null && fieldCollider.enabled && fieldCollider.gameObject.activeInHierarchy &&
-            overlap != null && overlap != fieldCollider && overlap.enabled && overlap.gameObject.activeInHierarchy &&
-            fieldCollider.Distance(overlap).isOverlapped;
+        internal bool ContainsOverlap(Collider2D overlap)
+        {
+            if (!IsActive || !isActiveAndEnabled || fieldCollider == null || !fieldCollider.enabled ||
+                !fieldCollider.gameObject.activeInHierarchy || overlap == null || overlap == fieldCollider ||
+                !overlap.enabled || !overlap.gameObject.activeInHierarchy)
+            {
+                return false;
+            }
+
+            Rigidbody2D fieldBody = fieldCollider.attachedRigidbody;
+            Rigidbody2D targetBody = overlap.attachedRigidbody;
+            if (fieldBody == null || targetBody == null)
+            {
+                return false;
+            }
+
+            // The posed overload uses attached-body poses and retains authored collider offsets.
+            // Read current Transforms so pre-physics movement is immediate, without a global transform sync.
+            ColliderDistance2D distance = fieldCollider.Distance(fieldBody.transform.position,
+                fieldBody.transform.eulerAngles.z, overlap, targetBody.transform.position,
+                targetBody.transform.eulerAngles.z);
+            return distance.isValid && distance.isOverlapped;
+        }
 
         internal void Track(DamageProtection2D receiver)
         {

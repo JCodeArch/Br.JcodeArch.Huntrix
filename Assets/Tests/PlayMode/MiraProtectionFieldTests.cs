@@ -16,10 +16,12 @@ namespace HuntrX.Tests.PlayMode
         private readonly List<Object> objects = new List<Object>();
         private const BindingFlags Flags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
         private float previousScale;
-        [SetUp] public void SetUp() { previousScale = Time.timeScale; Time.timeScale = 1f; }
+        private bool previousAutoSyncTransforms;
+        [SetUp] public void SetUp() { previousScale = Time.timeScale; Time.timeScale = 1f; previousAutoSyncTransforms = Physics2D.autoSyncTransforms; Physics2D.autoSyncTransforms = false; }
         [UnityTearDown] public IEnumerator TearDown()
         {
             Time.timeScale = previousScale;
+            Physics2D.autoSyncTransforms = previousAutoSyncTransforms;
             for (int i = objects.Count - 1; i >= 0; --i) if (objects[i] != null) Object.Destroy(objects[i]);
             objects.Clear();
             yield return null;
@@ -72,6 +74,7 @@ namespace HuntrX.Tests.PlayMode
         [TestCase("owner")]
         [TestCase("ownerDisabled")]
         [TestCase("inactiveCollider")]
+        [TestCase("offsetAncestor")]
         public void ActivationRejectsInvalidDependenciesWithoutEnablingField(string dependency)
         {
             var field = Field(); var circle = field.GetComponentInChildren<CircleCollider2D>(true);
@@ -81,6 +84,12 @@ namespace HuntrX.Tests.PlayMode
             if (dependency == "rootCollider") Set(field, "fieldCollider", field.gameObject.AddComponent<CircleCollider2D>());
             if (dependency == "disabled") ((Behaviour)field).enabled = false;
             if (dependency == "offset") circle.offset = Vector2.one;
+            if (dependency == "offsetAncestor")
+            {
+                var ancestor = new GameObject("offset field ancestor"); ancestor.transform.SetParent(field.transform, false);
+                ancestor.transform.localPosition = Vector2.right;
+                circle.transform.SetParent(ancestor.transform, false);
+            }
             if (dependency == "ownerDisabled") field.GetComponent<DamageReceiver2D>().enabled = false;
             if (dependency == "inactiveCollider") circle.gameObject.SetActive(false);
             if (dependency == "owner") Object.DestroyImmediate(field.GetComponent<DamageReceiver2D>());
@@ -93,19 +102,34 @@ namespace HuntrX.Tests.PlayMode
             var field = Field(); var target = Root("early moving ally", Vector2.right); var enemy = Enemy(); var attack = Attack();
             Call(field, "TryActivate"); Assert.That(Protected(target), Is.True);
             target.transform.position = Vector2.right * 4f;
+            Assert.That(Protected(target), Is.False, "Moving the target must change protection before physics advances");
+            Assert.That(Resolve(target, enemy, attack), Is.EqualTo("Damaged"));
             // No trigger pair existed before this movement, so no exit callback is guaranteed.
             yield return new WaitForFixedUpdate(); yield return new WaitForFixedUpdate();
             Assert.That(Protected(target), Is.False);
-            Assert.That(Resolve(target, enemy, attack), Is.EqualTo("Damaged"));
         }
         [UnityTest] public IEnumerator SeededFieldMovedBeforeFirstSimulationCannotProtectOutsideTarget()
         {
             var field = Field(); var target = Root("ally", Vector2.right); var enemy = Enemy(); var attack = Attack();
             Call(field, "TryActivate"); Assert.That(Protected(target), Is.True);
             field.transform.position = Vector2.left * 4f;
+            Assert.That(Protected(target), Is.False, "Moving the field must change protection before physics advances");
+            Assert.That(Resolve(target, enemy, attack), Is.EqualTo("Damaged"));
             yield return new WaitForFixedUpdate(); yield return new WaitForFixedUpdate();
             Assert.That(Protected(target), Is.False);
-            Assert.That(Resolve(target, enemy, attack), Is.EqualTo("Damaged"));
+        }
+        [Test] public void CurrentBodyPoseChecksPreserveAuthoredColliderOffsetAndRotation()
+        {
+            var field = Field(); var target = Root("offset ally", Vector2.right * 4f);
+            AddCollider(target, Vector2.left * 3f);
+            Call(field, "TryActivate");
+            Assert.That(Protected(target), Is.True, "The offset collider is inside even though its Rigidbody root is outside");
+            target.transform.rotation = Quaternion.Euler(0f, 0f, 90f);
+            Assert.That(Protected(target), Is.False, "Current body rotation moves the offset collider out immediately");
+            target.transform.rotation = Quaternion.identity;
+            Assert.That(Protected(target), Is.True);
+            target.transform.position = Vector2.right * 8f;
+            Assert.That(Protected(target), Is.False, "Current body position moves both colliders out immediately");
         }
         [UnityTest] public IEnumerator ProtectedTargetRemainsReservedAcrossExpiryThenNewActivationDamages()
         {

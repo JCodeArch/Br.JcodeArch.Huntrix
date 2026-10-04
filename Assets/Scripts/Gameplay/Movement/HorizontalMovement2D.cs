@@ -26,6 +26,14 @@ namespace HuntrX.Gameplay.Movement
 
         public HorizontalMovementState State { get; private set; } = HorizontalMovementState.Idle;
 
+        internal void ConfigureValidated(float maxSpeed, float accelerationRate, float decelerationRate)
+        {
+            maxHorizontalSpeed = maxSpeed;
+            acceleration = accelerationRate;
+            deceleration = decelerationRate;
+            invalidSettingsReported = false;
+        }
+
         private void Awake()
         {
             body = GetComponent<Rigidbody2D>();

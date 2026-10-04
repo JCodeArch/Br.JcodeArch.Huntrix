@@ -6,14 +6,17 @@ Card #17 establishes typed Unity assets for static, authored data. Later gamepla
 
 ## Runtime contracts
 
-The runtime assembly exposes six ScriptableObject types in the HuntrX.Data namespace:
+The runtime assembly exposes nine ScriptableObject types in the HuntrX.Data namespace:
 
 | Definition | Asset menu |
 |---|---|
 | CharacterDefinition | HUNTR/X/Data/Character |
+| CharacterMovementDefinition | HUNTR/X/Data/Character Movement |
 | EnemyDefinition | HUNTR/X/Data/Enemy |
 | StageDefinition | HUNTR/X/Data/Stage |
 | AttackDefinition | HUNTR/X/Data/Attack |
+| CombatComboDefinition | HUNTR/X/Data/Combat Combo |
+| ParryDefinition | HUNTR/X/Data/Parry |
 | FoodDefinition | HUNTR/X/Data/Food |
 | ProfileDefinition | HUNTR/X/Data/Profile |
 
@@ -42,3 +45,7 @@ No sample assets are created by this card. The architecture waits for the releva
 Card #25 adds `CombatComboDefinition` and serializable `ComboStep` as static combat templates. They reference existing `AttackDefinition` assets for grounded/aerial sequences; runtime chain state, health, input state, and save progress remain outside ScriptableObjects. Validation and runtime behavior are documented in [COMBO_COMBAT.md](COMBO_COMBAT.md).
 
 Card #26 adds `ParryDefinition` as static template timing for a parry window. It contains no runtime cooldown/window state, no authored sample asset, and no default balance value; invalid or absent definitions prevent activation.
+
+## Character prototype — card #28
+
+Card #28 extends `CharacterDefinition` with a display name and static references to movement, combo, and parry definitions. `CharacterMovementDefinition` stores the validated movement, jump, and dash values currently consumed by shared controllers. The Rumi sample assets and `Rumi_Prototype` prefab demonstrate these contracts; all numeric values are provisional integration fixtures. The character applier configures existing controllers and owns no input, save, health, respawn, or character-selection state. See [RUMI_CHARACTER.md](RUMI_CHARACTER.md) for composition and verification.

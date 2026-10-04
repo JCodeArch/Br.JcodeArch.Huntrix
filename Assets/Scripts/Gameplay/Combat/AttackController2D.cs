@@ -27,6 +27,14 @@ namespace HuntrX.Gameplay.Combat
 
         public AttackState2D State { get; private set; } = AttackState2D.Idle;
         public int CurrentComboStepIndex { get; private set; }
+        public int ActiveComboStepCount => activeSequence?.Count ?? 0;
+        public CombatComboDefinition ComboDefinition => comboDefinition;
+
+        internal void SetValidatedDefinition(CombatComboDefinition definition)
+        {
+            comboDefinition = definition;
+            invalidDefinitionReported = false;
+        }
 
         public event Action<CombatImpactEvent> ImpactOccurred
         {

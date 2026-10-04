@@ -29,6 +29,20 @@ namespace HuntrX.Gameplay.Jump
         private bool wallJumpConsumed;
         private bool invalidWallJumpSpeedReported;
 
+        internal void ConfigureValidated(float jumpSpeed, float wallJumpSpeed, float gravity,
+            float coyoteDuration, float jumpBufferDuration, float cutMultiplier)
+        {
+            jumpVelocity = jumpSpeed;
+            wallJumpHorizontalSpeed = wallJumpSpeed;
+            gravityScale = gravity;
+            coyoteTime = coyoteDuration;
+            jumpBufferTime = jumpBufferDuration;
+            jumpCutMultiplier = cutMultiplier;
+            gravityConfigured = false;
+            invalidConfigurationReported = false;
+            invalidWallJumpSpeedReported = false;
+        }
+
         private void Awake()
         {
             body = GetComponent<Rigidbody2D>();

@@ -16,6 +16,11 @@ namespace HuntrX.Gameplay.Combat
 
         public bool IsWindowActive { get; private set; }
 
+        internal void SetValidatedDefinition(ParryDefinition nextDefinition)
+        {
+            definition = nextDefinition;
+        }
+
         private void Awake()
         {
             receiver = GetComponent<DamageReceiver2D>();

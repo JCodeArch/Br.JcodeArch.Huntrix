@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcc61632b9bdc7d4b9ba807273a57f08, type: 3}
+  m_Name: Rumi_Movement_Prototype
+  m_EditorClassIdentifier: HuntrX.Runtime::HuntrX.Data.CharacterMovementDefinition
+  id: c98795ed5aae43f4a77b96bea6cd7cb8
+  maxHorizontalSpeed: 4.2
+  acceleration: 12
+  deceleration: 16
+  jumpVelocity: 8
+  wallJumpHorizontalSpeed: 6
+  gravityScale: 2
+  coyoteTime: 0.1
+  jumpBufferTime: 0.1
+  jumpCutMultiplier: 0.45
+  dashSpeed: 12
+  dashDuration: 0.18
+  airDashSpeed: 10
+  airDashDuration: 0.15

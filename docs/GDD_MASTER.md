@@ -106,6 +106,8 @@ A ordem, a causalidade entre resgates, energia, Performance e Honmoon, e as cond
 
 **EM ABERTO:** habilidades, atributos, ataques, funções complementares, disponibilidade e condições para trocar de personagem. O backlog separa a implementação individual e a troca nos itens 28–32; movimento e combate base estão nos itens 19–27.
 
+**PROTÓTIPO — item 28:** Rumi foi composta com os controladores compartilhados de movimento, combate direto com espada, combos terrestre/aéreo e aparo. Os valores dos assets são provisórios para integração; não fecham habilidades, atributos ou balanceamento, nem substituem playtest ou aprovação visual. O estado técnico está em [`docs/architecture/RUMI_CHARACTER.md`](architecture/RUMI_CHARACTER.md). A identidade de Mira/Zoey, seleção e troca continuam abertas para os itens seguintes.
+
 ### Combate
 
 **FECHADO:** o jogo inclui combate terrestre e aéreo, com inimigos que podem voar.

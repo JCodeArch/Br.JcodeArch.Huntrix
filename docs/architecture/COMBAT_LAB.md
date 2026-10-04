@@ -16,4 +16,4 @@ Open `Assets/Scenes/CombatLab.unity` in the Unity Editor to inspect the test hos
 
 ## Validation and deferred work
 
-`CombatLabBuildSettingsTests` verifies enabled scene order. `CombatLabScenePlayModeTests` verifies loadability, camera, light, and empty bootstrap composition. The scene is infrastructure only; level layout, test actors/targets, checkpoints, camera tracking, combat content, and Vertical Slice sequence remain with their future Trello cards. Passing these scene tests does not claim those gameplay systems are implemented or validated.
+`CombatLabBuildSettingsTests` verifies enabled scene order. `CombatLabScenePlayModeTests` verifies loadability, camera, light, and empty bootstrap composition. Gameplay PlayMode suites may load this host and instantiate temporary actors/targets for runtime validation; those fixtures do not become authored scene contents. Card #28's Rumi tests validate movement, combos, direct damage, and parry in that runtime context. The scene asset stays infrastructure only; level layout, authored actors/targets, checkpoints, camera tracking, and Vertical Slice sequence remain with their future Trello cards.

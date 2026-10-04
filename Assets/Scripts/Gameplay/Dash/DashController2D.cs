@@ -32,6 +32,16 @@ namespace HuntrX.Gameplay.Dash
 
         public bool IsInvulnerable => IsDashing;
 
+        internal void ConfigureValidated(float groundSpeed, float groundDuration, float aerialSpeed, float aerialDuration)
+        {
+            dashSpeed = groundSpeed;
+            dashDuration = groundDuration;
+            airDashSpeed = aerialSpeed;
+            airDashDuration = aerialDuration;
+            invalidSettingsReported = false;
+            invalidAirSettingsReported = false;
+        }
+
         private void Awake()
         {
             horizontalMovement = GetComponent<HorizontalMovement2D>();

@@ -10,4 +10,4 @@
 
 **Review:** System Architect self-review approved: logical input boundary and horizontal-only ownership are explicit. SOLID self-review found one cohesive controller with no new production abstraction or dependency. Performance self-review: one `GetComponent` in `Awake`, no per-physics-step allocations or searches. QA directly ran both Unity suites. Independent specialist agents hit their usage limit; Antigravity UI/CLI was unavailable in this session, so no external review is claimed.
 
-**Integration:** [ ] Commit on `feature/card-19-base-movement`, publish, fast-forward to `develop`, verify `origin/develop`, update Trello, and confirm the first next card.
+**Integration:** [x] Implementation commit `da010469cb39de432fd18d0d750f9ffb656cb803` published on `feature/card-19-base-movement`, fast-forward integrated to `develop`, and verified against `origin/develop`. Trello DoD was completed; #20 — Implementar salto is next in the original list order.

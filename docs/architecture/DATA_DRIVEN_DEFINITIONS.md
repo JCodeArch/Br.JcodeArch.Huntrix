@@ -17,7 +17,7 @@ The runtime assembly exposes six ScriptableObject types in the HuntrX.Data names
 | FoodDefinition | HUNTR/X/Data/Food |
 | ProfileDefinition | HUNTR/X/Data/Profile |
 
-All derive from GameDataDefinition. Each new object receives a serialized GUID string once; saving and reloading preserves it. Duplicating an asset also duplicates its ID, so the project validator reports the collision. IDs are authoring identity, not gameplay values. Concrete types intentionally have no additional fields yet.
+All derive from GameDataDefinition. Each new object receives a serialized GUID string once; saving and reloading preserves it. Duplicating an asset also duplicates its ID, so the project validator reports the collision. IDs are authoring identity, not gameplay values. `AttackDefinition` now also stores static base attack damage, startup/active/recovery durations, hitbox size/offset, and horizontal/upward knockback impulse as approved by card #24. It validates these fields without selecting product tuning values. Other definitions keep the fields approved by their respective cards.
 
 The menu command HUNTR/X/Data/Validate Definitions scans ScriptableObject assets beneath Assets/Data. The shared validator reports null references, blank IDs, and repeated IDs; the Editor output includes the asset path. Validation reports problems without editing the assets. The scan is an explicit authoring/QA action, not runtime work.
 
@@ -29,7 +29,7 @@ ProfileDefinition represents static template metadata only and currently contain
 
 - Character attributes, skills, abilities, and switch rules: gameplay cards #28–32.
 - Enemy stats, AI, attack patterns, and encounter behavior: cards #33–41.
-- Attack damage, timing, costs, ranges, hitboxes, and other combat numbers: cards #19–27 and their dependent combat cards.
+- Attack costs, range progression, combos, parry, and balance/tuning decisions: cards #19-27 and their dependent combat cards. Card #24 defines only the base attack data contract; authored assets and final values remain deferred.
 - Food acquisition, use, and effects: cards #42–50.
 - Stage scene references, sequence, and authored level content: level-design cards; card #18 only sets up Combat Lab.
 - Save-slot count and management, preferences, serialization, migration, cloud sync, and co-op save rules: cards #9 and subsequent save/profile decisions.

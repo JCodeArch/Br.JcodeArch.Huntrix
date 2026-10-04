@@ -7,6 +7,7 @@ namespace HuntrX.Gameplay.Jump
     public sealed class JumpController2D : MonoBehaviour
     {
         [SerializeField, Min(0f)] private float jumpVelocity;
+        [SerializeField, Min(0f)] private float wallJumpHorizontalSpeed;
         [SerializeField, Min(0f)] private float gravityScale;
         [SerializeField, Min(0f)] private float coyoteTime;
         [SerializeField, Min(0f)] private float jumpBufferTime;
@@ -23,6 +24,10 @@ namespace HuntrX.Gameplay.Jump
         private bool gravityConfigured;
         private bool invalidConfigurationReported;
         private bool jumpSuppressed;
+        private bool hasWallContact;
+        private Vector2 wallOutwardNormal;
+        private bool wallJumpConsumed;
+        private bool invalidWallJumpSpeedReported;
 
         private void Awake()
         {
@@ -39,6 +44,32 @@ namespace HuntrX.Gameplay.Jump
                 hasActiveJump = false;
                 jumpCutApplied = false;
             }
+        }
+
+        /// <summary>Reports the current wall contact and its outward-facing normal.</summary>
+        public void SetWallContact(bool touching, Vector2 outwardNormal)
+        {
+            if (!touching)
+            {
+                hasWallContact = false;
+                wallOutwardNormal = Vector2.zero;
+                wallJumpConsumed = false;
+                return;
+            }
+
+            if (!IsFinite(outwardNormal.x) || !IsFinite(outwardNormal.y) ||
+                (outwardNormal.x == 0f && outwardNormal.y == 0f) ||
+                Mathf.Abs(outwardNormal.x) <= Mathf.Abs(outwardNormal.y))
+            {
+                hasWallContact = false;
+                wallOutwardNormal = Vector2.zero;
+                return;
+            }
+
+            float largestComponent = Mathf.Max(Mathf.Abs(outwardNormal.x), Mathf.Abs(outwardNormal.y));
+            Vector2 scaledNormal = outwardNormal / largestComponent;
+            hasWallContact = true;
+            wallOutwardNormal = scaledNormal.normalized;
         }
 
         /// <summary>Temporarily suppresses jump starts and cuts while a higher-priority action is active.</summary>
@@ -114,17 +145,30 @@ namespace HuntrX.Gameplay.Jump
             }
 
             bool canJump = isGrounded || coyoteTimeRemaining > 0f;
-            if (hasBufferedJump && canJump)
+            bool canWallJump = !isGrounded && hasWallContact && !wallJumpConsumed;
+            if (hasBufferedJump && isGrounded)
+            {
+                StartJump();
+            }
+            else if (hasBufferedJump && canWallJump)
+            {
+                if (IsFinitePositive(wallJumpHorizontalSpeed))
+                {
+                    StartWallJump();
+                }
+                else
+                {
+                    ReportInvalidWallJumpSpeed();
+                    ExpireBufferedJumpIfNeeded(fixedDeltaTime);
+                }
+            }
+            else if (hasBufferedJump && canJump)
             {
                 StartJump();
             }
             else if (hasBufferedJump)
             {
-                jumpBufferTimeRemaining = Mathf.Max(0f, jumpBufferTimeRemaining - fixedDeltaTime);
-                if (jumpBufferTimeRemaining <= 0f)
-                {
-                    hasBufferedJump = false;
-                }
+                ExpireBufferedJumpIfNeeded(fixedDeltaTime);
             }
 
             ApplyJumpCutIfReleased();
@@ -139,6 +183,27 @@ namespace HuntrX.Gameplay.Jump
             hasBufferedJump = false;
             hasActiveJump = true;
             jumpCutApplied = false;
+        }
+
+        private void StartWallJump()
+        {
+            body.linearVelocity = new Vector2(Mathf.Sign(wallOutwardNormal.x) * wallJumpHorizontalSpeed, jumpVelocity);
+            isGrounded = false;
+            coyoteTimeRemaining = 0f;
+            jumpBufferTimeRemaining = 0f;
+            hasBufferedJump = false;
+            hasActiveJump = true;
+            jumpCutApplied = false;
+            wallJumpConsumed = true;
+        }
+
+        private void ExpireBufferedJumpIfNeeded(float fixedDeltaTime)
+        {
+            jumpBufferTimeRemaining = Mathf.Max(0f, jumpBufferTimeRemaining - fixedDeltaTime);
+            if (jumpBufferTimeRemaining <= 0f)
+            {
+                hasBufferedJump = false;
+            }
         }
 
         private void ApplyJumpCutIfReleased()
@@ -166,6 +231,17 @@ namespace HuntrX.Gameplay.Jump
                 IsFinite(jumpCutMultiplier) &&
                 jumpCutMultiplier > 0f &&
                 jumpCutMultiplier < 1f;
+        }
+
+        private void ReportInvalidWallJumpSpeed()
+        {
+            if (invalidWallJumpSpeedReported)
+            {
+                return;
+            }
+
+            invalidWallJumpSpeedReported = true;
+            Debug.LogError("JumpController2D requires a positive finite wall jump horizontal speed.", this);
         }
 
         private void ReportInvalidConfiguration(string message)

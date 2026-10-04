@@ -356,6 +356,53 @@ namespace HuntrX.Tests.PlayMode
             yield return null;
         }
 
+        [UnityTest]
+        public IEnumerator PressDuringAirDashSuppressionCannotDeferWallJump()
+        {
+            var gameObject = new GameObject("AirDashWallJumpSuppressionTestSubject");
+            createdObjects.Add(gameObject);
+            Rigidbody2D body = gameObject.AddComponent<Rigidbody2D>();
+            body.gravityScale = 0f;
+            body.constraints = RigidbodyConstraints2D.FreezeRotation;
+            HorizontalMovement2D movement = gameObject.AddComponent<HorizontalMovement2D>();
+            SetField(movement, "maxHorizontalSpeed", 6f);
+            SetField(movement, "acceleration", 10f);
+            SetField(movement, "deceleration", 12f);
+            JumpController2D jump = gameObject.AddComponent<JumpController2D>();
+            SetField(jump, "jumpVelocity", 8f);
+            SetField(jump, "gravityScale", 0.01f);
+            SetField(jump, "coyoteTime", 0.15f);
+            SetField(jump, "jumpBufferTime", 0.15f);
+            SetField(jump, "jumpCutMultiplier", 0.5f);
+            SetField(jump, "wallJumpHorizontalSpeed", 10f);
+            DashController2D dash = gameObject.AddComponent<DashController2D>();
+            SetField(dash, "dashSpeed", 12f);
+            SetField(dash, "dashDuration", 0.1f);
+            SetField(dash, "airDashSpeed", 8f);
+            SetField(dash, "airDashDuration", 0.04f);
+            dash.SetGrounded(false);
+            Assert.That(dash.TryStartAirDash(Vector2.right), Is.True);
+            SetWallContact(jump, true, Vector2.left);
+            jump.PressJump();
+
+            for (int i = 0; i < 6 && dash.IsDashing; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            yield return new WaitForFixedUpdate();
+            Assert.That(dash.IsDashing, Is.False);
+            Assert.That(body.linearVelocityY, Is.LessThanOrEqualTo(0f));
+            Assert.That(body.linearVelocityX, Is.GreaterThan(0f), "A suppressed wall jump must not reverse the air-dash velocity.");
+        }
+
+        private static void SetWallContact(JumpController2D jump, bool touching, Vector2 outwardNormal)
+        {
+            var method = jump.GetType().GetMethod("SetWallContact", BindingFlags.Instance | BindingFlags.Public);
+            Assert.That(method, Is.Not.Null, "Expected JumpController2D.SetWallContact(bool, Vector2).");
+            method.Invoke(jump, new object[] { touching, outwardNormal });
+        }
+
         private DashController2D CreateDash(
             float dashSpeed,
             float dashDuration,

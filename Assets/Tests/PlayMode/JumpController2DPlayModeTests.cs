@@ -193,6 +193,258 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(body.linearVelocityY, Is.GreaterThan(7f));
         }
 
+        [UnityTest]
+        public IEnumerator WallJumpPushesAwayFromLeftWall()
+        {
+            JumpController2D jump = CreateWallJump();
+            Rigidbody2D body = jump.GetComponent<Rigidbody2D>();
+            jump.SetGrounded(false);
+            SetWallContact(jump, true, Vector2.right);
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityX, Is.EqualTo(10f).Within(0.001f));
+            Assert.That(body.linearVelocityY, Is.GreaterThan(7.9f));
+        }
+
+        [UnityTest]
+        public IEnumerator WallJumpPushesAwayFromRightWall()
+        {
+            JumpController2D jump = CreateWallJump();
+            Rigidbody2D body = jump.GetComponent<Rigidbody2D>();
+            jump.SetGrounded(false);
+            SetWallContact(jump, true, Vector2.left);
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityX, Is.EqualTo(-10f).Within(0.001f));
+            Assert.That(body.linearVelocityY, Is.GreaterThan(7.9f));
+        }
+
+        [UnityTest]
+        public IEnumerator WallContactTakesPriorityOverCoyoteJump()
+        {
+            JumpController2D jump = CreateWallJump();
+            Rigidbody2D body = jump.GetComponent<Rigidbody2D>();
+            jump.SetGrounded(true);
+            yield return new WaitForFixedUpdate();
+            jump.SetGrounded(false);
+            SetWallContact(jump, true, Vector2.left);
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityX, Is.EqualTo(-10f).Within(0.001f));
+            Assert.That(body.linearVelocityY, Is.GreaterThan(7.9f));
+        }
+
+        [UnityTest]
+        public IEnumerator GroundJumpKeepsPriorityWhenGroundedBesideWall()
+        {
+            JumpController2D jump = CreateWallJump();
+            Rigidbody2D body = jump.GetComponent<Rigidbody2D>();
+            body.linearVelocityX = 2f;
+            jump.SetGrounded(true);
+            SetWallContact(jump, true, Vector2.left);
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityY, Is.GreaterThan(7.9f));
+            Assert.That(body.linearVelocityX, Is.EqualTo(2f).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator CoyoteJumpStillWorksWithoutWall()
+        {
+            JumpController2D jump = CreateJump(8f, 0.01f, 0.15f, 0.15f, 0.5f);
+            jump.SetGrounded(true);
+            yield return new WaitForFixedUpdate();
+            jump.SetGrounded(false);
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(jump.GetComponent<Rigidbody2D>().linearVelocityY, Is.GreaterThan(7.9f));
+        }
+
+        [UnityTest]
+        public IEnumerator WallJumpCanBeUsedOnlyOnceUntilContactIsLost()
+        {
+            JumpController2D jump = CreateWallJump();
+            Rigidbody2D body = jump.GetComponent<Rigidbody2D>();
+            jump.SetGrounded(false);
+            SetWallContact(jump, true, Vector2.right);
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            body.linearVelocityX = 0f;
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityX, Is.EqualTo(0f).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator WallJumpRearmsAfterExplicitContactLoss()
+        {
+            JumpController2D jump = CreateWallJump();
+            Rigidbody2D body = jump.GetComponent<Rigidbody2D>();
+            jump.SetGrounded(false);
+            SetWallContact(jump, true, Vector2.right);
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            SetWallContact(jump, false, Vector2.zero);
+            SetWallContact(jump, true, Vector2.left);
+            body.linearVelocityX = 0f;
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityX, Is.EqualTo(-10f).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator ChangingWallSideWithoutLossDoesNotRearmWallJump()
+        {
+            JumpController2D jump = CreateWallJump();
+            Rigidbody2D body = jump.GetComponent<Rigidbody2D>();
+            jump.SetGrounded(false);
+            SetWallContact(jump, true, Vector2.right);
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            SetWallContact(jump, true, Vector2.left);
+            body.linearVelocityX = 0f;
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityX, Is.EqualTo(0f).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator InvalidVerticalWallContactClearsCurrentContact()
+        {
+            JumpController2D jump = CreateWallJump();
+            Rigidbody2D body = jump.GetComponent<Rigidbody2D>();
+            jump.SetGrounded(false);
+            SetWallContact(jump, true, Vector2.right);
+            SetWallContact(jump, true, Vector2.up);
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityX, Is.EqualTo(0f).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator ReleasingWallJumpUsesTheExistingJumpCut()
+        {
+            JumpController2D jump = CreateWallJump();
+            jump.SetGrounded(false);
+            SetWallContact(jump, true, Vector2.right);
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            jump.ReleaseJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(jump.GetComponent<Rigidbody2D>().linearVelocityY, Is.GreaterThan(0f).And.LessThan(5f));
+        }
+
+        [UnityTest]
+        public IEnumerator MissingAndInvalidWallNormalsDoNotLaunchHorizontally()
+        {
+            Vector2[] invalidNormals = { Vector2.zero, Vector2.up, new Vector2(1f, 1f), new Vector2(float.NaN, 0f), new Vector2(1f, float.PositiveInfinity) };
+            foreach (Vector2 normal in invalidNormals)
+            {
+                JumpController2D jump = CreateWallJump();
+                jump.SetGrounded(false);
+                if (!normal.Equals(Vector2.zero))
+                {
+                    SetWallContact(jump, true, Vector2.right);
+                    SetWallContact(jump, true, normal);
+                }
+                jump.PressJump();
+                yield return new WaitForFixedUpdate();
+                Assert.That(jump.GetComponent<Rigidbody2D>().linearVelocityX, Is.EqualTo(0f).Within(0.001f));
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator InvalidWallSpeedDoesNotConsumeContactOrChangeVelocity()
+        {
+            float[] invalidSpeeds = { 0f, -1f, float.NaN, float.PositiveInfinity };
+            foreach (float invalidSpeed in invalidSpeeds)
+            {
+                JumpController2D jump = CreateWallJump();
+                Rigidbody2D body = jump.GetComponent<Rigidbody2D>();
+                jump.SetGrounded(false);
+                SetWallContact(jump, true, Vector2.right);
+                body.linearVelocity = new Vector2(2f, 3f);
+                SetField(jump, "wallJumpHorizontalSpeed", invalidSpeed);
+                LogAssert.Expect(LogType.Error, "JumpController2D requires a positive finite wall jump horizontal speed.");
+                jump.PressJump();
+                yield return new WaitForFixedUpdate();
+                Assert.That(body.linearVelocityX, Is.EqualTo(2f).Within(0.001f));
+                Assert.That(body.linearVelocityY, Is.EqualTo(3f).Within(0.01f));
+                SetField(jump, "wallJumpHorizontalSpeed", 10f);
+                yield return new WaitForFixedUpdate();
+                Assert.That(body.linearVelocityX, Is.EqualTo(10f).Within(0.001f));
+                Object.Destroy(jump.gameObject);
+                yield return null;
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator BufferedJumpStartsWhenWallContactBegins()
+        {
+            JumpController2D jump = CreateWallJump();
+            Rigidbody2D body = jump.GetComponent<Rigidbody2D>();
+            jump.SetGrounded(false);
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            SetWallContact(jump, true, Vector2.right);
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityX, Is.EqualTo(10f).Within(0.001f));
+            Assert.That(body.linearVelocityY, Is.GreaterThan(7.9f));
+        }
+
+        [UnityTest]
+        public IEnumerator SlantedHorizontalWallNormalLaunchesAwayFromWall()
+        {
+            JumpController2D jump = CreateWallJump();
+            Rigidbody2D body = jump.GetComponent<Rigidbody2D>();
+            jump.SetGrounded(false);
+            SetWallContact(jump, true, new Vector2(4f, 1f));
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityX, Is.EqualTo(10f).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator EqualHorizontalAndVerticalNormalIsNotAWall()
+        {
+            JumpController2D jump = CreateWallJump();
+            Rigidbody2D body = jump.GetComponent<Rigidbody2D>();
+            jump.SetGrounded(false);
+            SetWallContact(jump, true, new Vector2(1f, 1f));
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityX, Is.EqualTo(0f).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator InvalidWallSpeedLogsOnlyOncePerController()
+        {
+            JumpController2D jump = CreateWallJump();
+            Rigidbody2D body = jump.GetComponent<Rigidbody2D>();
+            jump.SetGrounded(false);
+            SetWallContact(jump, true, Vector2.right);
+            SetField(jump, "wallJumpHorizontalSpeed", 0f);
+            LogAssert.Expect(LogType.Error, "JumpController2D requires a positive finite wall jump horizontal speed.");
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            jump.PressJump();
+            yield return new WaitForFixedUpdate();
+            Assert.That(body.linearVelocityX, Is.EqualTo(0f).Within(0.001f));
+        }
+        private JumpController2D CreateWallJump()
+        {
+            JumpController2D jump = CreateJump(8f, 0.01f, 0.15f, 0.15f, 0.5f);
+            SetField(jump, "wallJumpHorizontalSpeed", 10f);
+            return jump;
+        }
+
+        private static void SetWallContact(JumpController2D jump, bool touching, Vector2 outwardNormal)
+        {
+            var method = jump.GetType().GetMethod("SetWallContact", BindingFlags.Instance | BindingFlags.Public);
+            Assert.That(method, Is.Not.Null, "Expected JumpController2D.SetWallContact(bool, Vector2).");
+            method.Invoke(jump, new object[] { touching, outwardNormal });
+        }
+
         private JumpController2D CreateJump(
             float jumpVelocity,
             float gravityScale,

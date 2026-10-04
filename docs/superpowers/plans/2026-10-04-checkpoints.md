@@ -93,5 +93,5 @@
 - [x] Revisões independentes SOLID, Performance e QA aprovadas; finding de ator morto corrigido. Performance estática, sem benchmark; risco registrado.
 - [x] N/A justificado: API runtime local sem UI, coleta, dados pessoais ou conteúdo novo; docs atualizados.
 - [x] `git diff --check` limpo; 87 metas verificadas, zero GUID duplicado; artefatos Unity removidos.
-- [ ] Commitar card em `feature/card-27-checkpoints`, publicar branch, fast-forward/push de `develop`, conferir refs remotas e árvore limpa.
-- [ ] Completar checklist e card somente após integração verificada.
+- [x] Commit do card: `30391faa46bcfa8c570a595bfca98d90db6fe6dd`; feature e `develop` publicados/verificados nesse SHA; árvore limpa.
+- [x] Checklist DoD Trello 9/9 concluída; card movido para `🏆 18 — Concluído` após verificar a integração.

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ff1a874a76b6e64abf382d20deb4832, type: 3}
+  m_Name: Mira
+  m_EditorClassIdentifier: HuntrX.Runtime::HuntrX.Data.CharacterDefinition
+  id: b2f3266461d646da84c1c69cf8e1df03
+  displayName: Mira
+  movement: {fileID: 11400000, guid: 3aa808bc6631cf84c9b00241cd822d70, type: 2}
+  combatCombo: {fileID: 11400000, guid: 1a6b8d42cd95e5145bad42f11e0d8c6b, type: 2}
+  parry: {fileID: 11400000, guid: 97f82c92b1a3ffd4a91f65a5b4897eb4, type: 2}

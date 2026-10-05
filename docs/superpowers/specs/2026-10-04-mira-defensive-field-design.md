@@ -42,7 +42,3 @@ Compose a Mira gameplay prototype whose distinctive action creates a temporary c
 ## Boundaries
 
 Out of scope: fan records/states/rescue, Honmoon, Special/resource costs, enemy movement/control effects, cooldowns, physical bindings, character selection/switching/respawn (#31–32), co-op/network rules, final movement/attack/field tuning, and final art/animation. Future fan work must explicitly compose or adapt the protection contract before claiming that actual fans are protected.
-
-
-
-

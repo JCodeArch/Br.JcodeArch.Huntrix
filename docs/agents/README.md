@@ -10,6 +10,7 @@ This directory contains the operational contracts for the engineering agent team
 - 03-solid-auditor
 - 04-performance-engineer
 - 05-qa-automation-engineer
+- 06-pull-request-review-analyst
 
 Each agent defines:
 

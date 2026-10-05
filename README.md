@@ -29,7 +29,7 @@ Orchestrator
 
 ## Current status
 
-The project is in iterative gameplay development. Trello is the master backlog; cards are completed in planned order, one at a time, with a dedicated commit, applicable agent reviews, QA evidence, and verified integration to `develop`. The current completed gameplay milestone is Rumi (card #28); Mira (card #29) has an implementation branch with its runtime, prefab, regression evidence, and independent reviews, pending final integration and Trello closure.
+The project is in iterative gameplay development. Trello is the master backlog; cards are completed in planned order, one at a time, with a dedicated commit, applicable agent reviews, QA evidence, and verified integration to `develop`. Rumi (card #28) and Mira (card #29) are complete and integrated to `develop`; card #30, Zoey, is next in the planned order.
 
 Start with [the full project context](docs/PROJECT_CONTEXT.md), [master GDD](docs/GDD_MASTER.md), [Definition of Done](docs/governance/DEFINITION_OF_DONE.md), and [agent pipeline](docs/architecture/AGENT_PIPELINE.md). Character-specific contracts are in `docs/architecture/` and card plans/specs are in `docs/superpowers/`.
 

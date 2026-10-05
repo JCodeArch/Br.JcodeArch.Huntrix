@@ -41,13 +41,13 @@ Cards through the Rumi prototype are integrated to `develop` at the start of the
 
 ### Card #29 — Mira defensive field
 
-The Mira implementation is on `feature/card-29-mira` at `a1bc23b7cfa0ce7808f5a69577f72d201203bd94` pending this cycle's final integration. It adds a temporary defensive field for explicitly opted-in damage receivers. Static definition validation, field lifecycle, multiple colliders/overlapping fields, current-pose checks, protected-hit resolution, attack-activation deduplication, Mira prefab integration, and Rumi regression are covered by the feature tests.
+The Mira implementation is integrated to `develop` at `2ee691189e7362b19e3819fbb9653eb4c9fd8ae7` from `feature/card-29-mira` (feature implementation commit `a1bc23b7cfa0ce7808f5a69577f72d201203bd94`). Trello card #29 is complete; its runtime, prefab, regression evidence, and independent reviews are recorded. It adds a temporary defensive field for explicitly opted-in damage receivers. Static definition validation, field lifecycle, multiple colliders/overlapping fields, current-pose checks, protected-hit resolution, attack-activation deduplication, Mira prefab integration, and Rumi regression are covered by the feature tests.
 
 Recorded Unity 6.6.4f1 regression results: **65/65 EditMode and 245/245 PlayMode tests passed**, with zero failed, skipped, or inconclusive tests. Independent review outcomes: SOLID **approved**; Performance **approved**, with mobile CPU/allocation measurements still open; QA **approved** for the implemented scope. Actual fan integration is deferred to cards #42–50. The design and implementation report explain the limited scope and risks.
 
 ### Next planned work
 
-After card #29 passes its final integration and Trello gates, card #30, **Implementar Zoey**, is next in the recorded board order. Its requirements and acceptance must be taken from that Trello card before implementation. Prototype files present only as uncommitted external work are not accepted deliverables or evidence.
+Card #30, **Implementar Zoey**, is next in the recorded board order. Its requirements and acceptance must be taken from that Trello card before implementation. Prototype files present only as uncommitted external work are not accepted deliverables or evidence.
 
 ## Context and decision boundaries
 

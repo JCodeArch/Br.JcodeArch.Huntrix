@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 607f9a680acfabd4caefdc3b562550f2, type: 3}
+  m_Name: GroundDemon_Behavior
+  m_EditorClassIdentifier: HuntrX.Runtime::HuntrX.Data.EnemyDefinition
+  id: 19f74332237f4586961c5675b2bb2bcb
+  attack: {fileID: 11400000, guid: 5e5a783395bb4c63bef98855cd36bb59, type: 2}
+  moveSpeed: 2
+  detectionRange: 12
+  attackRange: 1.5
+  telegraphDuration: 0.5
+  recoveryDuration: 0.7

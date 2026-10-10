@@ -18,7 +18,7 @@ Resultados históricos de outros commits não aprovam o código atual. A valida�
 
 ## Matriz inicial de validação pendente
 
-Esta matriz registra o plano; não afirma que os cards #31 e #32 já foram implementados ou integrados. Estado real, revisão e commit devem ser registrados ao terminar cada entrega.
+Os cards #30–#32 foram implementados e integrados em develop com revisão estática, sem execução Unity: PR #1 (Zoey), PR #3 (CharacterManager) e PR #4 (troca). Commits de implementação: f9be88f, c40886e e 498594c, respectivamente. Cenários desta matriz continuam pendentes; integração não equivale a aprovação de runtime.
 
 | Card | Escopo a verificar | Evidência disponível/esperada antes da execução | Validação Unity pendente |
 |---|---|---|---|

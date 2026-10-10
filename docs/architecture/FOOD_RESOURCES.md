@@ -1,0 +1,11 @@
+# Cards #45–#46 — comida e escolha de recuperação
+
+#45 define ramen, onigiri, gyoza e dango como recursos finitos com recuperação provisória diferenciada: ramen prioriza a personagem, gyoza prioriza fãs, onigiri equilibra os dois e dango oferece recuperação pequena. `FoodInventory2D` mantém quantidades por ID e capacidade técnica limitada; `FoodPickup2D` reserva a coleta antes de inserir, desaparece somente após inserção aceita e não volta a premiar após reativação. Quatro pickups authored têm trigger; `RumiFood_Prototype` compõe um inventário real na personagem.
+
+#46 compõe `FoodChoiceController2D`: `TryUseOnSelf` restaura personagem viva e ferida; `TryUseOnFan` recupera alma de fã ativo dentro do alcance finito. `RumiFoodChoice_Prototype` contém inventário, controller e referência local ao receiver correto. Fã corrompido pode se recuperar pela política de `FanActor2D.TryRecover`; não há ressurreição de personagem. Não cura acima dos limites nem consome comida se alvo cheio/inválido ou recuperação recusada.
+
+A unidade é reservada antes de aplicar o benefício, de modo que callbacks de recuperação já observam o recurso gasto. Recusa restaura a reserva; inserção/consumo reentrantes são bloqueados durante transação/notificação. Eventos de quantidade são isolados por assinante. Benefícios passam exclusivamente pelas APIs reais de saúde/alma, sem mutação externa de seus campos.
+
+Inventário é local à instância, sem singleton, compartilhamento automático entre personagens/perfis, recompensa repetível ou alegação de persistência após respawn/reinício. A composição futura de slot/save deve decidir retenção de inventário; o contrato de save atual não persiste estado transitório. O uso é API lógica e não adiciona binding físico/UI nesta entrega. Pickups são triggers lógicos sem arte final.
+
+Todos os valores são protótipos. Compilação, física dos triggers, transação de consumo, recuperação e integração com troca/respawn aguardam validação final Unity. Preservar cenários: inventário cheio, pickup repetido, self/fan cheio, alvo morto/desativado, fora de alcance/coordenadas não finitas, callbacks reentrantes, perfil/instância independente, recuperação de fã corrompido e nenhuma comida negativa.

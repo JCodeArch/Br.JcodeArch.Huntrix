@@ -4,7 +4,7 @@
 
 This repository develops **HUNTR/X — Honmoon**, a Unity game. The authoritative product vision, approved decisions, open decisions, MVP scope, game loop, characters, systems, platforms, and risks are recorded in the [master GDD](GDD_MASTER.md). This file is an engineering orientation and status index; it does not override the GDD or Trello.
 
-The Trello board [HUNTR/X — Honmoon](https://trello.com) is the master backlog. Preserve its card order and scope. Work on one card at a time; before starting the next card, verify the previous card against [Definition of Done](governance/DEFINITION_OF_DONE.md). Each completed card receives an identifiable commit, Trello evidence, and integration to `develop`.
+The Trello board [HUNTR/X — Honmoon](https://trello.com/b/O5yAS8lM/huntr-x-honmoon) is the master backlog. Preserve its card order and scope. On 10 October 2026 the owner authorized parallel implementation with separate responsibilities and deferred Unity test execution until the game is nearly ready. Prepare dependent cards against an agreed contract and integrate dependencies first. Each implementation receives an identifiable commit, Trello evidence, and integration to `develop` after static review without blockers. Runtime validation remains pending under [Deferred Validation](governance/DEFERRED_VALIDATION.md); integration is not final gameplay approval. See [project rules](../PROJECT_RULES.md).
 
 ## Engineering workflow
 
@@ -23,7 +23,7 @@ The card determines which specialist gates apply. Any omitted gate needs a recor
 
 ## Pull Request review policy
 
-Review every Pull Request from another AI or contributor against its exact Trello card and approved design before merging. Read the complete diff and changed-file list, verify Unity asset/meta references, run or inspect evidence for relevant tests, check regressions and Definition of Done, and report findings by severity with file/line evidence and required fixes. Treat author summaries and green checks as claims to verify, not substitutes for review. Do not merge a PR with unresolved blockers, missing acceptance evidence, or scope drift. Keep the backlog order and one-card-at-a-time rule intact.
+Review every Pull Request from another AI or contributor against its exact Trello card and approved design before merging. Read the complete diff and changed-file list, verify Unity asset/meta references, run or inspect evidence for relevant tests, check regressions and Definition of Done, and report findings by severity with file/line evidence and required fixes. Treat author summaries and green checks as claims to verify, not substitutes for review. Do not merge a PR with unresolved static blockers or scope drift. The owner's dated exception permits integration while Unity tests are pending; preserve dependency order and never report deferred tests as passed.
 
 ## Technical baseline
 
@@ -47,13 +47,13 @@ Recorded Unity 6.6.4f1 regression results: **65/65 EditMode and 245/245 PlayMode
 
 ### Card #30 — Zoey ranged prototype
 
-Status: **IMPLEMENTED — pending Unity validation** on `feature/card-30-zoey`; **no merge to develop has occurred**. The prototype adds a validated ranged definition, configurable immediate precision shot, authored character/data assets, and presentation events. Explicit world-space aim supports airborne targets; shared hurtbox resolution preserves faction, parry, dash invulnerability, and Mira protection rules.
+Status: **IMPLEMENTED — pending Unity validation** on `feature/card-30-zoey`; published as [PR #1](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/1), commit `f9be88fcf8deba3d96d30df414e5e68f62f5c949`. **Merged to develop** in `7230774` after independent static review and the owner's explicit authorization to defer Unity tests on 10 October 2026. The prototype adds a validated ranged definition, configurable immediate precision shot, authored character/data assets, and presentation events. Explicit world-space aim supports airborne targets; shared hurtbox resolution preserves faction, parry, dash invulnerability, and Mira protection rules.
 
 Independent static review is **approved** for the submitted implementation. **26 new test cases are authored (11 EditMode and 15 PlayMode), but have not been run.** No Unity compilation, runtime regression, Combat Lab playtest, or target-device performance result is claimed. The previous card #29 totals above are historical evidence and do not validate this feature. See [Zoey architecture](architecture/ZOEY_CHARACTER.md) and [card #30 review](reviews/2026-10-10-card-30-zoey.md).
 
 ### Next planned work
 
-Run the card #30 Unity tests and proportional regression, inspect the prefab in Combat Lab, and resolve any findings before marking the card complete or merging. Cards #31 (CharacterManager) and #32 (character switching) remain subsequent backlog work. Physical input mapping, final art/audio/balance, and cooperative play are outside the Zoey prototype scope.
+Integrate the statically reviewed card #30 under the owner's deferred-validation decision, then integrate #31 (CharacterManager) and #32 (character switching) in dependency order. Six specialists are assigned to architecture, manager implementation, switching implementation, QA documentation, independent code review, and Unity asset/performance review. Unity compilation, tests, regression and Combat Lab playtests are deferred to the final validation phase; the implementation status must retain that pending gate. Physical input mapping, final art/audio/balance, and cooperative play are outside the Zoey prototype scope.
 
 ## Context and decision boundaries
 

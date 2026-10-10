@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b21a8933dcc4e14b6505f66dd45ca7e, type: 3}
+  m_Name: GwiMa_Finale_Pattern
+  m_EditorClassIdentifier: HuntrX.Runtime::HuntrX.Data.EnemyPatternDefinition
+  id: 0b8fcd9b2c774cc2b94bb07c83b6adb1
+  primaryBehavior: {fileID: 11400000, guid: 1704567110ec412daf67fb781285258f, type: 2}
+  alternateBehavior: {fileID: 11400000, guid: 3ae6d00a36554cb3a1aff7d5253be466, type: 2}
+  burstCount: 3
+  alternateBurstCount: 1
+  recoveryDuration: 1.2
+  alternateRecoveryDuration: 1.5

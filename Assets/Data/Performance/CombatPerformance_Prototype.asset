@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e0607ed50bf433eb43a7b7b1ea92b00, type: 3}
+  m_Name: CombatPerformance_Prototype
+  m_EditorClassIdentifier:
+  id: combat-performance-prototype
+  hitPoints: 5
+  comboBonus: 1
+  rescuePoints: 20
+  damagePenalty: 15
+  comboWindow: 2
+  maximumPoints: 100
+  energizedThreshold: 0.3
+  spectacularThreshold: 0.7

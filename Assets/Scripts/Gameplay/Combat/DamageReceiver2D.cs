@@ -27,6 +27,9 @@ namespace HuntrX.Gameplay.Combat
 
         /// <summary>Raised once after accepted damage changes this receiver from alive to dead.</summary>
         public event Action<DamageReceiver2D> Died;
+        /// <summary>Accepted damage only; published after health/impulse commit, before death notification.</summary>
+        public event Action<CombatImpactEvent> DamageDealt;
+        public event Action<CombatImpactEvent> DamageReceived;
 
         private void Awake()
         {
@@ -85,6 +88,7 @@ namespace HuntrX.Gameplay.Combat
 
             float healthBeforeHit = CurrentHealth;
             CurrentHealth = Mathf.Max(0f, CurrentHealth - attack.Damage);
+            bool killedByThisHit = healthBeforeHit > 0f && CurrentHealth <= 0f;
             float horizontalDistance = transform.position.x - attacker.transform.position.x;
             float horizontalDirection = Mathf.Approximately(horizontalDistance, 0f)
                 ? Mathf.Sign(facingDirection)
@@ -95,12 +99,22 @@ namespace HuntrX.Gameplay.Combat
                 attack.UpwardKnockbackImpulse);
             body.AddForce(impulse, ForceMode2D.Impulse);
 
-            if (healthBeforeHit > 0f && CurrentHealth <= 0f)
-            {
-                PublishDied();
-            }
+            CombatImpactEvent impact = new CombatImpactEvent(attacker, this, attack, comboStepIndex);
+            // Capture both subscriptions at the accepted commit boundary; a dealt listener may rebind actors.
+            Action<CombatImpactEvent> dealtHandlers = attacker.DamageDealt;
+            Action<CombatImpactEvent> receivedHandlers = DamageReceived;
+            PublishDamage(dealtHandlers, impact);
+            PublishDamage(receivedHandlers, impact);
+            if (killedByThisHit) PublishDied();
 
             return CombatContactResult.Damaged;
+        }
+
+        private static void PublishDamage(Action<CombatImpactEvent> handlers, CombatImpactEvent impact)
+        {
+            if (handlers == null) return;
+            foreach (Action<CombatImpactEvent> handler in handlers.GetInvocationList())
+                try { handler(impact); } catch (Exception exception) { Debug.LogException(exception); }
         }
 
         private void PublishDied()

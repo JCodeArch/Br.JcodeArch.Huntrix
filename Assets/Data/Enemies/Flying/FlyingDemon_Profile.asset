@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f33a43caaa574500a10cef32b476fbd2, type: 3}
+  m_Name: FlyingDemon_Profile
+  m_EditorClassIdentifier: HuntrX.Runtime::HuntrX.Data.FlyingEnemyDefinition
+  id: c58a5b4442a44ab3b17f69df850a44ed
+  behavior: {fileID: 11400000, guid: 695d97fe738e4280a11767561e953c80, type: 2}
+  hoverHeight: 3
+  altitudeAmplitude: 0.75
+  altitudeFrequency: 0.5
+  diveSpeed: 8
+  diveDuration: 0.5
+  projectileSpeed: 7
+  projectileLifetime: 2
+  projectileRange: 14
+  projectilePrefab: {fileID: 940000000000000001, guid: 70f6d2d2074c42b9a9d9afffedf04667, type: 3}

@@ -61,9 +61,30 @@ Independent static review is **approved** for the submitted implementation. **26
 
 Both cards received independent static code/SOLID and asset/performance reviews, with corrected lifecycle findings documented in [code review](reviews/2026-10-10-character-management.md) and [asset/performance review](reviews/2026-10-10-character-management-assets-performance.md). Compilation, Unity asset import, physics, automated suites, scene inspection and profiling were not executed. This round prioritized implementation and recorded scenarios without adding a new management/switching suite. Runtime acceptance and qualified cooperative play remain pending.
 
+### Cards #33–#40 — enemy and encounter prototypes
+
+**IMPLEMENTED — Unity validation pending.** The owner authorized this round through Jinu (#40), with six specialists and separate feature branches. Cards #33–#39 have verified merges to develop; #40 packages Jinu, EnemyLab and the final integration documentation in its own feature. Its published PR/merge is recorded in Trello after integration.
+
+| Card | Verified integration | Feature commit |
+|---|---|---|
+| #33 | [PR #6](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/6) | `eddf5c1` |
+| #34 | [PR #7](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/7) | `9cdff28` |
+| #35 | [PR #8](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/8) | `b487350` |
+| #36 | [PR #9](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/9) | `0e0a925` |
+| #37 | [PR #10](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/10) | `3489a27` |
+| #38 | [PR #11](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/11) | `e4cbdc1` |
+| #39 | [PR #12](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/12) | `56ee765` |
+| #40 | `feature/card-40-jinu-arc`; published evidence in Trello | Commit of this feature |
+
+The round adds terrestrial melee; flying pursuit, altitude, dives and bounded projectiles; healer/protector/drainer; bounded hordes; alternating elite attacks; a two-phase miniboss; four individual Saja tactics; and Jinu combat-stage evolution with authored narrative cue events. Values, geometric visuals and narrative cues are prototypes. Drainer uses health damage, with Honmoon integration future; final dialogue/cinematics and narrative fidelity remain open.
+
+Independent [static review](reviews/2026-10-10-enemies-33-40.md) and asset audits found no remaining blocking issue in the reviewed snapshot. No Unity compilation/import, tests, physics/visual playtest or device measurement was executed. Existing #29 test results do not validate these changes. See [integration guide](enemies/INTEGRATION_GUIDE.md) and [deferred scenarios](governance/DEFERRED_VALIDATION.md).
+
+Open `Assets/Scenes/EnemyLab.unity` during final validation to inspect the automatic terrestrial horde encounter. It explicitly wires a player slot, floor and spawn positions. The logical initial player has no SpriteRenderer or physical input mapping; appearance and execution remain unverified. See [EnemyLab composition](architecture/ENEMY_LAB.md).
+
 ### Next planned work
 
-Cards #30–#32 are integrated; the next backlog transition is card #33, whose exact scope must be confirmed in Trello before implementation. The [parallel team](governance/PARALLEL_TEAM.md) records six specialist responsibilities and direct dependency handoffs. Unity compilation, tests, regression and Combat Lab playtests are deferred to the final validation phase; preserve the pending gate. Physical input mapping, final art/audio/balance and qualified cooperative play remain outside the character-management prototype delivery.
+The requested implementation scope ends at #40. The next backlog item is #41; confirm its exact scope in Trello before new implementation. Preserve deferred Unity compilation, suites, regressions and visual validation. Physical controls, final art/audio/balance, final narrative content and qualified cooperative play remain open for their corresponding cards.
 
 
 ## Context and decision boundaries

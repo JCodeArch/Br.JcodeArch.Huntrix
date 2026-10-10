@@ -36,4 +36,20 @@ O estado após integração é **Implementado — validação pendente**. Testes
 
 Rodada integrada em 10/10/2026: #31 (CharacterManager) pelo PR #3 e #32 (troca) pelo PR #4, em branches próprias e na ordem das dependências. Revisão estática aprovada; validação runtime pendente. As seis entregas especializadas desta rodada foram concluídas; isso não afirma execução contínua após a sessão. A política de QA documental foi revisada e aprovada, com testes Unity adiados. O estado de #30, commits, PRs e integrações deve ser consultado no contexto e Trello atuais.
 
-A próxima transição planejada é analisar o **card #33 — inimigos** após os contratos anteriores estarem estabilizados e suas dependências relevantes revisadas/integradas. O coordenador confirma o título e o escopo reais no Trello, atribui arquitetura e gameplay de inimigos, revisão/QA e assets conforme necessidade, reutilizando vagas por rodízio. Este plano não afirma que #33 já começou. Regras de alvo, dano e ciclo de vida devem respeitar os contratos anteriores; decisões ainda abertas permanecem abertas.
+## Rodada #33–#40
+
+Em 10/10/2026, o proprietário autorizou avançar até Jinu (#40). Foram atribuídas seis frentes simultâneas, com dependências cobradas diretamente entre os responsáveis:
+
+| Responsável | Escopo desta rodada |
+|---|---|
+| architecture | Contratos comuns, guia de integração, revisão de assets e limites de desempenho |
+| gameplay | #33 terrestre melee, foundation compartilhada e #34 voadores/projéteis |
+| integration | #35 healer/protector/soul drainer e #36 hordas com orçamento limitado |
+| qa_environment | #37 elites/padrões telegráficos e #38 mini-boss com fases |
+| unity_validation | #39 rivais Saja Boys e #40 Jinu com evolução de combate e cues narrativos |
+| review | Revisão independente incremental, cobrança de findings e conferência das correções |
+| Coordenador | Branch/commit/PR por card, integração sequencial em develop, Trello e atualizações |
+
+Os nomes dos agentes são identificadores reutilizados; a coluna de escopo descreve o trabalho efetivo desta rodada. O responsável por QA também implementou padrões e mini-boss; a revisão independente foi atribuída a outro agente. Nenhuma execução Unity foi encomendada: cenários finais permanecem na matriz de validação diferida.
+
+A ordem de integração é #33 → #34 → #35 → #36 → #37 → #38 → #39 → #40. Os contratos compartilhados pertencem à foundation; adaptações específicas ficam em arquivos próprios. O guia `docs/enemies/INTEGRATION_GUIDE.md` registra composição e limitações. O estado publicado e os PRs devem ser consultados no contexto atualizado e nos cards, sem inferir execução persistente após a sessão.

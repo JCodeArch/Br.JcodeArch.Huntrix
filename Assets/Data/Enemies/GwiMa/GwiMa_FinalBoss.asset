@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ccb07919ff44edd9595b38cb08fb394, type: 3}
+  m_Name: GwiMa_FinalBoss
+  m_EditorClassIdentifier: HuntrX.Runtime::HuntrX.Data.GwiMaBossDefinition
+  id: bcd113c55d6d42c1875abd591a56c3c1
+  opening: {fileID: 11400000, guid: a5918e912b2b4e80840121160feeec15, type: 2}
+  pressure: {fileID: 11400000, guid: a4041d9c6d6248ccb92c0bfaf19fbd75, type: 2}
+  finale: {fileID: 11400000, guid: 80fb5ebbddae48aa9d3bbab78f1d57e5, type: 2}
+  pressureHealthFraction: 0.7
+  finaleHealthFraction: 0.35
+  endingCue: ending.gwi-ma.defeated

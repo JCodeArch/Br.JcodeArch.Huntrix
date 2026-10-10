@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 093b4c4137254af09f334845f8b84db6, type: 3}
+  m_Name: SoulDrainer_Support
+  m_EditorClassIdentifier: HuntrX.Runtime::HuntrX.Data.SupportEnemyDefinition
+  id: e3d6e8b39c7246559c27e392f82ad57d
+  role: 2
+  radius: 5
+  interval: 1
+  healingAmount: 5
+  protectionDuration: 1.2
+  drainAttack: {fileID: 11400000, guid: 7b8eb84f74504accbfd2eea775285c1d, type: 2}

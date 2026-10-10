@@ -41,6 +41,16 @@ namespace HuntrX.Gameplay.Combat
         public bool TryReceiveHit(AttackDefinition attack, DamageReceiver2D attacker, float facingDirection) =>
             ResolveHit(attack, attacker, facingDirection, 0, out _) == CombatContactResult.Damaged;
 
+        /// <summary>Restores a living same-faction receiver without reviving or exceeding authored maximum health.</summary>
+        public bool TryRestoreHealth(float amount, DamageReceiver2D source)
+        {
+            if (!isActiveAndEnabled || !IsAlive || source == null || !source.isActiveAndEnabled ||
+                !source.IsAlive || source.Faction != Faction || !IsFinite(amount) || amount <= 0f ||
+                CurrentHealth >= MaximumHealth) return false;
+            CurrentHealth = Mathf.Min(MaximumHealth, CurrentHealth + amount);
+            return true;
+        }
+
         internal void RegisterProtection(DamageProtection2D protection) => damageProtection = protection;
 
         internal void RegisterParryController(ParryController2D controller)

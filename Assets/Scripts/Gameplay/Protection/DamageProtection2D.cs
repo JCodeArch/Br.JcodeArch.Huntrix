@@ -11,6 +11,8 @@ namespace HuntrX.Gameplay.Protection
         private readonly Dictionary<MiraProtectionField2D, HashSet<Collider2D>> sources =
             new Dictionary<MiraProtectionField2D, HashSet<Collider2D>>();
 
+        private readonly HashSet<MonoBehaviour> externalSources = new HashSet<MonoBehaviour>();
+
         public bool IsProtected
         {
             get
@@ -19,6 +21,11 @@ namespace HuntrX.Gameplay.Protection
                 {
                     return false;
                 }
+
+                DamageReceiver2D receiver = GetComponent<DamageReceiver2D>();
+                foreach (MonoBehaviour source in externalSources)
+                    if (source != null && source.isActiveAndEnabled && source is IDamageProtectionSource2D provider &&
+                        provider.Covers(receiver)) return true;
 
                 // A seeded pair may separate before physics creates it. Validate registered pairs on demand;
                 // trigger callbacks and lifecycle changes still own the collections, with no per-frame query.
@@ -80,6 +87,14 @@ namespace HuntrX.Gameplay.Protection
             }
         }
 
+        public bool RegisterExternalSource(MonoBehaviour source)
+        {
+            if (!isActiveAndEnabled || source == null || !(source is IDamageProtectionSource2D)) return false;
+            return externalSources.Add(source);
+        }
+
+        public void UnregisterExternalSource(MonoBehaviour source) => externalSources.Remove(source);
+
         private void ClearSources()
         {
             foreach (MiraProtectionField2D source in sources.Keys)
@@ -90,6 +105,7 @@ namespace HuntrX.Gameplay.Protection
                 }
             }
             sources.Clear();
+            externalSources.Clear();
         }
 
         private void OnDisable() => ClearSources();

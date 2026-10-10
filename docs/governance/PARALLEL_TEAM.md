@@ -34,6 +34,6 @@ O estado após integração é **Implementado — validação pendente**. Testes
 
 ## Estado registrado e próxima transição
 
-Na preparação deste registro, #31 (CharacterManager) e #32 (troca) estão em implementação/revisão; suas integrações não são presumidas. A política de QA documental foi revisada e aprovada, com testes Unity adiados. O estado de #30, commits, PRs e integrações deve ser consultado no contexto e Trello atuais.
+Rodada integrada em 10/10/2026: #31 (CharacterManager) pelo PR #3 e #32 (troca) pelo PR #4, em branches próprias e na ordem das dependências. Revisão estática aprovada; validação runtime pendente. As seis entregas especializadas desta rodada foram concluídas; isso não afirma execução contínua após a sessão. A política de QA documental foi revisada e aprovada, com testes Unity adiados. O estado de #30, commits, PRs e integrações deve ser consultado no contexto e Trello atuais.
 
 A próxima transição planejada é analisar o **card #33 — inimigos** após os contratos anteriores estarem estabilizados e suas dependências relevantes revisadas/integradas. O coordenador confirma o título e o escopo reais no Trello, atribui arquitetura e gameplay de inimigos, revisão/QA e assets conforme necessidade, reutilizando vagas por rodízio. Este plano não afirma que #33 já começou. Regras de alvo, dano e ciclo de vida devem respeitar os contratos anteriores; decisões ainda abertas permanecem abertas.

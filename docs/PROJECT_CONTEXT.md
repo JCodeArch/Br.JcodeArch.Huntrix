@@ -51,9 +51,20 @@ Status: **IMPLEMENTED — pending Unity validation** on `feature/card-30-zoey`; 
 
 Independent static review is **approved** for the submitted implementation. **26 new test cases are authored (11 EditMode and 15 PlayMode), but have not been run.** No Unity compilation, runtime regression, Combat Lab playtest, or target-device performance result is claimed. The previous card #29 totals above are historical evidence and do not validate this feature. See [Zoey architecture](architecture/ZOEY_CHARACTER.md) and [card #30 review](reviews/2026-10-10-card-30-zoey.md).
 
+### Card #31 — CharacterManager
+
+**IMPLEMENTED and merged to develop — Unity validation pending.** [PR #3](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/3), feature commit `c40886ea1dafb1f3164fba97eb1945bc63ae03dc`, merge `44338f9`. One local slot owns cached character instances, active identity/state, checkpoint binding and fresh respawn. Individual health is preserved when switching; stale input/contact state is cleared. See [manager contract](architecture/CHARACTER_MANAGER.md).
+
+### Card #32 — Character switching
+
+**IMPLEMENTED and merged to develop — Unity validation pending.** [PR #4](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/4), feature commit `498594ce6f2d4beecc2902bd47f7efadf3b03e4a`, merge `8ed8339`, after #31. Logical direct/circular selection uses a defensive roster and delegates transitions to the manager. `HuntrXPlayerSlot_Prototype` composes manager/controller/local flow and Rumi/Mira/Zoey references, with explicit Configure/TrySpawn initialization. No physical input, auto-spawn or Combat Lab demo is claimed. See [switching contract](architecture/CHARACTER_SWITCHING.md).
+
+Both cards received independent static code/SOLID and asset/performance reviews, with corrected lifecycle findings documented in [code review](reviews/2026-10-10-character-management.md) and [asset/performance review](reviews/2026-10-10-character-management-assets-performance.md). Compilation, Unity asset import, physics, automated suites, scene inspection and profiling were not executed. This round prioritized implementation and recorded scenarios without adding a new management/switching suite. Runtime acceptance and qualified cooperative play remain pending.
+
 ### Next planned work
 
-Integrate the statically reviewed card #30 under the owner's deferred-validation decision, then integrate #31 (CharacterManager) and #32 (character switching) in dependency order. Six specialists are assigned to architecture, manager implementation, switching implementation, QA documentation, independent code review, and Unity asset/performance review. Unity compilation, tests, regression and Combat Lab playtests are deferred to the final validation phase; the implementation status must retain that pending gate. Physical input mapping, final art/audio/balance, and cooperative play are outside the Zoey prototype scope.
+Cards #30–#32 are integrated; the next backlog transition is card #33, whose exact scope must be confirmed in Trello before implementation. The [parallel team](governance/PARALLEL_TEAM.md) records six specialist responsibilities and direct dependency handoffs. Unity compilation, tests, regression and Combat Lab playtests are deferred to the final validation phase; preserve the pending gate. Physical input mapping, final art/audio/balance and qualified cooperative play remain outside the character-management prototype delivery.
+
 
 ## Context and decision boundaries
 

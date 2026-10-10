@@ -1,0 +1,35 @@
+# Performance #51 and local replay records #54
+
+Status: prototype implemented; Unity tests, file-system recovery tests and target-device measurements deferred. Values are provisional. No online rankings, network replay, input recording, music files or completed campaign save are implemented.
+
+## #51 runtime
+
+`CombatPerformanceController2D.Configure(definition, manager, rescueSources)` binds one player slot and explicit #43 rescue controllers. Sources cannot be null/duplicate and are bounded to 1024. `TryBeginRun`, `TryFinishRun(out snapshot)`, `ResetRun` and `CancelRun` define the lifecycle. The manager's active-actor event moves subscriptions across switches and respawns; disable removes subscriptions and cancels the active run. Run metrics continue across respawn while the manager remains active.
+
+DamageReceiver's narrow accepted-hit events publish after committed health/impulse: attacker `DamageDealt`, receiver `DamageReceived`, then `Died` for the hit that actually committed the lethal transition. Delegate snapshots are captured before either damage event so a callback switching actors cannot erase the accepted receiver notification. A lethal hit therefore records no-damage failure before manager respawn. Rejected, parried, protected and invulnerable contacts produce no accepted damage event. Metrics use subscription provenance, not a mutable active-actor check after callbacks. Per-run generation captured in subscriptions rejects stale notifications if another callback ends and begins a different run. Stable completion is requested by the chapter lifecycle after combat notifications, not from an in-flight damage callback.
+
+Accepted outgoing contacts increment the current combo and maximum combo. The combo expires after the authored window; each hit adds base points plus an increasing combo bonus. Accepted incoming damage clears the current combo, applies a points penalty and permanently marks the run as having taken damage. Distinct completed fan rescues add points/count once per fan instance per run, capped at 1024; they do not apply the fan's gameplay reward again. Pause/hit-stop scaled time does not advance elapsed run seconds; the run clock caps at one day. Combo count caps at 10000 and points at the authored maximum (maximum supported 1000000).
+
+`PerformanceSnapshot` carries points/normalized value, current/max combo, rescued fans, elapsed seconds, no-damage and `PerformanceBand`. Typed crowd and music intensities derive from Calm/Energized/Spectacular. These are actual presentation inputs for later audio/torcida integration, not playback or automatic Honmoon changes. Defaults: hit5, comboBonus1, rescue20, damagePenalty15, window2s, cap100, band thresholds30%/70%.
+
+Snapshot events isolate listener failures. Configure/Begin/Finish/Reset are rejected during publication; genuine nested accepted damage still updates metrics and queues one notification for LateUpdate rather than recursively publishing. CancelRun can stop lifecycle without publishing. `ResetRun` returns false when a publication is active.
+
+## #54 runtime and persistence
+
+`LocalReplayController2D.Configure(opaqueProfileId, chapterId, performance, eligibility, optionalStore)` scopes writes to one profile/chapter. Profile IDs are opaque lowercase 32-character hexadecimal IDs; no civil name, birth date, account, network ID or credentials are stored. Chapter IDs are content identifiers. Configure rejects an active or unsaved run, preventing delayed writes into another profile.
+
+`TryRequestReplay` checks `IReplayChapterAccess.IsReplayAllowed(profile, chapter)` and publishes the chapter request without changing campaign progress or starting metrics on an old scene. The level loader handles that request; once the replay scene is ready it calls `TryBeginRun(true)`, which verifies eligibility again. Campaign runs call `TryBeginRun(false)`. The external chapter-access implementation must consult actual unlocked/completed content; this prototype does not invent unlock rules.
+
+A stable chapter-completion consumer calls `TryCompleteRun`, freezes the performance snapshot and saves its summary. Failed writes remain pending for explicit `TrySavePending`; new runs/profile changes are blocked until saved or explicitly discarded. Disabled recorders cannot complete/save; OnDisable cancels a running session but preserves a completed failed summary for retry after re-enable. `TryReadRankings` returns defensive copies. `TryResetLocalRecords` affects only this profile's replay summaries and backup; `DiscardUnsavedRun` explicitly discards the transient run/pending summary. Neither operation writes campaign/equipment data.
+
+The provisional adapter stores JSON under `Application.persistentDataPath/ReplayRecords/<opaqueId>.replay.json`. Schema1 contains profile ID and at most64 records; records include chapter, run ID, rescued fans, normalized/absolute performance, elapsed seconds, max combo, no-damage and UTC completion ticks. Files cap at256KiB. Load validates schema, profile isolation, bounded numeric fields, IDs, array presence and unique record IDs before applying. Missing/unsupported/malformed data fails closed, preserving files. A valid backup is recovered when main is invalid, reported by `LastLoadRecovered`.
+
+Writes flush a pending file and atomically replace an existing valid main with a backup, or move into place for an initial save. If main is invalid while backup was valid, it is replaced without overwriting that valid backup. Unsupported atomic replacement or I/O errors fail and preserve the previous valid file/backup; portability is untested. Explicit reset writes empty valid history then removes its old backup; a backup-removal failure is reported honestly as a partial reset. There is no silent campaign deletion, schema migration or cloud sync.
+
+Ranking is local per profile/chapter, ordered by rescued fans descending, normalized performance descending, max combo descending, no-damage first, elapsed time ascending, recent completion then stable record ID. This is provisional scoring policy, not anti-cheat or global leaderboard. History keeps the latest64 completed summaries across that profile's chapters.
+
+## Composition and deferred checks
+
+`Resources/Performance/PerformanceRun_Prototype` supplies performance+recorder with an authored profile. It requires an explicit manager, rescue sources, opaque profile/chapter and chapter-access implementation; it does not start itself or wire a completed scene. Chapter completion/reload and music systems must consume the APIs explicitly.
+
+Deferred checks: actual Unity compile/import; lethal hits before respawn; switch during accepted-hit callbacks; protected/parried contacts; duplicate rescues; listener damage/reentrancy/disable; profile switching without stale writes; bounded run/record histories; deterministic rankings; malformed/missing schema; corrupt main+valid backup; failed flush/replace; interruption recovery; explicit reset failures; no campaign changes; replay eligibility and scene lifecycle; measured platform file support. No pass or device/build performance is claimed.

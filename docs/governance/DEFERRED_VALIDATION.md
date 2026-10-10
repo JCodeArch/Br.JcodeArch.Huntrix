@@ -26,6 +26,15 @@ Esta matriz registra o plano; não afirma que os cards #31 e #32 já foram imple
 | #31 — CharacterManager | Gestão das três personagens, identidade, instâncias e ciclo de vida segundo contrato final do card | Contrato e composição documentados; código e referências revisados; commit próprio e limitações registrados | Instanciar personagens reais; verificar ativação/desativação, preservação de instâncias/estado e limpeza; cenas e regressão de combate, proteção e checkpoints conforme composição implementada |
 | #32 — Troca de personagens | Solicitação de troca, seleção válida e transições segundo contrato final do card | Contrato de input/troca e estados documentado; revisão dos caminhos inválidos e dependências; commit próprio | Trocas repetidas e limites; ausência de input duplicado; encerramento das ações conforme contrato; integração com câmera, morte/respawn e checkpoints quando abrangidos; execução solo com as três personagens |
 
+### Regressões específicas de #31 identificadas na revisão
+
+Estes cenários precisam de execução final após as correções correspondentes; o registro não afirma que a correção já foi concluída ou testada:
+
+- Listener de `ActiveCharacterChanged` provoca dano fatal durante uma transição: a solicitação de respawn não pode ser perdida nem deixar o manager em estado inconsistente.
+- Desativar e reativar o fluxo de tentativas/checkpoints: verificar a propriedade da tentativa e a coordenação com o manager.
+- Falha na preparação do candidato durante respawn: nenhum personagem morto do cache pode permanecer ativo.
+- Candidato com hitbox de combate inválida ou controllers obrigatórios desabilitados: rejeitar ativação sem comprometer o personagem ativo válido.
+
 Gestão e troca solo não qualificam cooperativo ou rede. Até três personagens/jogadores simultâneos permanecem requisito do produto, com validação própria quando implementados. Contratos definitivos de #31/#32 prevalecem sobre esta lista inicial; atualizar a matriz se o escopo aprovado for mais específico.
 
 ## Etapas de validação final

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a53c2d25521472bb48d76f08a8ca96e, type: 3}
+  m_Name: GroundHorde_Prototype
+  m_EditorClassIdentifier: HuntrX.Runtime::HuntrX.Data.HordeDefinition
+  id: a38c9f8a830348edac0fae540f9beb91
+  enemyPrefab: {fileID: 114295073500037013, guid: e9ad72e0df15404f899e4d77112009e3, type: 3}
+  maximumConcurrent: 8
+  totalSpawns: 20
+  spawnInterval: 0.5

@@ -41,13 +41,19 @@ Cards through the Rumi prototype are integrated to `develop` at the start of the
 
 ### Card #29 — Mira defensive field
 
-The Mira implementation is integrated to `develop` at `2ee691189e7362b19e3819fbb9653eb4c9fd8ae7` from `feature/card-29-mira` (feature implementation commit `a1bc23b7cfa0ce7808f5a69577f72d201203bd94`). Trello card #29 is complete; its runtime, prefab, regression evidence, and independent reviews are recorded. It adds a temporary defensive field for explicitly opted-in damage receivers. Static definition validation, field lifecycle, multiple colliders/overlapping fields, current-pose checks, protected-hit resolution, attack-activation deduplication, Mira prefab integration, and Rumi regression are covered by the feature tests.
+The Mira implementation is integrated to `develop` at `2ee691189e7362b19e3819fbb9653eb4c9fd8ae7` from `feature/card-29-mira` (feature implementation commit `a1bc26b7cfa0ce7808f5a69577f72d201203bd94`). Trello card #29 is complete; its runtime, prefab, regression evidence, and independent reviews are recorded. It adds a temporary defensive field for explicitly opted-in damage receivers. Static definition validation, field lifecycle, multiple colliders/overlapping fields, current-pose checks, protected-hit resolution, attack-activation deduplication, Mira prefab integration, and Rumi regression are covered by the feature tests.
 
 Recorded Unity 6.6.4f1 regression results: **65/65 EditMode and 245/245 PlayMode tests passed**, with zero failed, skipped, or inconclusive tests. Independent review outcomes: SOLID **approved**; Performance **approved**, with mobile CPU/allocation measurements still open; QA **approved** for the implemented scope. Actual fan integration is deferred to cards #42–50. The design and implementation report explain the limited scope and risks.
 
+### Card #30 — Zoey ranged prototype
+
+Status: **IMPLEMENTED — pending Unity validation** on `feature/card-30-zoey`; **no merge to develop has occurred**. The prototype adds a validated ranged definition, configurable immediate precision shot, authored character/data assets, and presentation events. Explicit world-space aim supports airborne targets; shared hurtbox resolution preserves faction, parry, dash invulnerability, and Mira protection rules.
+
+Independent static review is **approved** for the submitted implementation. **26 new test cases are authored (11 EditMode and 15 PlayMode), but have not been run.** No Unity compilation, runtime regression, Combat Lab playtest, or target-device performance result is claimed. The previous card #29 totals above are historical evidence and do not validate this feature. See [Zoey architecture](architecture/ZOEY_CHARACTER.md) and [card #30 review](reviews/2026-10-10-card-30-zoey.md).
+
 ### Next planned work
 
-Card #30, **Implementar Zoey**, is next in the recorded board order. Its requirements and acceptance must be taken from that Trello card before implementation. Prototype files present only as uncommitted external work are not accepted deliverables or evidence.
+Run the card #30 Unity tests and proportional regression, inspect the prefab in Combat Lab, and resolve any findings before marking the card complete or merging. Cards #31 (CharacterManager) and #32 (character switching) remain subsequent backlog work. Physical input mapping, final art/audio/balance, and cooperative play are outside the Zoey prototype scope.
 
 ## Context and decision boundaries
 
@@ -65,5 +71,5 @@ Card #30, **Implementar Zoey**, is next in the recorded board order. Its require
 | Agent handoffs | [Agent Pipeline](architecture/AGENT_PIPELINE.md), [agent contracts](agents/README.md) |
 | Completion gates | [Definition of Done](governance/DEFINITION_OF_DONE.md) |
 | Data-driven architecture | [Data-Driven Definitions](architecture/DATA_DRIVEN_DEFINITIONS.md) |
-| Character prototypes | [Rumi](architecture/RUMI_CHARACTER.md), [Mira](architecture/MIRA_CHARACTER.md) |
+| Character prototypes | [Rumi](architecture/RUMI_CHARACTER.md), [Mira](architecture/MIRA_CHARACTER.md), [Zoey](architecture/ZOEY_CHARACTER.md) |
 | Card-specific plans/specs | [`superpowers/plans/`](superpowers/plans/) and [`superpowers/specs/`](superpowers/specs/) |

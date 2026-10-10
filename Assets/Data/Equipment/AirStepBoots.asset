@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19398b1d3bf54209991481fea8b89b6d, type: 3}
+  m_Name: AirStepBoots
+  m_EditorClassIdentifier:
+  id: bee062f547c64901a2a21cf2ef1804f5
+  mechanic: 0
+  narrativePointId: prototype-air-step-story
+  airStepVelocity: 9
+  burstAttack: {fileID: 11400000, guid: c92c72f5b6884a899540a926ba0b0002, type: 2}
+  burstRadius: 2.5
+  cooldown: 3

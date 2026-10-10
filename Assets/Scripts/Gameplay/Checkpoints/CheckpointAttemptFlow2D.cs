@@ -21,6 +21,8 @@ namespace HuntrX.Gameplay.Checkpoints
         public event Action<string> CheckpointActivated;
 
         public int AttemptNumber => attemptNumber;
+        public bool IsAttemptInProgress => attemptInProgress;
+        public DamageReceiver2D BoundActor => actor;
         public string ActiveCheckpointId => TryGetActiveCheckpoint(out string id, out _, out _) ? id : string.Empty;
         public Vector3 ActiveCheckpointPosition => TryGetActiveCheckpoint(out _, out Vector3 position, out _)
             ? position
@@ -72,6 +74,13 @@ namespace HuntrX.Gameplay.Checkpoints
             attemptNumber++;
             attemptInProgress = true;
             return true;
+        }
+
+        /// <summary>Ends ownership of this attempt without changing checkpoint selection or attempt number.</summary>
+        public void CancelAttempt()
+        {
+            attemptInProgress = false;
+            UnbindActor();
         }
 
         public bool ActivateCheckpoint(CheckpointAnchor2D checkpoint)

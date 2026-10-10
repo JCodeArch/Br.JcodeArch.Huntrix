@@ -1,0 +1,9 @@
+# Special sequence effects — card #50
+
+Source: [50 — Implementar efeitos do Special](https://trello.com/c/8RbUCMCK), “Rumi → Mira → Zoey → ataque combinado; nunca atingir fãs.” `Resources/Special/HuntrXSpecialWithEffects_Prototype` composes the card #49 combat core with SpecialSequenceEffects2D.
+
+The component subscribes to typed stage/completion events and renders original, non-colliding geometric projections: Rumi violet with diagonal slash, Mira cyan with shield-shaped square, Zoey pink with rotated projectile accent, then all three and a combined energy flourish. Up to 64 precreated ray renderers display only the selected Demon impact positions; selection is snapshotted before damage so defeated/destroyed enemies still show the combined impact briefly. Typed Fan and faction exclusion is repeated for VFX selection. Effects never execute damage, touch Fan state, heal actors or create playable/network participants.
+
+Visuals follow the configured active owner, remain scoped to the sequence and hide on completion/cancel/disable. All renderers reuse one original white-square sprite per effects component, created once and destroyed with the owner. No per-frame instantiation, reflection or physics query is introduced. Placeholder color/shape identities do not claim final approved character art or animation. There is no copyrighted audio/recording, flashing pattern, screen shake or mandatory full-screen effect.
+
+The stage duration/damage/charge remain card #49 authored data. Original art, refined animation, particles, audio, photosensitivity/age options and mobile profiling require later cards. Unity import/tests and visual playtest are deferred to the final validation phase; pending scenarios include sequential order, solo/three participants, combined snapshot after kills, no fan targeting, source movement/cancellation, re-enable subscriptions, disabled presentation, and renderer/performance budgets.

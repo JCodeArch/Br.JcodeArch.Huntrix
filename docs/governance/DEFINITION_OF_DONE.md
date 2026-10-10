@@ -2,6 +2,12 @@
 
 Esta definição aplica-se a cada card de implementação, conteúdo, documentação, QA ou release do HUNTR/X. O escopo do card e suas dependências continuam sendo a autoridade; este documento define o que precisa estar comprovado antes de marcá-lo como concluído. Os gates abaixo são avaliados conforme o tipo e o escopo do card; um gate não aplicável exige justificativa registrada. QA, rastreabilidade Trello e integração verificável são obrigatórios em todos os cards.
 
+## Exceção explícita do proprietário — 10/10/2026
+
+O proprietário autorizou adiar a execução dos testes Unity até o jogo estar quase pronto e continuar o desenvolvimento em paralelo. Durante esse período, mudanças podem integrar a `develop` com revisão estática sem findings bloqueadores, documentação e rastreabilidade verificadas, usando o estado **Implementado — validação pendente**. Esse estado permite avançar dependências, mas não equivale à conclusão integral do card nem à qualificação de release.
+
+Os gates de compilação, importação, testes e verificação runtime permanecem pendentes até execução real. Não registrar testes como aprovados nem usar **N/A** para justificar o adiamento. Conclusão e qualificação de release exigem satisfazer os gates aplicáveis abaixo. Segurança infantil, privacidade e direitos/licenciamento não são dispensados. O registro de decisão, riscos e validação final está em [DEFERRED_VALIDATION.md](DEFERRED_VALIDATION.md).
+
 ## Gates comuns
 
 Um card só está concluído quando:

@@ -26,6 +26,24 @@ Os cards #30–#32 foram implementados e integrados em develop com revisão est�
 | #31 — CharacterManager | Gestão das três personagens, identidade, instâncias e ciclo de vida segundo contrato final do card | Contrato e composição documentados; código e referências revisados; commit próprio e limitações registrados | Instanciar personagens reais; verificar ativação/desativação, preservação de instâncias/estado e limpeza; cenas e regressão de combate, proteção e checkpoints conforme composição implementada |
 | #32 — Troca de personagens | Solicitação de troca, seleção válida e transições segundo contrato final do card | Contrato de input/troca e estados documentado; revisão dos caminhos inválidos e dependências; commit próprio | Trocas repetidas e limites; ausência de input duplicado; encerramento das ações conforme contrato; integração com câmera, morte/respawn e checkpoints quando abrangidos; execução solo com as três personagens |
 
+### Inimigos e encontros — #33–#40
+
+Implementações e assets receberam revisão estática independente nesta rodada. Os cards continuam com validação runtime pendente; o Trello registra o PR/commit publicado de cada feature. Não foram escritas nem executadas novas suítes de inimigos nesta rodada, conforme a priorização do proprietário.
+
+| Card | Validação final necessária |
+|---|---|
+| #33 — Terrestre | Importar prefab/dados; perseguição, detecção, telegráfico e contato melee; paredes, facções, múltiplos colliders, parry/dash/proteção; morte, disable, callbacks e saturação de buffer |
+| #34 — Voadores | Altitude variável e ascensão após dive; mergulhos sucessivos, obstáculos e retarget durante ação; projétil swept, primeiro contato, consumo único, lifetime/range e limite por fonte |
+| #35 — Suporte | Cura sem revive/overflow, elegibilidade e dedup; proteção de fontes sobrepostas e limpeza por morte/disable/distância; dreno aceito/rejeitado por combate; integração Honmoon continua futura |
+| #36 — Horda | Limites vivos/total/cadência, uma instanciação por frame, cancelamento versus conclusão; falha parcial e cleanup reentrante; mudança/respawn do alvo; medir custo e alocações com carga real |
+| #37 — Elites | Alternância real jab/sweep, hitboxes e tempos; ciclos, descanso, listener reentrante e um único driver; legibilidade visual dos telegráficos |
+| #38 — Mini-boss | Ordem de inicialização, limiar de fase e fronteira segura; preservação de fase no disable/enable, morte e callbacks; padrão/cadência da segunda fase |
+| #39 — Saja Boys | Quatro identidades e táticas distinguíveis; faixas de alcance e recuo, emboscada e bursts; configuração coerente sob callbacks; validar balanceamento e arte autorada posterior |
+| #40 — Jinu | Evolução de combate na fronteira segura; cues narrativos exatamente uma vez por estágio; morte com observer desativado; story/cinematics autorados e fidelidade final ainda pendentes |
+| EnemyLab | Importar cena/encontro e verificar bootstrap automático, piso, pontos, alvo lógico, horda e respawn. Aparência não inspecionada; player inicial sem SpriteRenderer/controles físicos |
+
+Até três jogadores/alvos permanecem requisito de design. A seleção explícita atual evita singleton, mas não qualifica cooperação, rede ou balanceamento para três jogadores. Valores de protótipo e limites de horda/projéteis não comprovam desempenho de dispositivo. A regressão final inclui proteção Mira e combate/player anteriores após os novos seams de suporte.
+
 ### Regressões específicas de #31 identificadas na revisão
 
 Estes cenários precisam de execução final após as correções correspondentes; o registro não afirma que a correção já foi concluída ou testada:

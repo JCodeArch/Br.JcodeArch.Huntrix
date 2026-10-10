@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d6807776ced4e39b0d43946d160ca31, type: 3}
+  m_Name: HuntrX_Special_Prototype
+  m_EditorClassIdentifier: HuntrX.Runtime::HuntrX.Data.HuntrXSpecialDefinition
+  id: b91c46ffb46740a3872dd0cfad0e089f
+  rumiAttack: {fileID: 11400000, guid: 4f643a777b76473a9dd40dc756183e53, type: 2}
+  miraAttack: {fileID: 11400000, guid: 9da811300e9644d58b3e9aab64b03705, type: 2}
+  zoeyAttack: {fileID: 11400000, guid: 5b66c99bd0f641c1972ff277abcac367, type: 2}
+  combinedAttack: {fileID: 11400000, guid: 924f491ed91a47f2ac0a618980acf5fb, type: 2}
+  maximumCharge: 100
+  chargePerDefeat: 10
+  targetFraction: 0.4
+  range: 10
+  stageDuration: 0.3

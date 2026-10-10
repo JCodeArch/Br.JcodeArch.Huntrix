@@ -17,10 +17,32 @@ namespace HuntrX.Gameplay.Enemies
         private bool spawning;
         private bool stopping;
         private bool completed;
+        private MonoBehaviour intensityOwner;
+        private float intervalMultiplier = 1f;
+        private int extraConcurrent;
         public bool IsRunning { get; private set; }
         public int SpawnedCount { get; private set; }
         public int AliveCount => owned.Count;
         public bool IsComplete => completed;
+        public int EffectiveMaximumConcurrent => definition == null ? 0 : Mathf.Min(64, definition.MaximumConcurrent + ActiveExtraConcurrent);
+        public float EffectiveSpawnInterval => definition == null ? 0f : definition.SpawnInterval * ActiveIntervalMultiplier;
+        private bool HasIntensity => intensityOwner != null && intensityOwner.isActiveAndEnabled;
+        private int ActiveExtraConcurrent => HasIntensity ? extraConcurrent : 0;
+        private float ActiveIntervalMultiplier => HasIntensity ? intervalMultiplier : 1f;
+        public bool TrySetIntensity(MonoBehaviour source, float multiplier, int additionalConcurrent)
+        {
+            if (!isActiveAndEnabled || source == null || !source.isActiveAndEnabled ||
+                (HasIntensity && intensityOwner != source) || !Finite(multiplier) || multiplier <= 0f ||
+                multiplier > 1f || additionalConcurrent < 0 || additionalConcurrent > 64) return false;
+            intensityOwner = source; intervalMultiplier = multiplier; extraConcurrent = additionalConcurrent;
+            remaining = Mathf.Min(remaining, EffectiveSpawnInterval);
+            return true;
+        }
+        public void ClearIntensity(MonoBehaviour source)
+        {
+            if (intensityOwner != source) return;
+            intensityOwner = null; intervalMultiplier = 1f; extraConcurrent = 0;
+        }
         private DamageReceiver2D Target => targetManager != null ? targetManager.ActiveCharacter : explicitTarget;
         public bool TryConfigure(HordeDefinition value, Transform[] points, CharacterManager2D manager, DamageReceiver2D target)
         {
@@ -61,8 +83,8 @@ namespace HuntrX.Gameplay.Enemies
             { if (owned.Count == 0) { IsRunning = false; completed = true; } return; }
             if (target == null || !target.isActiveAndEnabled || !target.IsAlive || Time.deltaTime <= 0f) return;
             remaining = Mathf.Max(0f, remaining - Time.deltaTime);
-            if (remaining > 0f || owned.Count >= definition.MaximumConcurrent) return;
-            remaining = definition.SpawnInterval;
+            if (remaining > 0f || owned.Count >= EffectiveMaximumConcurrent) return;
+            remaining = EffectiveSpawnInterval;
             SpawnOne(); // no catch-up burst: at most one allocation/spawn per rendered frame
         }
         private void SpawnOne()

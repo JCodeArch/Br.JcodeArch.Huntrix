@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 607f9a680acfabd4caefdc3b562550f2, type: 3}
+  m_Name: Romance_Enemy_Prototype
+  m_EditorClassIdentifier:
+  id: romance_enemy_prototype-prototype
+  attack: {fileID: 11400000, guid: d0ed21a7af354cbc86a51d42e7ffd463, type: 2}
+  moveSpeed: 2.2
+  detectionRange: 14
+  attackRange: 6
+  telegraphDuration: 0.65
+  recoveryDuration: 0.8

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 607f9a680acfabd4caefdc3b562550f2, type: 3}
+  m_Name: JabBehavior
+  m_EditorClassIdentifier:
+  id: 6d3a0e4d83d247bf82ea2b9fdbb890ad
+  attack: {fileID: 11400000, guid: 8d78d5af994146b9a39b604b812284b8, type: 2}
+  moveSpeed: 2.5
+  detectionRange: 12
+  attackRange: 1.7
+  telegraphDuration: 0.25
+  recoveryDuration: 0.3

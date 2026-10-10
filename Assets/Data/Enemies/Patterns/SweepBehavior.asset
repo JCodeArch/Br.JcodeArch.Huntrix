@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 607f9a680acfabd4caefdc3b562550f2, type: 3}
+  m_Name: SweepBehavior
+  m_EditorClassIdentifier:
+  id: 369617eadfe94454a04b3c400af82f34
+  attack: {fileID: 11400000, guid: 1ab72003d5c4420eb28942a94d9379b7, type: 2}
+  moveSpeed: 2.5
+  detectionRange: 12
+  attackRange: 3
+  telegraphDuration: 0.75
+  recoveryDuration: 0.5

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4f7330040336744e83ea6d2da2c1d6a, type: 3}
+  m_Name: EliteJab
+  m_EditorClassIdentifier: HuntrX.Runtime::HuntrX.Data.AttackDefinition
+  id: 14a590e1cf664edcbb69bb2679b2b8ad
+  damage: 8
+  startupDuration: 0.08
+  activeDuration: 0.12
+  recoveryDuration: 0.3
+  hitboxSize: {x: 1.1, y: 0.8}
+  hitboxOffset: {x: 0.8, y: 0.1}
+  horizontalKnockbackImpulse: 2
+  upwardKnockbackImpulse: 0

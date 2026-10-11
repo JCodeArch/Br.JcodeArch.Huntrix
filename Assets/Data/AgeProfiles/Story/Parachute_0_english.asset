@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e15c485c1a4c4726b35ade98b52c3f0b, type: 3}
+  m_Name: Parachute_0_english
+  id: 59c2918fc3624b9bac374af000d6cc16
+  duration: 4
+  variants:
+  - band: 0
+    text: "Let us go to the stage together!"
+    intensity: 0.2
+  - band: 1
+    text: "Let us go to the stage together!"
+    intensity: 0.3
+  - band: 2
+    text: "Next stop is the stage. Hold tight!"
+    intensity: 0.45
+  - band: 3
+    text: "Next stop is the stage. Hold tight!"
+    intensity: 0.6
+  - band: 4
+    text: "Next stop is the stage. Hold tight!"
+    intensity: 0.75

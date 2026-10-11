@@ -1,0 +1,160 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1001}
+  - component: {fileID: 970001}
+  - component: {fileID: 970013}
+  - component: {fileID: 970014}
+  m_Layer: 0
+  m_Name: AgeStoryNarrative_Prototype
+  m_TagString: Untagged
+  m_IsActive: 1
+--- !u!4 &1001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!114 &970001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a04f3f3b98b402aa0a9f5a714316712, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: HuntrX.Runtime::HuntrX.Gameplay.AgeAccessibility.AgeProfileSelection2D
+  current: {fileID: 11400000, guid: f40231b4290b468e8437e89f74c68b1c, type: 2}
+--- !u!114 &970013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 540ec3b5159b4586befa531ea3336f08, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  profiles: {fileID: 970001}
+  presenter: {fileID: 970014}
+  initialSequence: {fileID: 11400000, guid: 9aaac9f71fb04986ab3ebebe09cdeb54, type: 2}
+  autoPresent: 1
+  lines:
+  - sequence: {fileID: 11400000, guid: 998ee57e824a4a6b9ddbd1ebc778f73b, type: 2}
+    line: 0
+    portuguese: {fileID: 11400000, guid: e573f7d9959f495eafcb8eaf00dd5e85, type: 2}
+    english: {fileID: 11400000, guid: 60376ab7998f4383abe2a1021f6f8580, type: 2}
+  - sequence: {fileID: 11400000, guid: 998ee57e824a4a6b9ddbd1ebc778f73b, type: 2}
+    line: 1
+    portuguese: {fileID: 11400000, guid: af76b46078c4496cb993167b7fe67f54, type: 2}
+    english: {fileID: 11400000, guid: 1c95c67ecfe941069e55963f3e757812, type: 2}
+  - sequence: {fileID: 11400000, guid: ad22e03e92ed4c2d85f041fc134f3d6a, type: 2}
+    line: 0
+    portuguese: {fileID: 11400000, guid: 4fe2025f8e784335af54c30ba4b11d2c, type: 2}
+    english: {fileID: 11400000, guid: a527315c57a74c688f0d02c5de39e2b1, type: 2}
+  - sequence: {fileID: 11400000, guid: ad22e03e92ed4c2d85f041fc134f3d6a, type: 2}
+    line: 1
+    portuguese: {fileID: 11400000, guid: d73915e5de8346178b0a514ec7dec977, type: 2}
+    english: {fileID: 11400000, guid: bd75a66a9a48410fb7357886d275a0ac, type: 2}
+  - sequence: {fileID: 11400000, guid: ad22e03e92ed4c2d85f041fc134f3d6a, type: 2}
+    line: 2
+    portuguese: {fileID: 11400000, guid: 7fd5cfc0b8914bbe90190b40c6c8c21d, type: 2}
+    english: {fileID: 11400000, guid: 2e04be5db9f64a44afc7c287ca10a58b, type: 2}
+  - sequence: {fileID: 11400000, guid: ad22e03e92ed4c2d85f041fc134f3d6a, type: 2}
+    line: 3
+    portuguese: {fileID: 11400000, guid: b21570b3d5bc414bbb71b2af0a39ebb6, type: 2}
+    english: {fileID: 11400000, guid: cb538df4da7842a5aa0b227087447a99, type: 2}
+  - sequence: {fileID: 11400000, guid: ad22e03e92ed4c2d85f041fc134f3d6a, type: 2}
+    line: 4
+    portuguese: {fileID: 11400000, guid: cfea26dbf93846cba4df40d0176f9fd1, type: 2}
+    english: {fileID: 11400000, guid: 9b1ca8b039d9432a9b57dd7fa2a642dd, type: 2}
+  - sequence: {fileID: 11400000, guid: 9aaac9f71fb04986ab3ebebe09cdeb54, type: 2}
+    line: 0
+    portuguese: {fileID: 11400000, guid: 81808e701d3d47e88d126ee9fbfe301c, type: 2}
+    english: {fileID: 11400000, guid: 55110850777c4f6b9311ec4bd3c3ddc1, type: 2}
+  - sequence: {fileID: 11400000, guid: 3ad12c97a5a042f3bad0cd7eeb327eee, type: 2}
+    line: 0
+    portuguese: {fileID: 11400000, guid: 54c1fa180f544313882af117a35ca2aa, type: 2}
+    english: {fileID: 11400000, guid: 38ec0d7f7871462e9d65d94f87417c48, type: 2}
+  - sequence: {fileID: 11400000, guid: 3ad12c97a5a042f3bad0cd7eeb327eee, type: 2}
+    line: 1
+    portuguese: {fileID: 11400000, guid: 4047385de1c6483fa437234871314fda, type: 2}
+    english: {fileID: 11400000, guid: 5dce45f68a4b487ea38d14bedeb15860, type: 2}
+  - sequence: {fileID: 11400000, guid: d81cb4004584456899fbb165473e3332, type: 2}
+    line: 0
+    portuguese: {fileID: 11400000, guid: 76d3a5461ea2436f9bc8e4c51d72b552, type: 2}
+    english: {fileID: 11400000, guid: 57d80c82a61b4341b7190fe2a576de2d, type: 2}
+  - sequence: {fileID: 11400000, guid: 3ea94383f9db40308a2ebf2b7d0a5c32, type: 2}
+    line: 0
+    portuguese: {fileID: 11400000, guid: b50b794d4dae4fd8a72b3cbc7239217c, type: 2}
+    english: {fileID: 11400000, guid: d2766332569247a4bb884b2428fd677b, type: 2}
+  - sequence: {fileID: 11400000, guid: 7a745303bdab4faea7f15d06249153f5, type: 2}
+    line: 0
+    portuguese: {fileID: 11400000, guid: 51fe9a674eb64bea8b2854e0a73fad94, type: 2}
+    english: {fileID: 11400000, guid: bfb829462a714bb6b08f8f94913f412a, type: 2}
+  - sequence: {fileID: 11400000, guid: eb20e99fad744b1ba389435d19fe00ca, type: 2}
+    line: 0
+    portuguese: {fileID: 11400000, guid: d7f20bd376b64e25a349064b266dfd1e, type: 2}
+    english: {fileID: 11400000, guid: ea958a9c757e4a0385dd128ade0cbdc4, type: 2}
+  - sequence: {fileID: 11400000, guid: eb20e99fad744b1ba389435d19fe00ca, type: 2}
+    line: 1
+    portuguese: {fileID: 11400000, guid: f23a4680b6394689b9a671ded6b97920, type: 2}
+    english: {fileID: 11400000, guid: 0aa2d04d01dd46c896be56a5b61d7c1c, type: 2}
+  - sequence: {fileID: 11400000, guid: 5fdfe36a9ef6441789dbf50ede1001fe, type: 2}
+    line: 0
+    portuguese: {fileID: 11400000, guid: c7063b22c904448987b53e8fccb9c563, type: 2}
+    english: {fileID: 11400000, guid: d17a90a14f7c4652b66d50464f7eb284, type: 2}
+  - sequence: {fileID: 11400000, guid: 5fdfe36a9ef6441789dbf50ede1001fe, type: 2}
+    line: 1
+    portuguese: {fileID: 11400000, guid: 2517bbac7d954eeebc95a46e394483e4, type: 2}
+    english: {fileID: 11400000, guid: e44bdba619614593abfafe6bab730494, type: 2}
+  - sequence: {fileID: 11400000, guid: bee4e1a871d04693afdceb5ac107eff7, type: 2}
+    line: 0
+    portuguese: {fileID: 11400000, guid: bcca88823e554b108d7b5c524860d65a, type: 2}
+    english: {fileID: 11400000, guid: 2f983822222f4e14af8dbcb145532439, type: 2}
+  - sequence: {fileID: 11400000, guid: bee4e1a871d04693afdceb5ac107eff7, type: 2}
+    line: 1
+    portuguese: {fileID: 11400000, guid: ee287f4bcb65402fa01376ac85d58f3d, type: 2}
+    english: {fileID: 11400000, guid: 7a4a03eee4f84255963465dc3402da2d, type: 2}
+  - sequence: {fileID: 11400000, guid: d2d64bdf8c0347e28cdc1fd50ac4afe7, type: 2}
+    line: 0
+    portuguese: {fileID: 11400000, guid: d03772f11dcf4cdbb95b010758091091, type: 2}
+    english: {fileID: 11400000, guid: 2cfa7e2704994e07b9225d69ccfd973c, type: 2}
+  - sequence: {fileID: 11400000, guid: d2d64bdf8c0347e28cdc1fd50ac4afe7, type: 2}
+    line: 1
+    portuguese: {fileID: 11400000, guid: 859325b668364533bf6dbb5c33d5a962, type: 2}
+    english: {fileID: 11400000, guid: cc7d22da65734772a949226b00132566, type: 2}
+--- !u!114 &970014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca0b89754b0243bf84fa48538366a835, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  english: 0
+  audioManager: {fileID: 0}
+  narrativePolicy: {fileID: 970013}

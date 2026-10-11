@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e15c485c1a4c4726b35ade98b52c3f0b, type: 3}
+  m_Name: Show_1_english
+  id: 436b45a770f8433592d21d035adff9f5
+  duration: 4
+  variants:
+  - band: 0
+    text: "Let us sing for our friends."
+    intensity: 0.2
+  - band: 1
+    text: "Let us sing for our friends."
+    intensity: 0.3
+  - band: 2
+    text: "This performance is for everyone who believed in us."
+    intensity: 0.45
+  - band: 3
+    text: "This performance is for everyone who believed in us."
+    intensity: 0.6
+  - band: 4
+    text: "This performance is for everyone who believed in us."
+    intensity: 0.75

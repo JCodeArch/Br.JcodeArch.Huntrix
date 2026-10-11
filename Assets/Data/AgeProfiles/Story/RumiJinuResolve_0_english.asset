@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e15c485c1a4c4726b35ade98b52c3f0b, type: 3}
+  m_Name: RumiJinuResolve_0_english
+  id: 4edecc183b484e07ba06cf060bcac61e
+  duration: 4
+  variants:
+  - band: 0
+    text: "We can choose to help now."
+    intensity: 0.2
+  - band: 1
+    text: "We can choose to help now."
+    intensity: 0.3
+  - band: 2
+    text: "The past does not decide what we do now."
+    intensity: 0.45
+  - band: 3
+    text: "The past does not decide what we do now."
+    intensity: 0.6
+  - band: 4
+    text: "The past does not decide what we do now."
+    intensity: 0.75

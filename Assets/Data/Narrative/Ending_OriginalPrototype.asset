@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5407f8d014644b6ac2e4872ee0e733e, type: 3}
+  m_Name: Ending_OriginalPrototype
+  m_EditorClassIdentifier:
+  cueId: ending.gwi-ma.defeated
+  charactersPerSecond: 35
+  lines:
+  - speaker: "Jinu"
+    portuguese: "Rumi, continue. Eu escolho proteger vocês."
+    english: "Rumi, keep going. I choose to protect you."
+    portraitColor: {r: 0.65, g: 0.35, b: 0.9, a: 1}
+    voice: {fileID: 0}
+  - speaker: "Narrador"
+    portuguese: "Jinu entrega sua última força para proteger Rumi. Seu sacrifício rompe o domínio de Gwi-Ma."
+    english: "Jinu gives his last strength to protect Rumi. His sacrifice breaks Gwi-Ma’s hold."
+    portraitColor: {r: 0.65, g: 0.35, b: 0.9, a: 1}
+    voice: {fileID: 0}
+  - speaker: "Rumi"
+    portuguese: "Eu vou lembrar da sua escolha. E vamos seguir juntas."
+    english: "I will remember your choice. And we will carry on together."
+    portraitColor: {r: 0.65, g: 0.35, b: 0.9, a: 1}
+    voice: {fileID: 0}
+  - speaker: "Mira"
+    portuguese: "O Honmoon pode se reconstruir. Nós também."
+    english: "The Honmoon can be rebuilt. So can we."
+    portraitColor: {r: 0.65, g: 0.35, b: 0.9, a: 1}
+    voice: {fileID: 0}
+  - speaker: "Zoey"
+    portuguese: "Nossa voz continua."
+    english: "Our voice carries on."
+    portraitColor: {r: 0.65, g: 0.35, b: 0.9, a: 1}
+    voice: {fileID: 0}

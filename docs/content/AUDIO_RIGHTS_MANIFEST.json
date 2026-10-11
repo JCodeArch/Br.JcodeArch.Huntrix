@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "production_release_clearance": "pending",
+  "third_party_audio_embedded": 0,
+  "assets": [
+    {
+      "path": "Assets/Data/Audio/Attack_OriginalPrototype.wav",
+      "sha256": "03ddc3b15a854be3bfc7ba7b4caeb8f4e7163d259c605f61608001f66dab1277",
+      "origin": "original repository synthesis",
+      "status": "prototype",
+      "external_recording": false
+    },
+    {
+      "path": "Assets/Data/Audio/Combat_OriginalPrototype.wav",
+      "sha256": "588f787a7b9c6cc7fe24c87e917cf6cf33f0a46889ac062660ba08e485ba2b83",
+      "origin": "original repository synthesis",
+      "status": "prototype",
+      "external_recording": false
+    },
+    {
+      "path": "Assets/Data/Audio/Combo_OriginalPrototype.wav",
+      "sha256": "19224eb75b61820bf47c5f17a86d117062f94dc79ace1e711d3528d3cc8ce665",
+      "origin": "original repository synthesis",
+      "status": "prototype",
+      "external_recording": false
+    },
+    {
+      "path": "Assets/Data/Audio/Crisis_OriginalPrototype.wav",
+      "sha256": "eaabe481e9f6bd35eb97a5796ba102fe036e0ac9146f0e04650aacc12a2d1242",
+      "origin": "original repository synthesis",
+      "status": "prototype",
+      "external_recording": false
+    },
+    {
+      "path": "Assets/Data/Audio/Crowd_OriginalPrototype.wav",
+      "sha256": "b6b8db713ba65a94c4fe29ea5d7c1aaab313cd1b74da9b296710a286a7987600",
+      "origin": "original repository synthesis",
+      "status": "prototype",
+      "external_recording": false
+    },
+    {
+      "path": "Assets/Data/Audio/Dash_OriginalPrototype.wav",
+      "sha256": "d9cf5038c27022d92da1c57f4f9e66ca5cdfa48ddca4724881cf1ca0c87fb5d1",
+      "origin": "original repository synthesis",
+      "status": "prototype",
+      "external_recording": false
+    },
+    {
+      "path": "Assets/Data/Audio/Enemy_OriginalPrototype.wav",
+      "sha256": "f7cf700324faa926c447076e3648b1f6acb6bea797c160157bd14db9af05afb3",
+      "origin": "original repository synthesis",
+      "status": "prototype",
+      "external_recording": false
+    },
+    {
+      "path": "Assets/Data/Audio/Exploration_OriginalPrototype.wav",
+      "sha256": "1ded7a5eab015f4dc992edad239ba6fb99bdfca000a4188e454af562b31d2ec9",
+      "origin": "original repository synthesis",
+      "status": "prototype",
+      "external_recording": false
+    },
+    {
+      "path": "Assets/Data/Audio/Hit_OriginalPrototype.wav",
+      "sha256": "a18009fccf00d83ae6876f79f1ccba3091ac7701d4075871215fa6c5b0289bef",
+      "origin": "original repository synthesis",
+      "status": "prototype",
+      "external_recording": false
+    },
+    {
+      "path": "Assets/Data/Audio/Honmoon_OriginalPrototype.wav",
+      "sha256": "21ddf6545eeb6461e77c202de9d8f692f31d51a2139fe747e645b7a90a795725",
+      "origin": "original repository synthesis",
+      "status": "prototype",
+      "external_recording": false
+    },
+    {
+      "path": "Assets/Data/Audio/Parry_OriginalPrototype.wav",
+      "sha256": "8e835ae4a8ba9da4bd66de2907b7f7f9db735a32fe0ecf504ed2ccfbbdcf76e7",
+      "origin": "original repository synthesis",
+      "status": "prototype",
+      "external_recording": false
+    },
+    {
+      "path": "Assets/Data/Audio/Rescue_OriginalPrototype.wav",
+      "sha256": "f6496ecf64eb08a9090b4c6966ac7b48de20149d2e36474a4f7fbc678f279622",
+      "origin": "original repository synthesis",
+      "status": "prototype",
+      "external_recording": false
+    },
+    {
+      "path": "Assets/Data/Audio/Special_OriginalPrototype.wav",
+      "sha256": "5918a052d7c73d5aaad2ba24151a00dba6d92ce400486fa2d43cb5de53cbc34a",
+      "origin": "original repository synthesis",
+      "status": "prototype",
+      "external_recording": false
+    }
+  ],
+  "production_gates": [
+    "underlying adaptation clearance",
+    "approved final story and character assets",
+    "replacement music and recording rights",
+    "contributor provenance"
+  ]
+}

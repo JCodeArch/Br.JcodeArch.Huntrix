@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_Component:
+  - component: {fileID: 1001}
+  - component: {fileID: 1002}
+  m_Layer: 0
+  m_Name: GameAudio_OriginalPrototype
+  m_TagString: Untagged
+  m_IsActive: 1
+--- !u!4 &1001
+Transform:
+  m_ObjectHideFlags: 0
+  m_GameObject: {fileID: 1000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!114 &1002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_GameObject: {fileID: 1000}
+  m_Enabled: 1
+  m_Script: {fileID: 11500000, guid: 57c9adb9cb004f0387c1791b4e89a17a, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  cues:
+  - {fileID: 8300000, guid: f83c908cda784844b0ad7a2b8cc5a90c, type: 3}
+  - {fileID: 8300000, guid: 9f4c0f3541c843cbb723d9064e26eadf, type: 3}
+  - {fileID: 8300000, guid: 5c5b85dd58d4459f94dccac384db84da, type: 3}
+  - {fileID: 8300000, guid: a2be3210f8554b2586b0a7fc22e19324, type: 3}
+  - {fileID: 8300000, guid: 7a750bf2cf134dc5b19632fefe78ea56, type: 3}
+  - {fileID: 8300000, guid: 177a77156a364b73a616162b5ff55ebf, type: 3}
+  - {fileID: 8300000, guid: 11d90673f518491b91baae2246cca1f4, type: 3}
+  layers:
+  - {fileID: 8300000, guid: 54ca8367d7df4154b03540fc86125e55, type: 3}
+  - {fileID: 8300000, guid: 388d389633f64d03b0db4031a7f446ad, type: 3}
+  - {fileID: 8300000, guid: 6b27103a0ae4446ea082ac4ce8b87fac, type: 3}
+  - {fileID: 8300000, guid: f28b36d546f0433db4b26dfd63a0446e, type: 3}
+  - {fileID: 8300000, guid: 850d8bc98424457eb55e057153b0a3db, type: 3}
+  - {fileID: 8300000, guid: f3948ede9782416b8706912a7b5caceb, type: 3}
+  voiceCount: 12
+  masterVolume: 0.65
+  fadeSpeed: 2

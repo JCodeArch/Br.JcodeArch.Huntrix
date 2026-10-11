@@ -37,7 +37,7 @@ namespace HuntrX.Gameplay.Enemies
             if(!cycleStarted)
             {
                 if(!agent.TryConfigure(alternate?definition.AlternateBehavior:definition.PrimaryBehavior,out _)) return;
-                attacksRemaining=alternate?definition.AlternateBurstCount:definition.BurstCount;
+                attacksRemaining=HuntrX.Gameplay.AgeAccessibility.AgeDifficultyPolicy2D.BurstCount(agent,alternate?definition.AlternateBurstCount:definition.BurstCount);
                 cycleStarted=true; int startedRevision=revision; int startedCount=attacksRemaining; var handlers=PatternStarted;
                 if(handlers!=null) foreach(Action<int> handler in handlers.GetInvocationList())
                     try { handler(startedCount); } catch(Exception exception) { Debug.LogException(exception,this); }

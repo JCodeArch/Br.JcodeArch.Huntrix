@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 348ec0747f6349a187c4cd81489d6e66, type: 3}
+  m_Name: FilmRoute_Prototype
+  m_EditorClassIdentifier:
+  id: b8af3e147a9d4303914d965fa008dd50
+  stages:
+  - {fileID: 11400000, guid: a6a8db0008b94c63987c40ca17e8d896, type: 2}
+  - {fileID: 11400000, guid: d2576f2d2c3c4d65877fb03b026a54fc, type: 2}
+  - {fileID: 11400000, guid: b3d8c78dc2e946f3baf95cb97c29046e, type: 2}
+  - {fileID: 11400000, guid: b3912d820c9b468a80bd6f181f715354, type: 2}
+  - {fileID: 11400000, guid: d203085b35914f639c8d615421b027d8, type: 2}
+  - {fileID: 11400000, guid: cd28e01ff39f41939ed3c1561d36617d, type: 2}
+  - {fileID: 11400000, guid: 22cbf760003c4fcc8716458b2b43614a, type: 2}
+  - {fileID: 11400000, guid: ba840b2f3fd2439292b30e63cc4664e4, type: 2}
+  - {fileID: 11400000, guid: 8994f534112c4ec4b7234fdf4762588c, type: 2}

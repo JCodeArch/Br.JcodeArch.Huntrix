@@ -1,4 +1,7 @@
 {
   "name": "HuntrX.Runtime",
-  "rootNamespace": "HuntrX"
+  "rootNamespace": "HuntrX",
+  "references": [
+    "Unity.InputSystem"
+  ]
 }

@@ -1,0 +1,5 @@
+# Card 59: Boss Arenas
+
+Explicit composition calls Configure(builder, manager, bossPrefab, fanRegistry, honmoon, performance), then TrySpawn with enrolled fans and a live player. The independent boss starts at the authored ArenaCenter and targets the player. Every 2.5 seconds a bounded registry scan drains eight soul from the nearest unprotected fan within twelve units and removes 0.25 Honmoon per accepted soul loss. These values are provisional arena-pressure tuning. The arena starts and finishes a performance run only if it owns that run; existing runs remain externally owned. Boss death reserves completion before callbacks and exposes Completed(snapshot). Clear cancels owned metrics and destroys only its boss. Fans, Honmoon and stage geometry remain externally owned. Original boss behavior supplies attack telegraphs; the provisional fan drain pulse is timed rather than animated. Runtime arena balance and event-order tests are deferred.
+
+Static review is separate from Unity execution; no runtime pass is claimed.

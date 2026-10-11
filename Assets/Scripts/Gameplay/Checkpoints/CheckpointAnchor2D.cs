@@ -9,6 +9,17 @@ namespace HuntrX.Gameplay.Checkpoints
         [SerializeField] private string checkpointId;
         [SerializeField] private Transform respawnPoint;
 
+        public bool TryConfigure(string identity, Transform destination)
+        {
+            if (!isActiveAndEnabled || !string.IsNullOrWhiteSpace(checkpointId) || string.IsNullOrWhiteSpace(identity) || destination == null ||
+                !destination.gameObject.activeInHierarchy) return false;
+            Vector3 position = destination.position; Quaternion rotation = destination.rotation;
+            if (!IsFinite(position.x) || !IsFinite(position.y) || !IsFinite(position.z) ||
+                !IsFinite(rotation.x) || !IsFinite(rotation.y) || !IsFinite(rotation.z) ||
+                !IsFinite(rotation.w) || IsZeroRotation(rotation)) return false;
+            checkpointId = identity; respawnPoint = destination; return true;
+        }
+
         public bool TryGetCheckpoint(out string id, out Vector3 position, out Quaternion rotation)
         {
             id = string.Empty;

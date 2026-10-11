@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1d7408ddb84eb8b0f0ed684f8207df, type: 3}
+  m_Name: Ages9To12
+  m_EditorClassIdentifier:
+  id: c6580fc59c744805ae5444554c832d4f
+  band: 2
+  visualIntensity: 0.45
+  allowBlood: 0
+  particleBudget: 8
+  playerDamageTaken: 0.8
+  enemyDamageTaken: 1.1
+  enemyTelegraphMultiplier: 1.2
+  maximumBurstCount: 3
+  checkpointAssistance: 0
+  checkpointRadius: 1
+  narrativeIntensity: 0.45

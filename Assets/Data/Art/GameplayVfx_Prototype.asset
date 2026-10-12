@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31064fe632004be29c4abf4eb91ea8da, type: 3}
+  m_Name: GameplayVfx_Prototype
+  m_EditorClassIdentifier:
+  id: gameplay-vfx-original-v1
+  capacity: 32
+  lifetime: 0.55
+  radius: 0.45
+  lineWidth: 0.055
+  impact: {r: 1, g: 0.75, b: 0.2, a: 1}
+  energy: {r: 0.3, g: 0.8, b: 1, a: 1}
+  honmoon: {r: 0.55, g: 0.4, b: 1, a: 1}
+  special: {r: 1, g: 0.6, b: 0.8, a: 1}
+  soulDrain: {r: 0.55, g: 0.9, b: 0.7, a: 1}
+  telegraph: {r: 1, g: 0.35, b: 0.3, a: 1}

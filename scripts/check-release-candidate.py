@@ -37,12 +37,17 @@ def verify(manifest):
         report=json.loads(artifact(data['performance'][tier]).read_text())
         for field in ('deviceModel','operatingSystem','processorType','graphicsDeviceName','scene','scenario'):
             if not isinstance(report.get(field),str) or not report[field].strip():raise ValueError('Device/scenario metadata is incomplete')
-        if report.get('systemMemoryMegabytes',0)<=0 or report.get('processorCount',0)<=0:raise ValueError('Device hardware metadata is unavailable')
+        if any(type(report.get(field)) is not int or report[field]<=0 for field in ('systemMemoryMegabytes','processorCount')):raise ValueError('Device hardware metadata is unavailable')
         identity=(report['deviceModel'],report['processorType'],report['graphicsDeviceName'],report['systemMemoryMegabytes'])
         if identity in hardware:raise ValueError('Different device tiers require representative hardware, not relabeled same-device captures')
         hardware.add(identity)
         if data['deviceTierAssignments'][tier]!=report['deviceModel']:raise ValueError('Device capture does not match reviewed tier assignment')
         if not report.get('buildGuid') or report['buildGuid'] not in build_guids:raise ValueError('Performance capture is from an unrelated build')
+        if type(report.get('samples')) is not int or not (600<=report['samples']<=3600):raise ValueError('Insufficient captured device frames')
+        for metric,limit in (('frameP95Milliseconds',16.67),('cpuP95Milliseconds',10.0),('gpuP95Milliseconds',12.0)):
+            value=report.get(metric)
+            if type(value) not in (int,float) or not (0<value<=limit):raise ValueError('Measured percentile does not satisfy prototype budget')
+        if type(report.get('peakMemoryBytes')) is not int or not (0<report['peakMemoryBytes']<=536870912):raise ValueError('Measured memory budget is exceeded or unavailable')
         if report.get('tier')!=tier or report.get('isEditor') is not False or report.get('measured') is not True or report.get('withinBudget') is not True:raise ValueError('Missing measured device performance acceptance')
     for card in ('100','101','102','103','104'):
         report=json.loads(artifact(data['qa'][card]).read_text())

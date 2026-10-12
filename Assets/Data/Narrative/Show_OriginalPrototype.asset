@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5407f8d014644b6ac2e4872ee0e733e, type: 3}
+  m_Name: Show_OriginalPrototype
+  m_EditorClassIdentifier:
+  cueId: transition.show
+  charactersPerSecond: 35
+  lines:
+  - speaker: "Mira"
+    portuguese: "Chegamos. Agora deixem nossa união falar."
+    english: "We made it. Now let our unity speak."
+    portraitColor: {r: 0.65, g: 0.35, b: 0.9, a: 1}
+    voice: {fileID: 0}
+  - speaker: "Rumi"
+    portuguese: "Esta apresentação é para quem acreditou em nós."
+    english: "This performance is for everyone who believed in us."
+    portraitColor: {r: 0.65, g: 0.35, b: 0.9, a: 1}
+    voice: {fileID: 0}

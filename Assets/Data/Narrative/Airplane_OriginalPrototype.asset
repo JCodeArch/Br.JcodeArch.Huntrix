@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5407f8d014644b6ac2e4872ee0e733e, type: 3}
+  m_Name: Airplane_OriginalPrototype
+  m_EditorClassIdentifier:
+  cueId: transition.airplane
+  charactersPerSecond: 35
+  lines:
+  - speaker: "Rumi"
+    portuguese: "Temos um show pela frente. Vamos chegar juntas."
+    english: "We have a show ahead. We arrive together."
+    portraitColor: {r: 0.65, g: 0.35, b: 0.9, a: 1}
+    voice: {fileID: 0}
+  - speaker: "Zoey"
+    portuguese: "Primeiro, vamos cuidar de quem está aqui."
+    english: "First, let us look after everyone here."
+    portraitColor: {r: 0.65, g: 0.35, b: 0.9, a: 1}
+    voice: {fileID: 0}

@@ -1,0 +1,5 @@
+# Card 84: Final Ending
+
+GwiMaBossController2D now stores its immutable accepted FinalBossOutcome2D before callbacks and exposes TryGetFinalOutcome without replaying the event. FinalBossEndingController2D reconciles late/re-enabled listeners against its explicit bound boss and matching authored cue. It reserves once and hands off an independent scene-owned EndingPresentation2D, so destruction of the defeated combat actor does not remove dialogue or credits. The GwiMaEnding prototype composes the actual three-phase boss with this handoff. Original PT/EN text presents Jinu’s sacrifice, Rumi’s response and a resolution; there is no film dialogue or licensed music. Credits can be dismissed. Generic age policy may be bound and suppresses raw voice. Final Unity validation must include disabled listeners, callback destruction, cancellation and ending handoff. Ending production, approved cinematic staging and rights clearance remain pending.
+
+No Unity execution, audio listening pass or runtime frame-rate result is claimed. User deferred tests to the final phase.

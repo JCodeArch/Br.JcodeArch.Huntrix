@@ -26,6 +26,8 @@ namespace HuntrX.Gameplay.BossFinal
         private bool subscribed,endingPublished,suspendedPattern;
         public GwiMaPhase2D Phase { get; private set; }
         public GwiMaBossDefinition Definition=>definition;
+        private FinalBossOutcome2D storedOutcome;
+        public bool TryGetFinalOutcome(out FinalBossOutcome2D value){value=storedOutcome;return endingPublished;}
         public event Action<GwiMaPhase2D> PhaseChanged;
         public event Action<FinalBossOutcome2D> EndingRequested;
         private void Awake()
@@ -61,10 +63,11 @@ namespace HuntrX.Gameplay.BossFinal
         private void HandleDeath(DamageReceiver2D actor)
         {
             if(actor!=self||endingPublished||definition==null||!definition.IsValid(out _))return;
+            storedOutcome=new FinalBossOutcome2D(definition.Id,definition.EndingCue,transform.position);
             endingPublished=true;Phase=GwiMaPhase2D.Defeated;
             if(pattern!=null)pattern.enabled=false;
             agent?.Stop();
-            FinalBossOutcome2D outcome=new FinalBossOutcome2D(definition.Id,definition.EndingCue,transform.position);
+            FinalBossOutcome2D outcome=storedOutcome;
             PublishPhase(Phase);
             var handlers=EndingRequested;
             if(handlers!=null)foreach(Action<FinalBossOutcome2D> handler in handlers.GetInvocationList())

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e15c485c1a4c4726b35ade98b52c3f0b, type: 3}
+  m_Name: Ending_1_portuguese
+  id: e0557a83e4ac48c7b02df428ffd83a3a
+  duration: 4
+  variants:
+  - band: 0
+    text: "Jinu usa sua energia para ajudar Rumi. Agora seus amigos estão seguros."
+    intensity: 0.2
+  - band: 1
+    text: "Jinu usa sua energia para ajudar Rumi. Agora seus amigos estão seguros."
+    intensity: 0.3
+  - band: 2
+    text: "Jinu usa toda a sua força para proteger Rumi. Sua escolha liberta os amigos de Gwi-Ma."
+    intensity: 0.45
+  - band: 3
+    text: "Jinu entrega sua última força para proteger Rumi. Seu sacrifício rompe o domínio de Gwi-Ma."
+    intensity: 0.6
+  - band: 4
+    text: "Jinu entrega sua última força para proteger Rumi. Seu sacrifício rompe o domínio de Gwi-Ma."
+    intensity: 0.75

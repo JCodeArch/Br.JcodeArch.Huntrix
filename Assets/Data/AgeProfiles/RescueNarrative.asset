@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e15c485c1a4c4726b35ade98b52c3f0b, type: 3}
+  m_Name: RescueNarrative
+  m_EditorClassIdentifier:
+  id: 8171ef4bbf7e4b04a7a9dea5e01232d9
+  duration: 4
+  variants:
+  - band: 0
+    text: "Vamos ajudar os fãs, juntos!"
+    intensity: 0.2
+  - band: 1
+    text: "Vamos devolver a energia aos fãs."
+    intensity: 0.3
+  - band: 2
+    text: "A drenagem está enfraquecendo os fãs. Vamos interrompê-la."
+    intensity: 0.45
+  - band: 3
+    text: "Os fãs estão perdendo suas forças. Precisamos agir antes que a drenagem avance."
+    intensity: 0.6
+  - band: 4
+    text: "A drenagem está consumindo a energia dos fãs. Interrompa a fonte e recupere os sobreviventes."
+    intensity: 0.75

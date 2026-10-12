@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e15c485c1a4c4726b35ade98b52c3f0b, type: 3}
+  m_Name: Parachute_0_portuguese
+  id: 00121119e4e34e55bed2ddc9e64d39c9
+  duration: 4
+  variants:
+  - band: 0
+    text: "Vamos para o palco, juntas!"
+    intensity: 0.2
+  - band: 1
+    text: "Vamos para o palco, juntas!"
+    intensity: 0.3
+  - band: 2
+    text: "A próxima parada é o palco. Segurem firme!"
+    intensity: 0.45
+  - band: 3
+    text: "A próxima parada é o palco. Segurem firme!"
+    intensity: 0.6
+  - band: 4
+    text: "A próxima parada é o palco. Segurem firme!"
+    intensity: 0.75

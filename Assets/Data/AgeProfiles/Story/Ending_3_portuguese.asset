@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e15c485c1a4c4726b35ade98b52c3f0b, type: 3}
+  m_Name: Ending_3_portuguese
+  id: f62dd4dc938f4f959932809825ea5bc6
+  duration: 4
+  variants:
+  - band: 0
+    text: "Vamos reconstruir juntos."
+    intensity: 0.2
+  - band: 1
+    text: "Vamos reconstruir juntos."
+    intensity: 0.3
+  - band: 2
+    text: "O Honmoon pode se reconstruir. Nós também."
+    intensity: 0.45
+  - band: 3
+    text: "O Honmoon pode se reconstruir. Nós também."
+    intensity: 0.6
+  - band: 4
+    text: "O Honmoon pode se reconstruir. Nós também."
+    intensity: 0.75

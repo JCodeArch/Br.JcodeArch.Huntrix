@@ -131,6 +131,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 1009}
   - component: {fileID: 1008}
   - component: {fileID: 1007}
   - component: {fileID: 1006}
@@ -184,6 +185,7 @@ MonoBehaviour:
   - {fileID: 1006}
   - {fileID: 1007}
   - {fileID: 1008}
+  - {fileID: 1009}
   camera: {fileID: 0}
   fanProfile: {fileID: 11400000, guid: e67bdc42980944b8b3eeb60f0eb1ad7b, type: 2}
   ramen: {fileID: 11400000, guid: 5d7138193cfc47b987181bf6757841b3, type: 2}
@@ -281,6 +283,21 @@ MonoBehaviour:
   fallHeight: 35
   terminalSpeed: 4
   landingWidth: 8
+--- !u!114 &1009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d28201900834f66bee2a9d5fa7c8a01, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  stage: {fileID: 11400000, guid: d2576f2d2c3c4d65877fb03b026a54fc, type: 2}
+  audioSink: {fileID: 0}
+  celebrationDuration: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -16,7 +16,15 @@ namespace HuntrX.Presentation.Art
         [SerializeField] private HonmoonController2D honmoon;
         [SerializeField] private HuntrXSpecialController2D special;
         [SerializeField] private FanSoulDrainController2D drainer;
+        private float visualIntensity=1f;private bool reducedFlashes;private bool validPolicy=true;
         private DamageReceiver2D boundActor;private EnemyAgent2D boundEnemy;private HonmoonController2D boundHonmoon;private HuntrXSpecialController2D boundSpecial;private FanSoulDrainController2D boundDrainer;
+        public void ClearActiveEffects(){if(pool!=null)pool.ClearActive();}
+        public void SetPresentationPolicy(float intensity,bool reduceFlashes,bool validProfile=true)
+        {
+            bool finite=!float.IsNaN(intensity)&&!float.IsInfinity(intensity)&&intensity>=0&&intensity<=1;
+            float next=finite?intensity:0f;bool nextValid=validProfile&&finite;bool nextReduced=reduceFlashes||!nextValid;
+            if(next!=visualIntensity||nextReduced!=reducedFlashes||nextValid!=validPolicy){visualIntensity=next;reducedFlashes=nextReduced;validPolicy=nextValid;if(pool!=null)pool.ClearActive();}
+        }
         public bool TryConfigure(GameplayVfxPool2D effects,DamageReceiver2D source,EnemyAgent2D telegraphSource=null,HonmoonController2D resource=null,HuntrXSpecialController2D union=null,FanSoulDrainController2D drain=null)
         { if(!isActiveAndEnabled||effects==null)return false;Unsubscribe();pool=effects;actor=source;enemy=telegraphSource;honmoon=resource;special=union;drainer=drain;Subscribe();return true; }
         public void Unbind(){Unsubscribe();actor=null;enemy=null;honmoon=null;special=null;drainer=null;}
@@ -33,7 +41,13 @@ namespace HuntrX.Presentation.Art
         }
         private void Unsubscribe(){if(boundActor!=null){boundActor.DamageDealt-=OnImpact;boundActor.DamageReceived-=OnImpact;}if(boundEnemy!=null)boundEnemy.StateChanged-=OnEnemy;if(boundHonmoon!=null)boundHonmoon.BandChanged-=OnBand;if(boundSpecial!=null){boundSpecial.StageChanged-=OnSpecial;boundSpecial.ChargeChanged-=OnEnergy;}if(boundDrainer!=null)boundDrainer.FanDrainAccepted-=OnDrain;boundActor=null;boundEnemy=null;boundHonmoon=null;boundSpecial=null;boundDrainer=null;}
         private Vector3 Origin=>actor!=null?actor.transform.position:transform.position;
-        private void Emit(GameplayVfxKind kind,Vector3 from,Vector3 to){if(isActiveAndEnabled&&pool!=null)pool.TryEmit(kind,from,to);}
+        private void Emit(GameplayVfxKind kind,Vector3 from,Vector3 to)
+        {
+            if(!isActiveAndEnabled||pool==null)return;
+            if(kind==GameplayVfxKind.Telegraph){float intensity=reducedFlashes||!validPolicy? .25f:Mathf.Max(.25f,visualIntensity);pool.TryEmit(kind,from,to,intensity,reducedFlashes||!validPolicy);return;}
+            if(reducedFlashes||!validPolicy||visualIntensity<=0)return;
+            pool.TryEmit(kind,from,to,visualIntensity);
+        }
         private void OnImpact(CombatImpactEvent hit){if(hit.Receiver!=null)Emit(GameplayVfxKind.Impact,hit.Receiver.transform.position,hit.Receiver.transform.position);}
         private void OnEnemy(EnemyState2D state){if(state==EnemyState2D.Telegraph&&enemy!=null)Emit(GameplayVfxKind.Telegraph,enemy.transform.position,enemy.transform.position);}
         private void OnBand(HonmoonBand band){Emit(GameplayVfxKind.Honmoon,Origin,Origin);}

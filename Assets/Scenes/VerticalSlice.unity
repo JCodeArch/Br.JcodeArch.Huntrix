@@ -131,6 +131,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 1010}
   - component: {fileID: 1009}
   - component: {fileID: 1008}
   - component: {fileID: 1007}
@@ -298,6 +299,20 @@ MonoBehaviour:
   stage: {fileID: 11400000, guid: d2576f2d2c3c4d65877fb03b026a54fc, type: 2}
   audioSink: {fileID: 0}
   celebrationDuration: 5
+--- !u!114 &1010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7d09e7be37a4746a277e08d1ff21288, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  session: {fileID: 1002}
+  observationSeconds: 60
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

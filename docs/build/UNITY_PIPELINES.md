@@ -6,12 +6,13 @@ Use a trusted runner with a preconfigured licensed Editor; this repository does 
 
 ```sh
 scripts/run-unity-tests.sh
-scripts/build-unity.sh android-dev /absolute/fresh/player.apk 'Assets/Scenes/EnemyLab.unity'
-scripts/build-unity.sh windows-dev /absolute/fresh/windows/player.exe 'Assets/Scenes/EnemyLab.unity'
-scripts/build-unity.sh ios /absolute/fresh/ios-project 'Assets/Scenes/EnemyLab.unity'
+export HUNTRX_BUILD_NUMBER=1 # Increase for subsequent Android/iOS artifacts.
+scripts/build-unity.sh android-dev /absolute/fresh/player.apk 'Assets/Scenes/VerticalSlice.unity'
+scripts/build-unity.sh windows-dev /absolute/fresh/windows/player.exe 'Assets/Scenes/VerticalSlice.unity'
+scripts/build-unity.sh ios /absolute/fresh/ios-project 'Assets/Scenes/VerticalSlice.unity'
 ```
 
-These scene arguments deliberately select a prototype lab, not a completed campaign. Substitute reviewed campaign scenes only when their bootstrap is ready. Each platform requires its module and supported host: iOS project export requires macOS; signed IPA/archive creation additionally requires Xcode and an authorized Apple signing configuration, not provided here. Windows distribution includes the EXE, matching Data directory and accompanying player files, not the EXE alone.
+These scene arguments select the authored seven-beat opening prototype, not a completed campaign. The default Editor build scene list also starts with VerticalSlice; SampleScene and CombatLab remain listed but disabled. Explicit script arguments can select a different reviewed lab for diagnostics. Runtime validation remains pending. Each platform requires its module and supported host: iOS project export requires macOS; signed IPA/archive creation additionally requires Xcode and an authorized Apple signing configuration, not provided here. Windows distribution includes the EXE, matching Data directory and accompanying player files, not the EXE alone.
 
 `HUNTRX_BUILD_NUMBER` must be an explicit positive integer for Android/iOS (CI may supply `GITHUB_RUN_NUMBER`). VERSION determines bundle version; platform numeric versions use its major.minor.patch. Android release produces AAB and requires environment variables `HUNTRX_ANDROID_KEYSTORE_PATH`, `HUNTRX_ANDROID_KEYSTORE_PASSWORD`, `HUNTRX_ANDROID_KEY_ALIAS`, `HUNTRX_ANDROID_KEY_ALIAS_PASSWORD`. Keystore creation, account setup and publishing remain external authorized operations. Android development uses development/debug signing; it is not a production distribution.
 

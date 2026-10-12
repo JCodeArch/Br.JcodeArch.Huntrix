@@ -104,3 +104,8 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Timestamped validation artifacts and Python tooling caches
+/TestResults/
+__pycache__/
+*.py[cod]

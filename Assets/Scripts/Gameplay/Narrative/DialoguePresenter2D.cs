@@ -19,6 +19,10 @@ namespace HuntrX.Gameplay.Narrative
         private int index;
         private float revealed;
         private bool publishing;
+        private bool captionsEnabled = true;
+        private bool uiBlocked;
+        public bool IsUiBlocked => uiBlocked;
+        public void SetUiBlocked(bool value) { uiBlocked = value; }
         public bool IsPresenting=>sequence!=null;
         public NarrativeSequenceDefinition Current=>sequence;
         public event Action<NarrativeSequenceDefinition> SequenceCompleted;
@@ -35,6 +39,7 @@ namespace HuntrX.Gameplay.Narrative
             int version=policyVersion;for(int i=0;i<value.Count;i++)if(!Resolve(value,i,out _))return false;
             if(version!=policyVersion||!isActiveAndEnabled||IsPresenting)return false;sequence=value;index=0;revealed=0f;PlayVoice();return true;
         }
+        public void SetCaptionsEnabled(bool value) { captionsEnabled = value; }
         public void SetEnglish(bool value){english=value;}
         public void SetAudio(GameAudioManager2D value){audioManager=value;}
         public bool Advance()
@@ -55,15 +60,15 @@ namespace HuntrX.Gameplay.Narrative
             bool wasPublishing=publishing;publishing=true;try{var handlers=SequenceCancelled;if(handlers!=null)foreach(Action<NarrativeSequenceDefinition> handler in handlers.GetInvocationList())try{handler(old);}catch(Exception error){Debug.LogException(error,this);}}finally{publishing=wasPublishing;}
         }
         private void PlayVoice(){if(audioManager!=null){audioManager.StopVoice();AudioClip clip=sequence.GetLine(index).Voice;if(clip!=null&&!requiresPolicy)audioManager.TryPlayVoice(clip);}}
-        private void Update(){if(sequence!=null){if(!Resolve(sequence,index,out string text)){Cancel();return;}revealed=Mathf.Min(text.Length,revealed+sequence.CharactersPerSecond*Time.unscaledDeltaTime);}}
+        private void Update(){if(uiBlocked)return;if(sequence!=null){if(!Resolve(sequence,index,out string text)){Cancel();return;}revealed=Mathf.Min(text.Length,revealed+sequence.CharactersPerSecond*Time.unscaledDeltaTime);}}
         private void OnGUI()
         {
-            if(sequence==null)return;NarrativeLine line=sequence.GetLine(index);if(!Resolve(sequence,index,out string text)){Cancel();return;}
+            if(uiBlocked||sequence==null)return;NarrativeLine line=sequence.GetLine(index);if(!Resolve(sequence,index,out string text)){Cancel();return;}
             float w=Screen.width,h=Screen.height;Rect panel=new Rect(w*.08f,h*.68f,w*.84f,h*.27f);GUI.Box(panel,GUIContent.none);
             Color previous=GUI.color;GUI.color=line.PortraitColor;GUI.Box(new Rect(panel.x+12,panel.y+12,70,70),line.Speaker.Length>0?line.Speaker.Substring(0,1):"?");GUI.color=previous;
             GUI.Label(new Rect(panel.x+94,panel.y+8,panel.width-110,24),line.Speaker);
             GUIStyle style=new GUIStyle(GUI.skin.label){wordWrap=true,fontSize=Mathf.Clamp(Mathf.RoundToInt(h/35f),14,26)};
-            GUI.Label(new Rect(panel.x+94,panel.y+35,panel.width-110,panel.height-78),text.Substring(0,Mathf.Min(text.Length,Mathf.FloorToInt(revealed))),style);
+            if (captionsEnabled || line.Voice == null || requiresPolicy) GUI.Label(new Rect(panel.x+94,panel.y+35,panel.width-110,panel.height-78),text.Substring(0,Mathf.Min(text.Length,Mathf.FloorToInt(revealed))),style);
             if(GUI.Button(new Rect(panel.xMax-155,panel.yMax-35,140,27),english?"Continue":"Continuar"))Advance();
         }
         private void OnEnable(){requiresPolicy=requiresPolicy||!ReferenceEquals(narrativePolicy,null);policy=narrativePolicy as INarrativePresentationPolicy;if(policy!=null)policy.PolicyChanged+=HandlePolicyChanged;}

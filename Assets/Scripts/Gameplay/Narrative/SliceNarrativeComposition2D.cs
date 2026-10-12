@@ -13,6 +13,7 @@ namespace HuntrX.Gameplay.Narrative
         [SerializeField] private bool requiresPolicy;
         private GameObject owned;
         private bool creating;
+        public DialoguePresenter2D Presenter => isActiveAndEnabled && owned != null && owned.activeInHierarchy ? owned.GetComponent<DialoguePresenter2D>() : null;
         public bool Configure(VerticalSliceSession2D owner,GameObject prefab,SliceAudioComposition2D sound=null,MonoBehaviour policy=null)
         {if(!ReferenceEquals(policy,null)&&!(policy is INarrativePresentationPolicy)||creating||owned!=null||owner==null||prefab==null||prefab.scene.IsValid()||prefab.GetComponent<DialoguePresenter2D>()==null||prefab.GetComponent<StageNarrativeTransitions2D>()==null)return false;session=owner;narrativePrefab=prefab;audio=sound;narrativePolicy=policy;requiresPolicy=!ReferenceEquals(policy,null);return true;}
         private void Update()

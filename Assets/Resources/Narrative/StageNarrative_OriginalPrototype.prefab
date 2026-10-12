@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_Component:
+  - component: {fileID: 1001}
+  - component: {fileID: 1002}
+  - component: {fileID: 1003}
+  m_Layer: 0
+  m_Name: StageNarrative_OriginalPrototype
+  m_TagString: Untagged
+  m_IsActive: 1
+--- !u!4 &1001
+Transform:
+  m_ObjectHideFlags: 0
+  m_GameObject: {fileID: 1000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!114 &1002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_GameObject: {fileID: 1000}
+  m_Enabled: 1
+  m_Script: {fileID: 11500000, guid: ca0b89754b0243bf84fa48538366a835, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  english: 0
+  audioManager: {fileID: 0}
+--- !u!114 &1003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_GameObject: {fileID: 1000}
+  m_Enabled: 1
+  m_Script: {fileID: 11500000, guid: 6b11cbeb81f9428fb9074801c41f9d88, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  session: {fileID: 0}
+  presenter: {fileID: 1002}
+  beatCues:
+  - {fileID: 11400000, guid: 998ee57e824a4a6b9ddbd1ebc778f73b, type: 2}
+  - {fileID: 11400000, guid: 7a745303bdab4faea7f15d06249153f5, type: 2}
+  - {fileID: 11400000, guid: 9aaac9f71fb04986ab3ebebe09cdeb54, type: 2}
+  - {fileID: 11400000, guid: 3ad12c97a5a042f3bad0cd7eeb327eee, type: 2}
+  - {fileID: 11400000, guid: d81cb4004584456899fbb165473e3332, type: 2}
+  - {fileID: 11400000, guid: 3ea94383f9db40308a2ebf2b7d0a5c32, type: 2}
+  - {fileID: 11400000, guid: d2d64bdf8c0347e28cdc1fd50ac4afe7, type: 2}

@@ -131,6 +131,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 1020}
   - component: {fileID: 1010}
   - component: {fileID: 1009}
   - component: {fileID: 1008}
@@ -313,6 +314,21 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   session: {fileID: 1002}
   observationSeconds: 60
+--- !u!114 &1020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a94bf7e52475468aa170ec3175b348cb, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  session: {fileID: 1002}
+  preferences: {fileID: 0}
+  showInDesktop: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

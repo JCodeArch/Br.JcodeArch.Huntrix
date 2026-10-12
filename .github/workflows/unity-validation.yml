@@ -1,0 +1,102 @@
+name: Unity validation and development builds
+on:
+  pull_request:
+    branches: [develop]
+  push:
+    branches: [develop]
+  workflow_dispatch:
+    inputs:
+      build_target:
+        description: Development artifact to build after real tests
+        type: choice
+        options: [tests-only, android, windows, ios]
+        default: tests-only
+      scenes:
+        description: Explicit scene paths separated by semicolons
+        type: string
+        default: Assets/Scenes/VerticalSlice.unity
+defaults:
+  run:
+    shell: bash
+permissions:
+  contents: read
+concurrency:
+  group: unity-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  tooling:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Verify version and evidence tooling (no Unity execution)
+        run: |
+          python3 scripts/version.py check
+          python3 scripts/test-evidence-tooling.py
+          bash -n scripts/build-unity.sh scripts/run-unity-tests.sh
+  validate:
+    if: github.event_name == 'workflow_dispatch'
+    needs: tooling
+    # Provision a trusted licensed runner with this label; no credential activation is automated.
+    runs-on: [self-hosted, unity-6000.6.4f1]
+    environment: unity-validation
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: true
+      - name: Run actual EditMode and PlayMode suites
+        env:
+          UNITY_EDITOR: ${{ vars.UNITY_EDITOR_PATH }}
+        run: bash scripts/run-unity-tests.sh TestResults
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: unity-test-evidence
+          path: TestResults
+          if-no-files-found: error
+  development-build:
+    needs: validate
+    if: github.event_name == 'workflow_dispatch' && (inputs.build_target == 'android' || inputs.build_target == 'windows')
+    runs-on: [self-hosted, unity-6000.6.4f1]
+    environment: unity-validation
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: true
+      - name: Build selected development target
+        env:
+          UNITY_EDITOR: ${{ vars.UNITY_EDITOR_PATH }}
+          HUNTRX_SCENES: ${{ inputs.scenes }}
+          HUNTRX_TARGET: ${{ inputs.build_target }}
+          HUNTRX_BUILD_ROOT: ${{ runner.temp }}/huntrx-${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          if [ "$HUNTRX_TARGET" = android ]; then
+            bash scripts/build-unity.sh android-dev "$HUNTRX_BUILD_ROOT/HuntrX.apk" "$HUNTRX_SCENES"
+          else
+            bash scripts/build-unity.sh windows-dev "$HUNTRX_BUILD_ROOT/Windows/HuntrX.exe" "$HUNTRX_SCENES"
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: unity-development-build
+          path: |
+            ${{ runner.temp }}/huntrx-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+  ios-project:
+    needs: validate
+    if: github.event_name == 'workflow_dispatch' && inputs.build_target == 'ios'
+    runs-on: [self-hosted, macOS, unity-6000.6.4f1]
+    environment: unity-validation
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: true
+      - name: Export actual Xcode project
+        env:
+          UNITY_EDITOR: ${{ vars.UNITY_EDITOR_PATH }}
+          HUNTRX_SCENES: ${{ inputs.scenes }}
+          HUNTRX_BUILD_ROOT: ${{ runner.temp }}/huntrx-${{ github.run_id }}-${{ github.run_attempt }}
+        run: bash scripts/build-unity.sh ios "$HUNTRX_BUILD_ROOT/Xcode" "$HUNTRX_SCENES"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: unity-xcode-project
+          path: ${{ runner.temp }}/huntrx-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error

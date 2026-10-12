@@ -70,7 +70,8 @@ namespace HuntrX.Gameplay.Enemies
                     AttackDefinition impactAttack = attack;
                     CombatContactResult result = hurtbox.ResolveHit(impactAttack, impactOwner, direction.x < 0f ? -1f : 1f, 0,
                         out DamageReceiver2D receiver, out _);
-                    if (result == CombatContactResult.Damaged) PublishImpact(new CombatImpactEvent(impactOwner, receiver, impactAttack, 0));
+                    if (result == CombatContactResult.Damaged && generation == impactGeneration)
+                        PublishImpact(new CombatImpactEvent(impactOwner, receiver, impactAttack, 0));
                     if(generation==impactGeneration)Cancel(); return;
                 }
                 if (!collider.isTrigger) { Cancel(); return; }

@@ -18,6 +18,7 @@ namespace HuntrX.Gameplay.Combat
         private ParryController2D parryController;
         private DamageProtection2D damageProtection;
         private bool configurationReported;
+        private int acceptedNotificationDepth;
 
         public CombatFaction2D Faction => faction;
         public float MaximumHealth => maximumHealth;
@@ -38,6 +39,19 @@ namespace HuntrX.Gameplay.Combat
             parryController = GetComponent<ParryController2D>();
             damageProtection = GetComponent<DamageProtection2D>();
             InitializeConfiguration();
+        }
+
+        /// <summary>Ground-enemy pool only: reset while inactive, never during a committed impact callback.</summary>
+        public bool TryResetForEnemySpawn()
+        {
+            if(!gameObject.scene.IsValid()||gameObject.activeInHierarchy||acceptedNotificationDepth>0||faction!=CombatFaction2D.Demon||!HuntrX.Pooling.GroundEnemyPoolLease.Supports(gameObject))return false;
+            body=GetComponent<Rigidbody2D>();
+            dashController=GetComponent<DashController2D>();parryController=GetComponent<ParryController2D>();damageProtection=GetComponent<DamageProtection2D>();
+            if(dashController!=null||parryController!=null)return false;
+            if(damageProtection!=null&&!damageProtection.TryResetForSpawnInactive())return false;
+            InitializeConfiguration();
+            if(!IsConfigurationValid)return false;
+            body.linearVelocity=Vector2.zero;body.angularVelocity=0f;return true;
         }
 
         /// <summary>Compatibility API: returns true only when damage was applied.</summary>
@@ -105,9 +119,14 @@ namespace HuntrX.Gameplay.Combat
             // Capture both subscriptions at the accepted commit boundary; a dealt listener may rebind actors.
             Action<CombatImpactEvent> dealtHandlers = attacker.DamageDealt;
             Action<CombatImpactEvent> receivedHandlers = DamageReceived;
-            PublishDamage(dealtHandlers, impact);
-            PublishDamage(receivedHandlers, impact);
-            if (killedByThisHit) PublishDied();
+            acceptedNotificationDepth++;attacker.acceptedNotificationDepth++;
+            try
+            {
+                PublishDamage(dealtHandlers, impact);
+                PublishDamage(receivedHandlers, impact);
+                if (killedByThisHit) PublishDied();
+            }
+            finally{acceptedNotificationDepth--;attacker.acceptedNotificationDepth--;}
 
             return CombatContactResult.Damaged;
         }

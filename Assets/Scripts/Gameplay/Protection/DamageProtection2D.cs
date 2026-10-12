@@ -108,6 +108,13 @@ namespace HuntrX.Gameplay.Protection
             externalSources.Clear();
         }
 
+        /// <summary>Clear old pool-lease memberships while inactive; never changes health or live protection.</summary>
+        internal bool TryResetForSpawnInactive()
+        {
+            if(!gameObject.scene.IsValid()||gameObject.activeInHierarchy)return false;
+            ClearSources();return true;
+        }
+
         private void OnDisable() => ClearSources();
         private void OnDestroy() => ClearSources();
     }

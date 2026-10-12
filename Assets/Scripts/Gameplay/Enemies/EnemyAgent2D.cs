@@ -38,6 +38,15 @@ namespace HuntrX.Gameplay.Enemies
         public event Action<CombatImpactEvent> ImpactOccurred;
         public event Action<CombatParryEvent> ParryOccurred;
 
+        /// <summary>Reset cached ground-agent combat state before pool activation, including first rent before Awake.</summary>
+        public bool TryResetForSpawn()
+        {
+            if(!gameObject.scene.IsValid()||gameObject.activeInHierarchy||resolving||configuring||!HuntrX.Pooling.GroundEnemyPoolLease.Supports(gameObject))return false;
+            Self=GetComponent<DamageReceiver2D>();body=GetComponent<Rigidbody2D>();
+            if(Self==null||!Self.TryResetForEnemySpawn()||body==null||definition==null||!definition.IsValid(out _))return false;
+            target=null;timer=0f;facing=1f;resolved.Clear();State=EnemyState2D.Idle;
+            body.linearVelocity=Vector2.zero;body.angularVelocity=0f;return true;
+        }
         private void Awake() { Self = GetComponent<DamageReceiver2D>(); body = GetComponent<Rigidbody2D>(); }
         private void OnEnable()
         {

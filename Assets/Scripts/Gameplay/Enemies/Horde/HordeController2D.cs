@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using HuntrX.Data;
 using HuntrX.Gameplay.Characters;
 using HuntrX.Gameplay.Combat;
+using HuntrX.Pooling;
 using UnityEngine;
 namespace HuntrX.Gameplay.Enemies
 {
@@ -20,6 +21,9 @@ namespace HuntrX.Gameplay.Enemies
         private MonoBehaviour intensityOwner;
         private float intervalMultiplier = 1f;
         private int extraConcurrent;
+        private BoundedPrefabPool enemyPool;
+        private GameObject pooledPrefab;
+        private bool usePooling;
         public bool IsRunning { get; private set; }
         public int SpawnedCount { get; private set; }
         public int AliveCount => owned.Count;
@@ -55,6 +59,7 @@ namespace HuntrX.Gameplay.Enemies
             if (IsRunning || spawning || stopping || owned.Count > 0 || value == null || !value.IsValid(out _) ||
                 points == null || points.Length == 0 || points.Length > 64 || (manager == null && target == null)) return false;
             foreach (Transform point in points) if (!ValidPoint(point)) return false;
+            if(pooledPrefab!=value.EnemyPrefab)DisposePool();
             definition = value; spawnPoints = (Transform[])points.Clone(); targetManager = manager; explicitTarget = target;
             SpawnedCount = 0; completed = false;
             return true;
@@ -68,6 +73,13 @@ namespace HuntrX.Gameplay.Enemies
             EnemyAgent2D template = definition.EnemyPrefab.GetComponent<EnemyAgent2D>();
             if (template == null || template.Definition == null || !template.Definition.IsValid(out _) ||
                 definition.EnemyPrefab.GetComponent<DamageReceiver2D>() == null) return false;
+            usePooling=definition.EnemyPrefab.GetComponent<GroundEnemyPoolLease>()!=null&&GroundEnemyPoolLease.Supports(definition.EnemyPrefab);
+            if(!usePooling)DisposePool();
+            if(usePooling&&enemyPool==null)
+            {
+                try{enemyPool=new BoundedPrefabPool(definition.EnemyPrefab,64,definition.MaximumConcurrent);pooledPrefab=definition.EnemyPrefab;}
+                catch(System.Exception exception){Debug.LogException(exception,this);DisposePool();return false;}
+            }
             SpawnedCount = 0; remaining = 0f; completed = false; IsRunning = true;
             return true;
         }
@@ -91,7 +103,7 @@ namespace HuntrX.Gameplay.Enemies
             remaining = Mathf.Max(0f, remaining - Time.deltaTime);
             if (remaining > 0f || owned.Count >= EffectiveMaximumConcurrent) return;
             remaining = EffectiveSpawnInterval;
-            SpawnOne(); // no catch-up burst: at most one allocation/spawn per rendered frame
+            SpawnOne(); // no catch-up burst: at most one bounded pool rent per rendered frame
         }
         private void SpawnOne()
         {
@@ -102,17 +114,20 @@ namespace HuntrX.Gameplay.Enemies
             {
                 Transform point = spawnPoints[SpawnedCount % spawnPoints.Length];
                 if (!ValidPoint(point)) { IsRunning = false; return; }
-                instance = Instantiate(definition.EnemyPrefab, point.position, point.rotation); // independent root
-                instance.SetActive(true);
+                bool capturedPooling=usePooling;BoundedPrefabPool capturedPool=enemyPool;
+                if(capturedPooling)
+                {if(capturedPool==null||!capturedPool.TryRent(point.position,point.rotation,out instance))return;}
+                else{instance=Instantiate(definition.EnemyPrefab,point.position,point.rotation);instance.SetActive(true);}
+                if(usePooling!=capturedPooling||(capturedPooling&&enemyPool!=capturedPool)||!isActiveAndEnabled||!IsRunning){ReturnCandidate(instance);return;}
                 EnemyAgent2D agent = instance.GetComponent<EnemyAgent2D>();
                 if (agent == null || agent.Self == null || !agent.Self.IsAlive ||
-                    agent.Self.Faction != CombatFaction2D.Demon || !agent.TrySetTarget(Target) || !isActiveAndEnabled || !IsRunning)
-                { instance.SetActive(false); Destroy(instance); IsRunning = false; return; }
+                    agent.Self.Faction != CombatFaction2D.Demon || !agent.TrySetTarget(Target) || !isActiveAndEnabled || !IsRunning||usePooling!=capturedPooling||(capturedPooling&&enemyPool!=capturedPool))
+                { ReturnCandidate(instance); IsRunning = false; return; }
                 owned.Add(agent); SpawnedCount++;
             }
             catch (System.Exception exception)
             {
-                if (instance != null) { instance.SetActive(false); Destroy(instance); }
+                if (instance != null) ReturnCandidate(instance);
                 IsRunning = false; Debug.LogException(exception, this);
             }
             finally { spawning = false; }
@@ -135,13 +150,26 @@ namespace HuntrX.Gameplay.Enemies
             }
             finally { stopping = false; }
         }
-        private static void Dispose(EnemyAgent2D agent) { agent.Stop(); agent.gameObject.SetActive(false); Destroy(agent.gameObject); }
+        private static void Dispose(EnemyAgent2D agent)
+        {
+            GameObject instance=agent.gameObject;agent.Stop();if(instance!=null)ReturnCandidate(instance);
+        }
+        private static void ReturnCandidate(GameObject instance)
+        {
+            if(instance==null)return;PooledInstance lease=instance.GetComponent<PooledInstance>();
+            if(lease!=null&&lease.IsPooled){lease.TryReturn();return;}
+            instance.SetActive(false);Destroy(instance);
+        }
+        private void DisposePool()
+        {
+            BoundedPrefabPool ownedPool=enemyPool;enemyPool=null;pooledPrefab=null;usePooling=false;ownedPool?.Dispose();
+        }
         private static bool ValidPoint(Transform point) => point != null && point.gameObject.activeInHierarchy &&
             Finite(point.position.x) && Finite(point.position.y) && Finite(point.position.z) &&
             Finite(point.rotation.x) && Finite(point.rotation.y) && Finite(point.rotation.z) && Finite(point.rotation.w) &&
             (point.rotation.x != 0f || point.rotation.y != 0f || point.rotation.z != 0f || point.rotation.w != 0f);
         private static bool Finite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
-        private void OnDisable() => Stop();
-        private void OnDestroy() => Stop();
+        private void OnDisable(){Stop();DisposePool();}
+        private void OnDestroy(){Stop();DisposePool();}
     }
 }

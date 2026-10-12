@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 930000000000000002}
   - component: {fileID: 930000000000000003}
   - component: {fileID: 930000000000000004}
+  - component: {fileID: 930000000000000005}
+  - component: {fileID: 930000000000000006}
   m_Layer: 0
   m_Name: GroundDemon_Prototype
   m_TagString: Untagged
@@ -182,3 +184,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8590a6b81a346f6b2b3a0cba86fdf2f, type: 3}
   m_Name:
   m_EditorClassIdentifier: HuntrX.Runtime::HuntrX.Gameplay.Protection.DamageProtection2D
+--- !u!114 &930000000000000005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114295073500037013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4ce235cd7ad4715ad8ffcfe5385987d, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: HuntrX.Runtime::HuntrX.Pooling.GroundEnemyPoolLease
+--- !u!114 &930000000000000006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114295073500037013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff128026e3e1446b892924dbd77f5afe, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: HuntrX.Runtime::HuntrX.Pooling.CombatImpactVfxPool2D
+  actor: {fileID: 6905718749786772316}
+  effectPrefab: {fileID: 940000000000000001, guid: a97502d463c7498c8b584ad271c193da, type: 3}
+  capacity: 4
+  lifetime: 0.2

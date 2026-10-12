@@ -17,6 +17,7 @@ namespace HuntrX.Gameplay.AgeAccessibility
         private Sprite ownedSprite;
         private float remaining;
         private bool reducedFlashes;
+        public bool IsReducedFlashes=>reducedFlashes;
         public void SetReducedFlashes(bool value) { reducedFlashes=value; if(value) { remaining=0f; if(visual!=null) visual.color=original; StopParticles(); } }
         private void Awake() { melee=GetComponent<AttackController2D>(); ranged=GetComponent<ZoeyRangedAttack2D>(); enemy=GetComponent<EnemyAgent2D>(); if(visual==null)
             {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using HuntrX.Data;
 using HuntrX.Gameplay.Combat;
+using HuntrX.Pooling;
 using UnityEngine;
 
 namespace HuntrX.Gameplay.Enemies
@@ -15,29 +16,46 @@ namespace HuntrX.Gameplay.Enemies
         private readonly List<EnemyProjectile2D> projectiles = new List<EnemyProjectile2D>(4);
         private EnemyAgent2D agent;
         private Rigidbody2D body;
+        private BoundedPrefabPool projectilePool;
         private float altitudePhase, diveRemaining;
         private Vector2 diveDirection;
-        private bool diving, nextIsDive = true;
+        private bool diving, nextIsDive = true, clearingProjectiles;
         public FlyingEnemyDefinition Definition => definition;
         public bool IsDiving => diving;
         private void Awake()
         {
             agent = GetComponent<EnemyAgent2D>(); body = GetComponent<Rigidbody2D>();
-            if (definition != null && definition.IsValid(out _)) agent.TryConfigure(definition.Behavior, out _);
+            if (definition != null && definition.IsValid(out _))
+            {
+                agent.TryConfigure(definition.Behavior, out _);
+                projectilePool=new BoundedPrefabPool(definition.ProjectilePrefab,4,4);
+            }
         }
-        private void OnEnable() { if (agent != null && agent.Self != null) agent.Self.Died += HandleDeath; }
+        private void OnEnable()
+        {
+            if(projectilePool==null&&definition!=null&&definition.IsValid(out _))projectilePool=new BoundedPrefabPool(definition.ProjectilePrefab,4,4);
+            if (agent != null && agent.Self != null) agent.Self.Died += HandleDeath;
+        }
         private void OnDisable()
         {
             if (agent != null && agent.Self != null) agent.Self.Died -= HandleDeath;
-            CancelActions();
+            CancelActions();projectilePool?.Dispose();projectilePool=null;
         }
         private void HandleDeath(DamageReceiver2D actor) => CancelActions();
         private void CancelActions()
         {
-            diving = false; diveRemaining = 0f;
-            for (int i = projectiles.Count - 1; i >= 0; i--) if (projectiles[i] != null) projectiles[i].Cancel();
-            projectiles.Clear();
-            if (agent != null) agent.Stop();
+            if(clearingProjectiles)return;clearingProjectiles=true;
+            try
+            {
+                diving = false; diveRemaining = 0f;
+                while(projectiles.Count>0)
+                {
+                    int index=projectiles.Count-1;EnemyProjectile2D projectile=projectiles[index];
+                    projectiles.RemoveAt(index);if(projectile!=null)projectile.Cancel();
+                }
+                if (agent != null) agent.Stop();
+            }
+            finally{clearingProjectiles=false;}
         }
         private void FixedUpdate()
         {
@@ -74,15 +92,15 @@ namespace HuntrX.Gameplay.Enemies
                 {
                     if (projectiles.Count < 4)
                     {
-                        GameObject instance = Instantiate(definition.ProjectilePrefab, body.position, Quaternion.identity);
-                        instance.SetActive(true);
+                        if(projectilePool==null||!projectilePool.TryRent(body.position,Quaternion.identity,out GameObject instance))
+                        {nextIsDive=true;agent.BeginRecovery();return;}
                         if (!isActiveAndEnabled || !agent.HasValidTarget || agent.State != EnemyState2D.Attacking)
-                        { instance.SetActive(false); Destroy(instance); return; }
+                        { instance.GetComponent<PooledInstance>()?.TryReturn(); return; }
                         EnemyProjectile2D projectile = instance.GetComponent<EnemyProjectile2D>();
                         if (projectile != null && projectile.TryLaunch(definition.Behavior.Attack, agent.Self, body.position,
                             (Vector2)agent.Target.transform.position - body.position, definition.ProjectileSpeed,
                             definition.ProjectileLifetime, definition.ProjectileRange, collisionMask)) projectiles.Add(projectile);
-                        else Destroy(instance);
+                        else instance.GetComponent<PooledInstance>()?.TryReturn();
                     }
                     nextIsDive = true; agent.BeginRecovery();
                 }

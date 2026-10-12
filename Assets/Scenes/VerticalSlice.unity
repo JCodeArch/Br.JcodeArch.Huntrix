@@ -546,6 +546,7 @@ MonoBehaviour:
   touch: {fileID: 1020}
   hordeBeat: {fileID: 1006}
   narrative: {fileID: 1031}
+  effects: {fileID: 9697406}
 --- !u!114 &9697401
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,6 +4,8 @@ using HuntrX.Gameplay.Characters;
 using HuntrX.Gameplay.Enemies;
 using HuntrX.Gameplay.Touch;
 using HuntrX.Gameplay.Narrative;
+using HuntrX.Gameplay.Combat;
+using HuntrX.Presentation.Art;
 using HuntrX.Gameplay.VerticalSlice;
 using UnityEngine;
 namespace HuntrX.Presentation.Hud
@@ -20,6 +22,11 @@ namespace HuntrX.Presentation.Hud
         [SerializeField] private SliceTouchControls2D touch;
         [SerializeField] private SliceHordeSpecialBeat2D hordeBeat;
         [SerializeField] private SliceNarrativeComposition2D narrative;
+        [SerializeField] private GameplayVfxAdapter2D effects;
+        private CharacterManager2D visualManager;
+        private DamageReceiver2D visualActor;
+        private AgeProfileSelection2D visualProfile;
+        private AgeVisualFeedback2D ageVisual;
         private bool english, narrativeOwned, priorNarrativeBlocked;
         private DialoguePresenter2D blockedPresenter;
         private CharacterManager2D boundManager, scopedManager;
@@ -36,6 +43,7 @@ namespace HuntrX.Presentation.Hud
             SetPause(options);
             SetInputBlocked(options || (session != null && session.IsComplete));
             SetNarrativeBlocked(options);
+            RefreshVisualSource();
             if(narrative != null && narrative.Presenter != null) { narrative.Presenter.SetEnglish(english); narrative.Presenter.SetCaptionsEnabled(preferences == null || preferences.CaptionsEnabled); }
             if(session==null || session.Manager==null || !session.Manager.isActiveAndEnabled) return;
             if(boundManager!=session.Manager)
@@ -72,6 +80,47 @@ namespace HuntrX.Presentation.Hud
             }
             finally { GUI.matrix=previous; GUI.skin.label.fontSize=labelFont; GUI.skin.button.fontSize=buttonFont; GUI.skin.textField.fontSize=textFont; GUI.skin.toggle.fontSize=toggleFont; }
         }
+        private void RefreshVisualSource()
+        {
+            CharacterManager2D current=session!=null?session.Manager:null;
+            if(current!=null && !current.isActiveAndEnabled) current=null;
+            if(visualManager!=current)
+            {
+                effects?.ClearActiveEffects();
+                UnbindVisualSource(); visualManager=current;
+                if(current!=null) { current.ActiveCharacterChanged+=VisualActorChanged; BindVisualActor(current.ActiveCharacter); }
+            }
+            if(visualManager!=null && visualActor!=visualManager.ActiveCharacter) BindVisualActor(visualManager.ActiveCharacter);
+            ApplyVisualPolicy();
+        }
+        private void VisualActorChanged(DamageReceiver2D previous,DamageReceiver2D current) { BindVisualActor(current); ApplyVisualPolicy(); }
+        private void BindVisualActor(DamageReceiver2D actor)
+        {
+            if(visualProfile!=null) visualProfile.ProfileChanged-=VisualProfileChanged;
+            visualActor=actor; visualProfile=actor!=null?actor.GetComponent<AgeProfileSelection2D>():null;
+            ageVisual=actor!=null?actor.GetComponent<AgeVisualFeedback2D>():null;
+            if(visualProfile!=null) visualProfile.ProfileChanged+=VisualProfileChanged;
+            effects?.ClearActiveEffects();
+        }
+        private void VisualProfileChanged(AgeProfileData value) { effects?.ClearActiveEffects(); ApplyVisualPolicy(); }
+        private void ApplyVisualPolicy()
+        {
+            if(effects==null) return;
+            AgeProfileData profile=visualProfile!=null?visualProfile.Current:null;
+            bool valid=isActiveAndEnabled && visualManager!=null && visualManager.isActiveAndEnabled &&
+                visualActor!=null && visualActor.isActiveAndEnabled && visualActor.IsAlive && visualManager.ActiveCharacter==visualActor &&
+                visualProfile!=null && visualProfile.isActiveAndEnabled && profile!=null && profile.IsValid(out _) &&
+                ageSelection!=null && ageSelection.isActiveAndEnabled && ageSelection.Current==profile;
+            bool reduced=preferences==null || !preferences.isActiveAndEnabled || preferences.ReduceFlashes ||
+                (ageVisual!=null && ageVisual.isActiveAndEnabled && ageVisual.IsReducedFlashes);
+            effects.SetPresentationPolicy(valid?profile.VisualIntensity:0f,reduced,valid);
+        }
+        private void UnbindVisualSource()
+        {
+            if(visualManager!=null) visualManager.ActiveCharacterChanged-=VisualActorChanged;
+            if(visualProfile!=null) visualProfile.ProfileChanged-=VisualProfileChanged;
+            visualManager=null; visualActor=null; visualProfile=null; ageVisual=null;
+        }
         private void SetNarrativeBlocked(bool value)
         {
             DialoguePresenter2D current=narrative!=null?narrative.Presenter:null;
@@ -91,7 +140,7 @@ namespace HuntrX.Presentation.Hud
             if(inputOwned && (!value || blockedInput!=current)) { if(blockedInput!=null) blockedInput.enabled=priorInputEnabled; inputOwned=false; blockedInput=null; }
             if(value && !inputOwned && current!=null) { blockedInput=current; priorInputEnabled=current.enabled; inputOwned=true; current.enabled=false; }
         }
-        private void OnDisable() { options=false; SetPause(false); SetInputBlocked(false); SetNarrativeBlocked(false); }
+        private void OnDisable() { options=false; SetPause(false); SetInputBlocked(false); SetNarrativeBlocked(false); UnbindVisualSource(); effects?.SetPresentationPolicy(0f,true,false); }
         private void DrawOptions(float width,float height)
         {
             GUILayout.BeginArea(new Rect(8,8,Mathf.Min(430,width-16),height-16),GUI.skin.box);
@@ -106,6 +155,7 @@ namespace HuntrX.Presentation.Hud
             {
                 bool flashes=GUILayout.Toggle(preferences.ReduceFlashes,"Reduzir flashes"), captions=GUILayout.Toggle(preferences.CaptionsEnabled,"Legendas"), aim=GUILayout.Toggle(preferences.AssistedAim,"Ajuda na mira");
                 preferences.SetPresentationPreferences(flashes,captions,aim);
+                ApplyVisualPolicy();
                 preferences.TrySetToggle(GameplayControl.Jump,GUILayout.Toggle(preferences.ToggleModeFor(GameplayControl.Jump),"Pulo: alternar"));
                 preferences.TrySetToggle(GameplayControl.Interact,GUILayout.Toggle(preferences.ToggleModeFor(GameplayControl.Interact),"Resgate: alternar"));
                 if(GUILayout.Button("Ação: "+selected)) selected=selected==GameplayControl.Special?GameplayControl.MoveLeft:(GameplayControl)((int)selected+1);

@@ -1,5 +1,13 @@
 # HUNTR/X Project Context
 
+## Status atual — consolidação 2026-10-12
+
+O escopo autorizado avançou até os 75 cards existentes entre 41–116; #105 está ausente do backlog oficial. Consulte [Implementation Status](IMPLEMENTATION_STATUS.md) para o ledger completo e a distinção entre protótipos, tooling, planos QA e documentos. Após o lote, 74 cards anteriores têm merge de fonte em `develop` com receipts confirmados; fonte consolidada `ae68ba4a26649afc3c87f23e0f5fe4b347569345` (card 115/PR #87), `develop` limpo e verificações de ferramentas repetidas no Codespace. #116 documenta o backlog e esta consolidação neste PR; seu próprio merge ainda não é alegado. Estes números incluem protótipos, ferramentas, planos e documentação, sem afirmar QA/build aceitos.
+
+A cena principal atual é `Assets/Scenes/VerticalSlice.unity`, com sete etapas e composição de input/touch/HUD, acessibilidade/faixa etária, arte, áudio e narrativa de protótipo. Fonte revisada estaticamente não equivale a aceitação jogável: Unity import/compile/suites, builds, playtests humanos/device, performance, RC, direitos e publicação permanecem pendentes. Nesta consolidação passaram 7 testes Python das ferramentas, verificação da versão `0.1.0-dev.1` e sintaxe Bash. O [CI final de ferramentas](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/actions/runs/38289892178) no head do PR #87/card 115 passou; não executou Unity/build. A falha intermediária do #107 por dependência ainda ausente do #110 foi resolvida pela integração do lote, sem patch adicional. A tentativa do orquestrador de executar `scripts/run-unity-tests.sh` parou na linha 3 por `UNITY_EDITOR` não configurado; nenhum teste Unity iniciou. O Editor não estava disponível nos ambientes local/Codespace examinados. A consulta aos runners respondeu 403 (`Resource not accessible by integration`) e é inconclusiva; existência/disponibilidade/licença de runners não foi confirmada.
+
+O histórico abaixo foi preservado como registro de etapas anteriores. Afirmações históricas como “próximo #41”, ausência de input/visual e escopo encerrado em #40 descrevem aquele snapshot, não o estado atual. Resultados executados do #29 não validam alterações subsequentes. A exceção de integração com Unity pendente continua documentada em [Deferred Validation](governance/DEFERRED_VALIDATION.md).
+
 ## Purpose and source of truth
 
 This repository develops **HUNTR/X — Honmoon**, a Unity game. The authoritative product vision, approved decisions, open decisions, MVP scope, game loop, characters, systems, platforms, and risks are recorded in the [master GDD](GDD_MASTER.md). This file is an engineering orientation and status index; it does not override the GDD or Trello.

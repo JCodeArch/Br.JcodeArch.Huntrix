@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7178bf30562e4d29bd79a61b6b24a510, type: 3}
+  m_Name: Awards_EnvironmentPrototype
+  m_EditorClassIdentifier:
+  id: environment-awards-original-v1
+  stageId: awards
+  theme: 2
+  sky: {r: 0.17, g: 0.25, b: 0.35, a: 1}
+  distant: {r: 0.22, g: 0.3, b: 0.4, a: 1}
+  near: {r: 0.11, g: 0.18, b: 0.27, a: 1}
+  accent: {r: 0.38, g: 0.6599999999999999, b: 0.75, a: 1}

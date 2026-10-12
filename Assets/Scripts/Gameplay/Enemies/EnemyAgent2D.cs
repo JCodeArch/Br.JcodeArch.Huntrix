@@ -115,7 +115,7 @@ namespace HuntrX.Gameplay.Enemies
                 Vector2.Distance(body.position, target.transform.position) > definition.AttackRange ||
                 !HasLineOfSight(target.transform.position)) return false;
             facing = target.transform.position.x < transform.position.x ? -1f : 1f;
-            StopMotion(); timer = definition.TelegraphDuration; SetState(EnemyState2D.Telegraph);
+            StopMotion(); timer = HuntrX.Gameplay.AgeAccessibility.AgeDifficultyPolicy2D.TelegraphDuration(this, definition.TelegraphDuration); SetState(EnemyState2D.Telegraph);
             return Operational && State == EnemyState2D.Telegraph;
         }
         /// <summary>Reserve recovery before callbacks; shared contact resolution keeps parry/protection semantics.</summary>
@@ -151,7 +151,7 @@ namespace HuntrX.Gameplay.Enemies
         public bool BeginRecovery()
         {
             if (configuring || !Operational || State != EnemyState2D.Attacking) return false;
-            timer = definition.RecoveryDuration; StopMotion(); SetState(EnemyState2D.Recovering);
+            timer = HuntrX.Gameplay.AgeAccessibility.AgeDifficultyPolicy2D.RecoveryDuration(this, definition.RecoveryDuration); StopMotion(); SetState(EnemyState2D.Recovering);
             return Operational && State == EnemyState2D.Recovering;
         }
         public bool HasLineOfSight(Vector2 destination)

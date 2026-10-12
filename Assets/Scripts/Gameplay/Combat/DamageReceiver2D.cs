@@ -87,7 +87,9 @@ namespace HuntrX.Gameplay.Combat
             }
 
             float healthBeforeHit = CurrentHealth;
-            CurrentHealth = Mathf.Max(0f, CurrentHealth - attack.Damage);
+            float acceptedDamage = HuntrX.Gameplay.AgeAccessibility.AgeDifficultyPolicy2D.CalculateDamage(attack, attacker, this);
+            if (!IsFinite(acceptedDamage) || acceptedDamage <= 0f) return CombatContactResult.Rejected;
+            CurrentHealth = Mathf.Max(0f, CurrentHealth - acceptedDamage);
             bool killedByThisHit = healthBeforeHit > 0f && CurrentHealth <= 0f;
             float horizontalDistance = transform.position.x - attacker.transform.position.x;
             float horizontalDirection = Mathf.Approximately(horizontalDistance, 0f)

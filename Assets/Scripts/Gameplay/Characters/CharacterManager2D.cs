@@ -30,6 +30,10 @@ namespace HuntrX.Gameplay.Characters
         public GameObject ActivePrefab { get; private set; }
         public CharacterManagerState2D State { get; private set; } = CharacterManagerState2D.Uninitialized;
         public event Action<DamageReceiver2D, DamageReceiver2D> ActiveCharacterChanged;
+        public bool CanEnterStage => isActiveAndEnabled && !transitioning && State == CharacterManagerState2D.Alive &&
+            ActiveCharacter != null && ActiveCharacter.isActiveAndEnabled && ActiveCharacter.IsAlive && !Busy(ActiveCharacter) &&
+            ValidRuntimeActor(ActiveCharacter) && flow != null && flow.isActiveAndEnabled && flow.IsAttemptInProgress &&
+            flow.BoundActor == ActiveCharacter && flow.AttemptNumber < int.MaxValue;
 
         public bool Configure(GameObject prefab, CheckpointAttemptFlow2D attemptFlow, Transform start, string startId)
         {
@@ -140,6 +144,38 @@ namespace HuntrX.Gameplay.Characters
                 ActiveCharacter = next;
                 ActivePrefab = prefab;
                 PublishChanged(previous, next);
+                return true;
+            }
+            finally { transitioning = false; }
+        }
+
+        /// <summary>Starts a new stage attempt with the same living owned actor and individual cache health.</summary>
+        public bool TryEnterStage(Transform start, string startId)
+        {
+            if (!isActiveAndEnabled || transitioning || State != CharacterManagerState2D.Alive ||
+                ActiveCharacter == null || !ActiveCharacter.isActiveAndEnabled || !ActiveCharacter.IsAlive ||
+                Busy(ActiveCharacter) || flow == null || !flow.isActiveAndEnabled || !flow.IsAttemptInProgress ||
+                flow.BoundActor != ActiveCharacter || flow.AttemptNumber == int.MaxValue || start == null ||
+                !start.gameObject.activeInHierarchy || string.IsNullOrWhiteSpace(startId) || !ValidPose(start.position, start.rotation) ||
+                !ValidRuntimeActor(ActiveCharacter)) return false;
+            transitioning = true;
+            try
+            {
+                // Cancel/configure/bind/start publish no callbacks. The full prerequisites are validated above,
+                // so the stage boundary commits synchronously without an observable partial ownership state.
+                flow.CancelAttempt();
+                if (!flow.ConfigureStart(startId, start) || !flow.BindActor(ActiveCharacter) || !flow.StartAttempt())
+                {
+                    Debug.LogError("Validated stage transition unexpectedly failed to bind its attempt.", this);
+                    return false;
+                }
+                stageStart = start;
+                hasPendingRespawn = false; deferredRespawn = false;
+                ResetInput(ActiveCharacter);
+                ActiveCharacter.transform.SetPositionAndRotation(start.position, start.rotation);
+                Rigidbody2D body = ActiveCharacter.GetComponent<Rigidbody2D>();
+                body.position = start.position; body.rotation = start.eulerAngles.z;
+                body.linearVelocity = Vector2.zero; body.angularVelocity = 0f;
                 return true;
             }
             finally { transitioning = false; }

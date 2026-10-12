@@ -24,6 +24,12 @@ namespace HuntrX.Gameplay.Enemies
         public int SpawnedCount { get; private set; }
         public int AliveCount => owned.Count;
         public bool IsComplete => completed;
+        public EnemyAgent2D GetOwnedAt(int index)
+        {
+            if (index < 0 || index >= owned.Count) return null;
+            EnemyAgent2D actor = owned[index];
+            return actor != null && actor.isActiveAndEnabled && actor.Self != null && actor.Self.IsAlive ? actor : null;
+        }
         public int EffectiveMaximumConcurrent => definition == null ? 0 : Mathf.Min(64, definition.MaximumConcurrent + ActiveExtraConcurrent);
         public float EffectiveSpawnInterval => definition == null ? 0f : definition.SpawnInterval * ActiveIntervalMultiplier;
         private bool HasIntensity => intensityOwner != null && intensityOwner.isActiveAndEnabled;

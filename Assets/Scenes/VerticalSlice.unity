@@ -131,6 +131,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 1008}
   - component: {fileID: 1007}
   - component: {fileID: 1006}
   - component: {fileID: 1005}
@@ -182,6 +183,7 @@ MonoBehaviour:
   - {fileID: 1005}
   - {fileID: 1006}
   - {fileID: 1007}
+  - {fileID: 1008}
   camera: {fileID: 0}
   fanProfile: {fileID: 11400000, guid: e67bdc42980944b8b3eeb60f0eb1ad7b, type: 2}
   ramen: {fileID: 11400000, guid: 5d7138193cfc47b987181bf6757841b3, type: 2}
@@ -263,6 +265,22 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   stage: {fileID: 11400000, guid: a6a8db0008b94c63987c40ca17e8d896, type: 2}
   minibossPrefab: {fileID: 114295073500037013, guid: 3eb014e5835943feac406812c351f53e, type: 3}
+--- !u!114 &1008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 443f62c4bb4849a483ef07eea712d365, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  landingStage: {fileID: 11400000, guid: d2576f2d2c3c4d65877fb03b026a54fc, type: 2}
+  fallHeight: 35
+  terminalSpeed: 4
+  landingWidth: 8
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

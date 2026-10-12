@@ -1,0 +1,7 @@
+# Character sprite/rig pipeline v1
+
+Card71 chooses reusable local-transform rigs for Saja rivals/Jinu, hybrid rig plus independent effects for Rumi/Mira/Zoey/Gwi-Ma. No frame-by-frame production sheets are claimed. Current prototype implementation uses the rig part for every character; authored technique marks the intended production handoff. Hybrid effect adapter comes from card73 and does not change combat.
+
+Part contract: VisualRoot, Leg_L/Leg_R, Arm_L/Arm_R, Weapon; Torso/Head/HairBack/HairTop/Eyes/Belt are decorations. Origin at gameplay actor center; +Y up, +X forward; body sizes from card69. Physics stays on actor root, never on visual parts. Pose animations mutate only local transforms and reset at disable. One animation driver per renderer.
+
+Nine CharacterRigDefinition assets carry profile identity, chosen technique and validated timing. Model sheet SVGs remain editable references. To replace geometric quads with sprites: keep names/origin/world-unit dimensions, export transparent images with consistent pixel density, preserve silhouette and sorting10–14, import without changing hitboxes, review all10 poses at orthographic size5. Use source_vNN naming; preserve existing GUIDs when replacing a production asset rather than recreating references. Prototype sources are original repository geometry, not copied material. Renderer import, runtime timing and profiler checks are deferred to final Unity validation.

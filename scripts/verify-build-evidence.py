@@ -29,7 +29,7 @@ def verify(path):
     evidence = json.loads(Path(path).read_text())
     if not isinstance(evidence, dict):
         raise ValueError('Build evidence must be an object')
-    if evidence.get('editorVersion') != '6000.6.4f1' or evidence.get('result') != 'Succeeded' or evidence.get('errors') != 0:
+    if evidence.get('editorVersion') != '6000.6.4f1' or evidence.get('result') != 'Succeeded' or type(evidence.get('errors')) is not int or evidence['errors'] != 0:
         raise ValueError('Build report is missing, failed or uses an unpinned Editor')
     completed = evidence.get('completedUtc')
     if not isinstance(completed, str):
@@ -56,7 +56,7 @@ def verify(path):
         raise ValueError('Windows output requires an EXE and matching Data directory')
     if evidence['target'] == 'iOS' and (not output.is_dir() or not list(output.glob('*.xcodeproj'))):
         raise ValueError('iOS export requires a generated Xcode project')
-    if not isinstance(evidence.get('totalBytes'), int) or evidence['totalBytes'] <= 0:
+    if type(evidence.get('totalBytes')) is not int or evidence['totalBytes'] <= 0:
         raise ValueError('Build report contains no produced bytes')
     if not re.fullmatch(r'[0-9a-f]{64}', evidence.get('artifactSha256', '')) or artifact_hash(root) != evidence['artifactSha256']:
         raise ValueError('Artifact digest does not match the build report')

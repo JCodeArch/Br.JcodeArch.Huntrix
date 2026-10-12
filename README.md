@@ -1,40 +1,34 @@
-# Br.JcodeArch.Huntrix
+# HUNTR/X — Honmoon
 
-## HUNTR/X — Honmoon
+Projeto Unity 2D de ação e plataformas: alternância entre Rumi, Mira e Zoey, resgate de fãs, Honmoon, Special conjunto e equipamentos por progressão narrativa. O backlog oficial é o [Trello do projeto](https://trello.com/b/O5yAS8lM/huntr-x-honmoon).
 
-AI-assisted game development foundation for HUNTR/X, focused on modular Unity 6 + C# engineering, agent orchestration, gameplay systems, architecture, performance and automated QA.
+O estado atual é **desenvolvimento com protótipos integrados**. Integração na `develop` não comprova importação, compilação, gameplay, performance ou prontidão para publicação. Veja os limites e as evidências em [contexto](docs/PROJECT_CONTEXT.md), [validação adiada](docs/governance/DEFERRED_VALIDATION.md) e [revisões](docs/reviews/).
 
-## Engineering Agent Pipeline
+## Abrir e executar
 
-\`\`\`
-Orchestrator
-    -> System Architect
-    -> Core Gameplay Developer
-    -> Pull Request Review Analyst
-    -> SOLID Auditor
-    -> Performance Engineer
-    -> QA Automation Engineer
-    -> Integration
-\`\`\`
+1. Clone o repositório e selecione `develop`.
+2. No Unity Hub, abra a raiz que contém `Assets`, `Packages` e `ProjectSettings`. Use **6000.6.4f1**, conforme `ProjectSettings/ProjectVersion.txt`. O Codespace permite editar C#, mas seu VS Code não substitui o Editor Unity.
+3. Aguarde a importação e resolva erros de compilação antes de Play. Use `CombatLab` para os controles lógicos de combate e `EnemyLab` para os encontros de inimigos. Esses labs anteriores não possuem entrada física completa.
+4. Abra `Assets/Scenes/VerticalSlice.unity` e entre em Play após a importação passar. A cena compõe sete etapas: avião, ramen, primeiro resgate, horda/Special, miniboss, paraquedas e show. Não exige configuração manual do Inspector. A execução dessa composição ainda precisa ser verificada no Unity.
+5. As nove cenas `*_Blockout.unity` permitem inspecionar as áreas; `ArtBlockout` e `ArtVerticalSlice` apresentam os assets originais de protótipo. Arte, animação e áudio finais ainda precisam de avaliação em execução.
 
-## Repository Goals
+Controles da slice: A/D e W/S para movimento/direção, Espaço para salto, Shift para dash, J para ataque, K para parry, Q para troca, E para interação/resgate, R para comida própria, F para comida no fã e L para Special. Durante resgate, mantenha E ou ative a opção de alternância. No gamepad, use stick/D-pad, South para salto, RB para dash, West para ataque, East para parry, LB para troca, North para interação, Select/Start para comida própria/no fã e RT para Special. O painel touch envia as mesmas ações.
 
-- Modular and maintainable Unity architecture.
-- Data-driven systems using ScriptableObjects where appropriate.
-- Explicit contracts between agents and software modules.
-- Automated quality gates.
-- Performance-conscious runtime code.
-- Testable gameplay logic.
-- No hidden scope expansion.
+Em **Opções e acessibilidade**, escolha idioma da narrativa PT/EN e faixa etária, ajuste flashes, legendas, mira assistida, salto/resgate por alternância e remapeamento de teclas. Ao terminar a abertura, o formulário aceita uma avaliação humana e pode salvar um resumo JSON local. O recorder distingue uma janela completa de 60 segundos de uma sessão mais curta; ainda não há playtest humano registrado.
 
-## Current status
+## Testes, build e contribuição
 
-The project is in iterative gameplay development. Trello is the master backlog. The current implementation round reaches card #40 (Jinu), with a dedicated feature branch and descriptive commits for each card, independent static review and sequential integration to `develop`. Unity compilation, import, EditMode/PlayMode, visual playtests and device profiling remain pending under the owner's 10 October 2026 instruction to defer tests until the final phase. Implemented prototypes include characters/selection and enemies, support, hordes, elites, miniboss, Saja rivals and Jinu combat-stage/narrative cue hooks. Final art, physical controls, story/cinematics and balance remain separate work. Start with [project context](docs/PROJECT_CONTEXT.md), [master GDD](docs/GDD_MASTER.md), [integration guide](docs/enemies/INTEGRATION_GUIDE.md), [deferred validation](docs/governance/DEFERRED_VALIDATION.md) and [project rules](PROJECT_RULES.md). The authored `Assets/Scenes/EnemyLab.unity` composes an automatic ground-horde prototype; its execution has not been verified in Unity.
+Preserve os testes existentes. Em um ambiente com Editor licenciado, execute `bash scripts/run-unity-tests.sh` com `UNITY_EDITOR` apontando para o executável 6000.6.4f1. O runner preserva resultados por execução e registra proveniência do commit. Sem Editor configurado ele falha explicitamente; nenhum XML ou build é inventado.
 
-Start with [the full project context](docs/PROJECT_CONTEXT.md), [master GDD](docs/GDD_MASTER.md), [Definition of Done](docs/governance/DEFINITION_OF_DONE.md), and [agent pipeline](docs/architecture/AGENT_PIPELINE.md). Character-specific contracts are in `docs/architecture/` and card plans/specs are in `docs/superpowers/`.
+`bash scripts/build-unity.sh` prepara targets Windows, Android e exportação iOS por cenas explícitas; veja `docs/build/` para argumentos e requisitos. A CI executa verificações de ferramentas em PRs e pushes, enquanto suites e builds Unity exigem runner licenciado configurado. `scripts/check-release-candidate.py` exige evidências vinculadas ao commit e ao build. Builds, medições em dispositivos e aprovação de RC continuam pendentes.
 
-All incoming Pull Requests receive a strict, independent review against their Trello card, full diff, Unity asset references, test evidence, and Definition of Done before merge.
+O Codespace continua útil para C#, Git e ferramentas; edição online pode usar uma VM ou runner com Unity para a execução final, sem exigir instalar o Editor na máquina pessoal.
 
-## Git LFS
+Crie uma branch por feature/card a partir da `develop` atualizada, um commit que explique objetivo, alterações e validação, e um PR para `develop`. Corrija findings antes do merge e registre evidências no Trello. As [regras do projeto](PROJECT_RULES.md) e o [guia de versionamento](docs/release/VERSIONING.md) definem o fluxo.
 
-Git LFS tracks source art, model, audio, and video formats listed in the root .gitattributes. After cloning this repository, run git lfs install --local once to configure repository-local filters and hooks. Unity scenes, prefabs, assets, metadata, and small raster images remain in regular Git. Existing history is not migrated automatically.
+Leia o [GDD](docs/GDD_MASTER.md), o [guia da arquitetura](docs/architecture/SYSTEM_MAP.md) e o [guia de conteúdo](docs/content/CONTENT_AUTHORING.md). Assets e `.meta` devem entrar juntos. Não inclua credenciais, certificados, dados pessoais, binários gerados ou música sem direitos documentados. Consulte [preparação de publicação](docs/release/PUBLICATION_PACKAGE.md) antes de distribuição.
+
+
+## Assets e Git LFS
+
+O Git LFS acompanha os formatos de arte, modelos, áudio e vídeo em `.gitattributes`. Após clonar, execute `git lfs install --local` e `git lfs pull` para obter o áudio original. Scenes, prefabs, assets, metadados e imagens pequenas permanecem no Git normal; não migre histórico sem uma tarefa específica. Veja o [pipeline dos agentes](docs/architecture/AGENT_PIPELINE.md) para responsabilidades e revisões.

@@ -7,17 +7,19 @@ namespace HuntrX.Tests.EditMode
     public sealed class CombatLabBuildSettingsTests
     {
         [Test]
-        public void CombatLabIsEnabledAfterTheUnchangedStartupScene()
+        public void VerticalSliceStartsBeforeEnabledLegacyTestHosts()
         {
             string[] enabledScenes = EditorBuildSettings.scenes
                 .Where(scene => scene.enabled)
                 .Select(scene => scene.path)
                 .ToArray();
 
-            Assert.That(enabledScenes, Does.Contain("Assets/Scenes/SampleScene.unity"));
-            Assert.That(enabledScenes, Does.Contain("Assets/Scenes/CombatLab.unity"));
-            Assert.That(enabledScenes[0], Is.EqualTo("Assets/Scenes/SampleScene.unity"));
-            Assert.That(enabledScenes[1], Is.EqualTo("Assets/Scenes/CombatLab.unity"));
+            CollectionAssert.AreEqual(new[]
+            {
+                "Assets/Scenes/VerticalSlice.unity",
+                "Assets/Scenes/SampleScene.unity",
+                "Assets/Scenes/CombatLab.unity"
+            }, enabledScenes, "The playable slice must start first; legacy scene fixtures remain loadable.");
         }
     }
 }

@@ -32,7 +32,8 @@ namespace HuntrX.Presentation.Hud
         private CharacterManager2D boundManager, scopedManager;
         private HordeController2D boundHorde;
         private bool options, pauseOwned, inputOwned, priorInputEnabled;
-        private float priorTimeScale;
+        private HitStopService pauseService;
+        private bool priorServicePaused;
         private SlicePlayerInput2D blockedInput;
         private Vector2 optionsScroll, feedbackScroll;
         private string key="space", comments=string.Empty, feedback=string.Empty;
@@ -131,8 +132,19 @@ namespace HuntrX.Presentation.Hud
         }
         private void SetPause(bool value)
         {
-            if(value && !pauseOwned) { priorTimeScale=Time.timeScale; pauseOwned=true; Time.timeScale=0f; }
-            else if(!value && pauseOwned) { if(Time.timeScale==0f) Time.timeScale=priorTimeScale; pauseOwned=false; }
+            if(value && !pauseOwned)
+            {
+                pauseService=HitStopService.EnsureInstance();
+                priorServicePaused=pauseService.IsPaused;
+                pauseService.SetPaused(true);
+                pauseOwned=true;
+            }
+            else if(!value && pauseOwned)
+            {
+                if(pauseService!=null && !priorServicePaused) pauseService.SetPaused(false);
+                pauseService=null;
+                pauseOwned=false;
+            }
         }
         private void SetInputBlocked(bool value)
         {

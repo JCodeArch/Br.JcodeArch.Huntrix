@@ -19,6 +19,7 @@ namespace HuntrX.Gameplay.Combat
         private bool registeredAsInstance;
 
         public static HitStopService Instance => instance;
+        public bool IsPaused => isPaused;
 
         /// <summary>
         /// Provides a deterministic fallback for editor tests or scenes that have not run

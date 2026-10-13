@@ -8,6 +8,7 @@ using HuntrX.Gameplay.Combat;
 using HuntrX.Presentation.Art;
 using HuntrX.Gameplay.VerticalSlice;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 namespace HuntrX.Presentation.Hud
 {
     [DefaultExecutionOrder(-100), DisallowMultipleComponent]
@@ -76,6 +77,7 @@ namespace HuntrX.Presentation.Hud
                 if(session.Special!=null) GUILayout.Label("Special "+(session.Special.IsReady?"pronto":"carregando "+Mathf.RoundToInt(session.Special.Charge)));
                 if(session.Inventory!=null) GUILayout.Label("Comida "+session.Inventory.TotalCount+" • R: você • F: fã");
                 if(GUILayout.Button("Opções e acessibilidade")) { options=true; SetPause(true); SetInputBlocked(true); SetNarrativeBlocked(true); }
+                if(session.IsComplete && recorder==null && GUILayout.Button("Jogar novamente")) RestartCompletedSession();
                 GUILayout.EndArea();
                 if(session.IsComplete && recorder!=null) DrawFeedback(width,height);
             }
@@ -192,9 +194,19 @@ namespace HuntrX.Presentation.Hud
             {
                 feedback=recorder.TrySubmitFeedback(fun,difficulty,comments) && recorder.TrySaveReport(out _)?"Avaliação salva":"Não foi possível salvar";
             }
+            if(GUILayout.Button("Salvar avaliação e jogar novamente")) RestartCompletedSession();
             if(recorder.Report!=null) GUILayout.Label(recorder.Report.CompleteWindow?"Registro de 60 segundos completo":"Registro ainda incompleto");
             if(!string.IsNullOrEmpty(feedback)) GUILayout.Label(feedback);
             GUILayout.EndScrollView(); GUILayout.EndArea();
+        }
+        private void RestartCompletedSession()
+        {
+            if(session==null || !session.IsComplete) return;
+            Scene scene=gameObject.scene;
+            if(!scene.IsValid() || scene.buildIndex<0) { feedback="Cena indisponível para reiniciar"; return; }
+            if(recorder!=null && (!recorder.TrySubmitFeedback(fun,difficulty,comments) || !recorder.TrySaveReport(out _)))
+            { feedback="Não foi possível salvar. Sua avaliação foi mantida; tente novamente"; return; }
+            SceneManager.LoadScene(scene.buildIndex);
         }
     }
 }

@@ -23,6 +23,7 @@ namespace HuntrX.Gameplay.VerticalSlice
         private readonly bool[] visited = new bool[16];
         private HuntrXSpecialController2D special;
         private bool observing;
+        private string reportPath;
         public SlicePlaytestReport Report { get; private set; }
         public event Action<SlicePlaytestReport> ObservationCompleted;
         private void OnEnable()
@@ -70,7 +71,23 @@ namespace HuntrX.Gameplay.VerticalSlice
         public bool TrySaveReport(out string path)
         {
             path = string.Empty; if (Report == null) return false;
-            try { string directory = Path.Combine(Application.persistentDataPath,"Playtests"); Directory.CreateDirectory(directory); path = Path.Combine(directory,"slice-"+Guid.NewGuid().ToString("N")+".json"); File.WriteAllText(path,JsonUtility.ToJson(Report,true)); return true; }
+            try
+            {
+                string directory = Path.Combine(Application.persistentDataPath, "Playtests");
+                Directory.CreateDirectory(directory);
+                // The recorder belongs to one session; repeated saves update its report.
+                if (string.IsNullOrEmpty(reportPath)) reportPath = Path.Combine(directory, "slice-" + Guid.NewGuid().ToString("N") + ".json");
+                string temporaryPath = reportPath + ".tmp";
+                try
+                {
+                    File.WriteAllText(temporaryPath, JsonUtility.ToJson(Report, true));
+                    if (File.Exists(reportPath)) File.Replace(temporaryPath, reportPath, null);
+                    else File.Move(temporaryPath, reportPath);
+                }
+                finally { if (File.Exists(temporaryPath)) File.Delete(temporaryPath); }
+                path = reportPath;
+                return true;
+            }
             catch(Exception exception) { path=string.Empty;Debug.LogException(exception,this);return false; }
         }
         private void OnDisable()

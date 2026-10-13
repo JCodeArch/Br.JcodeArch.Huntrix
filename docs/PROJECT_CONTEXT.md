@@ -1,5 +1,9 @@
 # HUNTR/X Project Context
 
+## Unity Build Automation — 12 de outubro de 2026 (São Paulo)
+
+Infraestrutura online configurada em [Unity Build Automation](build/UNITY_BUILD_AUTOMATION.md): alvo `Huntrix-Android-develop`, SSH com deploy key somente leitura, branch `develop`, Editor `6000.6.4f1`, APK de desenvolvimento/debug, cena VerticalSlice e EditMode/PlayMode habilitados com falha de build em caso de falha de teste. Agendamento e autobuild estão desativados; não foi contratado plano pago nem informado cartão. Build #1, fonte solicitada no pedido `1a907af9d68fb586f0740821337077f993917d16`, estava **Sent to Builder, ainda sem iniciar**, às 21:11 de 12 de outubro (São Paulo); commit resolvido ainda não preenchido e checkout não confirmado. Nenhuma compilação, teste ou geração de APK foi confirmada. A orquestração acompanhará e atualizará o resultado; registros anteriores de Editor local/Codespace ausente continuam históricos, enquanto esta configuração oferece uma via online de execução.
+
 ## Status atual — consolidação 2026-10-12
 
 O escopo autorizado avançou até os 75 cards existentes entre 41–116; #105 está ausente do backlog oficial. Consulte [Implementation Status](IMPLEMENTATION_STATUS.md) para o ledger completo e a distinção entre protótipos, tooling, planos QA e documentos. Após o lote, 74 cards anteriores têm merge de fonte em `develop` com receipts confirmados; fonte consolidada `ae68ba4a26649afc3c87f23e0f5fe4b347569345` (card 115/PR #87), `develop` limpo e verificações de ferramentas repetidas no Codespace. #116 documenta o backlog e esta consolidação neste PR; seu próprio merge ainda não é alegado. Estes números incluem protótipos, ferramentas, planos e documentação, sem afirmar QA/build aceitos.

@@ -1,0 +1,73 @@
+{
+  "project_key": "huntrx-honmoon",
+  "status": "design_created_visual_review_complete",
+  "file_key": "AoNgky0oNVLU31UvML5xns",
+  "file_url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns",
+  "file_name": "HUNTRX — Telas mobile",
+  "page": "01 · Mobile landscape",
+  "page_id": "0:1",
+  "frames": [
+    {
+      "node_id": "2:2",
+      "name": "Menu principal",
+      "width": 1280,
+      "height": 720,
+      "url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=2-2"
+    },
+    {
+      "node_id": "2:29",
+      "name": "Equipe e perfil",
+      "width": 1280,
+      "height": 720,
+      "url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=2-29"
+    },
+    {
+      "node_id": "2:71",
+      "name": "HUD mobile — protótipo",
+      "width": 1280,
+      "height": 720,
+      "url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=2-71"
+    },
+    {
+      "node_id": "2:110",
+      "name": "Opções e acessibilidade",
+      "width": 1280,
+      "height": 720,
+      "url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=2-110"
+    },
+    {
+      "node_id": "2:150",
+      "name": "Conclusão e replay",
+      "width": 1280,
+      "height": 720,
+      "url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=2-150"
+    }
+  ],
+  "created_nodes": 167,
+  "decisions": [
+    "Landscape 1280×720, alinhado ao jogo 2D/mobile e referência 16:9; proposta de interface, não novo contrato de resolução Unity.",
+    "Direção original amigável: fundos claros, azul ação, mint proteção, rosa/dourado/lilás para personagens, tipografia Inter, formas geométricas placeholders sem arte do filme.",
+    "Menu principal, seleção de personagem/perfil, HUD com vida/Honmoon/fãs/comida/troca/pausa/dash/pulo/ataque/Special, opções de conforto e conclusão/replay.",
+    "Cinco perfis do protótipo confirmado: 4–5, 6–8, 9–12, 13–15, 16+; faixa 6–8 selecionada ilustrativamente; sem cadastro/data de nascimento.",
+    "Identidades atuais: Rumi espada, Mira campo de proteção, Zoey precisão; valores e resultados apresentados são ilustrativos.",
+    "Cooperação até 3 continua requisito; modalidade/prova não decididas por estas telas."
+  ],
+  "verification": {
+    "structural": "5 frames 1280×720 e IDs retornados pela criação",
+    "visual": "Screenshots das cinco telas inspecionados; recorte de idioma e texto lateral em Opções corrigidos; screenshot pós-correção conferido sem recorte.",
+    "interaction": "Frames estáticos, sem wiring de navegação ou execução no jogo.",
+    "unity": "Nenhuma tela implementada ou validada no Unity nesta frente."
+  },
+  "remaining": [
+    "Revisão humana das telas e legibilidade em dispositivo alvo",
+    "Definir navegação, estados vazio/disabled/pausa, remapeamento e adaptação às safe areas",
+    "Estender direção final e assets aprovados; então integrar Unity e testar acessibilidade/touch",
+    "Não promover resultados fictícios da conclusão a evidência de playtest"
+  ],
+  "source_paths": [
+    "docs/GDD_MASTER.md",
+    "docs/architecture/AGE_PROFILES.md",
+    "docs/PROJECT_CONTEXT.md",
+    "docs/IMPLEMENTATION_STATUS.md"
+  ]
+}

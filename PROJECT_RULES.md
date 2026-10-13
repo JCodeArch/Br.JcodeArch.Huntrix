@@ -73,3 +73,10 @@ no Codespace, sempre que necessário, sem repetir a pergunta.
 - Preservar código em Git e fornecer patch quando a publicação estiver bloqueada.
 - Ao retomar, verificar o estado atual da branch e do ambiente antes de repetir ações.
 - Ler este arquivo no início de novas sessões de trabalho do projeto. Este documento registra as preferências do proprietário; não equivale a memória permanente da aplicação.
+
+
+## Continuidade obrigatória para toda IA
+
+Toda IA deve consultar o Supabase antes de iniciar qualquer trabalho e manter o checkpoint nas transições relevantes e no encerramento. A obrigação inclui desenvolvimento, design, documentação e validação. O protocolo está em `docs/integrations/SUPABASE_AI_CONTINUITY.md`; consultas iniciais estão em `AGENTS.md`.
+
+Use somente a conexão MCP SQL autorizada no projeto `bkfjhgwxhcwhmvsitckp`, schema privado multiprojeto `ai_context`, chave `huntrx-honmoon` para este repositório. Cada outro projeto deve ter chave, regras e contexto próprios; não herda premissas HUNTR/X. Reconcilie fontes reais, use CAS/leases e registre evidências. Falta de acesso ou de persistência confirmada deve ser comunicada, nunca apresentada como contexto atualizado. Não há monitoramento contínuo automático implícito.

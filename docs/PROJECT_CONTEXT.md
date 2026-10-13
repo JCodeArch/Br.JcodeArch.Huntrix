@@ -1,5 +1,17 @@
 # HUNTR/X Project Context
 
+## Contexto persistente e retomada por IAs
+
+O handoff operacional reside no Supabase `bkfjhgwxhcwhmvsitckp`, schema privado multiprojeto `ai_context`, chave `huntrx-honmoon` neste repositório. Outros projetos usam chaves, regras e fontes próprias, sem herdar premissas HUNTR/X. Toda IA deve ler o contexto do projeto em trabalho antes de iniciar e atualizá-lo nas transições e ao encerrar. Consulte `docs/integrations/SUPABASE_AI_CONTINUITY.md` e `AGENTS.md` para consultas, cadastro de projeto, CAS, leases, reconciliação e evidências.
+
+O registro contém checkpoint completo, tarefas, documentos com hash/commit, eventos e artefatos. Verifique Git e Trello conforme o trabalho; o checkpoint não substitui fontes atuais. A atualização ocorre em sessões ativas, sem promessa de sincronização contínua.
+
+As cinco telas estáticas landscape do Figma foram criadas e revisadas visualmente; revisão humana/dispositivo e implementação Unity permanecem pendentes. Inventário e links: `docs/ui/FIGMA_SCREENS.md`.
+
+## Estado verificado — 13 de outubro de 2026
+
+PRs 91–96 integrados na develop `7d96dfa00def38227f7b6834ec3ccd5f515cd189`: API EntityId, cenas legadas para testes, pausa coordenada, reinício/replay, callback de projéteis e evidência do build #1. Sete testes das ferramentas Python passaram. Novo build Unity ainda não solicitado: login manual após Google 502 pendente. O snapshot histórico abaixo que diz “correções em preparação” é anterior a esses merges. As telas Figma estão desenhadas; nenhuma integração UI Unity é alegada.
+
 ## Unity Build Automation — 12 de outubro de 2026 (São Paulo)
 
 Infraestrutura online configurada em [Unity Build Automation](build/UNITY_BUILD_AUTOMATION.md): alvo `Huntrix-Android-develop`, SSH com deploy key somente leitura, branch `develop`, Editor `6000.6.4f1`, APK de desenvolvimento/debug, cena VerticalSlice e EditMode/PlayMode habilitados com falha de build em caso de falha de teste. Agendamento e autobuild estão desativados; não foi contratado plano pago nem informado cartão.

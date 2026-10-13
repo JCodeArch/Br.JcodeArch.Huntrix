@@ -1,0 +1,859 @@
+{
+  "schema_version": "1.0",
+  "project_key": "huntrx-honmoon",
+  "as_of": "2026-10-13",
+  "language": "pt-BR",
+  "purpose": "Continuidade persistente entre AIs; registrar projeto, evidência, parada e tarefas restantes sem inferir execução.",
+  "project": {
+    "name": "HUNTR/X — Honmoon",
+    "repository": "https://github.com/JCodeArch/Br.JcodeArch.Huntrix",
+    "branch": "develop",
+    "head_sha": "7d96dfa00def38227f7b6834ec3ccd5f515cd189",
+    "scope": "Ação/plataforma 2D inspirada na direção de gameplay Mega Man X/Zero, protagonistas Rumi/Mira/Zoey, demônios terrestres/aéreos, fãs/resgate, Honmoon global, comida, Special, Performance e música dinâmica sem exigir ritmo. Plataformas Android, iOS e Windows. MVP é Vertical Slice para validar diversão antes de produção completa, não lançamento comercial. Cooperação até 3 jogadores é requisito do produto; modalidade local/online/ambas e prova mínima continuam abertas.",
+    "architecture": "Unity 6000.6.4f1 + C#, modular/data-driven; definições tipadas ScriptableObject para dados autorados, estado em componentes runtime; assemblies Runtime, Editor, EditMode e PlayMode; assets e .meta versionados juntos com GUIDs resolvíveis. Conteúdo separável de sistemas.",
+    "main_scene": "Assets/Scenes/VerticalSlice.unity",
+    "labs": [
+      "Assets/Scenes/CombatLab.unity",
+      "Assets/Scenes/EnemyLab.unity"
+    ],
+    "project_key": "huntrx-honmoon"
+  },
+  "source_of_truth": {
+    "product": "docs/GDD_MASTER.md; FECHADO é decisão conceitual, EM ABERTO é lacuna, RECOMENDAÇÃO não é aprovação.",
+    "backlog": "https://trello.com/b/O5yAS8lM/huntr-x-honmoon; preservar ordem/escopo dos cards.",
+    "engineering": [
+      "PROJECT_RULES.md",
+      "docs/PROJECT_CONTEXT.md",
+      "docs/IMPLEMENTATION_STATUS.md",
+      "docs/architecture/AGENT_PIPELINE.md",
+      "docs/governance/DEFINITION_OF_DONE.md",
+      "docs/governance/DEFERRED_VALIDATION.md",
+      "docs/build/UNITY_BUILD_AUTOMATION.md",
+      "docs/qa/RELEASE_CANDIDATE_GATE.md"
+    ],
+    "freshness": "PROJECT_CONTEXT e IMPLEMENTATION_STATUS incluem snapshots históricos; afirmações de próxima #41, encerramento #40 e #116 não integrado estão superadas pela sessão/git atuais. Ledger de cards abaixo conserva o estado documentado de 12/10, não inventa receipts posteriores."
+  },
+  "implemented_source": {
+    "status": "Fonte/protótipos/tooling/documentação integrados, sem aceitação runtime atual.",
+    "systems": [
+      "Movimento, salto, dash, combate terrestre/aéreo, combos/parry, checkpoints e respawn lógico",
+      "Rumi espada; Mira campo defensivo; Zoey ataque de precisão; CharacterManager/troca",
+      "Demônios melee/voadores/suporte/hordas/elites/miniboss, Saja, Jinu e Gwi-Ma protótipos",
+      "Fãs/resgate/proteção, Honmoon/Crisis, comida e Special/efeitos",
+      "Combat Performance, equipamentos/efeitos, replay/rankings protótipos",
+      "Level grammar/blockouts/encontros; VerticalSlice em sete etapas: avião, ramen, fãs, horda/Special/Honmoon, mini-boss, paraquedas, show",
+      "Teclado/gamepad/touch, HUD/UI responsiva, idade/acessibilidade/idioma/dificuldade protótipos",
+      "Arte, sprite/rig, animação/VFX, ambientes, áudio/música/torcida e diálogos/narrativa protótipos",
+      "Atlas/pooling, instrumentação de 60 FPS e playtest 60s; ferramentas QA/CI/versionamento/build/RC; planos de gameplay/balanço/idade/acessibilidade/mobile/publicação"
+    ],
+    "backlog_41_116": "75 cards reais; #105 ausente. #116 foi integrado após o snapshot do ledger (merge 62ea62d). Não são 75 funcionalidades aceitas em gameplay.",
+    "recent_merges": "PRs #91–#96 integrados conforme sessão. Git atual contém correção EntityId (8f9c523), contrato legacy scene hosts (5c6f738), pausa HUD/hit-stop (ce76e15), restart da slice (2e78829), proteção de lease em impacto projectile (5cb0517), documentação da falha cloud (7d96dfa).",
+    "card_ledger": [
+      {
+        "card": 41,
+        "trello_url": "https://trello.com/c/lsykpVLG/41-41-criar-gwi-ma",
+        "scope": "Criar Gwi-Ma",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #14](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/14) · `1fd46cca2a`"
+      },
+      {
+        "card": 42,
+        "trello_url": "https://trello.com/c/YDxtK7wQ/42-42-implementar-estados-dos-f%C3%A3s",
+        "scope": "Implementar estados dos fãs",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #15](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/15) · `6677f7e0ed`"
+      },
+      {
+        "card": 43,
+        "trello_url": "https://trello.com/c/Vx2NROMc/43-43-implementar-resgate-de-f%C3%A3s",
+        "scope": "Implementar resgate de fãs",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #16](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/16) · `b1dde88eea`"
+      },
+      {
+        "card": 44,
+        "trello_url": "https://trello.com/c/drW9VawR/44-44-implementar-soul-drain",
+        "scope": "Implementar soul drain",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #17](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/17) · `bf37b2fd56`"
+      },
+      {
+        "card": 45,
+        "trello_url": "https://trello.com/c/22Drvqk0/45-45-implementar-comida",
+        "scope": "Implementar comida",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #18](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/18) · `3ad7754144`"
+      },
+      {
+        "card": 46,
+        "trello_url": "https://trello.com/c/AvT9CFqD/46-46-implementar-escolha-self-fan",
+        "scope": "Implementar escolha self/fan",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #19](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/19) · `5668318c8c`"
+      },
+      {
+        "card": 47,
+        "trello_url": "https://trello.com/c/mzLJYgUm/47-47-implementar-honmoon",
+        "scope": "Implementar Honmoon",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #20](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/20) · `4c25028f6b`"
+      },
+      {
+        "card": 48,
+        "trello_url": "https://trello.com/c/GqHu0qeY/48-48-implementar-honmoon-crisis",
+        "scope": "Implementar Honmoon Crisis",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #21](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/21) · `337f193fbb`"
+      },
+      {
+        "card": 49,
+        "trello_url": "https://trello.com/c/PVbkIfDF/49-49-implementar-special",
+        "scope": "Implementar Special",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #22](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/22) · `fae232dcb5`"
+      },
+      {
+        "card": 50,
+        "trello_url": "https://trello.com/c/8RbUCMCK/50-50-implementar-efeitos-do-special",
+        "scope": "Implementar efeitos do Special",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #23](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/23) · `82c95a5315`"
+      },
+      {
+        "card": 51,
+        "trello_url": "https://trello.com/c/N1apjT90/51-51-implementar-combat-performance",
+        "scope": "Implementar Combat Performance",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #24](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/24) · `1a809c95bd`"
+      },
+      {
+        "card": 52,
+        "trello_url": "https://trello.com/c/um3Ke7Ob/52-52-implementar-progress%C3%A3o-de-equipamentos",
+        "scope": "Implementar progressão de equipamentos",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #25](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/25) · `9b1dcb567a`"
+      },
+      {
+        "card": 53,
+        "trello_url": "https://trello.com/c/FJ58KiwC/53-53-definir-efeitos-das-pe%C3%A7as",
+        "scope": "Definir efeitos das peças",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #26](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/26) · `c99e062cff`"
+      },
+      {
+        "card": 54,
+        "trello_url": "https://trello.com/c/N7UiMtCh/54-54-implementar-replay-e-rankings",
+        "scope": "Implementar replay e rankings",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #27](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/27) · `75e070f2b3`"
+      },
+      {
+        "card": 55,
+        "trello_url": "https://trello.com/c/QTxlWZ6r/55-55-definir-gram%C3%A1tica-de-level-design",
+        "scope": "Definir gramática de level design",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #28](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/28) · `f8c2a27bee`"
+      },
+      {
+        "card": 56,
+        "trello_url": "https://trello.com/c/UW2pfzmH/95-56-planejar-fases-do-filme",
+        "scope": "Planejar fases do filme",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #29](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/29) · `e4dea8e6eb`"
+      },
+      {
+        "card": 57,
+        "trello_url": "https://trello.com/c/IRPeBsbr/96-57-projetar-encontros-a%C3%A9reos",
+        "scope": "Projetar encontros aéreos",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #31](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/31) · `c409405e6b`"
+      },
+      {
+        "card": 58,
+        "trello_url": "https://trello.com/c/gSYfmQ72/97-58-projetar-encontros-com-f%C3%A3s",
+        "scope": "Projetar encontros com fãs",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #37](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/37) · `a267072eb1`"
+      },
+      {
+        "card": 59,
+        "trello_url": "https://trello.com/c/31S2pykD/98-59-projetar-boss-arenas",
+        "scope": "Projetar boss arenas",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #32](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/32) · `d9c422090a`"
+      },
+      {
+        "card": 60,
+        "trello_url": "https://trello.com/c/i7XRnHKD/99-60-criar-blockouts",
+        "scope": "Criar blockouts",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #30](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/30) · `f0ff617570`"
+      },
+      {
+        "card": 61,
+        "trello_url": "https://trello.com/c/QmViaOIh/100-61-vertical-slice-avi%C3%A3o",
+        "scope": "Vertical Slice: Avião",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #38](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/38) · `635e395815`"
+      },
+      {
+        "card": 62,
+        "trello_url": "https://trello.com/c/n1qZp8D9/101-62-vertical-slice-ramen",
+        "scope": "Vertical Slice: Ramen",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #52](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/52) · `7c254dc5fe`"
+      },
+      {
+        "card": 63,
+        "trello_url": "https://trello.com/c/LgPMs55V/102-63-vertical-slice-f%C3%A3s",
+        "scope": "Vertical Slice: Fãs",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #53](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/53) · `e77ab56b9a`"
+      },
+      {
+        "card": 64,
+        "trello_url": "https://trello.com/c/ucDTyNLW/103-64-vertical-slice-horda-special",
+        "scope": "Vertical Slice: Horda + Special",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #54](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/54) · `147318a5a6`"
+      },
+      {
+        "card": 65,
+        "trello_url": "https://trello.com/c/rvDCzPwS/104-65-vertical-slice-mini-boss",
+        "scope": "Vertical Slice: Mini-boss",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #55](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/55) · `44c9bfbe42`"
+      },
+      {
+        "card": 66,
+        "trello_url": "https://trello.com/c/dwgtKEFu/56-66-vertical-slice-paraquedas",
+        "scope": "Vertical Slice: Paraquedas",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #56](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/56) · `a0cfd903ef`"
+      },
+      {
+        "card": 67,
+        "trello_url": "https://trello.com/c/pVifyaKg/57-67-vertical-slice-show",
+        "scope": "Vertical Slice: Show",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #57](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/57) · `5ff39e09f9`"
+      },
+      {
+        "card": 68,
+        "trello_url": "https://trello.com/c/XxeFEI8g/58-68-playtest-de-60-segundos",
+        "scope": "Playtest de 60 segundos",
+        "delivery_type": "Instrumentação de playtest",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #58](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/58) · `edb96b478d`"
+      },
+      {
+        "card": 69,
+        "trello_url": "https://trello.com/c/MOmwyC38/59-69-character-bible",
+        "scope": "Character Bible",
+        "delivery_type": "Documentação/preparação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #39](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/39) · `00705a6b99`"
+      },
+      {
+        "card": 70,
+        "trello_url": "https://trello.com/c/YkHimQ8E/60-70-model-sheets",
+        "scope": "Model sheets",
+        "delivery_type": "Documentação/preparação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #59](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/59) · `799d1c8804`"
+      },
+      {
+        "card": 71,
+        "trello_url": "https://trello.com/c/sTyyNQda/61-71-sprite-rig-pipeline",
+        "scope": "Sprite/rig pipeline",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #60](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/60) · `bef6363e8c`"
+      },
+      {
+        "card": 72,
+        "trello_url": "https://trello.com/c/wGjYFXXR/62-72-anima%C3%A7%C3%B5es-de-gameplay",
+        "scope": "Animações de gameplay",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #61](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/61) · `e3a4e7e424`"
+      },
+      {
+        "card": 73,
+        "trello_url": "https://trello.com/c/Lh8I9THv/63-73-vfx-gameplay",
+        "scope": "VFX gameplay",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #62](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/62) · `ccc0177f21`"
+      },
+      {
+        "card": 74,
+        "trello_url": "https://trello.com/c/ZWOGJXnf/64-74-environments",
+        "scope": "Environments",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #63](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/63) · `a17337afa6`"
+      },
+      {
+        "card": 75,
+        "trello_url": "https://trello.com/c/UjSKTB8D/65-75-audiomanager",
+        "scope": "AudioManager",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #40](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/40) · `1a71c78bd6`"
+      },
+      {
+        "card": 76,
+        "trello_url": "https://trello.com/c/OrwJvjBK/66-76-m%C3%BAsica-din%C3%A2mica",
+        "scope": "Música dinâmica",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #41](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/41) · `8d8558298c`"
+      },
+      {
+        "card": 77,
+        "trello_url": "https://trello.com/c/6ryGpALS/67-77-sfx-de-combate",
+        "scope": "SFX de combate",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #42](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/42) · `46d9ba6916`"
+      },
+      {
+        "card": 78,
+        "trello_url": "https://trello.com/c/Ps1gZ55e/68-78-sistema-de-torcida",
+        "scope": "Sistema de torcida",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #64](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/64) · `90ac3a740b`"
+      },
+      {
+        "card": 79,
+        "trello_url": "https://trello.com/c/T926rWLs/69-79-pol%C3%ADtica-de-m%C3%BAsica-licenciamento",
+        "scope": "Política de música/licenciamento",
+        "delivery_type": "Documentação/preparação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #43](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/43) · `ff0adbe759`"
+      },
+      {
+        "card": 80,
+        "trello_url": "https://trello.com/c/w2iDm42o/70-80-roteiro-das-cutscenes",
+        "scope": "Roteiro das cutscenes",
+        "delivery_type": "Documentação/preparação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #44](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/44) · `f9e86b03c7`"
+      },
+      {
+        "card": 81,
+        "trello_url": "https://trello.com/c/rSq9WhUM/71-81-sistema-de-di%C3%A1logos",
+        "scope": "Sistema de diálogos",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #45](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/45) · `1211d8a5b5`"
+      },
+      {
+        "card": 82,
+        "trello_url": "https://trello.com/c/zZMmgFPU/72-82-roteiro-das-transi%C3%A7%C3%B5es",
+        "scope": "Roteiro das transições",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #65](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/65) · `5b61e7c04f`"
+      },
+      {
+        "card": 83,
+        "trello_url": "https://trello.com/c/dYumnSUl/73-83-arco-rumi-jinu",
+        "scope": "Arco Rumi/Jinu",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #46](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/46) · `ba679e8456`"
+      },
+      {
+        "card": 84,
+        "trello_url": "https://trello.com/c/Ir0Sl82N/74-84-final-e-gwi-ma",
+        "scope": "Final e Gwi-Ma",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #47](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/47) · `0f6c4e4704`"
+      },
+      {
+        "card": 85,
+        "trello_url": "https://trello.com/c/mMQB7Zgi/75-85-ageprofiledata",
+        "scope": "AgeProfileData",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #48](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/48) · `03005cd391`"
+      },
+      {
+        "card": 86,
+        "trello_url": "https://trello.com/c/YtuCNqbR/76-86-adaptar-viol%C3%AAncia-visual",
+        "scope": "Adaptar violência visual",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #49](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/49) · `e608e4fba7`"
+      },
+      {
+        "card": 87,
+        "trello_url": "https://trello.com/c/BUghwmkX/77-87-adaptar-dificuldade",
+        "scope": "Adaptar dificuldade",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #66](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/66) · `5cd20263b0`"
+      },
+      {
+        "card": 88,
+        "trello_url": "https://trello.com/c/YldhB00v/78-88-adaptar-di%C3%A1logos-cutscenes",
+        "scope": "Adaptar diálogos/cutscenes",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #50](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/50) · `1a60672b53`"
+      },
+      {
+        "card": 89,
+        "trello_url": "https://trello.com/c/PY3YaT08/79-89-dynamic-difficulty",
+        "scope": "Dynamic Difficulty",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #67](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/67) · `401286d862`"
+      },
+      {
+        "card": 90,
+        "trello_url": "https://trello.com/c/e477OffI/80-90-accessibility",
+        "scope": "Accessibility",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #68](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/68) · `b735ed4fd2`"
+      },
+      {
+        "card": 91,
+        "trello_url": "https://trello.com/c/POdhnFFJ/81-91-child-safety",
+        "scope": "Child Safety",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #51](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/51) · `90910449e3`"
+      },
+      {
+        "card": 92,
+        "trello_url": "https://trello.com/c/s3I59eSy/82-92-touch-controls",
+        "scope": "Touch controls",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #69](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/69) · `67807e9e1e`"
+      },
+      {
+        "card": 93,
+        "trello_url": "https://trello.com/c/6hEa1A28/83-93-ui-responsiva",
+        "scope": "UI responsiva",
+        "delivery_type": "Protótipo de implementação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #72](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/72) · `c2e955d106`"
+      },
+      {
+        "card": 94,
+        "trello_url": "https://trello.com/c/fe6480O3/84-94-otimizar-sprites-e-atlases",
+        "scope": "Otimizar sprites e atlases",
+        "delivery_type": "Artefatos/editor de atlas",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #70](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/70) · `8f3abf9813`"
+      },
+      {
+        "card": 95,
+        "trello_url": "https://trello.com/c/qluU8CIr/85-95-object-pooling",
+        "scope": "Object pooling",
+        "delivery_type": "Pooling de protótipo",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #71](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/71) · `498ec6fe1c`"
+      },
+      {
+        "card": 96,
+        "trello_url": "https://trello.com/c/u3wPuw1Z/86-96-performance-60-fps",
+        "scope": "Performance 60 FPS",
+        "delivery_type": "Instrumentação de performance",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #73](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/73) · `816c1df191`"
+      },
+      {
+        "card": 97,
+        "trello_url": "https://trello.com/c/yOqmXshE/87-97-android-build-pipeline",
+        "scope": "Android build pipeline",
+        "delivery_type": "Preparação de build/qualificação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #74](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/74) · `2256586c2c`"
+      },
+      {
+        "card": 98,
+        "trello_url": "https://trello.com/c/GJL69MzY/88-98-ios-pipeline",
+        "scope": "iOS pipeline",
+        "delivery_type": "Preparação de build/qualificação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #75](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/75) · `d0fc0f4bc6`"
+      },
+      {
+        "card": 99,
+        "trello_url": "https://trello.com/c/IvLRhXDb/89-99-testes-automatizados",
+        "scope": "Testes automatizados",
+        "delivery_type": "Testes/ferramentas autorados",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #76](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/76) · `a3cb8b6107`"
+      },
+      {
+        "card": 100,
+        "trello_url": "https://trello.com/c/mG79WYcS/90-100-gameplay-qa",
+        "scope": "Gameplay QA",
+        "delivery_type": "Plano de execução QA",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #77](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/77) · `1806dc593b`"
+      },
+      {
+        "card": 101,
+        "trello_url": "https://trello.com/c/K1044ctU/91-101-balanceamento",
+        "scope": "Balanceamento",
+        "delivery_type": "Plano de execução QA",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #78](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/78) · `deb5373482`"
+      },
+      {
+        "card": 102,
+        "trello_url": "https://trello.com/c/yzBKwWfb/92-102-age-qa",
+        "scope": "Age QA",
+        "delivery_type": "Plano de execução QA",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #79](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/79) · `8d6a15f6f9`"
+      },
+      {
+        "card": 103,
+        "trello_url": "https://trello.com/c/hi25R5Rd/93-103-accessibility-qa",
+        "scope": "Accessibility QA",
+        "delivery_type": "Plano de execução QA",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #80](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/80) · `141ba423e7`"
+      },
+      {
+        "card": 104,
+        "trello_url": "https://trello.com/c/wc5pkihb/94-104-mobile-qa",
+        "scope": "Mobile QA",
+        "delivery_type": "Plano de execução QA",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #81](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/81) · `fb8a1942bf`"
+      },
+      {
+        "card": 106,
+        "trello_url": "https://trello.com/c/M9f55xp7/105-106-versionamento",
+        "scope": "Versionamento",
+        "delivery_type": "Documentação/preparação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #33](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/33) · `e5b3f6afb5`"
+      },
+      {
+        "card": 107,
+        "trello_url": "https://trello.com/c/2GIRu4mj/106-107-ci-cd",
+        "scope": "CI/CD",
+        "delivery_type": "Preparação de build/qualificação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #82](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/82) · `373a616378`"
+      },
+      {
+        "card": 108,
+        "trello_url": "https://trello.com/c/BFIQ8tE9/107-108-build-windows",
+        "scope": "Build Windows",
+        "delivery_type": "Preparação de build/qualificação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #83](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/83) · `c29d78b125`"
+      },
+      {
+        "card": 109,
+        "trello_url": "https://trello.com/c/Lr8Keakh/108-109-build-android",
+        "scope": "Build Android",
+        "delivery_type": "Preparação de build/qualificação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #84](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/84) · `449bbde58d`"
+      },
+      {
+        "card": 110,
+        "trello_url": "https://trello.com/c/N7tdXo5w/109-110-release-candidate",
+        "scope": "Release Candidate",
+        "delivery_type": "Preparação de build/qualificação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #85](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/85) · `2e15caf4d0`"
+      },
+      {
+        "card": 111,
+        "trello_url": "https://trello.com/c/FercJZOl/110-111-plano-de-publica%C3%A7%C3%A3o",
+        "scope": "Plano de publicação",
+        "delivery_type": "Documentação/preparação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #34](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/34) · `b954e4036e`"
+      },
+      {
+        "card": 112,
+        "trello_url": "https://trello.com/c/CW3A7U9p/111-112-readme-do-projeto",
+        "scope": "README do projeto",
+        "delivery_type": "Documentação/preparação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #86](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/86) · `09863e3fe4`"
+      },
+      {
+        "card": 113,
+        "trello_url": "https://trello.com/c/CPiuwlPV/112-113-guia-de-arquitetura",
+        "scope": "Guia de arquitetura",
+        "delivery_type": "Documentação/preparação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #35](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/35) · `af62156082`"
+      },
+      {
+        "card": 114,
+        "trello_url": "https://trello.com/c/unuaaQLc/113-114-guia-de-cria%C3%A7%C3%A3o-de-conte%C3%BAdo",
+        "scope": "Guia de criação de conteúdo",
+        "delivery_type": "Documentação/preparação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #36](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/36) · `c949fd684a`"
+      },
+      {
+        "card": 115,
+        "trello_url": "https://trello.com/c/4RGtc2AQ/114-115-changelog",
+        "scope": "Changelog",
+        "delivery_type": "Documentação/preparação",
+        "source_integration_at_document_snapshot": "Integrado develop",
+        "evidence": "[PR #87](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/87) · `ae68ba4a26`"
+      },
+      {
+        "card": 116,
+        "trello_url": "https://trello.com/c/RC9iPaDi/115-116-backlog-p%C3%B3s-lan%C3%A7amento",
+        "scope": "Backlog pós-lançamento",
+        "delivery_type": "Documentação/preparação",
+        "source_integration_at_document_snapshot": "Documento deste PR",
+        "evidence": "Publicação própria ainda não comprovada"
+      }
+    ]
+  },
+  "validation": {
+    "historical_unity": "Card #29: 65/65 EditMode e 245/245 PlayMode passaram no snapshot histórico. Não valida cards posteriores.",
+    "latest_tooling_documented": "7 testes Python de tooling, version.py check 0.1.0-dev.1 e bash -n passaram na consolidação. CI run 38289892178 passou apenas ferramentas; jobs Unity/build/iOS skipped.",
+    "local_unity": "Tentativa run-unity-tests.sh bloqueada por UNITY_EDITOR ausente; nenhum teste iniciou. Consulta runners 403 é inconclusiva.",
+    "cloud_build_1": {
+      "status": "Failed",
+      "actual_sha": "1a907af9d68fb586f0740821337077f993917d16",
+      "completed": "2026-10-12 21:25 America/Sao_Paulo",
+      "failure": "CS0619 CombatPerformanceController2D.cs:144: GetInstanceID obsoleto; usar GetEntityId.",
+      "tests": "EditMode/PlayMode compilation failed; nenhum XML de resultado ou APK.",
+      "duration": "14m22s build; 8m16s espera; 54s checkout; 6m05s billable não prova cobrança."
+    },
+    "current_fix": "GetEntityId já integrado em develop, presente em CombatPerformanceController2D.cs:144 no head 7d96dfa. Fonte ainda não compilada/validada no Unity após as correções."
+  },
+  "stopped_at": {
+    "state": "Correções e documentação integradas; pronto para retomar nova execução manual de Unity Build Automation após acesso.",
+    "access_blocker": "Unity Cloud Google auth retornou 502; handoff manual de login pendente conforme sessão.",
+    "background_work": "Nenhum agente/processo em background ou monitoramento autônomo é alegado.",
+    "new_cloud_build": "Nenhuma nova execução comprovada após build #1."
+  },
+  "cloud_configuration": {
+    "organization_id": "4674262819723",
+    "project_id": "acc5ceb5-588f-4ef7-9b7b-3e50d3139a49",
+    "target": "Huntrix-Android-develop",
+    "branch": "develop",
+    "editor": "6000.6.4f1",
+    "output": "APK desenvolvimento/debug, AAB desativado; Android SDK35; cena VerticalSlice; EditMode/PlayMode habilitados e falha de build em falha de teste.",
+    "log_url": "https://cloud.unity.com/organizations/4674262819723/projects/acc5ceb5-588f-4ef7-9b7b-3e50d3139a49/cloud-build/buildtargets/huntrix-android-develop/builds/1/log",
+    "automation": "Agendamento/autobuild desativados; disparos manuais.",
+    "cost_boundary": "Priorizar sem custo recorrente; nenhum plano pago/cartão fornecido. Franquias documentadas são observações históricas, não garantia atual.",
+    "repository_access": "SSH deploy key somente leitura; não reproduzir conteúdo de chave/token."
+  },
+  "remaining_tasks": [
+    {
+      "priority": 1,
+      "task": "Concluir login manual Unity Cloud e disparar nova tentativa manual no develop corrigido.",
+      "done_when": "Registrar número/URL da build e SHA efetivamente resolvido; confirmar correspondência com head solicitado."
+    },
+    {
+      "priority": 2,
+      "task": "Importar/compilar Unity e executar EditMode/PlayMode; corrigir bloqueios adicionais em branch própria sob revisão.",
+      "done_when": "Logs e XML reais ligados ao mesmo commit, sem promover configuração a resultado."
+    },
+    {
+      "priority": 3,
+      "task": "Gerar APK e preservar artifact/digest/buildGUID/proveniência; instalar/testar em dispositivo.",
+      "done_when": "Artifact verificável ligado ao commit e relatório de instalação/interrupções."
+    },
+    {
+      "priority": 4,
+      "task": "Percorrer sete etapas da VerticalSlice e executar playtest humano de 60 segundos, gameplay/balanceamento/idade/acessibilidade/mobile (#68,#100–104).",
+      "done_when": "Resultados humanos reais e perfis/configuração/build documentados."
+    },
+    {
+      "priority": 5,
+      "task": "Medir CPU/GPU/memória/FPS mobile; validar atlas/pooling; gerar Windows e export/iOS com módulos/assinaturas/provisionamento.",
+      "done_when": "Medições e binários reais por plataforma/dispositivo, não promessas de 60 FPS."
+    },
+    {
+      "priority": 6,
+      "task": "Resolver gates de produto: cooperação/modalidade/prova, save/perfis/storage/migração/sync, tuning final, arte/áudio/narrativa/tradução e critérios de aprovação slice.",
+      "done_when": "Decisões explícitas aprovadas e evidência de integração; protótipos não substituem design final."
+    },
+    {
+      "priority": 7,
+      "task": "Qualificar RC e resolver direitos da adaptação/personagens/marca/música e gates loja/SDK/privacidade infantil antes de distribuição.",
+      "done_when": "Gate RC preenchido com evidências no mesmo SHA e aprovação humana/direitos/publicação documentados."
+    }
+  ],
+  "resume_instructions": [
+    "Ler esta memória, verificar git develop/remoto e o head atual antes de qualquer execução; memória não substitui estado externo atual.",
+    "Consultar PROJECT_RULES, GDD, backlog exato e deferred validation; preservar exceção autorizada de integração estática sem alegar runtime aprovado.",
+    "Retomar login manual pendente Unity Cloud; após acesso, selecionar target Huntrix-Android-develop e tentar build manual do develop corrigido.",
+    "Registrar SHA realmente checkoutado, build ID/status/logs/XML/APK; tratar divergência de SHA ou falha de compilação como bloqueio de validação.",
+    "Atualizar continuidade/tarefas em Supabase somente com estado observado; manter Trello/Git/docs como fontes de autoridade. Supabase é espelho de continuidade, não implementação do backend do jogo."
+  ],
+  "constraints": [
+    "Não inventar decisões de gameplay, balanceamento, cooperação, save ou plataformas mínimas.",
+    "Não reportar testes autorados/skipped/bloqueados como executados ou aprovados.",
+    "Não confundir merge, tooling sintético ou planos QA com build, diversão, performance, conformidade ou release aceitos.",
+    "Revisar diff completo/asset-meta/referências/escopo antes de merge; nenhuma pendência estática bloqueante; evidência Trello e integração verificável.",
+    "Não reproduzir secrets/tokens/chaves nem biografia pessoal. Não alegar agentes ou monitoramento em background.",
+    "Boss Rush, Time Attack, novos modos e melhorias futuras são backlog pós-lançamento; nenhum lançamento ou implementação desses modos é alegado."
+  ],
+  "current_state": {
+    "develop_sha": "7d96dfa00def38227f7b6834ec3ccd5f515cd189",
+    "source_integrated": true,
+    "unity_validation": "pending",
+    "apk": "not_generated",
+    "active_focus": "Supabase publication and resume Unity/game UI",
+    "blocker": "Unity Cloud login pending after Google502; build2 not submitted",
+    "supabase_project": "bkfjhgwxhcwhmvsitckp",
+    "schema": "ai_context",
+    "figma_file": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns",
+    "figma_status": "design_created_visual_review_complete",
+    "supabase_validation": "schema deployed, logical multi-project isolation/CAS/leases/role-denial tests passed",
+    "supabase_advisors": "No ERROR/WARN;6 INFO no-policy entries intentional private deny-all tables",
+    "tasks_loaded": 125,
+    "official_cards_loaded": 115,
+    "documents_loaded": 154
+  },
+  "resume": {
+    "first_action": "SELECT ai_context.get_handoff('huntrx-honmoon'); then load source documents and reconcile remote develop/Trello before working.",
+    "next_actions": [
+      "Implement Figma UI in Unity after verifying actual build and preserving age/accessibility contracts",
+      "Renew Unity login via secure browser flow",
+      "Submit build2 on exact integrated develop SHA (never replay build1 source)",
+      "Capture compile/log/tests/XML/APK result; fix actual errors",
+      "Run integrated/human/device validation before release qualification"
+    ],
+    "execution_access": {
+      "codespace": "https://cautious-potato-vg7xvv6xj9rcxrp7.github.dev/",
+      "checkout": "/workspaces/Br.JcodeArch.Huntrix",
+      "github_connector": "read works; mutation403 observed; publish Git/gh authenticated Codespace",
+      "unity_cloud_org": "4674262819723",
+      "unity_cloud_project": "acc5ceb5-588f-4ef7-9b7b-3e50d3139a49",
+      "target": "huntrix-android-develop",
+      "editor": "6000.6.4f1"
+    }
+  },
+  "operating_rules": [
+    "MANDATORY: Every AI working on HUNTR/X must consume Supabase context before any work; acknowledge checkpoint revision and reconcile actual source state.",
+    "MANDATORY: Update Supabase project context, active tasks, evidence and handoff at session start, task status transitions, commits/PR/merges, build results, blockers and session end.",
+    "If Supabase cannot be reached, record explicit unsynced checkpoint in repository; report stale continuity rather than claiming synchronization.",
+    "Git is authoritative code; Trello product backlog; Supabase latest operational context; Figma design. Resolve discrepancies from fresh evidence.",
+    "Own feature branch per independent task, descriptive commits, independent review, PR then merge develop authorized.",
+    "Seven agents maximum including coordinator in this environment; no fictitious activity. Tasks with dependencies contact responsible agent; use exclusive file ownership/worktrees.",
+    "Never store credentials, session/OTP, private keys, tokens or unrelated personal data. Authorized MCP SQL access only; no public context API.",
+    "Source merged and tests authored are not Unity runtime acceptance. Current build1 failed; build2 not submitted.",
+    "Prefer free services; no paid plan/store publication implied.",
+    "New user request13Oct2026: develop UI screens in Figma in parallel and document progress/decisions/links here."
+  ],
+  "figma": {
+    "project_key": "huntrx-honmoon",
+    "status": "design_created_visual_review_complete",
+    "file_key": "AoNgky0oNVLU31UvML5xns",
+    "file_url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns",
+    "file_name": "HUNTRX — Telas mobile",
+    "page": "01 · Mobile landscape",
+    "page_id": "0:1",
+    "frames": [
+      {
+        "node_id": "2:2",
+        "name": "Menu principal",
+        "width": 1280,
+        "height": 720,
+        "url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=2-2"
+      },
+      {
+        "node_id": "2:29",
+        "name": "Equipe e perfil",
+        "width": 1280,
+        "height": 720,
+        "url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=2-29"
+      },
+      {
+        "node_id": "2:71",
+        "name": "HUD mobile — protótipo",
+        "width": 1280,
+        "height": 720,
+        "url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=2-71"
+      },
+      {
+        "node_id": "2:110",
+        "name": "Opções e acessibilidade",
+        "width": 1280,
+        "height": 720,
+        "url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=2-110"
+      },
+      {
+        "node_id": "2:150",
+        "name": "Conclusão e replay",
+        "width": 1280,
+        "height": 720,
+        "url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=2-150"
+      }
+    ],
+    "created_nodes": 167,
+    "decisions": [
+      "Landscape 1280×720, alinhado ao jogo 2D/mobile e referência 16:9; proposta de interface, não novo contrato de resolução Unity.",
+      "Direção original amigável: fundos claros, azul ação, mint proteção, rosa/dourado/lilás para personagens, tipografia Inter, formas geométricas placeholders sem arte do filme.",
+      "Menu principal, seleção de personagem/perfil, HUD com vida/Honmoon/fãs/comida/troca/pausa/dash/pulo/ataque/Special, opções de conforto e conclusão/replay.",
+      "Cinco perfis do protótipo confirmado: 4–5, 6–8, 9–12, 13–15, 16+; faixa 6–8 selecionada ilustrativamente; sem cadastro/data de nascimento.",
+      "Identidades atuais: Rumi espada, Mira campo de proteção, Zoey precisão; valores e resultados apresentados são ilustrativos.",
+      "Cooperação até 3 continua requisito; modalidade/prova não decididas por estas telas."
+    ],
+    "verification": {
+      "structural": "5 frames 1280×720 e IDs retornados pela criação",
+      "visual": "Screenshots das cinco telas inspecionados; recorte de idioma e texto lateral em Opções corrigidos; screenshot pós-correção conferido sem recorte.",
+      "interaction": "Frames estáticos, sem wiring de navegação ou execução no jogo.",
+      "unity": "Nenhuma tela implementada ou validada no Unity nesta frente."
+    },
+    "remaining": [
+      "Revisão humana das telas e legibilidade em dispositivo alvo",
+      "Definir navegação, estados vazio/disabled/pausa, remapeamento e adaptação às safe areas",
+      "Estender direção final e assets aprovados; então integrar Unity e testar acessibilidade/touch",
+      "Não promover resultados fictícios da conclusão a evidência de playtest"
+    ],
+    "source_paths": [
+      "docs/GDD_MASTER.md",
+      "docs/architecture/AGE_PROFILES.md",
+      "docs/PROJECT_CONTEXT.md",
+      "docs/IMPLEMENTATION_STATUS.md"
+    ]
+  }
+}

@@ -1,14 +1,23 @@
 # Unity Build Automation — continuidade
 
-Registro de configuração observado em **12 de outubro de 2026, horário de São Paulo**. A infraestrutura online foi configurada para executar Unity, testes e um APK de desenvolvimento sem instalar o Editor na máquina do usuário. Este documento registra a configuração e a execução solicitada; não certifica um resultado.
+Registro de configuração observado em **12 de outubro de 2026, horário de São Paulo**. A infraestrutura online foi configurada para executar Unity, testes e um APK de desenvolvimento sem instalar o Editor na máquina do usuário. Este documento registra a configuração e o resultado de falha observado no build #1; não certifica um build aprovado.
 
 ## Execução registrada
 
-**Build #1: Sent to Builder, ainda sem iniciar, observado às 21:11 de 12 de outubro de 2026 (São Paulo).** Fonte solicitada/fixada no pedido: `1a907af9d68fb586f0740821337077f993917d16`, branch `develop`, alvo `Huntrix-Android-develop`. O campo de commit resolvido ainda não estava preenchido; o checkout não foi confirmado. A interface mostrava espera de 00:01:18 e checkout de 0, indicadores de fila, não evidência de execução ou desempenho.
+**Build #1: Failed, concluído às 21:25 de 12 de outubro de 2026 (São Paulo).** Fonte efetivamente registrada: `1a907af9d68fb586f0740821337077f993917d16`, branch `develop`, alvo `Huntrix-Android-develop`, Editor `6000.6.4f1`. Este resultado substitui a fotografia anterior das 21:11, quando a execução ainda estava em “Sent to Builder”.
 
 [Histórico/log do build #1](https://cloud.unity.com/organizations/4674262819723/projects/acc5ceb5-588f-4ef7-9b7b-3e50d3139a49/cloud-build/buildtargets/huntrix-android-develop/builds/1/log).
 
-Compilação, importação, testes EditMode/PlayMode e geração do APK ainda **não têm resultado confirmado** nesta fotografia. O log dizia: “Build has been sent to a builder but has not yet started”. Esse estado não significa que o Editor iniciou. Não há aprovação de build, QA humano, dispositivo ou desempenho.
+A compilação falhou com **CS0619** em `Assets/Scripts/Gameplay/Performance/CombatPerformanceController2D.cs`, linha **144**: uso obsoleto de `GetInstanceID`, com indicação de usar `GetEntityId`. As etapas EditMode e PlayMode registraram **compilation failed**; não há resultados XML das suites nem APK produzido. Isso não representa testes executados e reprovados: a compilação bloqueou a validação.
+
+| Indicador exibido | Duração |
+|---|---|
+| Build | 14m22s |
+| Espera | 8m16s |
+| Checkout | 54s |
+| Tempo faturável (billable) | 6m05s |
+
+Os tempos são indicadores da execução registrados pela plataforma; o campo billable não comprova cobrança financeira. Não há aprovação de build, QA humano, dispositivo ou desempenho. As correções estão em preparação e nenhuma nova execução é alegada neste registro.
 
 ## Configuração confirmada
 
@@ -45,7 +54,7 @@ A interface confirmou as franquias gratuitas exibidas: **200 minutos Windows Mic
 
 ## Continuidade e evidência necessária
 
-Ao retomar, abrir o log acima e registrar o estado real do build #1 antes de solicitar outra execução. A orquestração acompanha a fila e atualizará este documento com o resultado observado antes de sua integração.
+O resultado real do build #1 está registrado acima. A documentação inicial de configuração já foi integrada; a referência anterior a atualizar o resultado “antes de sua integração” ficou superada. As correções estão em preparação em branches próprias. Antes de uma nova execução, registrar a fonte corrigida e integrada; depois, associar o novo número de build ao commit efetivamente resolvido e aos resultados observados. Este documento não afirma que um novo build foi disparado.
 
 Para afirmar sucesso, preservar o resultado do Editor/importação/compilação, resultados reais EditMode e PlayMode, identificação do APK e sua associação ao commit efetivamente resolvido, verificando se corresponde ao hash solicitado. Se houver falha, registrar a etapa e o trecho pertinente do log, corrigir em branch própria e documentar a nova fonte/execução. A configuração de testes não comprova que testes foram iniciados, descobertos ou aprovados.
 

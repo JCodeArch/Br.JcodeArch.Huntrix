@@ -14,7 +14,7 @@ namespace HuntrX.Gameplay.Performance
         [SerializeField] private CombatPerformanceDefinition definition;
         [SerializeField] private CharacterManager2D manager;
         [SerializeField] private FanRescueController2D[] rescueSources=new FanRescueController2D[0];
-        private readonly HashSet<int> rescued=new HashSet<int>();
+        private readonly HashSet<EntityId> rescued=new HashSet<EntityId>();
         private DamageReceiver2D boundActor;
         private Action<CombatImpactEvent> dealtListener,receivedListener;
         private long generation;
@@ -141,7 +141,7 @@ namespace HuntrX.Gameplay.Performance
         }
         private void HandleRescue(FanActor2D fan,int reward)
         {
-            if(!running||ReferenceEquals(fan,null)||rescued.Count>=1024||!rescued.Add(fan.GetInstanceID()))return;
+            if(!running||ReferenceEquals(fan,null)||rescued.Count>=1024||!rescued.Add(fan.GetEntityId()))return;
             points=Mathf.Min(definition.MaximumPoints,points+definition.RescuePoints);Publish();
         }
         private void Publish()

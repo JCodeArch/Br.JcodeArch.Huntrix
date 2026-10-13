@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using HuntrX.Gameplay.Combat;
+using HuntrX.Presentation.Hud;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -298,6 +299,67 @@ namespace HuntrX.Tests.PlayMode
 
             Assert.That(Time.timeScale, Is.EqualTo(testBaseTimeScale).Within(0.001f));
             Assert.That(Object.FindObjectsByType<HitStopService>(FindObjectsInactive.Include), Is.Empty);
+        }
+
+        [UnityTest]
+        public IEnumerator HudOptionsRemainPausedAfterActiveHitStopExpires()
+        {
+            var hud=CreateObject("HUD pause regression").AddComponent<SliceHud2D>();
+            service.RequestHitStop(0.1f);
+            SetHudPause(hud,true);
+            yield return new WaitForSecondsRealtime(0.2f);
+            Assert.That(Time.timeScale,Is.Zero,"Hit-stop expiry must not resume an open options modal.");
+            Assert.That(service.IsPaused,Is.True);
+            SetHudPause(hud,false);
+            Assert.That(Time.timeScale,Is.EqualTo(testBaseTimeScale).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator ClosingHudBeforeHitStopDeadlineKeepsFreezeUntilExpiry()
+        {
+            var hud=CreateObject("HUD early close regression").AddComponent<SliceHud2D>();
+            service.RequestHitStop(0.15f);
+            SetHudPause(hud,true);
+            SetHudPause(hud,false);
+            Assert.That(service.IsPaused,Is.False);
+            Assert.That(Time.timeScale,Is.Zero);
+            yield return new WaitForSecondsRealtime(0.25f);
+            Assert.That(Time.timeScale,Is.EqualTo(testBaseTimeScale).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator DisablingHudReleasesOnlyItsOwnPause()
+        {
+            var hud=CreateObject("HUD disable regression").AddComponent<SliceHud2D>();
+            SetHudPause(hud,true);
+            hud.enabled=false;
+            Assert.That(Time.timeScale,Is.EqualTo(testBaseTimeScale).Within(0.001f));
+            service.SetPaused(true);
+            hud.enabled=true;
+            SetHudPause(hud,true);
+            hud.enabled=false;
+            Assert.That(service.IsPaused,Is.True,"A preexisting service pause belongs to its original caller.");
+            Assert.That(Time.timeScale,Is.Zero);
+            service.SetPaused(false);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator HudClosePreservesExternalZeroTimeScale()
+        {
+            var hud=CreateObject("HUD external pause regression").AddComponent<SliceHud2D>();
+            Time.timeScale=0f;
+            SetHudPause(hud,true);
+            SetHudPause(hud,false);
+            Assert.That(Time.timeScale,Is.Zero);
+            Time.timeScale=testBaseTimeScale;
+            yield return null;
+        }
+
+        private static void SetHudPause(SliceHud2D hud,bool paused)
+        {
+            typeof(SliceHud2D).GetField("options",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(hud,paused);
+            typeof(SliceHud2D).GetMethod("SetPause",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(hud,new object[]{paused});
         }
 
         private IEnumerator RecreateServiceAtScale(float baseScale)

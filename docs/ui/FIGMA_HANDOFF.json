@@ -54,7 +54,7 @@
   ],
   "verification": {
     "structural": "5 frames 1280×720 e IDs retornados pela criação",
-    "visual": "Screenshots das cinco telas inspecionados; recorte de idioma e texto lateral em Opções corrigidos; screenshot pós-correção conferido sem recorte.",
+    "visual": "Screenshots das cinco telas revisadas conferidos em 13/10/2026; nenhuma implementação Unity.",
     "interaction": "Frames estáticos, sem wiring de navegação ou execução no jogo.",
     "unity": "Nenhuma tela implementada ou validada no Unity nesta frente."
   },
@@ -69,5 +69,29 @@
     "docs/architecture/AGE_PROFILES.md",
     "docs/PROJECT_CONTEXT.md",
     "docs/IMPLEMENTATION_STATUS.md"
-  ]
+  ],
+  "design_revision": "2026-10-13-aligned-runtime-source",
+  "notes_node_id": "7:28",
+  "notes_url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=7-28",
+  "revision_changes": [
+    "Continuar indisponível; sem promessa de save",
+    "Perfil check/texto selecionado",
+    "9 ações touch e movimento2D; retratos informativos/troca circular",
+    "Opções suportadas e semântica imediata/session-only",
+    "Notas técnicas e Special states fora dos frames produto"
+  ],
+  "implementation_plan": {
+    "path": "/workspace/scratch/969ad424b423/ui-implementation-plan.md",
+    "source_commit": "8ebd177c48f945d04b9f816bac1c841d4e03c068",
+    "sha256": "e10c1cd17f795d338956c09e4c8b7f76e39a1f476393fe9540179034f4b58c75",
+    "status": "planned_not_implemented"
+  },
+  "final_visual_fix": {
+    "node_id": "7:20",
+    "button_id": "7:19",
+    "text": "Special",
+    "reason": "Remove 2px overflow; ready state remains in external notes 7:28",
+    "verification": "HUD screenshot inspected after minimal text correction on 2026-10-13",
+    "unity_executed": false
+  }
 }

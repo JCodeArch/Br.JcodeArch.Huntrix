@@ -19,3 +19,9 @@ Antes de trabalhar nas telas, toda IA deve executar a leitura de contexto descri
 Após cada transição material, registrar no Supabase a URL, IDs dos nós efetivamente criados, nomes confirmados, estado e evidências de revisão. Usar artefatos para referências de design e tarefas para implementação/validação. Mudanças feitas no Figma devem ser verificadas por leitura ou captura antes de serem declaradas concluídas.
 
 Próximos passos: revisão humana/dispositivo; definir navegação, estados vazio/disabled/pausa, remapeamento e safe areas; aprovar direção final e assets; integrar Unity e testar touch/acessibilidade. Fontes: `docs/GDD_MASTER.md`, `docs/architecture/AGE_PROFILES.md`, `docs/PROJECT_CONTEXT.md` e `docs/IMPLEMENTATION_STATUS.md`. Cooperação até três continua requisito, sem modalidade ou prova definida pelas telas.
+
+## Alinhamento após revisão de contratos — 13/10/2026
+
+Os frames foram ajustados para deixar Continuar indisponível sem save, explicitar perfil selecionado, incluir nove ações touch e pad2D, troca circular e opções suportadas por sessão. Estados ilustrativos de Special e notas de implementação ficam fora das telas produto no nó `7:28`. Metadados atualizados em FIGMA_HANDOFF.json. A navegação e estas telas continuam sem implementação Unity.
+
+O contrato de integração encontra-se em [UNITY_UI_IMPLEMENTATION_PLAN.md](UNITY_UI_IMPLEMENTATION_PLAN.md). O plano de verificação crítica de touch está em [TOUCH_VALIDATION_PLAN.md](../qa/TOUCH_VALIDATION_PLAN.md). Pontos ainda abertos: subpainel de remapeamento, safe areas pequenas, rota de pausa no gamepad/teclado, legibilidade humana/device e execução Unity.

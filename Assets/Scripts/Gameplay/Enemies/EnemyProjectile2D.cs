@@ -102,7 +102,13 @@ namespace HuntrX.Gameplay.Enemies
         {
             Action<CombatImpactEvent> handlers = ImpactOccurred;
             if (handlers == null) return;
-            foreach (Action<CombatImpactEvent> handler in handlers.GetInvocationList()) { try { handler(value); } catch (Exception e) { Debug.LogException(e, this); } }
+            long impactGeneration=generation;
+            foreach (Action<CombatImpactEvent> handler in handlers.GetInvocationList())
+            {
+                // A callback may return and rent this object for another shot. Retire the old dispatch.
+                if(generation!=impactGeneration)return;
+                try { handler(value); } catch (Exception e) { Debug.LogException(e, this); }
+            }
         }
         private static bool Positive(float value) => Finite(value) && value > 0f;
         private static bool Finite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);

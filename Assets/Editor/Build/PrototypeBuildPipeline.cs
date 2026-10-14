@@ -47,9 +47,9 @@ namespace HuntrX.Editor.Build
             string parent=Path.GetDirectoryName(output);if(!string.IsNullOrEmpty(parent))Directory.CreateDirectory(parent);
             if(target==BuildTarget.StandaloneWindows64&&Directory.EnumerateFiles(parent,"*",SearchOption.AllDirectories).Any(file=>file!=output+".unity.log"))
                 throw new InvalidOperationException("Windows artifact folder must be fresh, apart from this invocation's Unity log.");
-            string version=File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.dataPath),"VERSION")).Trim();
+            string version=File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.dataPath),"VERSION.txt")).Trim();
             Match semver=Regex.Match(version,@"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$");
-            if(!semver.Success||semver.Groups[4].Value.Split('.').Any(part=>part.Length>1&&part[0]=='0'&&part.All(c=>c>='0'&&c<='9')))throw new InvalidOperationException("VERSION must contain semantic versioning.");
+            if(!semver.Success||semver.Groups[4].Value.Split('.').Any(part=>part.Length>1&&part[0]=='0'&&part.All(c=>c>='0'&&c<='9')))throw new InvalidOperationException("VERSION.txt must contain semantic versioning.");
             PlayerSettings.bundleVersion=target==BuildTarget.Android?version:semver.Groups[1].Value+"."+semver.Groups[2].Value+"."+semver.Groups[3].Value;
             if(target==BuildTarget.Android||target==BuildTarget.iOS)
             {

@@ -15,22 +15,29 @@ namespace HuntrX.Presentation.UI.Views
         [SerializeField] private Toggle reduceFlashesToggle;
         [SerializeField] private Toggle subtitlesToggle;
         [SerializeField] private Toggle aimAssistToggle;
+        // Kept for existing layouts that expose the original combined switch.
         [SerializeField] private Toggle toggleJumpRescueToggle;
+        [SerializeField] private Toggle toggleJumpToggle;
+        [SerializeField] private Toggle toggleRescueToggle;
 
         [Header("Narrative Language")]
         [SerializeField] private Button ptLanguageButton;
         [SerializeField] private Button enLanguageButton;
+        [SerializeField] private Text languageStatusText;
 
         [Header("Remapping & Actions")]
         [SerializeField] private Button remapKeysButton;
         [SerializeField] private Button closeButton;
 
         private string currentLanguage = "PT";
+        public string CurrentLanguage => currentLanguage;
 
         public event Action<bool> ReduceFlashesChanged;
         public event Action<bool> SubtitlesChanged;
         public event Action<bool> AimAssistChanged;
         public event Action<bool> ToggleJumpRescueChanged;
+        public event Action<bool> ToggleJumpChanged;
+        public event Action<bool> ToggleRescueChanged;
         public event Action<string> LanguageChanged;
         public event Action RemapKeysRequested;
         public event Action CloseRequested;
@@ -41,6 +48,9 @@ namespace HuntrX.Presentation.UI.Views
             if (subtitlesToggle == null) subtitlesToggle = FindControl<Toggle>("subtitlesToggle");
             if (aimAssistToggle == null) aimAssistToggle = FindControl<Toggle>("aimAssistToggle");
             if (toggleJumpRescueToggle == null) toggleJumpRescueToggle = FindControl<Toggle>("toggleJumpRescueToggle");
+            if (toggleJumpToggle == null) toggleJumpToggle = FindControl<Toggle>("toggleJumpToggle");
+            if (toggleRescueToggle == null) toggleRescueToggle = FindControl<Toggle>("toggleRescueToggle");
+            if (languageStatusText == null) languageStatusText = FindControl<Text>("languageStatusText");
             if (ptLanguageButton == null) ptLanguageButton = FindControl<Button>("ptLanguageButton");
             if (enLanguageButton == null) enLanguageButton = FindControl<Button>("enLanguageButton");
             if (remapKeysButton == null) remapKeysButton = FindControl<Button>("remapKeysButton");
@@ -65,6 +75,12 @@ namespace HuntrX.Presentation.UI.Views
                 toggleJumpRescueToggle.onValueChanged.AddListener(val => ToggleJumpRescueChanged?.Invoke(val));
             }
 
+            if (toggleJumpToggle != null)
+                toggleJumpToggle.onValueChanged.AddListener(val => ToggleJumpChanged?.Invoke(val));
+            if (toggleRescueToggle != null)
+                toggleRescueToggle.onValueChanged.AddListener(val => ToggleRescueChanged?.Invoke(val));
+
+            RenderLanguage();
             if (ptLanguageButton != null)
             {
                 ptLanguageButton.onClick.AddListener(() => SetLanguage("PT"));
@@ -88,17 +104,36 @@ namespace HuntrX.Presentation.UI.Views
 
         public void SetLanguage(string language)
         {
+            if (!IsSupportedLanguage(language) || currentLanguage == language) return;
             currentLanguage = language;
+            RenderLanguage();
             LanguageChanged?.Invoke(language);
         }
 
         public void SetPreferences(bool reduceFlashes, bool subtitles, bool aimAssist, bool toggleJumpRescue, string language)
         {
+            SetPreferences(reduceFlashes, subtitles, aimAssist, toggleJumpRescue, toggleJumpRescue, language);
+        }
+
+        /// <summary>Hydrates independent runtime preferences without issuing user commands.</summary>
+        public void SetPreferences(bool reduceFlashes, bool subtitles, bool aimAssist, bool toggleJump, bool toggleRescue, string language)
+        {
             if (reduceFlashesToggle != null) reduceFlashesToggle.SetIsOnWithoutNotify(reduceFlashes);
             if (subtitlesToggle != null) subtitlesToggle.SetIsOnWithoutNotify(subtitles);
             if (aimAssistToggle != null) aimAssistToggle.SetIsOnWithoutNotify(aimAssist);
-            if (toggleJumpRescueToggle != null) toggleJumpRescueToggle.SetIsOnWithoutNotify(toggleJumpRescue);
-            currentLanguage = language;
+            if (toggleJumpToggle != null) toggleJumpToggle.SetIsOnWithoutNotify(toggleJump);
+            if (toggleRescueToggle != null) toggleRescueToggle.SetIsOnWithoutNotify(toggleRescue);
+            if (toggleJumpRescueToggle != null) toggleJumpRescueToggle.SetIsOnWithoutNotify(toggleJump && toggleRescue);
+            if (IsSupportedLanguage(language)) currentLanguage = language;
+            RenderLanguage();
+        }
+
+        private static bool IsSupportedLanguage(string language) => language == "PT" || language == "EN";
+
+        private void RenderLanguage()
+        {
+            if (languageStatusText != null)
+                languageStatusText.text = "Idioma selecionado: " + (currentLanguage == "EN" ? "English" : "Português");
         }
 
         private T FindControl<T>(string controlName) where T : Component

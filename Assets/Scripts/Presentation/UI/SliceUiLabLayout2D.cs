@@ -55,8 +55,10 @@ namespace HuntrX.Presentation.UI
             Toggle(options,"reduceFlashesToggle","Reduzir flashes",.10f,.64f,.46f,.75f);
             Toggle(options,"subtitlesToggle","Legendas",.54f,.64f,.90f,.75f);
             Toggle(options,"aimAssistToggle","Assistência de mira",.10f,.49f,.46f,.60f);
-            Toggle(options,"toggleJumpRescueToggle","Alternar pulo / resgate",.54f,.49f,.90f,.60f);
-            Button(options,"ptLanguageButton","Português",.10f,.32f,.35f,.44f); Button(options,"enLanguageButton","English",.39f,.32f,.64f,.44f);
+            Toggle(options,"toggleJumpToggle","Pulo: alternar",.54f,.49f,.90f,.60f);
+            Toggle(options,"toggleRescueToggle","Resgate: alternar",.54f,.34f,.90f,.45f);
+            Button(options,"ptLanguageButton","Português",.10f,.32f,.28f,.44f); Button(options,"enLanguageButton","English",.30f,.32f,.48f,.44f);
+            Label(options,"languageStatusText","Idioma selecionado: Português",.10f,.27f,.90f,.32f,18);
             Button(options,"remapKeysButton","Remapear — indisponível",.10f,.15f,.48f,.27f).interactable=false;
             Button(options,"closeButton","Voltar",.64f,.15f,.90f,.27f);
             var results=Panel("ResultsPanel",safe,"Resultado demonstrativo","Prévia ilustrativa; não representa uma partida realizada.");

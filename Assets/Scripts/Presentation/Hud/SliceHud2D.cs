@@ -44,6 +44,20 @@ namespace HuntrX.Presentation.Hud
         // Menu input must remain enabled while the gameplay component is disabled by options.
         private InputAction pauseAction;
         private string pausePath;
+        private Behaviour telemetryPresenter;
+        public bool IsOptionsOpen => options;
+        public VerticalSliceSession2D Session => session;
+        public bool TelemetryPresentedExternally => telemetryPresenter != null && telemetryPresenter.isActiveAndEnabled;
+        public bool TryClaimTelemetry(Behaviour presenter)
+        {
+            if (!isActiveAndEnabled || presenter == null || !presenter.isActiveAndEnabled || (telemetryPresenter != null && telemetryPresenter != presenter)) return false;
+            telemetryPresenter = presenter;
+            return true;
+        }
+        public void ReleaseTelemetry(Behaviour presenter)
+        {
+            if (telemetryPresenter == presenter) telemetryPresenter = null;
+        }
         private void OnEnable()
         {
             if(pauseAction==null)
@@ -94,12 +108,15 @@ namespace HuntrX.Presentation.Hud
             {
                 if(options) { DrawOptions(width,height); return; }
                 GUILayout.BeginArea(new Rect(8,8,Mathf.Min(620,width-16),180),GUI.skin.box);
+                if (!TelemetryPresentedExternally)
+                {
                 GUILayout.Label(session.IsComplete?"Chegamos ao show!":session.BeatTitle);
                 var actor=session.Manager!=null?session.Manager.ActiveCharacter:null;
                 if(actor!=null) GUILayout.Label("Vida "+Mathf.CeilToInt(actor.CurrentHealth)+" / "+Mathf.CeilToInt(actor.MaximumHealth));
                 if(session.Honmoon!=null) GUILayout.Label("Honmoon "+Mathf.RoundToInt(session.Honmoon.Value));
                 if(session.Special!=null) GUILayout.Label("Special "+(session.Special.IsReady?"pronto":"carregando "+Mathf.RoundToInt(session.Special.Charge)));
                 if(session.Inventory!=null) GUILayout.Label("Comida "+session.Inventory.TotalCount+" • R: você • F: fã");
+                }
                 if(GUILayout.Button("Opções e acessibilidade")) { options=true; SetPause(true); SetInputBlocked(true); SetNarrativeBlocked(true); }
                 if(session.IsComplete && recorder==null && GUILayout.Button("Jogar novamente")) RestartCompletedSession();
                 GUILayout.EndArea();

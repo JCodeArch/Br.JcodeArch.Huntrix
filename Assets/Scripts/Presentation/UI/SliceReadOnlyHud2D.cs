@@ -37,7 +37,7 @@ namespace HuntrX.Presentation.UI
         private void LateUpdate()
         {
             if (claimedOwner != owner) Release();
-            bool visible = session != null && session.isActiveAndEnabled && owner != null &&
+            bool visible = session != null && session.isActiveAndEnabled && session.IsRunning && owner != null &&
                 owner.isActiveAndEnabled && owner.Session == session && !owner.IsOptionsOpen && !session.IsComplete;
             if (!visible || !owner.TryClaimTelemetry(this))
             {

@@ -36,6 +36,28 @@ class EvidenceTests(unittest.TestCase):
                 path.write_text(xml)
                 with self.assertRaises(ValueError): nunit.verify(path)
 
+    def test_nested_suite_failure_rejected_even_with_passing_cases(self):
+        # NUnit teardown failures can belong to a suite rather than a test case.
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'fixture.xml'
+            for status in ('Failed', 'Skipped', 'Inconclusive', None):
+                with self.subTest(status=status):
+                    attribute = '' if status is None else f' result="{status}"'
+                    path.write_text(f'<test-run result="Passed"><test-suite{attribute}>'
+                                    '<test-case result="Passed"/></test-suite></test-run>')
+                    with self.assertRaisesRegex(ValueError, 'suite'):
+                        nunit.verify(path)
+
+    def test_nested_passed_nunit_suites_accepted(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'fixture.xml'
+            for status in ('Passed', 'Success'):
+                with self.subTest(status=status):
+                    path.write_text(f'<test-run result="{status}"><test-suite result="{status}">'
+                                    f'<test-suite result="{status}"><test-case result="{status}"/>'
+                                    '</test-suite></test-suite></test-run>')
+                    self.assertEqual(nunit.verify(path), 1)
+
     def test_hash_detects_artifact_mutation(self):
         with tempfile.TemporaryDirectory() as directory:
             artifact = Path(directory) / 'fixture.apk'

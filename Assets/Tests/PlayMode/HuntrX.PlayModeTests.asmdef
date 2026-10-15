@@ -2,7 +2,8 @@
   "name": "HuntrX.PlayModeTests",
   "rootNamespace": "HuntrX.Tests.PlayMode",
   "references": [
-    "HuntrX.Runtime"
+    "HuntrX.Runtime",
+    "UnityEngine.UI"
   ],
   "optionalUnityReferences": [
     "TestAssemblies"

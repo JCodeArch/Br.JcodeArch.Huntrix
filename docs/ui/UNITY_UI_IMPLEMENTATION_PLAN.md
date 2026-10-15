@@ -80,3 +80,16 @@ A revisão autorizada corrigiu as lacunas visuais anteriores: Continuar agora te
 Screenshots das cinco telas revisadas foram inspecionados. Remapeamento detalhado (campo tecla, seleção ação, aplicar/restaurar e erros) ainda precisa subpainel; estados de toggle e disabled possuem contrato acima, não runtime implementado. Touch/movimento 2D são representações estáticas e precisam de pad/contatos reais na integração.
 
 Auditoria de touch aponta rotas explícitas de pausa/menu em teclado/gamepad (Start hoje é FoodFan), modo de entrada/histerese, risco de perda de estados em polling bruto Touchscreen.Update, safeareas assimétricas, releases de toggle e cinco faixas. Incorporar os cinco cenários de `docs/qa/TOUCH_VALIDATION_PLAN.md`; não mudar input polling nessa frente visual sem contrato e teste separado. Evidência atual permanece exclusivamente leitura estática de fonte/Figma, sem Unity.
+
+
+## Implementação da etapa 3 — 15/10/2026
+
+A VerticalSlice recebeu `SliceReadOnlyHud2D` e view dedicada somente leitura,
+com referências explícitas à sessão e ao owner `SliceHud2D`. O owner continua
+ativo; somente a telemetria IMGUI é omitida enquanto o presenter possui sua
+claim exclusiva. Opções/conclusão, feedback, pausa e touch anteriores permanecem
+no owner existente. A view não instancia os controles demonstrativos do laboratório.
+Snapshot consulta ator/recursos atuais; fontes ausentes são indisponíveis e
+resgates provêm de Performance.Snapshot.RescuedFans sem total inventado.
+Etapas 4 e 5 continuam pendentes. Cenários de execução e limites constam de
+`docs/governance/DEFERRED_VALIDATION.md`; nenhuma execução Unity é alegada.

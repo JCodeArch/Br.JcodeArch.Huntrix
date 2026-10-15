@@ -220,7 +220,13 @@ namespace HuntrX.Gameplay.VerticalSlice
             if (stopping) return; stopping = true; IsRunning = false;
             try { foreach (SliceBeat2D beat in beats) if (beat != null) beat.Exit(); ClearEnemies(); if (Stage != null) { Stage.TryClear(); Destroy(Stage.gameObject); Stage = null; }
                 if (Input != null) Input.ActionsRequested -= HandleInput; if (Manager != null) Manager.ActiveCharacterChanged -= HandleActor;
-                if (slot != null) { slot.SetActive(false); Destroy(slot); slot = null; } if (ownedCamera != null) { Destroy(ownedCamera); ownedCamera = null; }
+                if (slot != null) { slot.SetActive(false); Destroy(slot); slot = null; }
+                if (ownedCamera != null)
+                {
+                    // Destroy is deferred: a same-frame restart must not reuse the retiring camera.
+                    if (camera != null && camera.gameObject == ownedCamera) camera = null;
+                    ownedCamera.SetActive(false); Destroy(ownedCamera); ownedCamera = null;
+                }
             } finally { stopping = false; }
         }
         private void Publish<T>(T handlers, Action<T> invoke) where T : Delegate { if (handlers != null) foreach (Delegate handler in handlers.GetInvocationList()) try { invoke((T)handler); } catch (Exception exception) { Debug.LogException(exception, this); } }

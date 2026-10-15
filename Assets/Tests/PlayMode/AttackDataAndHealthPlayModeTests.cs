@@ -220,6 +220,77 @@ namespace HuntrX.Tests.PlayMode
             Object.DestroyImmediate(target);
         }
 
+        [TestCase(true, false)]
+        [TestCase(false, false)]
+        [TestCase(true, true)]
+        [TestCase(false, true)]
+        public void DisabledCombatParticipantRejectsDamageWithoutNotifications(bool disableTarget, bool disableObject)
+        {
+            GameObject sourceObject = CreateCombatReceiver("source", CombatFaction2D.HuntrX);
+            GameObject targetObject = CreateCombatReceiver("target", CombatFaction2D.Demon);
+            AttackDefinition attack = CreateValidAttackDefinition();
+            try
+            {
+                var source = sourceObject.GetComponent<DamageReceiver2D>();
+                var target = targetObject.GetComponent<DamageReceiver2D>();
+                int dealt = 0, received = 0, deaths = 0;
+                source.DamageDealt += _ => dealt++;
+                target.DamageReceived += _ => received++;
+                target.Died += _ => deaths++;
+                var disabled = disableTarget ? target : source;
+                if (disableObject) disabled.gameObject.SetActive(false); else disabled.enabled = false;
+                Assert.That(target.TryReceiveHit(attack, source, 1f), Is.False);
+                Assert.That(target.CurrentHealth, Is.EqualTo(80f));
+                Assert.That(target.GetComponent<Rigidbody2D>().linearVelocity, Is.EqualTo(Vector2.zero));
+                Assert.That(dealt, Is.Zero); Assert.That(received, Is.Zero); Assert.That(deaths, Is.Zero);
+                if (disableObject) disabled.gameObject.SetActive(true); else disabled.enabled = true;
+                Assert.That(target.TryReceiveHit(attack, source, 1f), Is.True);
+                Assert.That(target.CurrentHealth, Is.EqualTo(68f));
+                Assert.That(dealt, Is.EqualTo(1)); Assert.That(received, Is.EqualTo(1));
+            }
+            finally
+            {
+                Object.DestroyImmediate(sourceObject); Object.DestroyImmediate(targetObject); Object.DestroyImmediate(attack);
+            }
+        }
+
+        [Test]
+        public void DeadAttackerCannotCommitAStaleContact()
+        {
+            GameObject sourceObject = CreateCombatReceiver("source", CombatFaction2D.HuntrX);
+            GameObject targetObject = CreateCombatReceiver("target", CombatFaction2D.Demon);
+            AttackDefinition attack = CreateValidAttackDefinition();
+            try
+            {
+                var source = sourceObject.GetComponent<DamageReceiver2D>();
+                var target = targetObject.GetComponent<DamageReceiver2D>();
+                SetPrivateField(attack, "damage", 100f);
+                Assert.That(source.TryReceiveHit(attack, target, 1f), Is.True);
+                Assert.That(source.IsAlive, Is.False);
+                int notifications = 0;
+                source.DamageDealt += _ => notifications++;
+                target.DamageReceived += _ => notifications++;
+                target.Died += _ => notifications++;
+                Assert.That(target.TryReceiveHit(attack, source, 1f), Is.False);
+                Assert.That(target.CurrentHealth, Is.EqualTo(80f));
+                Assert.That(target.GetComponent<Rigidbody2D>().linearVelocity, Is.EqualTo(Vector2.zero));
+                Assert.That(notifications, Is.Zero);
+            }
+            finally
+            {
+                Object.DestroyImmediate(sourceObject); Object.DestroyImmediate(targetObject); Object.DestroyImmediate(attack);
+            }
+        }
+
+        private static GameObject CreateCombatReceiver(string name, CombatFaction2D faction)
+        {
+            var go = new GameObject(name); go.SetActive(false);
+            var body = go.AddComponent<Rigidbody2D>(); body.gravityScale = 0f;
+            var receiver = go.AddComponent<DamageReceiver2D>();
+            SetPrivateField(receiver, "maximumHealth", 80f); SetPrivateField(receiver, "faction", faction);
+            go.SetActive(true); return go;
+        }
+
         private static AttackDefinition CreateValidAttackDefinition()
         {
             AttackDefinition definition = ScriptableObject.CreateInstance<AttackDefinition>();

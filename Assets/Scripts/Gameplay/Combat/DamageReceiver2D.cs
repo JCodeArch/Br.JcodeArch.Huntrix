@@ -81,7 +81,8 @@ namespace HuntrX.Gameplay.Combat
             float facingDirection, int comboStepIndex, out CombatParryEvent parryEvent)
         {
             parryEvent = default;
-            if (!IsConfigurationValid || !IsAlive || attacker == null || !attacker.IsConfigurationValid ||
+            if (!isActiveAndEnabled || !IsConfigurationValid || !IsAlive || attacker == null ||
+                !attacker.isActiveAndEnabled || !attacker.IsConfigurationValid || !attacker.IsAlive ||
                 attack == null || !attack.IsValid(out _) || attacker.transform.root == transform.root ||
                 attacker.Faction == Faction || !IsFinite(facingDirection) || facingDirection == 0f ||
                 (dashController != null && dashController.IsInvulnerable))

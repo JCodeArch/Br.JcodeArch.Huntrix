@@ -94,6 +94,71 @@ namespace HuntrX.Tests.PlayMode
             }
         }
 
+        [TestCase(false, false)]
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        [TestCase(true, true)]
+        public void ContactsStartedWithoutFocusCannotLatchActions(bool toggle, bool releaseBeforeFocus)
+        {
+            var screen = InputSystem.AddDevice<Touchscreen>();
+            var root = new GameObject("Unfocused contact cancellation");
+            try
+            {
+                var input = root.AddComponent<SlicePlayerInput2D>();
+                var session = root.AddComponent<VerticalSliceSession2D>();
+                session.enabled = false;
+                typeof(VerticalSliceSession2D).GetProperty("Input").SetValue(session, input);
+                typeof(VerticalSliceSession2D).GetProperty("IsRunning").SetValue(session, true);
+                var preferences = root.AddComponent<AccessibilityPreferences2D>();
+                preferences.TrySetToggle(GameplayControl.Jump, toggle);
+                preferences.TrySetToggle(GameplayControl.Interact, toggle);
+                var touch = root.AddComponent<SliceTouchControls2D>();
+                Set(touch, "showInDesktop", false);
+                Assert.That(touch.TryBind(session, preferences), Is.True);
+                Tick(touch, "Layout");
+                var buttons = (Rect[])typeof(SliceTouchControls2D).GetField("buttons", Private).GetValue(touch);
+                var pad = (Rect)typeof(SliceTouchControls2D).GetField("pad", Private).GetValue(touch);
+                Vector2 jump = ScreenPoint(buttons[0].center), rescue = ScreenPoint(buttons[6].center);
+                Vector2 move = ScreenPoint(pad.center + new Vector2(pad.width * .35f, 0));
+                Focus(touch, false);
+                Contact(screen, 1, jump, UnityEngine.InputSystem.TouchPhase.Began);
+                Contact(screen, 2, rescue, UnityEngine.InputSystem.TouchPhase.Began);
+                Contact(screen, 3, move, UnityEngine.InputSystem.TouchPhase.Began);
+                InputSystem.Update(); Tick(touch);
+                AssertNeutral(Submitted(input));
+                if (releaseBeforeFocus)
+                {
+                    Contact(screen, 1, jump, UnityEngine.InputSystem.TouchPhase.Ended);
+                    Contact(screen, 2, rescue, UnityEngine.InputSystem.TouchPhase.Ended);
+                    Contact(screen, 3, move, UnityEngine.InputSystem.TouchPhase.Ended);
+                    InputSystem.Update(); Tick(touch);
+                }
+                // Model the physical consumer dropping submitted frames while unfocused.
+                Tick(input, "ResetHeld");
+                Focus(touch, true); Tick(touch);
+                AssertNeutral(Submitted(input));
+                if (!releaseBeforeFocus)
+                {
+                    Contact(screen, 1, jump, UnityEngine.InputSystem.TouchPhase.Ended);
+                    Contact(screen, 2, rescue, UnityEngine.InputSystem.TouchPhase.Ended);
+                    Contact(screen, 3, move, UnityEngine.InputSystem.TouchPhase.Ended);
+                    InputSystem.Update(); Tick(touch);
+                }
+                Tick(input, "ResetHeld");
+                Contact(screen, 4, jump, UnityEngine.InputSystem.TouchPhase.Began);
+                Contact(screen, 5, rescue, UnityEngine.InputSystem.TouchPhase.Began);
+                Contact(screen, 6, move, UnityEngine.InputSystem.TouchPhase.Began);
+                InputSystem.Update(); Tick(touch);
+                var fresh = Submitted(input);
+                Assert.That(fresh.JumpPressed && fresh.Interact && fresh.InteractHeld, Is.True);
+                Assert.That(fresh.Move.x, Is.GreaterThan(.5f));
+            }
+            finally { Object.DestroyImmediate(root); InputSystem.RemoveDevice(screen); }
+        }
+
+        private static void Focus(SliceTouchControls2D touch, bool focused) =>
+            typeof(SliceTouchControls2D).GetMethod("OnApplicationFocus", Private).Invoke(touch, new object[] { focused });
+
         [TestCase("disable")]
         [TestCase("focus")]
         [TestCase("bind")]

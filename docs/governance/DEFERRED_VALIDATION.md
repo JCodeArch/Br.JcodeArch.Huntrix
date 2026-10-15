@@ -140,3 +140,11 @@ Run these regressions and the full EditMode/PlayMode suites in licensed Unity
 The test was authored before the implementation. The local runner exited 1 at
 `UNITY_EDITOR` being unset, before starting Unity: RED/GREEN behavior, import,
 compilation, runtime, device and visual validation remain unexecuted.
+
+Focus cancellation follow-up: the touch producer now keeps an explicit focus gate.
+Every unfocused Update suppresses newly observed contacts and clears held/toggle
+state, preventing contacts begun without focus from replaying on regain even
+when a downstream consumer drops submitted frames. Four additional touch cases
+cover hold/toggle and release-before-regain versus held-through-regain, followed
+by fresh-contact recovery. Unity execution remains unavailable (`UNITY_EDITOR`
+unset), so these cases are authored and statically reviewed only.

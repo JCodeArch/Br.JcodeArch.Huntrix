@@ -22,6 +22,7 @@ namespace HuntrX.Gameplay.Touch
         private Rect pad;
         private Vector2 movement;
         private bool previousJump, previousInteract;
+        private bool hasFocus = true;
         public bool TryBind(VerticalSliceSession2D owner, MonoBehaviour source)
         {
             if (owner == null || (source != null && !(source is IInputPreferenceSource))) return false;
@@ -37,7 +38,7 @@ namespace HuntrX.Gameplay.Touch
         }
         private void Update()
         {
-            if (session == null || !session.IsRunning || session.Input == null || !session.Input.isActiveAndEnabled) { ReadContacts(true); Release(); return; }
+            if (!hasFocus || session == null || !session.IsRunning || session.Input == null || !session.Input.isActiveAndEnabled) { ReadContacts(true); Release(); return; }
             Layout(); movement = Vector2.zero; System.Array.Clear(held, 0, held.Length);
             ReadContacts(false);
             var source = preferences != null && preferences.isActiveAndEnabled ? preferences as IInputPreferenceSource : null;
@@ -93,6 +94,6 @@ namespace HuntrX.Gameplay.Touch
             Layout(); GUI.Box(pad,"Mover"); for (int i=0;i<buttons.Length;i++) GUI.Box(buttons[i],labels[i]);
         }
         private void OnDisable() { ReadContacts(true); Release(); }
-        private void OnApplicationFocus(bool focused) { if (!focused) { ReadContacts(true); Release(); } }
+        private void OnApplicationFocus(bool focused) { hasFocus = focused; if (!focused) { ReadContacts(true); Release(); } }
     }
 }

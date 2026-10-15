@@ -20,6 +20,8 @@ namespace HuntrX.Gameplay.VerticalSlice
         private readonly InputAction[] actions = new InputAction[14];
         private readonly bool[] toggles = new bool[14];
         private readonly bool[] previousHeld = new bool[14];
+        private readonly bool[] waitForRelease = new bool[14];
+        private bool hasFocus = true, waitForStickNeutral;
         private readonly bool[] pressed = new bool[14], released = new bool[14], held = new bool[14];
         private readonly string[] paths = new string[14];
         private static readonly string[] defaults = { "a", "d", "w", "s", "space", "leftShift", "j", "k", "q", "e", "r", "f", "l", "escape" };
@@ -56,7 +58,7 @@ namespace HuntrX.Gameplay.VerticalSlice
         }
         public void SubmitInput(SliceInputFrame frame)
         {
-            if (!isActiveAndEnabled || !Finite(frame.Move.x) || !Finite(frame.Move.y)) return;
+            if (!isActiveAndEnabled || !hasFocus || !Finite(frame.Move.x) || !Finite(frame.Move.y)) return;
             submitted.Move = Vector2.ClampMagnitude(frame.Move, 1f);
             submitted.JumpPressed |= frame.JumpPressed; submitted.JumpReleased |= frame.JumpReleased;
             submitted.Dash |= frame.Dash; submitted.Attack |= frame.Attack; submitted.Parry |= frame.Parry;
@@ -67,7 +69,7 @@ namespace HuntrX.Gameplay.VerticalSlice
         }
         private void Update()
         {
-            if (!isActiveAndEnabled || manager == null || !manager.isActiveAndEnabled || manager.State != CharacterManagerState2D.Alive || manager.ActiveCharacter == null || !manager.ActiveCharacter.isActiveAndEnabled || !manager.ActiveCharacter.IsAlive) { ResetHeld(); return; }
+            if (!isActiveAndEnabled || !hasFocus || manager == null || !manager.isActiveAndEnabled || manager.State != CharacterManagerState2D.Alive || manager.ActiveCharacter == null || !manager.ActiveCharacter.isActiveAndEnabled || !manager.ActiveCharacter.IsAlive) { ResetHeld(); return; }
             SliceInputFrame frame = ReadPhysical();
             if (hasSubmitted)
             {
@@ -123,6 +125,12 @@ namespace HuntrX.Gameplay.VerticalSlice
                 if (string.IsNullOrWhiteSpace(next)) next = keyboardPaths[i];
                 if (!string.IsNullOrWhiteSpace(next) && next != paths[i]) { actions[i].ApplyBindingOverride(0, next); paths[i] = next; }
                 bool value = actions[i].IsPressed();
+                if (waitForRelease[i])
+                {
+                    if (!value) waitForRelease[i] = false;
+                    toggles[i] = previousHeld[i] = held[i] = pressed[i] = released[i] = false;
+                    continue;
+                }
                 if (preferences != null && preferences.ToggleModeFor((GameplayControl)i))
                 { if (actions[i].WasPressedThisFrame()) toggles[i] = !toggles[i]; value = toggles[i]; }
                 bool toggle = preferences != null && preferences.ToggleModeFor((GameplayControl)i);
@@ -130,7 +138,9 @@ namespace HuntrX.Gameplay.VerticalSlice
                 released[i] = toggle ? !value && previousHeld[i] : actions[i].WasReleasedThisFrame(); previousHeld[i] = value;
             }
             Vector2 move = new Vector2((held[1] ? 1f : 0f) - (held[0] ? 1f : 0f), (held[2] ? 1f : 0f) - (held[3] ? 1f : 0f));
-            if (Gamepad.current != null && Gamepad.current.leftStick.ReadValue().sqrMagnitude > move.sqrMagnitude) move = Gamepad.current.leftStick.ReadValue();
+            Vector2 stick = Gamepad.current != null ? Gamepad.current.leftStick.ReadValue() : Vector2.zero;
+            if (waitForStickNeutral) { if (stick.sqrMagnitude <= .01f) waitForStickNeutral = false; }
+            else if (stick.sqrMagnitude > move.sqrMagnitude) move = stick;
             return new SliceInputFrame { Move = Vector2.ClampMagnitude(move, 1f), JumpPressed = pressed[4], JumpReleased = released[4], Dash = pressed[5], Attack = pressed[6], Parry = pressed[7], Switch = pressed[8], Interact = pressed[9], InteractHeld = held[9], InteractReleased = released[9], FoodSelf = pressed[10], FoodFan = pressed[11], Special = pressed[12], Pause = pressed[13] };
         }
         private bool CanApply(DamageReceiver2D actor) => isActiveAndEnabled && manager != null && manager.isActiveAndEnabled && manager.State == CharacterManagerState2D.Alive && manager.ActiveCharacter == actor && actor != null && actor.isActiveAndEnabled && actor.IsAlive;
@@ -159,6 +169,29 @@ namespace HuntrX.Gameplay.VerticalSlice
             return false;
         }
         private void ResetHeld() { Array.Clear(toggles, 0, toggles.Length); Array.Clear(previousHeld, 0, previousHeld.Length); submitted = default; hasSubmitted = false; }
+        private void OnApplicationFocus(bool focused)
+        {
+            if (hasFocus == focused) return;
+            hasFocus = focused;
+            if (focused) return;
+            ResetHeld();
+            // Device resets cancel InputActions, but do not clear our accessibility toggle latches.
+            // Require fresh contacts after focus returns, including sticks that may resync as held.
+            for (int i = 0; i < waitForRelease.Length; i++) waitForRelease[i] = true;
+            waitForStickNeutral = true;
+            var actor = manager != null ? manager.ActiveCharacter : null;
+            if (actor != null)
+            {
+                actor.GetComponent<HorizontalMovement2D>()?.SetMovementInput(Vector2.zero);
+                actor.GetComponent<JumpController2D>()?.ReleaseJump();
+            }
+            if (!CanApply(actor)) return;
+            var cancellation = new SliceInputFrame { JumpReleased = true, InteractReleased = true };
+            var handlers = ActionsRequested;
+            if (handlers != null) foreach (Action<SliceInputFrame> handler in handlers.GetInvocationList())
+                try { if (!CanApply(actor)) break; handler(cancellation); }
+                catch (Exception exception) { Debug.LogException(exception, this); }
+        }
         private void OnDisable()
         {
             foreach (InputAction action in actions) action?.Disable(); ResetHeld();

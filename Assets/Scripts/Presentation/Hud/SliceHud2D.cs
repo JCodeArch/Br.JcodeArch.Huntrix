@@ -42,6 +42,16 @@ namespace HuntrX.Presentation.Hud
         private int fun=3, difficulty=3;
         private void Update()
         {
+            if (!options && ((UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame) ||
+                (UnityEngine.InputSystem.Gamepad.current != null && UnityEngine.InputSystem.Gamepad.current.startButton.wasPressedThisFrame)))
+            {
+                options = true;
+            }
+            else if (options && ((UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame) ||
+                     (UnityEngine.InputSystem.Gamepad.current != null && UnityEngine.InputSystem.Gamepad.current.startButton.wasPressedThisFrame)))
+            {
+                options = false;
+            }
             SetPause(options);
             SetInputBlocked(options || (session != null && session.IsComplete));
             SetNarrativeBlocked(options);
@@ -178,7 +188,7 @@ namespace HuntrX.Presentation.Hud
                 if(GUILayout.Button("Restaurar tecla")) {preferences.ClearRemap(selected);feedback="Tecla restaurada";}
             }
             english=GUILayout.Toggle(english,"Narrativa em inglês");
-            GUILayout.Label("A/D: mover • Espaço: pulo • Shift: dash\nJ: ataque • K: parry • Q: troca\nE: resgate • L: Special");
+            GUILayout.Label("A/D: mover • Espaço: pulo • Shift: dash\nJ: ataque • K: parry • Q: troca\nE: resgate • L: Special\nR: comida (você) • F: comida (fã)\nEsc / Start: pausar e opções");
             if(!string.IsNullOrEmpty(feedback)) GUILayout.Label(feedback);
             GUILayout.EndScrollView(); GUILayout.EndArea();
         }

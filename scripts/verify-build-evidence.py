@@ -50,10 +50,16 @@ def verify(path):
         raise ValueError('Artifact root does not match the target output')
     if not output.exists() or (output.is_dir() and not any(output.iterdir())) or (output.is_file() and output.stat().st_size == 0):
         raise ValueError('Build output is missing or empty')
+    if evidence['target'] in ('Android', 'StandaloneWindows64') and not output.is_file():
+        raise ValueError('Android and Windows outputs must be regular files')
     if evidence['target'] == 'Android' and output.suffix not in ('.apk', '.aab'):
         raise ValueError('Android output must be an APK or AAB')
     if evidence['target'] == 'StandaloneWindows64' and (output.suffix != '.exe' or not (output.parent / (output.stem + '_Data')).is_dir()):
         raise ValueError('Windows output requires an EXE and matching Data directory')
+    if evidence['target'] == 'StandaloneWindows64':
+        data = output.parent / (output.stem + '_Data')
+        if not any(path.is_file() and path.stat().st_size > 0 for path in data.rglob('*')):
+            raise ValueError('Windows Data directory contains no produced payload')
     if evidence['target'] == 'iOS' and (not output.is_dir() or not list(output.glob('*.xcodeproj'))):
         raise ValueError('iOS export requires a generated Xcode project')
     if type(evidence.get('totalBytes')) is not int or evidence['totalBytes'] <= 0:

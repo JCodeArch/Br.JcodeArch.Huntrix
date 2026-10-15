@@ -94,3 +94,28 @@ direita e redução vertical da safe area; conferir legibilidade, ausência de s
 arraste e acessibilidade física nos dispositivos alvo. Importação, compilação,
 PlayMode e validação visual/dispositivo permanecem pendentes. O runner local encerrou
 com `UNITY_EDITOR` ausente; nenhum teste Unity ou build foi executado nesta correção.
+
+
+## Etapa 3 — HUD UGUI somente leitura na VerticalSlice — 2026-10-15
+
+`SliceReadOnlyHud2D` espelha a sessão real em um Canvas de telemetria sem
+EventSystem, Selectables, GraphicRaycaster ou comandos. `SliceHud2D` permanece
+ativo e proprietário de pausa, opções, input, políticas etárias e feedback; a
+posse exclusiva da apresentação oculta apenas suas linhas de telemetria. Ao
+perder fonte, owner, exclusividade ou habilitação, o Canvas some e a posse é
+liberada. Opções e conclusão mantêm suas telas IMGUI existentes.
+
+Vida/personagem acompanham o ator atual; Honmoon e Special exibem valores reais,
+sem converter carga bruta em fração. Resgates usam o snapshot de performance da
+execução ativa, sem inferir denominador ou usar Registry.Count. Fontes ausentes
+ou desabilitadas aparecem indisponíveis. Menu, perfil, novos comandos touch,
+replay e persistência de preferências não foram integrados nesta etapa.
+
+Executar `SliceReadOnlyHudTests`: cena real, dados renderizados, mudança de vida,
+troca de personagem/recursos, fontes ausentes/desabilitadas, pausa/opções,
+exclusividade e fallback ao desativar o presenter. Complementar com respawn,
+transições de beat, conclusão, foco, teardown/reload e regressão dos testes de
+pausa existentes. Inspecionar legibilidade/oclusão com mundo e botão de opções
+em 16:9, telas largas e safe areas assimétricas/verticais; medir custo real e
+validar touch/teclado/gamepad em dispositivos. Compilação/importação e todos os
+cenários Unity permanecem pendentes: `UNITY_EDITOR` ausente no runner local.

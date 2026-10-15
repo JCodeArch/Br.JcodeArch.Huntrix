@@ -17,14 +17,14 @@ namespace HuntrX.Gameplay.VerticalSlice
         [SerializeField] private MonoBehaviour inputPreferences;
         [SerializeField] private LayerMask groundMask = ~0;
         private readonly RaycastHit2D[] hits = new RaycastHit2D[32];
-        private readonly InputAction[] actions = new InputAction[13];
-        private readonly bool[] toggles = new bool[13];
-        private readonly bool[] previousHeld = new bool[13];
-        private readonly bool[] pressed = new bool[13], released = new bool[13], held = new bool[13];
-        private readonly string[] paths = new string[13];
-        private static readonly string[] defaults = { "a", "d", "w", "s", "space", "leftShift", "j", "k", "q", "e", "r", "f", "l" };
+        private readonly InputAction[] actions = new InputAction[14];
+        private readonly bool[] toggles = new bool[14];
+        private readonly bool[] previousHeld = new bool[14];
+        private readonly bool[] pressed = new bool[14], released = new bool[14], held = new bool[14];
+        private readonly string[] paths = new string[14];
+        private static readonly string[] defaults = { "a", "d", "w", "s", "space", "leftShift", "j", "k", "q", "e", "r", "f", "l", "escape" };
         private static readonly string[] keyboardPaths = Array.ConvertAll(defaults, key => "<Keyboard>/" + key);
-        private static readonly string[] gamepad = { "dpad/left", "dpad/right", "dpad/up", "dpad/down", "buttonSouth", "rightShoulder", "buttonWest", "buttonEast", "leftShoulder", "buttonNorth", "select", "start", "rightTrigger" };
+        private static readonly string[] gamepad = { "dpad/left", "dpad/right", "dpad/up", "dpad/down", "buttonSouth", "rightShoulder", "buttonWest", "buttonEast", "leftShoulder", "buttonNorth", "select", "rightStickPress", "rightTrigger", "start" };
         private DamageReceiver2D aimTarget;
         public void SetAimTarget(DamageReceiver2D target) => aimTarget = target;
         private SliceInputFrame submitted;
@@ -62,6 +62,7 @@ namespace HuntrX.Gameplay.VerticalSlice
             submitted.Dash |= frame.Dash; submitted.Attack |= frame.Attack; submitted.Parry |= frame.Parry;
             submitted.Switch |= frame.Switch; submitted.Interact |= frame.Interact; submitted.InteractHeld |= frame.InteractHeld; submitted.InteractReleased |= frame.InteractReleased;
             submitted.FoodSelf |= frame.FoodSelf; submitted.FoodFan |= frame.FoodFan; submitted.Special |= frame.Special;
+            submitted.Pause |= frame.Pause;
             hasSubmitted = true;
         }
         private void Update()
@@ -75,6 +76,7 @@ namespace HuntrX.Gameplay.VerticalSlice
                 frame.Dash |= submitted.Dash; frame.Attack |= submitted.Attack; frame.Parry |= submitted.Parry;
                 frame.Switch |= submitted.Switch; frame.Interact |= submitted.Interact; frame.InteractHeld |= submitted.InteractHeld; frame.InteractReleased |= submitted.InteractReleased;
                 frame.FoodSelf |= submitted.FoodSelf; frame.FoodFan |= submitted.FoodFan; frame.Special |= submitted.Special;
+                frame.Pause |= submitted.Pause;
                 submitted = default; hasSubmitted = false;
             }
             if (Time.timeScale <= 0f) { manager.ActiveCharacter.GetComponent<HorizontalMovement2D>()?.SetMovementInput(Vector2.zero); return; }
@@ -115,7 +117,7 @@ namespace HuntrX.Gameplay.VerticalSlice
         private SliceInputFrame ReadPhysical()
         {
             IInputPreferenceSource preferences = inputPreferences != null && inputPreferences.isActiveAndEnabled ? inputPreferences as IInputPreferenceSource : null;
-            for (int i = 0; i < 13; i++)
+            for (int i = 0; i < actions.Length; i++)
             {
                 string next = preferences != null ? preferences.KeyboardBinding((GameplayControl)i) : null;
                 if (string.IsNullOrWhiteSpace(next)) next = keyboardPaths[i];
@@ -129,7 +131,7 @@ namespace HuntrX.Gameplay.VerticalSlice
             }
             Vector2 move = new Vector2((held[1] ? 1f : 0f) - (held[0] ? 1f : 0f), (held[2] ? 1f : 0f) - (held[3] ? 1f : 0f));
             if (Gamepad.current != null && Gamepad.current.leftStick.ReadValue().sqrMagnitude > move.sqrMagnitude) move = Gamepad.current.leftStick.ReadValue();
-            return new SliceInputFrame { Move = Vector2.ClampMagnitude(move, 1f), JumpPressed = pressed[4], JumpReleased = released[4], Dash = pressed[5], Attack = pressed[6], Parry = pressed[7], Switch = pressed[8], Interact = pressed[9], InteractHeld = held[9], InteractReleased = released[9], FoodSelf = pressed[10], FoodFan = pressed[11], Special = pressed[12] };
+            return new SliceInputFrame { Move = Vector2.ClampMagnitude(move, 1f), JumpPressed = pressed[4], JumpReleased = released[4], Dash = pressed[5], Attack = pressed[6], Parry = pressed[7], Switch = pressed[8], Interact = pressed[9], InteractHeld = held[9], InteractReleased = released[9], FoodSelf = pressed[10], FoodFan = pressed[11], Special = pressed[12], Pause = pressed[13] };
         }
         private bool CanApply(DamageReceiver2D actor) => isActiveAndEnabled && manager != null && manager.isActiveAndEnabled && manager.State == CharacterManagerState2D.Alive && manager.ActiveCharacter == actor && actor != null && actor.isActiveAndEnabled && actor.IsAlive;
         private void UpdateSensors(DamageReceiver2D actor)

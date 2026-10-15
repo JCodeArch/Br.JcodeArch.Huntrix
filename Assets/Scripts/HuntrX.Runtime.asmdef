@@ -2,6 +2,7 @@
   "name": "HuntrX.Runtime",
   "rootNamespace": "HuntrX",
   "references": [
-    "Unity.InputSystem"
+    "Unity.InputSystem",
+    "UnityEngine.UI"
   ]
 }

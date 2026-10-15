@@ -34,7 +34,7 @@ namespace HuntrX.Gameplay.AgeAccessibility
             preferences.SetPresentationPreferences(flashes,captions,aim);
             preferences.TrySetToggle(GameplayControl.Jump,GUILayout.Toggle(preferences.ToggleModeFor(GameplayControl.Jump),"Pulo: alternar em vez de segurar"));
             preferences.TrySetToggle(GameplayControl.Interact,GUILayout.Toggle(preferences.ToggleModeFor(GameplayControl.Interact),"Resgate: alternar em vez de segurar"));
-            if(GUILayout.Button("Ação: "+selected)) selected=selected==GameplayControl.Special?GameplayControl.MoveLeft:(GameplayControl)((int)selected+1);
+            if(GUILayout.Button("Ação: "+selected)) selected=selected==GameplayControl.Pause?GameplayControl.MoveLeft:(GameplayControl)((int)selected+1);
             key=GUILayout.TextField(key,24);
             if(GUILayout.Button("Aplicar tecla")) feedback=preferences.TryRemap(selected,"<Keyboard>/"+key)?"Tecla atualizada":"Tecla inválida";
             if(GUILayout.Button("Restaurar tecla padrão")) { preferences.ClearRemap(selected); feedback="Tecla padrão restaurada"; }

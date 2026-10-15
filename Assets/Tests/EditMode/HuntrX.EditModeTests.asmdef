@@ -3,7 +3,8 @@
   "rootNamespace": "HuntrX.Tests.EditMode",
   "references": [
     "HuntrX.Runtime",
-    "HuntrX.Editor"
+    "HuntrX.Editor",
+    "UnityEngine.UI"
   ],
   "includePlatforms": [
     "Editor"

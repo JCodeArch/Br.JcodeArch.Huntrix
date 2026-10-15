@@ -9,6 +9,7 @@ using HuntrX.Presentation.Art;
 using HuntrX.Gameplay.VerticalSlice;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 namespace HuntrX.Presentation.Hud
 {
     [DefaultExecutionOrder(-100), DisallowMultipleComponent]
@@ -40,18 +41,31 @@ namespace HuntrX.Presentation.Hud
         private string key="space", comments=string.Empty, feedback=string.Empty;
         private GameplayControl selected=GameplayControl.Jump;
         private int fun=3, difficulty=3;
+        // Menu input must remain enabled while the gameplay component is disabled by options.
+        private InputAction pauseAction;
+        private string pausePath;
+        private void OnEnable()
+        {
+            if(pauseAction==null)
+            {
+                pauseAction=new InputAction("PauseOptions",InputActionType.Button);
+                pauseAction.AddBinding("<Keyboard>/escape");
+                pauseAction.AddBinding("<Gamepad>/start");
+            }
+            pausePath=null;
+            pauseAction.Enable();
+        }
+        private bool PausePressed()
+        {
+            string next=preferences!=null && preferences.isActiveAndEnabled?preferences.KeyboardBinding(GameplayControl.Pause):null;
+            if(string.IsNullOrWhiteSpace(next)) next="<Keyboard>/escape";
+            if(next!=pausePath) { pauseAction.ApplyBindingOverride(0,next); pausePath=next; }
+            return pauseAction.WasPressedThisFrame();
+        }
+        private void OnDestroy() { pauseAction?.Dispose(); }
         private void Update()
         {
-            if (!options && ((UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame) ||
-                (UnityEngine.InputSystem.Gamepad.current != null && UnityEngine.InputSystem.Gamepad.current.startButton.wasPressedThisFrame)))
-            {
-                options = true;
-            }
-            else if (options && ((UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame) ||
-                     (UnityEngine.InputSystem.Gamepad.current != null && UnityEngine.InputSystem.Gamepad.current.startButton.wasPressedThisFrame)))
-            {
-                options = false;
-            }
+            if(PausePressed()) options=!options;
             SetPause(options);
             SetInputBlocked(options || (session != null && session.IsComplete));
             SetNarrativeBlocked(options);
@@ -164,7 +178,7 @@ namespace HuntrX.Presentation.Hud
             if(inputOwned && (!value || blockedInput!=current)) { if(blockedInput!=null) blockedInput.enabled=priorInputEnabled; inputOwned=false; blockedInput=null; }
             if(value && !inputOwned && current!=null) { blockedInput=current; priorInputEnabled=current.enabled; inputOwned=true; current.enabled=false; }
         }
-        private void OnDisable() { options=false; SetPause(false); SetInputBlocked(false); SetNarrativeBlocked(false); UnbindVisualSource(); effects?.SetPresentationPolicy(0f,true,false); }
+        private void OnDisable() { pauseAction?.Disable(); options=false; SetPause(false); SetInputBlocked(false); SetNarrativeBlocked(false); UnbindVisualSource(); effects?.SetPresentationPolicy(0f,true,false); }
         private void DrawOptions(float width,float height)
         {
             GUILayout.BeginArea(new Rect(8,8,Mathf.Min(430,width-16),height-16),GUI.skin.box);
@@ -182,7 +196,7 @@ namespace HuntrX.Presentation.Hud
                 ApplyVisualPolicy();
                 preferences.TrySetToggle(GameplayControl.Jump,GUILayout.Toggle(preferences.ToggleModeFor(GameplayControl.Jump),"Pulo: alternar"));
                 preferences.TrySetToggle(GameplayControl.Interact,GUILayout.Toggle(preferences.ToggleModeFor(GameplayControl.Interact),"Resgate: alternar"));
-                if(GUILayout.Button("Ação: "+selected)) selected=selected==GameplayControl.Special?GameplayControl.MoveLeft:(GameplayControl)((int)selected+1);
+                if(GUILayout.Button("Ação: "+selected)) selected=selected==GameplayControl.Pause?GameplayControl.MoveLeft:(GameplayControl)((int)selected+1);
                 key=GUILayout.TextField(key,24);
                 if(GUILayout.Button("Aplicar tecla")) feedback=preferences.TryRemap(selected,"<Keyboard>/"+key)?"Tecla atualizada":"Tecla inválida";
                 if(GUILayout.Button("Restaurar tecla")) {preferences.ClearRemap(selected);feedback="Tecla restaurada";}

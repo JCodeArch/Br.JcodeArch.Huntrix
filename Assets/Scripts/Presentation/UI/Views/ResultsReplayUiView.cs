@@ -40,6 +40,19 @@ namespace HuntrX.Presentation.UI.Views
 
         private void Awake()
         {
+            if (outcomeTitleText == null) outcomeTitleText = FindControl<Text>("outcomeTitleText");
+            if (outcomeDetailsText == null) outcomeDetailsText = FindControl<Text>("outcomeDetailsText");
+            if (honmoonScoreText == null) honmoonScoreText = FindControl<Text>("honmoonScoreText");
+            if (fansRescuedScoreText == null) fansRescuedScoreText = FindControl<Text>("fansRescuedScoreText");
+            if (funRatingSlider == null) funRatingSlider = FindControl<Slider>("funRatingSlider");
+            if (funRatingText == null) funRatingText = FindControl<Text>("funRatingText");
+            if (difficultyRatingSlider == null) difficultyRatingSlider = FindControl<Slider>("difficultyRatingSlider");
+            if (difficultyRatingText == null) difficultyRatingText = FindControl<Text>("difficultyRatingText");
+            if (commentsInputField == null) commentsInputField = FindControl<InputField>("commentsInputField");
+            if (submitSurveyButton == null) submitSurveyButton = FindControl<Button>("submitSurveyButton");
+            if (surveyStatusText == null) surveyStatusText = FindControl<Text>("surveyStatusText");
+            if (replayButton == null) replayButton = FindControl<Button>("replayButton");
+            if (mainMenuButton == null) mainMenuButton = FindControl<Button>("mainMenuButton");
             if (funRatingSlider != null)
             {
                 funRatingSlider.minValue = 1;
@@ -103,6 +116,13 @@ namespace HuntrX.Presentation.UI.Views
                 surveyStatusText.text = status;
                 surveyStatusText.color = isError ? Color.red : Color.green;
             }
+        }
+
+        private T FindControl<T>(string controlName) where T : Component
+        {
+            foreach (var control in GetComponentsInChildren<T>(true))
+                if (control.name == controlName) return control;
+            return null;
         }
 
         public void SetVisible(bool visible)

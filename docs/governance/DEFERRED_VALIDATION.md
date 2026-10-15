@@ -68,3 +68,14 @@ Gestão e troca solo não qualificam cooperativo ou rede. Até três personagens
 ## Atualização do registro
 
 O agente de integração registra por card: arquivos e commit, veredito estático, pendências, dependências e próximo gate. QA mantém esta matriz sincronizada com os contratos implementados. Quando os testes forem executados, substituir a pendência pela evidência identificada, preservando o histórico da decisão e evitando atribuir o resultado a commits posteriores não verificados.
+
+## PR #101 pause routing review — 2026-10-15
+
+HUD menu input uses its own enabled InputAction while options disable gameplay input.
+The keyboard binding follows AccessibilityPreferences2D Pause remap/default restore;
+Gamepad Start pauses and FoodFan remains moved to rightStickPress. Legacy remap
+selectors include Pause. Validate remapped key/default restore, repeated close at
+zero timeScale, prior disabled input, gamepad route exclusivity and HUD teardown.
+`HudPauseRoutingTests` adds three regression scenarios; they were NOT RUN here:
+`scripts/run-unity-tests.sh` exits 1 because UNITY_EDITOR is unset. No Unity
+import/compile/runtime pass is claimed for this correction.

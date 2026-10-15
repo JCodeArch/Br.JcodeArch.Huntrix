@@ -23,6 +23,9 @@ namespace HuntrX.Presentation.UI.Views
 
         private void Awake()
         {
+            if (startButton == null) startButton = FindControl<Button>("startButton");
+            if (continueButton == null) continueButton = FindControl<Button>("continueButton");
+            if (optionsButton == null) optionsButton = FindControl<Button>("optionsButton");
             // Figma specification: Continue must remain unavailable
             if (continueButton != null)
             {
@@ -51,6 +54,13 @@ namespace HuntrX.Presentation.UI.Views
             {
                 optionsButton.onClick.RemoveAllListeners();
             }
+        }
+
+        private T FindControl<T>(string controlName) where T : Component
+        {
+            foreach (var control in GetComponentsInChildren<T>(true))
+                if (control.name == controlName) return control;
+            return null;
         }
 
         public void SetVisible(bool visible)

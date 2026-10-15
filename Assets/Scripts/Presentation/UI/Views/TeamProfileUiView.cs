@@ -39,6 +39,16 @@ namespace HuntrX.Presentation.UI.Views
 
         private void Awake()
         {
+            if (rumiButton == null) rumiButton = FindControl<Button>("rumiButton");
+            if (miraButton == null) miraButton = FindControl<Button>("miraButton");
+            if (zoeyButton == null) zoeyButton = FindControl<Button>("zoeyButton");
+            if (profile4To5Button == null) profile4To5Button = FindControl<Button>("profile4To5Button");
+            if (profile6To8Button == null) profile6To8Button = FindControl<Button>("profile6To8Button");
+            if (profile9To12Button == null) profile9To12Button = FindControl<Button>("profile9To12Button");
+            if (profile13To15Button == null) profile13To15Button = FindControl<Button>("profile13To15Button");
+            if (profile16PlusButton == null) profile16PlusButton = FindControl<Button>("profile16PlusButton");
+            if (confirmButton == null) confirmButton = FindControl<Button>("confirmButton");
+            if (backButton == null) backButton = FindControl<Button>("backButton");
             BindCharacterButton(rumiButton, "Rumi");
             BindCharacterButton(miraButton, "Mira");
             BindCharacterButton(zoeyButton, "Zoey");
@@ -88,6 +98,13 @@ namespace HuntrX.Presentation.UI.Views
         {
             selectedCharacter = character;
             selectedAgeProfile = profile;
+        }
+
+        private T FindControl<T>(string controlName) where T : Component
+        {
+            foreach (var control in GetComponentsInChildren<T>(true))
+                if (control.name == controlName) return control;
+            return null;
         }
 
         public void SetVisible(bool visible)

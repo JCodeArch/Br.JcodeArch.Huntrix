@@ -57,6 +57,26 @@ namespace HuntrX.Presentation.UI.Views
 
         private void Awake()
         {
+            if (healthBar == null) healthBar = FindControl<Slider>("healthBar");
+            if (healthText == null) healthText = FindControl<Text>("healthText");
+            if (honmoonBar == null) honmoonBar = FindControl<Slider>("honmoonBar");
+            if (honmoonText == null) honmoonText = FindControl<Text>("honmoonText");
+            if (activeCharacterText == null) activeCharacterText = FindControl<Text>("activeCharacterText");
+            if (switchButton == null) switchButton = FindControl<Button>("switchButton");
+            if (pauseButton == null) pauseButton = FindControl<Button>("pauseButton");
+            if (beatTitleText == null) beatTitleText = FindControl<Text>("beatTitleText");
+            if (fansRescuedText == null) fansRescuedText = FindControl<Text>("fansRescuedText");
+            if (foodCountText == null) foodCountText = FindControl<Text>("foodCountText");
+            if (jumpButton == null) jumpButton = FindControl<Button>("jumpButton");
+            if (attackButton == null) attackButton = FindControl<Button>("attackButton");
+            if (dashButton == null) dashButton = FindControl<Button>("dashButton");
+            if (parryButton == null) parryButton = FindControl<Button>("parryButton");
+            if (specialButton == null) specialButton = FindControl<Button>("specialButton");
+            if (rescueButton == null) rescueButton = FindControl<Button>("rescueButton");
+            if (foodSelfButton == null) foodSelfButton = FindControl<Button>("foodSelfButton");
+            if (foodFanButton == null) foodFanButton = FindControl<Button>("foodFanButton");
+            if (specialChargeBar == null) specialChargeBar = FindControl<Slider>("specialChargeBar");
+            if (specialReadyGlow == null) specialReadyGlow = FindControl<Image>("specialReadyGlow");
             BindButton(jumpButton, () => JumpPressed?.Invoke());
             BindButton(attackButton, () => AttackPressed?.Invoke());
             BindButton(dashButton, () => DashPressed?.Invoke());
@@ -141,6 +161,13 @@ namespace HuntrX.Presentation.UI.Views
             {
                 specialButton.interactable = state.SpecialReady;
             }
+        }
+
+        private T FindControl<T>(string controlName) where T : Component
+        {
+            foreach (var control in GetComponentsInChildren<T>(true))
+                if (control.name == controlName) return control;
+            return null;
         }
 
         public void SetVisible(bool visible)

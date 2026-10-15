@@ -33,7 +33,7 @@ namespace HuntrX.Presentation.UI
 
         private void Update()
         {
-            if (applyOnUpdate || !Application.isPlaying)
+            if (applyOnUpdate || HasScreenOrSafeAreaChanged() || !Application.isPlaying)
             {
                 if (HasScreenOrSafeAreaChanged())
                 {

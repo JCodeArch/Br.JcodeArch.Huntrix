@@ -37,6 +37,14 @@ namespace HuntrX.Presentation.UI.Views
 
         private void Awake()
         {
+            if (reduceFlashesToggle == null) reduceFlashesToggle = FindControl<Toggle>("reduceFlashesToggle");
+            if (subtitlesToggle == null) subtitlesToggle = FindControl<Toggle>("subtitlesToggle");
+            if (aimAssistToggle == null) aimAssistToggle = FindControl<Toggle>("aimAssistToggle");
+            if (toggleJumpRescueToggle == null) toggleJumpRescueToggle = FindControl<Toggle>("toggleJumpRescueToggle");
+            if (ptLanguageButton == null) ptLanguageButton = FindControl<Button>("ptLanguageButton");
+            if (enLanguageButton == null) enLanguageButton = FindControl<Button>("enLanguageButton");
+            if (remapKeysButton == null) remapKeysButton = FindControl<Button>("remapKeysButton");
+            if (closeButton == null) closeButton = FindControl<Button>("closeButton");
             if (reduceFlashesToggle != null)
             {
                 reduceFlashesToggle.onValueChanged.AddListener(val => ReduceFlashesChanged?.Invoke(val));
@@ -86,11 +94,18 @@ namespace HuntrX.Presentation.UI.Views
 
         public void SetPreferences(bool reduceFlashes, bool subtitles, bool aimAssist, bool toggleJumpRescue, string language)
         {
-            if (reduceFlashesToggle != null) reduceFlashesToggle.isOn = reduceFlashes;
-            if (subtitlesToggle != null) subtitlesToggle.isOn = subtitles;
-            if (aimAssistToggle != null) aimAssistToggle.isOn = aimAssist;
-            if (toggleJumpRescueToggle != null) toggleJumpRescueToggle.isOn = toggleJumpRescue;
+            if (reduceFlashesToggle != null) reduceFlashesToggle.SetIsOnWithoutNotify(reduceFlashes);
+            if (subtitlesToggle != null) subtitlesToggle.SetIsOnWithoutNotify(subtitles);
+            if (aimAssistToggle != null) aimAssistToggle.SetIsOnWithoutNotify(aimAssist);
+            if (toggleJumpRescueToggle != null) toggleJumpRescueToggle.SetIsOnWithoutNotify(toggleJumpRescue);
             currentLanguage = language;
+        }
+
+        private T FindControl<T>(string controlName) where T : Component
+        {
+            foreach (var control in GetComponentsInChildren<T>(true))
+                if (control.name == controlName) return control;
+            return null;
         }
 
         public void SetVisible(bool visible)

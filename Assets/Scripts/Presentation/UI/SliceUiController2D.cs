@@ -51,6 +51,8 @@ namespace HuntrX.Presentation.UI
             OptionsUiView options,
             ResultsReplayUiView resultsReplay)
         {
+            UnsubscribeViewEvents();
+            if (flow != null) flow.ScreenChanged -= OnScreenChanged;
             flow = flowInstance;
             mainMenuView = mainMenu;
             teamProfileView = teamProfile;
@@ -87,39 +89,27 @@ namespace HuntrX.Presentation.UI
 
         private void SubscribeViewEvents()
         {
-            if (mainMenuView != null)
-            {
-                mainMenuView.StartRequested += () => flow.TransitionTo(UiScreen.TeamProfile);
-                mainMenuView.OptionsRequested += () => flow.TransitionTo(UiScreen.Options);
-            }
-
-            if (teamProfileView != null)
-            {
-                teamProfileView.Confirmed += () => flow.TransitionTo(UiScreen.MobileHud);
-                teamProfileView.BackRequested += () => flow.TryGoBack();
-            }
-
-            if (mobileHudView != null)
-            {
-                mobileHudView.PausePressed += () => flow.TransitionTo(UiScreen.Options);
-            }
-
-            if (optionsView != null)
-            {
-                optionsView.CloseRequested += () => flow.TryGoBack();
-            }
-
-            if (resultsReplayView != null)
-            {
-                resultsReplayView.ReplayRequested += () => flow.TransitionTo(UiScreen.MobileHud);
-                resultsReplayView.MainMenuRequested += () => flow.TransitionTo(UiScreen.MainMenu);
-            }
+            if (mainMenuView != null) { mainMenuView.StartRequested += OpenProfile; mainMenuView.OptionsRequested += OpenOptions; }
+            if (teamProfileView != null) { teamProfileView.Confirmed += OpenHud; teamProfileView.BackRequested += GoBack; }
+            if (mobileHudView != null) mobileHudView.PausePressed += OpenOptions;
+            if (optionsView != null) optionsView.CloseRequested += GoBack;
+            if (resultsReplayView != null) { resultsReplayView.ReplayRequested += Replay; resultsReplayView.MainMenuRequested += OpenMenu; }
         }
 
         private void UnsubscribeViewEvents()
         {
-            // View listeners cleanup
+            if (mainMenuView != null) { mainMenuView.StartRequested -= OpenProfile; mainMenuView.OptionsRequested -= OpenOptions; }
+            if (teamProfileView != null) { teamProfileView.Confirmed -= OpenHud; teamProfileView.BackRequested -= GoBack; }
+            if (mobileHudView != null) mobileHudView.PausePressed -= OpenOptions;
+            if (optionsView != null) optionsView.CloseRequested -= GoBack;
+            if (resultsReplayView != null) { resultsReplayView.ReplayRequested -= Replay; resultsReplayView.MainMenuRequested -= OpenMenu; }
         }
+        private void OpenProfile() { flow.TransitionTo(UiScreen.TeamProfile); }
+        private void OpenOptions() { flow.TransitionTo(UiScreen.Options); }
+        private void OpenHud() { flow.TransitionTo(UiScreen.MobileHud); flow.ClearHistory(); }
+        private void GoBack() { flow.TryGoBack(); }
+        private void Replay() { flow.TransitionTo(UiScreen.MobileHud); flow.ClearHistory(); }
+        private void OpenMenu() { flow.TransitionTo(UiScreen.MainMenu); flow.ClearHistory(); }
 
         private void OnScreenChanged(UiScreen previous, UiScreen current)
         {

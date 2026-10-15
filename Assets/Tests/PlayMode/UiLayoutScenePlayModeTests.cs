@@ -89,6 +89,33 @@ namespace HuntrX.Tests.PlayMode
         }
 
         [UnityTest]
+        public IEnumerator ReturningToScreenRejectsHiddenAndNavigationDisabledRememberedControls()
+        {
+            var remembered = Find<Button>("enLanguageButton");
+            foreach (bool hide in new[] { true, false })
+            {
+                Click("optionsButton");
+                EventSystem.current.SetSelectedGameObject(remembered.gameObject);
+                Click("closeButton");
+                if (hide) remembered.gameObject.SetActive(false);
+                else
+                {
+                    var navigation = remembered.navigation;
+                    navigation.mode = Navigation.Mode.None;
+                    remembered.navigation = navigation;
+                }
+                Click("optionsButton");
+                AssertScreen(UiScreen.Options);
+                Assert.That(EventSystem.current.currentSelectedGameObject,
+                    Is.EqualTo(Find<Toggle>("reduceFlashesToggle").gameObject),
+                    hide ? "Hidden remembered target must be discarded" : "Navigation.None target must be discarded");
+                Click("closeButton");
+                remembered.gameObject.SetActive(true);
+            }
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator HidingControllerClearsOwnedFocus()
         {
             EventSystem.current.SetSelectedGameObject(Find<Button>("startButton").gameObject);
@@ -106,11 +133,22 @@ namespace HuntrX.Tests.PlayMode
                 UiScreen.MobileHud, UiScreen.Options, UiScreen.ResultsReplay })
             {
                 controller.Flow.TransitionTo(screen);
+                AssertScreen(screen);
+                Transform expectedView = null;
+                switch (screen)
+                {
+                    case UiScreen.MainMenu: expectedView = controller.MainMenuView.transform; break;
+                    case UiScreen.TeamProfile: expectedView = controller.TeamProfileView.transform; break;
+                    case UiScreen.MobileHud: expectedView = controller.MobileHudView.transform; break;
+                    case UiScreen.Options: expectedView = controller.OptionsView.transform; break;
+                    case UiScreen.ResultsReplay: expectedView = controller.ResultsReplayView.transform; break;
+                }
+                Assert.That(expectedView.gameObject.activeInHierarchy, Is.True, screen.ToString());
                 var selected = EventSystem.current.currentSelectedGameObject;
                 Assert.That(selected, Is.Not.Null, screen.ToString());
                 var control = selected.GetComponent<Selectable>();
                 Assert.That(control.isActiveAndEnabled && control.IsInteractable(), Is.True, screen.ToString());
-                Assert.That(selected.transform.IsChildOf(controller.transform), Is.True);
+                Assert.That(selected.transform.IsChildOf(expectedView), Is.True, screen.ToString());
                 Assert.That(selected, Is.Not.EqualTo(Find<Button>("continueButton").gameObject));
                 Assert.That(selected, Is.Not.EqualTo(Find<Button>("remapKeysButton").gameObject));
             }

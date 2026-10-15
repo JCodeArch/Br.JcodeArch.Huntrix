@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using HuntrX.Gameplay.VerticalSlice;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,13 +15,17 @@ namespace HuntrX.Gameplay.Touch
         private readonly Rect[] buttons = new Rect[9];
         private static readonly string[] labels = { "Pulo", "Ataque", "Dash", "Parry", "Troca", "SP", "Salvar", "Eu", "Fã" };
         private static readonly GameplayControl[] controls = { GameplayControl.Jump, GameplayControl.Attack, GameplayControl.Dash, GameplayControl.Parry, GameplayControl.SwitchCharacter, GameplayControl.Special, GameplayControl.Interact, GameplayControl.FoodSelf, GameplayControl.FoodFan };
+        // Contacts observed during a block must end before they can drive gameplay again.
+        private readonly HashSet<int> suppressedContacts = new HashSet<int>();
+        private readonly HashSet<int> activeContacts = new HashSet<int>();
+        private const int MouseContact = int.MinValue;
         private Rect pad;
         private Vector2 movement;
         private bool previousJump, previousInteract;
         public bool TryBind(VerticalSliceSession2D owner, MonoBehaviour source)
         {
             if (owner == null || (source != null && !(source is IInputPreferenceSource))) return false;
-            Release(); session = owner; preferences = source; return true;
+            ReadContacts(true); Release(); session = owner; preferences = source; return true;
         }
         private void Layout()
         {
@@ -32,11 +37,9 @@ namespace HuntrX.Gameplay.Touch
         }
         private void Update()
         {
-            if (session == null || !session.IsRunning || session.Input == null || !session.Input.isActiveAndEnabled) { Release(); return; }
+            if (session == null || !session.IsRunning || session.Input == null || !session.Input.isActiveAndEnabled) { ReadContacts(true); Release(); return; }
             Layout(); movement = Vector2.zero; System.Array.Clear(held, 0, held.Length);
-            Touchscreen touch = Touchscreen.current;
-            if (touch != null) for (int i = 0; i < touch.touches.Count; i++) if (touch.touches[i].press.isPressed) Contact(touch.touches[i].position.ReadValue());
-            if (showInDesktop && Mouse.current != null && Mouse.current.leftButton.isPressed) Contact(Mouse.current.position.ReadValue());
+            ReadContacts(false);
             var source = preferences != null && preferences.isActiveAndEnabled ? preferences as IInputPreferenceSource : null;
             for (int i = 0; i < held.Length; i++)
             {
@@ -54,6 +57,24 @@ namespace HuntrX.Gameplay.Touch
             if (source != null && source.ToggleModeFor(GameplayControl.Interact)) frame.Interact = held[6] && !previous[6] && interact;
             session.Input.SubmitInput(frame); previousJump = jump; previousInteract = interact; System.Array.Copy(held, previous, held.Length);
         }
+        private void ReadContacts(bool suppress)
+        {
+            activeContacts.Clear();
+            Touchscreen touch = Touchscreen.current;
+            if (touch != null)
+                for (int i = 0; i < touch.touches.Count; i++)
+                    if (touch.touches[i].press.isPressed)
+                        ReadContact(touch.touches[i].touchId.ReadValue(), touch.touches[i].position.ReadValue(), suppress);
+            if (showInDesktop && Mouse.current != null && Mouse.current.leftButton.isPressed)
+                ReadContact(MouseContact, Mouse.current.position.ReadValue(), suppress);
+            suppressedContacts.IntersectWith(activeContacts);
+        }
+        private void ReadContact(int id, Vector2 position, bool suppress)
+        {
+            activeContacts.Add(id);
+            if (suppress) suppressedContacts.Add(id);
+            else if (!suppressedContacts.Contains(id)) Contact(position);
+        }
         private bool Held(int i, IInputPreferenceSource source) => source != null && source.ToggleModeFor(controls[i]) ? toggled[i] : held[i];
         private void Contact(Vector2 screen)
         {
@@ -64,13 +85,14 @@ namespace HuntrX.Gameplay.Touch
         private void Release()
         {
             if (session != null && session.Input != null) session.Input.SubmitInput(new SliceInputFrame { JumpReleased = previousJump, InteractReleased = previousInteract });
-            previousJump = false; previousInteract = false; System.Array.Clear(previous,0,previous.Length); System.Array.Clear(toggled,0,toggled.Length); movement=Vector2.zero;
+            previousJump = false; previousInteract = false; System.Array.Clear(held,0,held.Length); System.Array.Clear(previous,0,previous.Length); System.Array.Clear(toggled,0,toggled.Length); movement=Vector2.zero;
         }
         private void OnGUI()
         {
             if ((!showInDesktop && Touchscreen.current == null) || session == null || !session.IsRunning || session.Input == null || !session.Input.isActiveAndEnabled) return;
             Layout(); GUI.Box(pad,"Mover"); for (int i=0;i<buttons.Length;i++) GUI.Box(buttons[i],labels[i]);
         }
-        private void OnDisable() => Release();
+        private void OnDisable() { ReadContacts(true); Release(); }
+        private void OnApplicationFocus(bool focused) { if (!focused) { ReadContacts(true); Release(); } }
     }
 }

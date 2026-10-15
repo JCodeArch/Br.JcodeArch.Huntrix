@@ -94,3 +94,24 @@ direita e redução vertical da safe area; conferir legibilidade, ausência de s
 arraste e acessibilidade física nos dispositivos alvo. Importação, compilação,
 PlayMode e validação visual/dispositivo permanecem pendentes. O runner local encerrou
 com `UNITY_EDITOR` ausente; nenhum teste Unity ou build foi executado nesta correção.
+
+## VerticalSlice options touch cancellation — 2026-10-15
+
+The legacy touch producer now remembers contacts seen while gameplay input is
+blocked, or when the producer loses focus, is disabled or rebound. Those contacts
+must end before they can send gameplay again. Newly pressed contacts remain
+independent. Live IMGUI options already use separate Jump and Interact preferences;
+this correction does not combine them or integrate the isolated OptionsUiView.
+
+`TouchOptionsCancellationTests` authors four hold/toggle combinations through the
+real HUD Escape InputAction route, simultaneous jump/rescue/pad contacts, an attack
+finger first pressed in options, partial release and fresh-contact recovery. Three
+mouse scenarios cover producer disable/enable, focus loss and rebind. The fixture
+invokes production Update methods synchronously and inspects the submitted frame;
+it isolates session composition and does not prove full-scene consumer behavior.
+Run these regressions and the full EditMode/PlayMode suites in licensed Unity
+6000.6.4f1, then verify options in the real VerticalSlice with touch hardware.
+
+The test was authored before the implementation. The local runner exited 1 at
+`UNITY_EDITOR` being unset, before starting Unity: RED/GREEN behavior, import,
+compilation, runtime, device and visual validation remain unexecuted.

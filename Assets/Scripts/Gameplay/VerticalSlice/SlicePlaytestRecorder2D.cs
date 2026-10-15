@@ -24,6 +24,7 @@ namespace HuntrX.Gameplay.VerticalSlice
         private HuntrXSpecialController2D special;
         private bool observing;
         private string reportPath;
+        private HuntrX.Gameplay.Characters.CharacterManager2D recordedManager;
         public SlicePlaytestReport Report { get; private set; }
         public event Action<SlicePlaytestReport> ObservationCompleted;
         private void OnEnable()
@@ -35,10 +36,19 @@ namespace HuntrX.Gameplay.VerticalSlice
         }
         private void Beat(int index)
         {
+            // A new player slot identifies a fresh TryBegin session, even if this recorder stays enabled.
+            // Disable/enable within the same session must preserve its report and stable save path.
+            if (session == null || !session.IsRunning) return;
+            if (Report != null && !ReferenceEquals(recordedManager, session.Manager))
+            {
+                Report = null; reportPath = null; observing = false;
+                Array.Clear(visited, 0, visited.Length);
+            }
             if (Report == null)
             {
                 if (float.IsNaN(observationSeconds) || float.IsInfinity(observationSeconds) || observationSeconds <= 0f || observationSeconds > 600f) return;
                 Report = new SlicePlaytestReport { StartedAtUtc = DateTime.UtcNow.ToString("O") }; observing = true;
+                recordedManager = session.Manager;
             }
             if (index >= 0 && index < visited.Length && !visited[index]) { visited[index] = true; Report.VisitedBeats++; }
             if (special != session.Special) { if (special != null) special.Completed -= Special; special = session.Special; if (special != null) special.Completed += Special; }

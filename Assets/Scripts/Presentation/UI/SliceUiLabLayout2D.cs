@@ -63,9 +63,10 @@ namespace HuntrX.Presentation.UI
             Label(results,"outcomeTitleText","Demonstração concluída",.06f,.70f,.46f,.79f); Label(results,"outcomeDetailsText","Explore as telas e volte ao HUD.",.06f,.60f,.46f,.70f);
             Label(results,"honmoonScoreText","Honmoon: 100 (exemplo)",.06f,.49f,.46f,.59f); Label(results,"fansRescuedScoreText","Fãs: 0 / 5 (exemplo)",.06f,.39f,.46f,.49f);
             Label(results,"funLabel","Diversão",.54f,.71f,.73f,.79f); Label(results,"funRatingText","3 / 5",.79f,.71f,.93f,.79f);
-            Slider(results,"funRatingSlider",1,5,3,.54f,.64f,.93f,.70f,true);
+            // Keep survey targets above the 64-unit minimum at the 1280x720 reference.
+            Slider(results,"funRatingSlider",1,5,3,.54f,.62f,.93f,.71f,true);
             Label(results,"difficultyLabel","Dificuldade",.54f,.54f,.77f,.62f); Label(results,"difficultyRatingText","3 / 5",.79f,.54f,.93f,.62f);
-            Slider(results,"difficultyRatingSlider",1,5,3,.54f,.47f,.93f,.53f,true);
+            Slider(results,"difficultyRatingSlider",1,5,3,.54f,.44f,.93f,.53f,true);
             var inputRect=Rect("commentsInputField",results,.54f,.32f,.93f,.44f); inputRect.gameObject.AddComponent<Image>().color=Color.white;
             var input=inputRect.gameObject.AddComponent<InputField>(); input.targetGraphic=inputRect.GetComponent<Image>(); input.textComponent=Label(inputRect,"InputText","",.03f,.05f,.97f,.95f); input.characterLimit=500;
             var placeholder=Label(inputRect,"Placeholder","Comentários opcionais",.03f,.05f,.97f,.95f); placeholder.color=SliceUiTokens.TextSecondary; input.placeholder=placeholder;
@@ -105,7 +106,7 @@ namespace HuntrX.Presentation.UI
         private Button Button(Transform parent,string name,string caption,float x,float y,float xx,float yy)
         {var r=Rect(name,parent,x,y,xx,yy);var image=r.gameObject.AddComponent<Image>();image.color=SliceUiTokens.PrimaryAction;var button=r.gameObject.AddComponent<Button>();button.targetGraphic=image;var label=Label(r,"Label",caption,.03f,0,.97f,1);label.color=Color.white;return button;}
         private Slider Slider(Transform parent,string name,float min,float max,float value,float x,float y,float xx,float yy,bool interactive)
-        {var r=Rect(name,parent,x,y,xx,yy);r.gameObject.AddComponent<Image>().color=SliceUiTokens.Protection;var fill=Rect("Fill",r,0,0,1,1);fill.gameObject.AddComponent<Image>().color=SliceUiTokens.PrimaryAction;var slider=r.gameObject.AddComponent<Slider>();slider.fillRect=fill;slider.minValue=min;slider.maxValue=max;slider.wholeNumbers=interactive;slider.value=value;slider.interactable=interactive;if(interactive){var handle=Rect("Handle",r,.45f,-.3f,.55f,1.3f);var image=handle.gameObject.AddComponent<Image>();image.color=SliceUiTokens.Special;slider.handleRect=handle;slider.targetGraphic=image;}return slider;}
+        {var r=Rect(name,parent,x,y,xx,yy);r.gameObject.AddComponent<Image>().color=SliceUiTokens.Protection;var fill=Rect("Fill",r,0,0,1,1);fill.gameObject.AddComponent<Image>().color=SliceUiTokens.PrimaryAction;var slider=r.gameObject.AddComponent<Slider>();slider.fillRect=fill;slider.minValue=min;slider.maxValue=max;slider.wholeNumbers=interactive;slider.value=value;slider.interactable=interactive;if(interactive){var handle=Rect("Handle",r,.45f,0,.55f,1);var image=handle.gameObject.AddComponent<Image>();image.color=SliceUiTokens.Special;slider.handleRect=handle;slider.targetGraphic=image;}return slider;}
         private void Toggle(Transform parent,string name,string caption,float x,float y,float xx,float yy)
         {var r=Rect(name,parent,x,y,xx,yy);var bg=r.gameObject.AddComponent<Image>();bg.color=SliceUiTokens.Surface;var check=Rect("Selected",r,.01f,.18f,.14f,.82f).gameObject.AddComponent<Image>();check.color=SliceUiTokens.PrimaryAction;var toggle=r.gameObject.AddComponent<Toggle>();toggle.targetGraphic=bg;toggle.graphic=check;Label(r,"Label",caption,.16f,0,1,1);}
     }

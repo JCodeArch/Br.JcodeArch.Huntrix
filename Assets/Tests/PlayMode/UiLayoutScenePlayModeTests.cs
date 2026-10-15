@@ -274,6 +274,56 @@ namespace HuntrX.Tests.PlayMode
         }
 
         [UnityTest]
+        public IEnumerator SurveySlidersMeetReferenceTouchMinimumAndAcceptEdgeTaps()
+        {
+            Click("startButton");
+            Click("confirmButton");
+            Click("finishPreviewButton");
+            Canvas.ForceUpdateCanvases();
+            var panel = (RectTransform)controller.ResultsReplayView.transform;
+            foreach (string name in new[] { "funRatingSlider", "difficultyRatingSlider" })
+            {
+                Slider slider = Find<Slider>(name);
+                var rect = (RectTransform)slider.transform;
+                // Compare in the declared design reference, independently of the test runner's window.
+                Assert.That(rect.rect.height / panel.rect.height * SliceUiTokens.ReferenceResolution.y,
+                    Is.GreaterThanOrEqualTo(SliceUiTokens.MinimumTouchTargetSize), name);
+                var below = name == "funRatingSlider"
+                    ? (RectTransform)Find<Text>("difficultyLabel").transform
+                    : (RectTransform)Find<InputField>("commentsInputField").transform;
+                var above = (RectTransform)Find<Text>(name == "funRatingSlider"
+                    ? "funLabel" : "difficultyLabel").transform;
+                Assert.That(rect.anchorMin.y, Is.GreaterThanOrEqualTo(below.anchorMax.y),
+                    "Slider must not overlap the content below: " + name);
+                Assert.That(rect.anchorMax.y, Is.LessThanOrEqualTo(above.anchorMin.y),
+                    "Slider must not overlap its label: " + name);
+                Assert.That(slider.handleRect.anchorMin.y, Is.GreaterThanOrEqualTo(0f), name);
+                Assert.That(slider.handleRect.anchorMax.y, Is.LessThanOrEqualTo(1f), name);
+                foreach (float edge in new[] { .05f, .95f })
+                {
+                    slider.value = 3;
+                    Canvas.ForceUpdateCanvases();
+                    var local = new Vector2(Mathf.Lerp(rect.rect.xMin, rect.rect.xMax, .9f),
+                        Mathf.Lerp(rect.rect.yMin, rect.rect.yMax, edge));
+                    var pointer = new PointerEventData(EventSystem.current)
+                    {
+                        position = RectTransformUtility.WorldToScreenPoint(null, rect.TransformPoint(local)),
+                        button = PointerEventData.InputButton.Left
+                    };
+                    var hits = new List<RaycastResult>();
+                    EventSystem.current.RaycastAll(pointer, hits);
+                    Assert.That(hits.Count, Is.GreaterThan(0), name);
+                    GameObject target = ExecuteEvents.GetEventHandler<IPointerDownHandler>(hits[0].gameObject);
+                    Assert.That(target, Is.EqualTo(slider.gameObject), "Obstructed slider edge: " + name);
+                    ExecuteEvents.Execute(target, pointer, ExecuteEvents.pointerDownHandler);
+                    ExecuteEvents.Execute(target, pointer, ExecuteEvents.pointerUpHandler);
+                    Assert.That(slider.value, Is.EqualTo(5), "Edge tap must update rating: " + name);
+                }
+            }
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator AllViewRootsAndControlsRemainInsideActualSafeArea()
         {
             SliceSafeAreaFitter fitter = controller.GetComponentInChildren<SliceSafeAreaFitter>(true);

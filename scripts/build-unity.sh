@@ -20,4 +20,8 @@ case "$platform" in
   *) echo 'Unknown build platform' >&2; exit 2 ;;
 esac
 "$UNITY_EDITOR" -batchmode -nographics -quit -projectPath "$project_path" -buildTarget "$target" -executeMethod "HuntrX.Editor.Build.PrototypeBuildPipeline.$method" -huntrxOutput "$output_path" -huntrxScenes "$scenes" -huntrxEvidence "$output_path.evidence.json" -logFile "$output_path.unity.log"
+if [ "$(git -C "$project_path" rev-parse HEAD)" != "$source_commit" ]; then
+  echo "Source HEAD changed during build; artifact acceptance rejected" >&2
+  exit 2
+fi
 python3 "$project_path/scripts/verify-build-evidence.py" "$output_path.evidence.json"

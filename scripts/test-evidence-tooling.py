@@ -150,6 +150,55 @@ if arg('-testPlatform') == 'EditMode' and os.environ['FIXTURE_CHANGE'] in ('dirt
                         self.assertTrue(list(results.glob('*/source-changes.patch')))
                         self.assertIn('changed during suite', source.read_text())
 
+    def test_build_runner_rejects_changed_head_but_allows_generated_changes(self):
+        # The executable emits synthetic artifacts, never actual Unity evidence.
+        for change in ('commit', 'dirty', 'none'):
+            with self.subTest(change=change), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory); project = root / 'project'; project.mkdir()
+                shutil.copytree(Path(__file__).parent, project / 'scripts', ignore=shutil.ignore_patterns('__pycache__'))
+                def git(*args):
+                    return subprocess.check_output(['git', '-C', str(project), *args], text=True).strip()
+                git('init', '-q'); git('config', 'user.name', 'Tooling fixture'); git('config', 'user.email', 'fixture@example.invalid')
+                (project / '.gitignore').write_text('__pycache__/\n')
+                (project / 'source.txt').write_text('original')
+                git('add', '.'); git('commit', '-qm', 'fixture')
+                initial = git('rev-parse', 'HEAD')
+                editor = root / 'fake-editor'
+                editor.write_text("""#!/usr/bin/env python3
+import sys, pathlib, subprocess, os, json, importlib.util, datetime
+args=sys.argv[1:]
+def arg(name): return args[args.index(name)+1]
+project=pathlib.Path(arg('-projectPath')); output=pathlib.Path(arg('-huntrxOutput'))
+output.write_bytes(b'Synthetic build fixture')
+if os.environ['FIXTURE_CHANGE'] != 'none':
+    (project/'source.txt').write_text('generated or concurrent source change')
+if os.environ['FIXTURE_CHANGE'] == 'commit':
+    subprocess.run(['git','-C',str(project),'commit','-qam','changed'],check=True)
+spec=importlib.util.spec_from_file_location('verifier',project/'scripts/verify-build-evidence.py')
+verifier=importlib.util.module_from_spec(spec); spec.loader.exec_module(verifier)
+evidence=dict(editorVersion='6000.6.4f1',result='Succeeded',errors=0,target='Android',
+    completedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),outputPath=str(output),
+    artifactRoot=str(output),totalBytes=output.stat().st_size,artifactSha256=verifier.artifact_hash(output),
+    buildGuid='b'*32,sourceCommit=os.environ['GITHUB_SHA'],scenes=['Assets/Scenes/VerticalSlice.unity'])
+pathlib.Path(arg('-huntrxEvidence')).write_text(json.dumps(evidence))
+""")
+                editor.chmod(0o755)
+                output = root / 'fixture.apk'
+                run = subprocess.run(['bash', str(project / 'scripts/build-unity.sh'), 'android-dev', str(output),
+                    'Assets/Scenes/VerticalSlice.unity'], env=dict(os.environ, UNITY_EDITOR=str(editor),
+                    FIXTURE_CHANGE=change, GITHUB_SHA=initial), capture_output=True, text=True)
+                self.assertTrue(output.exists(), 'Preserve produced artifacts for diagnosis')
+                if change == 'commit':
+                    self.assertNotEqual(run.returncode, 0, 'Changed HEAD must reject build acceptance')
+                    self.assertIn('HEAD changed', run.stderr)
+                    self.assertNotIn('Verified actual', run.stdout)
+                else:
+                    self.assertEqual(run.returncode, 0, run.stderr)
+                    self.assertIn('Verified actual', run.stdout)
+                    self.assertEqual(json.loads(Path(str(output) + '.evidence.json').read_text())['sourceCommit'], initial)
+                if change == 'dirty':
+                    self.assertIn('M source.txt', git('status', '--porcelain'))
+
     def test_malformed_json_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'fixture.json'; path.write_text('{')

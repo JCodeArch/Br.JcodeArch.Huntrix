@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace HuntrX.Gameplay.VerticalSlice
 {
-    public enum GameplayControl { MoveLeft, MoveRight, MoveUp, MoveDown, Jump, Dash, Attack, Parry, SwitchCharacter, Interact, FoodSelf, FoodFan, Special }
+    public enum GameplayControl { MoveLeft, MoveRight, MoveUp, MoveDown, Jump, Dash, Attack, Parry, SwitchCharacter, Interact, FoodSelf, FoodFan, Special, Pause }
     public interface IInputPreferenceSource
     {
         string KeyboardBinding(GameplayControl control);
@@ -11,6 +11,6 @@ namespace HuntrX.Gameplay.VerticalSlice
     public struct SliceInputFrame
     {
         public Vector2 Move;
-        public bool JumpPressed, JumpReleased, Dash, Attack, Parry, Switch, Interact, InteractHeld, InteractReleased, FoodSelf, FoodFan, Special;
+        public bool JumpPressed, JumpReleased, Dash, Attack, Parry, Switch, Interact, InteractHeld, InteractReleased, FoodSelf, FoodFan, Special, Pause;
     }
 }

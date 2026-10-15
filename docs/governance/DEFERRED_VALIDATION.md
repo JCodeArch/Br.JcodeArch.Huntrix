@@ -79,3 +79,18 @@ zero timeScale, prior disabled input, gamepad route exclusivity and HUD teardown
 `HudPauseRoutingTests` adds three regression scenarios; they were NOT RUN here:
 `scripts/run-unity-tests.sh` exits 1 because UNITY_EDITOR is unset. No Unity
 import/compile/runtime pass is claimed for this correction.
+
+
+## PR #106 — alvos touch da avaliação do UiLayoutLab — 2026-10-15
+
+Os dois sliders de avaliação foram ampliados de 43,2 para 64,8 unidades nominais
+na referência 1280×720; os handles ficam contidos nos controles. Esse tamanho de
+autoria não comprova 64 pixels físicos, dp ou dimensão mínima após redução da safe area.
+A revisão estática independente foi aprovada. Executar o novo cenário
+`SurveySlidersMeetReferenceTouchMinimumAndAcceptEdgeTaps`, incluindo dimensões,
+vizinhança sem sobreposição e mudança de avaliação por toque nas bordas.
+Validar visualmente em 16:9 e telas largas, com insets assimétricos à esquerda e à
+direita e redução vertical da safe area; conferir legibilidade, ausência de sobreposição,
+arraste e acessibilidade física nos dispositivos alvo. Importação, compilação,
+PlayMode e validação visual/dispositivo permanecem pendentes. O runner local encerrou
+com `UNITY_EDITOR` ausente; nenhum teste Unity ou build foi executado nesta correção.

@@ -1,8 +1,8 @@
 # Versionamento e integração — card #106
 
-`VERSION` é a fonte da versão do produto. `0.1.0-dev.1` identifica desenvolvimento e não uma versão publicada. A versão do Editor permanece em `ProjectSettings/ProjectVersion.txt`; são números independentes.
+`VERSION.txt` é a fonte da versão do produto. A extensão evita colisão com o cabeçalho C++ `<version>` durante builds IL2CPP no Windows, cujo sistema de arquivos não distingue maiúsculas de minúsculas. `0.1.0-dev.1` identifica desenvolvimento e não uma versão publicada. A versão do Editor permanece em `ProjectSettings/ProjectVersion.txt`; são números independentes.
 
-Use `python scripts/version.py check` para validar. `major`, `minor` e `patch` alteram somente VERSION; `set 0.2.0-rc.1` permite uma versão exata. O script não cria tag, release ou publicação. Bumps e notas entram em PR próprio. Códigos Android/iOS devem ser inteiros crescentes no pipeline, sem derivar unicidade apenas do SemVer.
+Use `python scripts/version.py check` para validar. `major`, `minor` e `patch` alteram somente VERSION.txt; `set 0.2.0-rc.1` permite uma versão exata. O script não cria tag, release ou publicação. Bumps e notas entram em PR próprio. Códigos Android/iOS devem ser inteiros crescentes no pipeline, sem derivar unicidade apenas do SemVer.
 
 Cada card usa `feature/card-<n>-<slug>`, criada a partir da `develop` atualizada, um commit descritivo e PR para `develop`. Integre dependências antes dos consumidores. Não reescreva histórico publicado nem descarte mudanças de outro agente. Um merge com QA adiada não autoriza release.
 

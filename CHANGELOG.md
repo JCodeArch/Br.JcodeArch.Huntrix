@@ -24,7 +24,7 @@ Este histórico distingue implementação de validação executada. Um merge de 
 
 ### Engenharia e distribuição
 
-- Versão semântica em VERSION, branch por feature/card e PR para develop.
+- Versão semântica em VERSION.txt, branch por feature/card e PR para develop.
 - Documentação de arquitetura, criação de conteúdo e preparação de publicação.
 - Ferramentas de testes, builds, proveniência e gates de RC preparadas para ambiente licenciado. Resultados efetivos devem vir dos relatórios associados ao commit e ao build avaliado.
 

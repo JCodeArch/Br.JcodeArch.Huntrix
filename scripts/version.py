@@ -4,7 +4,7 @@ import argparse
 import re
 from pathlib import Path
 
-VERSION_FILE = Path(__file__).resolve().parents[1] / "VERSION"
+VERSION_FILE = Path(__file__).resolve().parents[1] / "VERSION.txt"
 PATTERN = re.compile(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?\Z")
 
 
@@ -12,7 +12,7 @@ def parse(value):
     match = PATTERN.fullmatch(value)
     if not match or any(part.isdigit() and len(part) > 1 and part.startswith("0")
                         for part in (match.group(4) or "").split(".")):
-        raise ValueError("VERSION must be a valid semantic version")
+        raise ValueError("VERSION.txt must be a valid semantic version")
     return match
 
 

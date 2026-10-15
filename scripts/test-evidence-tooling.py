@@ -44,6 +44,53 @@ class EvidenceTests(unittest.TestCase):
             artifact.write_bytes(b'changed tooling fixture')
             self.assertNotEqual(previous, build.artifact_hash(artifact))
 
+    def test_target_artifact_shape_rejects_directory_in_place_of_binary(self):
+        # These files are synthetic shape fixtures, never APK/EXE validity evidence.
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for target, extension in (('Android', '.apk'), ('Android', '.aab'), ('StandaloneWindows64', '.exe')):
+                with self.subTest(target=target, extension=extension):
+                    output = root / (target + extension)
+                    output.mkdir(); (output / 'payload').write_bytes(b'fixture')
+                    if target == 'StandaloneWindows64':
+                        (root / (output.stem + '_Data')).mkdir(exist_ok=True)
+                    artifact = root if target == 'StandaloneWindows64' else output
+                    evidence = self.shape_evidence(target, output, artifact)
+                    path = root / 'fixture.evidence.json'; path.write_text(json.dumps(evidence))
+                    with self.assertRaisesRegex(ValueError, 'file'):
+                        build.verify(path)
+
+    @staticmethod
+    def shape_evidence(target, output, artifact):
+        return dict(editorVersion='6000.6.4f1', result='Succeeded', errors=0, target=target,
+                    completedUtc='2026-10-10T00:00:00+00:00', outputPath=str(output),
+                    artifactRoot=str(artifact), totalBytes=1, artifactSha256=build.artifact_hash(artifact),
+                    buildGuid='b' * 32, sourceCommit='a' * 40, scenes=['Assets/Scenes/VerticalSlice.unity'])
+
+    def test_windows_data_payload_must_contain_nonempty_file(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); output = root / 'fixture.exe'; output.write_bytes(b'fixture')
+            data = root / 'fixture_Data'; data.mkdir()
+            path = root / 'fixture.evidence.json'
+            for state in ('empty', 'directory-only', 'empty-file', 'payload'):
+                with self.subTest(state=state):
+                    if state == 'directory-only': (data / 'subdirectory').mkdir()
+                    if state == 'empty-file': (data / 'globalgamemanagers').touch()
+                    if state == 'payload': (data / 'globalgamemanagers').write_bytes(b'fixture')
+                    path.write_text(json.dumps(self.shape_evidence('StandaloneWindows64', output, root)))
+                    if state == 'payload': self.assertEqual(build.verify(path)['target'], 'StandaloneWindows64')
+                    else:
+                        with self.assertRaisesRegex(ValueError, 'Data'):
+                            build.verify(path)
+
+    def test_android_regular_file_shapes_accepted(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); path = root / 'fixture.evidence.json'
+            for extension in ('.apk', '.aab'):
+                output = root / ('fixture' + extension); output.write_bytes(b'fixture')
+                path.write_text(json.dumps(self.shape_evidence('Android', output, output)))
+                self.assertEqual(build.verify(path)['target'], 'Android')
+
     def test_unrelated_artifact_root_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); output = root / 'fixture.apk'; output.write_bytes(b'fixture')

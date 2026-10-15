@@ -44,6 +44,80 @@ namespace HuntrX.Tests.PlayMode
         }
 
         [UnityTest]
+        public IEnumerator NavigationStartsWithoutPointerAndSubmitOpensProfile()
+        {
+            Assert.That(EventSystem.current.currentSelectedGameObject, Is.EqualTo(Find<Button>("startButton").gameObject));
+            ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject,
+                new BaseEventData(EventSystem.current), ExecuteEvents.submitHandler);
+            AssertScreen(UiScreen.TeamProfile);
+            Assert.That(EventSystem.current.currentSelectedGameObject, Is.EqualTo(Find<Button>("rumiButton").gameObject));
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator NavigationMoveSkipsUnavailableContinueAndSubmitOpensOptions()
+        {
+            var move = new AxisEventData(EventSystem.current)
+            {
+                moveDir = MoveDirection.Down,
+                moveVector = Vector2.down
+            };
+            ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, move, ExecuteEvents.moveHandler);
+            Assert.That(EventSystem.current.currentSelectedGameObject, Is.EqualTo(Find<Button>("optionsButton").gameObject));
+            ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject,
+                new BaseEventData(EventSystem.current), ExecuteEvents.submitHandler);
+            AssertScreen(UiScreen.Options);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ReturningToScreenRestoresFocusAndRejectsDisabledRememberedControl()
+        {
+            EventSystem.current.SetSelectedGameObject(Find<Button>("optionsButton").gameObject);
+            Click("optionsButton");
+            Assert.That(EventSystem.current.currentSelectedGameObject, Is.EqualTo(Find<Toggle>("reduceFlashesToggle").gameObject));
+            EventSystem.current.SetSelectedGameObject(Find<Button>("enLanguageButton").gameObject);
+            Click("closeButton");
+            Assert.That(EventSystem.current.currentSelectedGameObject, Is.EqualTo(Find<Button>("optionsButton").gameObject));
+            Click("optionsButton");
+            Assert.That(EventSystem.current.currentSelectedGameObject, Is.EqualTo(Find<Button>("enLanguageButton").gameObject));
+            Click("closeButton");
+            Find<Button>("enLanguageButton").interactable = false;
+            Click("optionsButton");
+            Assert.That(EventSystem.current.currentSelectedGameObject, Is.EqualTo(Find<Toggle>("reduceFlashesToggle").gameObject));
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator HidingControllerClearsOwnedFocus()
+        {
+            EventSystem.current.SetSelectedGameObject(Find<Button>("startButton").gameObject);
+            controller.enabled = false;
+            Assert.That(EventSystem.current.currentSelectedGameObject, Is.Null);
+            controller.enabled = true;
+            Assert.That(EventSystem.current.currentSelectedGameObject, Is.EqualTo(Find<Button>("startButton").gameObject));
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator EveryScreenSelectsAnInteractableControlInItsVisibleView()
+        {
+            foreach (UiScreen screen in new[] { UiScreen.MainMenu, UiScreen.TeamProfile,
+                UiScreen.MobileHud, UiScreen.Options, UiScreen.ResultsReplay })
+            {
+                controller.Flow.TransitionTo(screen);
+                var selected = EventSystem.current.currentSelectedGameObject;
+                Assert.That(selected, Is.Not.Null, screen.ToString());
+                var control = selected.GetComponent<Selectable>();
+                Assert.That(control.isActiveAndEnabled && control.IsInteractable(), Is.True, screen.ToString());
+                Assert.That(selected.transform.IsChildOf(controller.transform), Is.True);
+                Assert.That(selected, Is.Not.EqualTo(Find<Button>("continueButton").gameObject));
+                Assert.That(selected, Is.Not.EqualTo(Find<Button>("remapKeysButton").gameObject));
+            }
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator SceneBindsEveryViewControlAndContainsLegibleLabels()
         {
             var viewTypes = new[] { typeof(MainMenuUiView), typeof(TeamProfileUiView),

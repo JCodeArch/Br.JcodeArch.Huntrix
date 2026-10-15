@@ -77,7 +77,13 @@ namespace HuntrX.Presentation.UI
 
         public static (Vector2 anchorMin, Vector2 anchorMax) CalculateNormalizedSafeArea(Rect safeArea, Vector2 screenSize)
         {
-            if (screenSize.x <= 0f || screenSize.y <= 0f)
+            // A transient empty/invalid report must not collapse or invert the entire UI.
+            // Keep a usable full-screen fallback until the next valid screen report.
+            if (!IsFinite(screenSize.x) || !IsFinite(screenSize.y) ||
+                screenSize.x <= 0f || screenSize.y <= 0f ||
+                !IsFinite(safeArea.x) || !IsFinite(safeArea.y) ||
+                !IsFinite(safeArea.width) || !IsFinite(safeArea.height) ||
+                safeArea.width <= 0f || safeArea.height <= 0f)
             {
                 return (Vector2.zero, Vector2.one);
             }
@@ -92,7 +98,14 @@ namespace HuntrX.Presentation.UI
                 Mathf.Clamp01((safeArea.y + safeArea.height) / screenSize.y)
             );
 
+            if (anchorMax.x <= anchorMin.x || anchorMax.y <= anchorMin.y)
+            {
+                return (Vector2.zero, Vector2.one);
+            }
+
             return (anchorMin, anchorMax);
         }
+
+        private static bool IsFinite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
     }
 }

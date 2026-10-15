@@ -14,6 +14,8 @@ def verify(path):
         raise ValueError('No executed test cases in NUnit result')
     if any(c.get('result') not in ('Passed', 'Success') for c in cases):
         raise ValueError('NUnit result contains failed, skipped, inconclusive or unexecuted cases')
+    if any(suite.get('result') not in ('Passed', 'Success') for suite in root.iter('test-suite')):
+        raise ValueError('NUnit result contains a nonpassing or unexecuted suite')
     if root.get('result') not in ('Passed', 'Success'):
         raise ValueError('NUnit suite did not pass')
     return len(cases)

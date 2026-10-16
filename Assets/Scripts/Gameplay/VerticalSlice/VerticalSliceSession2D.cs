@@ -126,6 +126,8 @@ namespace HuntrX.Gameplay.VerticalSlice
         {
             if (!IsRunning || transitioning || Manager == null || Manager.ActiveCharacter == null || !Manager.ActiveCharacter.IsAlive) return;
             DamageReceiver2D currentActor = Manager.ActiveCharacter;
+            // A switch from a Special callback cannot configure until its dispatch/resolution unwinds.
+            if (Special != null && Special.Owner != currentActor) RebindSpecial(currentActor);
             for (int i = ownedEnemies.Count-1; i >= 0; i--)
             { if (i >= ownedEnemies.Count) continue; var agent = ownedEnemies[i]; if (Live(agent)) agent.TrySetTarget(currentActor); if (!Current(currentActor)) return; }
             if (Stage != null && !Falling)
@@ -173,7 +175,13 @@ namespace HuntrX.Gameplay.VerticalSlice
         private void HandleActor(DamageReceiver2D previous, DamageReceiver2D current)
         {
             FoodChoice?.TryBindSelf(current);
-            if (current != null && Special != null && !Special.IsActive) Special.TryConfigure(specialProfile, current, Array.Empty<DamageReceiver2D>(), out _);
+            RebindSpecial(current);
+        }
+        private void RebindSpecial(DamageReceiver2D current)
+        {
+            if (current == null || Special == null) return;
+            Special.Cancel();
+            Special.TryConfigure(specialProfile, current, Array.Empty<DamageReceiver2D>(), out _);
         }
         private void HandleInput(SliceInputFrame frame)
         {

@@ -193,3 +193,15 @@ compilação e execução PlayMode continuam **não executadas**. Executar esse 
 `RemapPanelContractTests` e a regressão de navegação do UiLayoutLab no SHA integrado;
 validar visualmente dropdown, entrada de texto, aplicar/restaurar e foco em teclado,
 gamepad, touch e telas com safe area antes de concluir o card.
+
+## Cards #55 & #56 — Level design grammar and stage route contracts (2026-10-16)
+
+EditMode e PlayMode tests are authored in `StageBlockoutDefinitionTests` and
+`StageBlockoutBuilderPlayModeTests`, covering structural validation for authored
+stage definitions/routes and runtime blockout assembly (platform colliders,
+visuals, start/end points, checkpoint anchors, reentrancy and cleanup).
+
+Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset);
+importação, compilação e execução PlayMode continuam pendentes. Executar os
+cenários no Unity 6000.6.4f1 e validar a rota no VerticalSlice antes de concluir
+os cards.

@@ -165,3 +165,11 @@ prefabs and registry. Tests were authored before the guard; the runner exited 1
 because `UNITY_EDITOR` is unset. RED/GREEN behavior, Unity import/compilation and
 all PlayMode execution remain unverified. Run these scenarios and fan/Honmoon
 regressions on the exact integrated SHA before acceptance of card #44.
+
+## Cards #57 & #59 — Aerial encounters and boss arenas contracts (2026-10-16)
+
+PlayMode tests are authored in `AerialStageEncounterPlayModeTests` and `BossArenaControllerPlayModeTests`:
+- `AerialStageEncounter2D` configuration and lifecycle (rejection of null parameters, scene instance prefabs, spawn guards without stage runtime root, and clean flyer disposal).
+- `BossArenaController2D` configuration and arena lifecycle (rejection of null dependencies, scene instance prefabs, spawn guards without stage runtime root, completion reset, and clean disposal).
+
+Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset); tests are authored and statically reviewed only.

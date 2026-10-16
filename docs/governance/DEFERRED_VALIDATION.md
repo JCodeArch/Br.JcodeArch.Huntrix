@@ -421,3 +421,18 @@ A suíte PlayMode `FanStatePlayModeTests` foi autorada cobrindo as transições 
    - Disparo estrito de deltas e eventos de ciclo de vida (`SoulChanged` e `StateChanged`).
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #42 concluído.
+
+## Card #43 — Resgate de Fãs e Recompensas (2026-10-16)
+
+A suíte PlayMode `FanRescuePlayModeTests` foi autorada cobrindo a iniciação de resgate, elegibilidade de facção, alcance de interação, proteção durante a recuperação e emissão de recompensas:
+1. `RescuableFan_Prototype`:
+   - Instanciação de `Fans/RescuableFan_Prototype` e validação da composição de `FanRescueController2D` e `FanActor2D`.
+   - Inicialização com estado inativo de recuperação (`IsRecovering == false`) e contagem zerada de resgates concluídos (`CompletedRescueCount == 0`).
+2. `FanRescueController2D`:
+   - Validação de elegibilidade em `TryBeginRescue`: rejeição de socorristas nulos, alvos mortos, entidades que não pertençam a `CombatFaction2D.HuntrX` ou posicionadas além de `InteractionRange`.
+   - Rejeição de resgate em fãs já íntegros (`FanState.Normal`).
+   - Proteção dinâmica (`IFanProtectionSource2D`): concessão imediata de proteção ao fã durante todo o período de resgate, impedindo drenos concorrentes.
+   - Recuperação contínua no `Update()` com taxa balanceada (`recoveryRate = (MaximumSoul - Soul) / RecoveryDuration`), concluindo quando `Soul == MaximumSoul` e emitindo `RescueCompleted(fan, reward)` com incremento de `CompletedRescueCount`.
+   - Cancelamento gracioso quando o socorrista se afasta além do raio ou é desabilitado, desregistrando a proteção sem corromper o estado do fã.
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #43 concluído.

@@ -240,3 +240,18 @@ A suíte PlayMode `BlockoutLevelControllerPlayModeTests` foi autorada cobrindo o
 2. `BlockoutCheckpointRegion2D`: configuração na montagem do estágio com `BoxCollider2D` tipo gatilho (tamanho 1.5x2.0), salvaguarda contra receptores externos/inimigos e ativação estrita de checkpoint apenas quando o ator do jogador correspondente entra na área.
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar os blockouts concluídos.
+
+## Card #54 — Replay local e rankings por capítulo (2026-10-16)
+
+A suíte PlayMode `LocalReplayPlayModeTests` foi autorada cobrindo registros locais, persistência tolerante a falhas, critérios de ranking e ciclo do controlador:
+1. `LocalReplayRecord`: validação estrutural do formato do perfil (`32` dígitos hexadecimais minúsculos), validação de limites estritos (`rescuedFans` 0..1024, `performancePoints` 0..1000000, `performanceNormalized` 0..1, `elapsedSeconds` 0..86400, `maximumCombo` 0..10000) e integridade temporal.
+2. `LocalReplayRecordStore`: serialização em envelope versionado (máx. 64 registros, máx. 256KB), escrita atômica com arquivo `.pending` e retenção de `.backup`, recuperação resiliente via backup se o arquivo principal for corrompido (`LastLoadRecovered`), idempotência/desduplicação por `recordId`, limpeza segura com `TryReset` sem afetar arquivos de campanha/equipamento, e ordenação composta de rankings:
+   - Fãs resgatados (descendente)
+   - Performance normalizada (descendente)
+   - Combo máximo (descendente)
+   - No-damage (descendente)
+   - Tempo decorrido (ascendente)
+   - Conclusão UTC ticks (descendente)
+3. `LocalReplayController2D`: ciclo de vida completo (`Configure`, `TryBeginRun`, `TryRequestReplay`, `TryCompleteRun`, `TryReadRankings`), portão de autorização de replay via `IReplayChapterAccess`, binding de execução em `CombatPerformanceController2D` e emissão dos eventos `ReplayRequested` e `RunSaved`.
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o sistema de replay e rankings concluído.

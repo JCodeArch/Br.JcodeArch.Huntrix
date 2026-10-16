@@ -49,10 +49,14 @@ def verify(manifest):
             if type(value) not in (int,float) or not (0<value<=limit):raise ValueError('Measured percentile does not satisfy prototype budget')
         if type(report.get('peakMemoryBytes')) is not int or not (0<report['peakMemoryBytes']<=536870912):raise ValueError('Measured memory budget is exceeded or unavailable')
         if report.get('tier')!=tier or report.get('isEditor') is not False or report.get('measured') is not True or report.get('withinBudget') is not True:raise ValueError('Missing measured device performance acceptance')
+    def nonblank_string(value):
+        return isinstance(value,str) and bool(value.strip())
     for card in ('100','101','102','103','104'):
         report=json.loads(artifact(data['qa'][card]).read_text())
-        if report.get('status')!='Passed' or report.get('sourceCommit')!=commit or not report.get('reviewer') or not report.get('executedUtc') or not report.get('evidence'):raise ValueError('QA acceptance is pending or incomplete')
-    if data.get('releaseApproval')!='Approved' or not data.get('approver'):raise ValueError('Human release approval required')
+        if report.get('status')!='Passed' or report.get('sourceCommit')!=commit or not all(nonblank_string(report.get(field)) for field in ('reviewer','executedUtc')):raise ValueError('QA acceptance is pending or incomplete')
+        references=report.get('evidence')
+        if not isinstance(references,list) or not references or not all(nonblank_string(reference) for reference in references):raise ValueError('QA evidence references are missing or invalid')
+    if data.get('releaseApproval')!='Approved' or not nonblank_string(data.get('approver')):raise ValueError('Human release approval required')
     return commit
 
 if __name__=='__main__':

@@ -32,6 +32,7 @@ jobs:
         run: |
           python3 scripts/version.py check
           python3 scripts/test-evidence-tooling.py
+          python3 scripts/test-release-candidate-metadata.py
           bash -n scripts/build-unity.sh scripts/run-unity-tests.sh
   validate:
     if: github.event_name == 'workflow_dispatch'

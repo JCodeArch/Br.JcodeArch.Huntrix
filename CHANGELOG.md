@@ -30,8 +30,8 @@ Este histórico distingue implementação de validação executada. Um merge de 
 
 ### Validação e limites
 
-As implementações desta rodada receberam revisão estática e verificações de referências autoradas. Compilação, importação, suites Unity, playtest, escuta final, medições em dispositivos e builds distribuíveis continuam pendentes. Arte e áudio são protótipos originais; a apresentação final e os direitos necessários à publicação exigem avaliação própria.
+As implementações desta rodada receberam revisão estática e verificações de referências autoradas. A aceitação da fonte atual por compilação, importação e suites Unity permanece pendente; playtest humano, escuta final, medições em dispositivos e builds distribuíveis exigem evidências próprias. Arte e áudio são protótipos originais; a apresentação final e os direitos necessários à publicação exigem avaliação própria.
 
-Os resultados históricos documentados para o card #29 pertencem àquela versão e não validam os cards posteriores. Consulte `docs/PROJECT_CONTEXT.md`, `docs/reviews/` e `docs/governance/DEFERRED_VALIDATION.md` para evidências e pendências específicas.
+Há evidência histórica de APK Android de desenvolvimento e 81 EditMode + 293 PlayMode (374 aprovados) na fonte `2fc41a1230e00e453dca04024a72746a1f8adfdf` do PR #100; o contexto também registra suites em `0c4a8e4053140b76ded470cbd05f899f89a26bce`. São resultados dessas fontes, com ressalvas de checkout histórico descritas no contexto, e não validação dos merges posteriores. Os resultados documentados para o card #29 também pertencem àquela versão. Consulte `docs/PROJECT_CONTEXT.md`, `docs/reviews/` e `docs/governance/DEFERRED_VALIDATION.md` para evidências e pendências específicas.
 
 Não há tag ou release pública criada por este changelog. O backlog de evolução pós-lançamento está em `docs/POST_LAUNCH_BACKLOG.md` e não indica que já houve lançamento.

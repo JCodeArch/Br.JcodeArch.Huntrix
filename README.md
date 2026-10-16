@@ -20,7 +20,9 @@ Em **Opções e acessibilidade**, escolha idioma da narrativa PT/EN e faixa etá
 
 Preserve os testes existentes. Em um ambiente com Editor licenciado, execute `bash scripts/run-unity-tests.sh` com `UNITY_EDITOR` apontando para o executável 6000.6.4f1. O runner preserva resultados por execução e registra proveniência do commit. Sem Editor configurado ele falha explicitamente; nenhum XML ou build é inventado.
 
-`bash scripts/build-unity.sh` prepara targets Windows, Android e exportação iOS por cenas explícitas; veja `docs/build/` para argumentos e requisitos. A CI executa verificações de ferramentas em PRs e pushes, enquanto suites e builds Unity exigem runner licenciado configurado. `scripts/check-release-candidate.py` exige evidências vinculadas ao commit e ao build. Builds, medições em dispositivos e aprovação de RC continuam pendentes.
+`bash scripts/build-unity.sh` prepara targets Windows, Android e exportação iOS por cenas explícitas; veja `docs/build/` para argumentos e requisitos. A CI executa verificações de ferramentas em PRs e pushes, enquanto suites e builds Unity exigem runner licenciado configurado. `scripts/check-release-candidate.py` exige evidências vinculadas ao commit e ao build. A validação e os builds do HEAD atual, medições em dispositivos e aprovação de RC continuam pendentes.
+
+Há evidência histórica de APK Android de desenvolvimento e **81 EditMode + 293 PlayMode = 374 testes aprovados** na fonte `2fc41a1230e00e453dca04024a72746a1f8adfdf` do PR #100. O contexto também registra suites em `0c4a8e4053140b76ded470cbd05f899f89a26bce`. Esses resultados pertencem aos SHAs indicados; não validam alterações posteriores. Consulte [proveniência e ressalvas](docs/PROJECT_CONTEXT.md), incluindo modificações geradas no checkout histórico. Instalação em aparelho, playtest humano, Windows/iOS e RC exigem evidências próprias.
 
 O Codespace continua útil para C#, Git e ferramentas; edição online pode usar uma VM ou runner com Unity para a execução final, sem exigir instalar o Editor na máquina pessoal.
 

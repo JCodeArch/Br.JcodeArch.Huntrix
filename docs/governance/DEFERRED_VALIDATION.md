@@ -327,3 +327,15 @@ A suíte PlayMode `FlyingEnemyPlayModeTests` foi autorada cobrindo a locomoção
    - Cancelamento atômico e limpeza de ações (`CancelActions`): término de mergulhos ativos, cancelamento de projéteis em vôo e parada do `EnemyAgent2D` no `OnDisable` e no evento de morte (`Self.Died`).
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #34 concluído.
+
+## Card #37 — Inimigos Elite e Padrões de Ataque (2026-10-16)
+
+A suíte PlayMode `EliteEnemyPlayModeTests` foi autorada cobrindo a alternância de padrões de ataque, contagem de bursts e períodos de recuperação:
+1. `EnemyPatternDefinition`: validação da integridade de comportamentos primário (`PrimaryBehavior`) e alternado (`AlternateBehavior`), contagens de rajada limitadas (`1 <= BurstCount, AlternateBurstCount <= 8`), e durações positivas de descanso pós-ciclo (`RecoveryDuration`, `AlternateRecoveryDuration`).
+2. `EnemyPatternController2D`:
+   - Carregamento do protótipo `Enemies/EliteDemon_Prototype` com vinculação de perfil `ElitePattern`.
+   - Inicialização e disparo seguro do evento `PatternStarted` com a contagem de rajada ajustada pelo perfil de dificuldade/acessibilidade.
+   - Alternância sequencial entre comportamento primário (ex: jab) e alternativo (ex: sweep) mediada por esgotamento de `attacksRemaining` e intervalo de `rest`.
+   - Rejeição de definições nulas/inválidas no `TrySetDefinition` e reinicialização completa de ciclo (`ResetPattern`) e parada de agente no `OnDisable`.
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #37 concluído.

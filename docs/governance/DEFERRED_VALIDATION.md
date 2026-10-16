@@ -213,3 +213,11 @@ PlayMode tests are authored in `AerialStageEncounterPlayModeTests` and `BossAren
 - `BossArenaController2D` configuration and arena lifecycle (rejection of null dependencies, scene instance prefabs, spawn guards without stage runtime root, completion reset, and clean disposal).
 
 Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset); tests are authored and statically reviewed only.
+
+## Card #58 — Fan encounters lifecycle and configuration (2026-10-16)
+
+PlayMode tests are authored in `FanEncounterPlayModeTests`:
+- `FanEncounterDefinition` structural validation (enforcing explicit registry group of 1..64 fans, rejection of scene instances and negative soul loss).
+- `FanEncounterController2D` lifecycle (rejection of null/invalid profiles, non-finite positions, verified instantiation of registry group with authored initial soul loss, reentrancy guards, and cleanup on `Stop()` and `OnDisable()`).
+
+Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset); tests are authored and statically reviewed only.

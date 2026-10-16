@@ -406,3 +406,18 @@ A suíte PlayMode `CharacterSwitchPlayModeTests` foi autorada cobrindo a seleç�
    - Rejeição defensiva de troca sob ações em andamento (`AttackController2D`, dash ou parry) reportando erro claro sem corromper estado ou disparar callbacks espúrios.
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #32 concluído.
+
+## Card #42 — Estados dos Fãs e Resgate (2026-10-16)
+
+A suíte PlayMode `FanStatePlayModeTests` foi autorada cobrindo as transições completas de estados dos fãs, níveis de alma, imunidade por proteção e modulação de intensidade:
+1. `RescuableFan_Prototype`:
+   - Instanciação de `Fans/RescuableFan_Prototype` e validação do componente `FanActor2D` e sua definição (`FanDefinition`).
+   - Inicialização no estado íntegro (`FanState.Normal`) com valor máximo de alma (`Soul == MaximumSoul`) e verificação de frações críticas (`CriticalFraction`).
+2. `FanActor2D`:
+   - Transição sequencial de dreno (`TryDrain`): `Normal` -> `Drained` -> `Critical` (ao cruzar `MaximumSoul * CriticalFraction`) -> `Corrupted` (ao atingir `Soul <= 0`).
+   - Restauração gradual de alma (`TryRecover`): retorno de `Corrupted` para `Critical`, `Drained` e finalmente `Normal`, com rejeição de overflow além de `MaximumSoul`.
+   - Proteção de fãs (`IFanProtectionSource2D` / `RegisterProtection`): bloqueio atômico de dreno enquanto protegido por fonte ativa, e liberação imediata após desregistro (`UnregisterProtection`).
+   - Adaptação de apresentação por faixa etária / acessibilidade (`TrySetContentIntensity`): modulação entre `Gentle`, `Standard` e `Intense` emitindo o evento `PresentationChanged`.
+   - Disparo estrito de deltas e eventos de ciclo de vida (`SoulChanged` e `StateChanged`).
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #42 concluído.

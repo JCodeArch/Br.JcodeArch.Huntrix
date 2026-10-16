@@ -97,6 +97,14 @@ namespace HuntrX.Presentation.UI
             // Activate once so every view resolves controls and binds before the controller hides screens.
             foreach(var panel in new[]{menu,profile,hud,options,results,remap}) panel.gameObject.SetActive(true);
             remapView.BindPreferences(preferences);
+            optionsView.SetPreferences(preferences.ReduceFlashes, preferences.CaptionsEnabled, preferences.AssistedAim,
+                preferences.ToggleModeFor(HuntrX.Gameplay.VerticalSlice.GameplayControl.Jump),
+                preferences.ToggleModeFor(HuntrX.Gameplay.VerticalSlice.GameplayControl.Interact), "PT");
+            optionsView.ReduceFlashesChanged += value => preferences.SetPresentationPreferences(value, preferences.CaptionsEnabled, preferences.AssistedAim);
+            optionsView.SubtitlesChanged += value => preferences.SetPresentationPreferences(preferences.ReduceFlashes, value, preferences.AssistedAim);
+            optionsView.AimAssistChanged += value => preferences.SetPresentationPreferences(preferences.ReduceFlashes, preferences.CaptionsEnabled, value);
+            optionsView.ToggleJumpChanged += value => preferences.TrySetToggle(HuntrX.Gameplay.VerticalSlice.GameplayControl.Jump, value);
+            optionsView.ToggleRescueChanged += value => preferences.TrySetToggle(HuntrX.Gameplay.VerticalSlice.GameplayControl.Interact, value);
             var flow=root.AddComponent<SliceUiFlow2D>(); var controller=root.AddComponent<SliceUiController2D>();
             controller.Initialize(flow,menuView,profileView,hudView,optionsView,resultsView,remapView);
             Find<Button>(hud,"finishPreviewButton").onClick.AddListener(()=>flow.TransitionTo(UiScreen.ResultsReplay));

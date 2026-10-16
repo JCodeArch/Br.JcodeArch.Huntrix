@@ -205,3 +205,11 @@ Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset);
 importação, compilação e execução PlayMode continuam pendentes. Executar os
 cenários no Unity 6000.6.4f1 e validar a rota no VerticalSlice antes de concluir
 os cards.
+
+## Cards #57 & #59 — Aerial encounters and boss arenas contracts (2026-10-16)
+
+PlayMode tests are authored in `AerialStageEncounterPlayModeTests` and `BossArenaControllerPlayModeTests`:
+- `AerialStageEncounter2D` configuration and lifecycle (rejection of null parameters, scene instance prefabs, spawn guards without stage runtime root, and clean flyer disposal).
+- `BossArenaController2D` configuration and arena lifecycle (rejection of null dependencies, scene instance prefabs, spawn guards without stage runtime root, completion reset, and clean disposal).
+
+Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset); tests are authored and statically reviewed only.

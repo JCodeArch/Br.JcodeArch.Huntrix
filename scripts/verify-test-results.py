@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Validate real NUnit results; missing/empty/failed suites fail closed."""
 import sys
+import re
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -13,6 +14,11 @@ def verify(path):
     if not cases:
         raise ValueError('No executed test cases in NUnit result')
     nodes = [root, *root.iter('test-suite'), *cases]
+    for node in nodes:
+        for counter in ('failed', 'failures', 'errors'):
+            value = node.get(counter)
+            if value is not None and (re.fullmatch(r'[0-9]+', value) is None or int(value) != 0):
+                raise ValueError(f'NUnit failure counter {counter} is nonzero or invalid')
     if any(node.get('executed', 'true').lower() not in ('true', '1') for node in nodes):
         raise ValueError('NUnit result contains an explicitly unexecuted node')
     if any(c.get('result') not in ('Passed', 'Success') for c in cases):

@@ -51,7 +51,7 @@ namespace HuntrX.Presentation.UI.Views
 
         private void Awake()
         {
-            if (backButton == null) backButton = FindControl<Button>("backButton");
+            if (backButton == null) backButton = FindControl<Button>("backButton") ?? FindControl<Button>("remapBackButton");
             if (titleText == null) titleText = FindControl<Text>("titleText");
             if (actionDropdown == null) actionDropdown = FindControl<Dropdown>("actionDropdown");
             if (currentBindingText == null) currentBindingText = FindControl<Text>("currentBindingText");

@@ -176,3 +176,20 @@ and `ResultsReplayUiViewContractTests` cover presentation requirements for Figma
 - Results and replay score presentation, 1-5 survey slider clamping, feedback status coloring and navigation events.
 
 Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset); tests are authored and statically reviewed only.
+
+## Card #93 — integração do subpainel de remapeamento no UiLayoutLab (2026-10-16)
+
+O botão **Remapear teclas** deixou de estar indisponível no laboratório e passa a
+abrir `RemapPanelUiView` como sobreposição de Opções. O controlador preserva a tela
+origem, transfere o foco ao subpainel e o devolve ao botão de remapeamento ao voltar.
+O painel recebe `AccessibilityPreferences2D` próprio da sessão de demonstração;
+não persiste preferências nem altera a cena de gameplay. A cena também configura o
+controle de seleção de ação, campo de tecla, aplicar, restaurar e feedback.
+
+`RemapPanelOpensFromOptionsAndBackRestoresOptionsFocus` foi escrito antes desta
+integração e a verificação estática confirmou referências e rotas de eventos. Unity
+não está disponível neste ambiente (`UNITY_EDITOR` unset), portanto importação,
+compilação e execução PlayMode continuam **não executadas**. Executar esse cenário,
+`RemapPanelContractTests` e a regressão de navegação do UiLayoutLab no SHA integrado;
+validar visualmente dropdown, entrada de texto, aplicar/restaurar e foco em teclado,
+gamepad, touch e telas com safe area antes de concluir o card.

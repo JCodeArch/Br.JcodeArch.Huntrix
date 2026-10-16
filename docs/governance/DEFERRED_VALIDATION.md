@@ -194,41 +194,15 @@ compilação e execução PlayMode continuam **não executadas**. Executar esse 
 validar visualmente dropdown, entrada de texto, aplicar/restaurar e foco em teclado,
 gamepad, touch e telas com safe area antes de concluir o card.
 
-## Cards #55 & #56 — Level design grammar and stage route contracts (2026-10-16)
+## Cards #57 & #59 — aerial encounters and boss arena contracts (2026-10-16)
 
-EditMode e PlayMode tests are authored in `StageBlockoutDefinitionTests` and
-`StageBlockoutBuilderPlayModeTests`, covering structural validation for authored
-stage definitions/routes and runtime blockout assembly (platform colliders,
-visuals, start/end points, checkpoint anchors, reentrancy and cleanup).
+PlayMode tests are authored in `AerialStageEncounterPlayModeTests` and
+`BossArenaControllerPlayModeTests`, covering aerial encounter setup, spawn and
+cleanup behavior plus boss arena phase transitions, boundaries and lifecycle
+callbacks. The tests preserve the current runtime contracts and add no balance
+or asset changes.
 
-Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset);
-importação, compilação e execução PlayMode continuam pendentes. Executar os
-cenários no Unity 6000.6.4f1 e validar a rota no VerticalSlice antes de concluir
-os cards.
-
-## Cards #57 & #59 — Aerial encounters and boss arenas contracts (2026-10-16)
-
-PlayMode tests are authored in `AerialStageEncounterPlayModeTests` and `BossArenaControllerPlayModeTests`:
-- `AerialStageEncounter2D` configuration and lifecycle (rejection of null parameters, scene instance prefabs, spawn guards without stage runtime root, and clean flyer disposal).
-- `BossArenaController2D` configuration and arena lifecycle (rejection of null dependencies, scene instance prefabs, spawn guards without stage runtime root, completion reset, and clean disposal).
-
-Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset); tests are authored and statically reviewed only.
-
-## Card #58 — Fan encounters lifecycle and configuration (2026-10-16)
-
-PlayMode tests are authored in `FanEncounterPlayModeTests`:
-- `FanEncounterDefinition` structural validation (enforcing explicit registry group of 1..64 fans, rejection of scene instances and negative soul loss).
-- `FanEncounterController2D` lifecycle (rejection of null/invalid profiles, non-finite positions, verified instantiation of registry group with authored initial soul loss, reentrancy guards, and cleanup on `Stop()` and `OnDisable()`).
-
-Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset); tests are authored and statically reviewed only.
-
-## Cards #52 & #53 — Progressão de equipamentos e efeitos mecânicos das peças (2026-10-16)
-
-A suíte PlayMode `EquipmentProgressionPlayModeTests` foi autorada cobrindo a definição, progressão e mecânicas das peças de equipamento:
-1. `EquipmentPieceDefinition`: validação de `narrativePointId`, `cooldown`, parâmetros exclusivos de `AirStep` (`airStepVelocity > 0`) e de `ResonanceBurst` (`burstRadius > 0` e `burstAttack` válido).
-2. `EquipmentProgress2D`: vinculação de perfil com formato estrito de GUID hexadecimal de 32 dígitos ("N"), idempotência de binding e rejeição de retentativas conflitantes; conclusão de pontos narrativos com guards de componente ativo, perfil vinculado, validação de catálogo (máx 32 peças) e prevenção de duplicidade; isolamento de exceções em subscribers de `PieceUnlocked`.
-3. `EquipmentStoryPoint2D`: delegação da conclusão ao `EquipmentProgress2D` alvo com salvaguardas de componente ativo.
-4. `EquipmentMechanics2D`: binding de progressão, salvaguarda de equipagem com checagem de desbloqueio em `progression.IsUnlocked`, guards de prontidão (`Ready`), dinâmica de `AirStep` (necessidade de ter tocado o solo anteriormente, voo no ar, bloqueio de uso duplo no mesmo salto, aplicação de velocidade vertical e cooldown), e dinâmica de `ResonanceBurst` (detecção de inimigos no raio, dano e knockback via `ResolveHit`, respeito a linha de visão e emissão de eventos).
-5. `EquipmentPrototypeBinding2D`: vinculação automática de perfil e progressão e auto-equipamento ao desbloquear peças.
-
-Conforme a diretiva de adiamento, esses cenários foram autorados e inspecionados estaticamente, sem execução no Unity (`UNITY_EDITOR` ausente no ambiente). Executar os 20 casos no commit integrado durante a validação final da Definition of Done.
+Unity execution remains unavailable (`UNITY_EDITOR` unset); importação,
+compilação e execução PlayMode continuam pendentes. Executar os cenários no
+Unity 6000.6.4f1 e validar a integração no VerticalSlice antes de concluir os
+cards.

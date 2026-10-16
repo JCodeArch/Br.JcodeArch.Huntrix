@@ -165,3 +165,14 @@ prefabs and registry. Tests were authored before the guard; the runner exited 1
 because `UNITY_EDITOR` is unset. RED/GREEN behavior, Unity import/compilation and
 all PlayMode execution remain unverified. Run these scenarios and fan/Honmoon
 regressions on the exact integrated SHA before acceptance of card #44.
+
+## Card #93 — UI flow views presentation contracts (2026-10-16)
+
+PlayMode contract tests authored in `MainMenuUiViewContractTests`, `TeamProfileUiViewContractTests`,
+and `ResultsReplayUiViewContractTests` cover presentation requirements for Figma frames 2:2,
+2:29, and 2:150:
+- Main menu start and options emission, plus strict disabled state of Continue without save/resume.
+- Team profile selection of characters (Rumi, Mira, Zoey), age profiles (4-5, 6-8, 9-12, 13-15, 16+), confirm and back events.
+- Results and replay score presentation, 1-5 survey slider clamping, feedback status coloring and navigation events.
+
+Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset); tests are authored and statically reviewed only.

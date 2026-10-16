@@ -301,3 +301,15 @@ A suíte PlayMode `SajaBoysAndJinuRivalsPlayModeTests` foi autorada cobrindo a d
    - Transição terminal para `Defeated` ao ocorrer a morte (`self.Died`), emitindo a cue de derrota com comportamento idempotente.
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar os cards #39 e #40 concluídos.
+
+## Card #35 — Inimigos de Suporte: Healer, Protector e Soul Drainer (2026-10-16)
+
+A suíte PlayMode `SupportEnemyPlayModeTests` foi autorada cobrindo os três papéis de inimigos de suporte (`HealerDemon_Prototype`, `ProtectorDemon_Prototype`, `SoulDrainerDemon_Prototype`):
+1. `SupportEnemyDefinition`: validação estrutural dos papéis (`Healer`, `Protector`, `SoulDrainer`), raio de ação, intervalo de pulso, cura e duração de proteção bounded, além de ataque de drenagem válido para o papel `SoulDrainer`.
+2. `SupportEnemyController2D`:
+   - Papel `Healer`: pulso de restauração de vida em aliados feridos da mesma facção dentro do raio (`TryRestoreHealth`).
+   - Papel `Protector`: concessão externa de proteção (`IDamageProtectionSource2D`) a aliados com `DamageProtection2D` dentro do raio, sustentada por `protectionDuration` e verificada via `Covers()`.
+   - Papel `SoulDrainer`: dreno de almas de alvos adversários dentro do raio via `TryReceiveHit` com `DrainAttack`, emitindo o evento `DrainAccepted(target, lost)`.
+   - Limpeza e ciclo de vida: descarte e desregistro de proteção externa no `OnDisable` e `OnDestroy`.
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #35 concluído.

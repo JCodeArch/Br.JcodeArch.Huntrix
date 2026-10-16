@@ -165,3 +165,12 @@ prefabs and registry. Tests were authored before the guard; the runner exited 1
 because `UNITY_EDITOR` is unset. RED/GREEN behavior, Unity import/compilation and
 all PlayMode execution remain unverified. Run these scenarios and fan/Honmoon
 regressions on the exact integrated SHA before acceptance of card #44.
+
+## Cards #55 & #56 — Level design grammar and stage route contracts (2026-10-16)
+
+EditMode and PlayMode tests are authored in `StageBlockoutDefinitionTests` and `StageBlockoutBuilderPlayModeTests`:
+- `StageBlockoutDefinition` structural validation (identity, 1..128 bounded platforms, valid sizes, start/end/arena points, bounded spawn arrays).
+- `StageRouteDefinition` sequential route validation (1..32 stages, rejecting invalid, null or duplicate stage identities).
+- `StageBlockoutBuilder2D` dynamic blockout assembly (runtime root naming, platform collider sizing and theme coloring, start/end placement, `CheckpointAnchor2D` instantiation and ID configuration, reentrancy guards, and `TryClear` cleanup).
+
+Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset); tests are authored and statically reviewed only.

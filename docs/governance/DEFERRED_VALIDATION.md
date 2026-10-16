@@ -264,3 +264,14 @@ A suíte PlayMode `HonmoonCrisisPlayModeTests` foi autorada cobrindo a intensifi
 3. `CrisisTeamUnion2D`: validação de participantes (1..3 character managers vivos da facção HUNTR/X), concessão temporária de imunidade com registro externo de `IDamageProtectionSource2D` no ator e verificação estrita de cobertura (`Covers`) sem afetar entidades não autorizadas.
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o sistema de crise de Honmoon concluído.
+
+## Cards #45 & #46 — Recursos de Comida e Escolha Self/Fan (2026-10-16)
+
+A suíte PlayMode `FoodResourceAndChoicePlayModeTests` foi autorada cobrindo a definição, inventário, coleta e mecânica de escolha self/fã:
+1. `FoodDefinition`: validação dos quatro tipos (`Ramen`, `Onigiri`, `Gyoza`, `Dango`) com propriedades positivas finitas de recuperação de si (`SelfRecovery`) e de fã (`FanRecovery`).
+2. `FoodPickup2D` e `FoodInventory2D`: carregamento dos prefabs de pickup (`Ramen_Pickup`, `Onigiri_Pickup`, `Gyoza_Pickup`, `Dango_Pickup`), validação de capacidade (`capacity=32`), coleta atômica (`TryCollect`) desativando o pickup no mundo e prevenindo re-coleta duplicada, incremento de `TotalCount` e contagem segregada por item, emissão segura de `QuantityChanged`, e rejeição de acréscimo além da capacidade máxima.
+3. `FoodChoiceController2D`: binding de auto-receptor (`TryBindSelf`), rejeição estrita de facções não autorizadas (rejeita facção `Demon`, aceita `HuntrX`), e mecânica bifurcada de consumo:
+   - Uso em si (`TryUseOnSelf`): rejeitado quando o jogador está com vida máxima ou morto/desabilitado (com rollback imediato no inventário de comida sem perda do item), bem-sucedido quando o jogador está ferido, restaurando vida em `SelfRecovery` e decrementando o inventário.
+   - Uso no fã (`TryUseOnFan`): checagem de distância bounded por `fanUseRange` (3.0m), rejeição de fãs além do alcance ou com alma cheia (rollback imediato do item), e sucesso ao alimentar fãs drenados/danificados, recuperando a alma em `FanRecovery` e consumindo o item.
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar os cards #45 e #46 concluídos.

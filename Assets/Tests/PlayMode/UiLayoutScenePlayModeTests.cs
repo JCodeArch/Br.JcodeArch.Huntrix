@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HuntrX.Presentation.UI;
+using HuntrX.Gameplay.AgeAccessibility;
+using HuntrX.Gameplay.VerticalSlice;
 using HuntrX.Presentation.UI.Views;
 using NUnit.Framework;
 using UnityEngine;
@@ -251,6 +253,27 @@ namespace HuntrX.Tests.PlayMode
             Click("remapBackButton");
             Assert.That(controller.RemapPanelView.gameObject.activeInHierarchy, Is.False);
             Assert.That(EventSystem.current.currentSelectedGameObject, Is.EqualTo(Find<Button>("remapKeysButton").gameObject));
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator OptionsControlsUpdateDemonstrationSessionPreferences()
+        {
+            Click("optionsButton");
+            var preferences = controller.GetComponent<AccessibilityPreferences2D>();
+            Assert.That(preferences, Is.Not.Null);
+
+            Find<Toggle>("reduceFlashesToggle").isOn = false;
+            Find<Toggle>("subtitlesToggle").isOn = false;
+            Find<Toggle>("aimAssistToggle").isOn = false;
+            Find<Toggle>("toggleJumpToggle").isOn = true;
+            Find<Toggle>("toggleRescueToggle").isOn = true;
+
+            Assert.That(preferences.ReduceFlashes, Is.False);
+            Assert.That(preferences.CaptionsEnabled, Is.False);
+            Assert.That(preferences.AssistedAim, Is.False);
+            Assert.That(preferences.ToggleModeFor(GameplayControl.Jump), Is.True);
+            Assert.That(preferences.ToggleModeFor(GameplayControl.Interact), Is.True);
             yield return null;
         }
 

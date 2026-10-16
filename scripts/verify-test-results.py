@@ -12,6 +12,9 @@ def verify(path):
     cases = list(root.iter('test-case'))
     if not cases:
         raise ValueError('No executed test cases in NUnit result')
+    nodes = [root, *root.iter('test-suite'), *cases]
+    if any(node.get('executed', 'true').lower() not in ('true', '1') for node in nodes):
+        raise ValueError('NUnit result contains an explicitly unexecuted node')
     if any(c.get('result') not in ('Passed', 'Success') for c in cases):
         raise ValueError('NUnit result contains failed, skipped, inconclusive or unexecuted cases')
     if any(suite.get('result') not in ('Passed', 'Success') for suite in root.iter('test-suite')):

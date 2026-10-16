@@ -48,13 +48,28 @@ class EvidenceTests(unittest.TestCase):
                     with self.assertRaisesRegex(ValueError, 'suite'):
                         nunit.verify(path)
 
+    def test_explicitly_unexecuted_nunit_nodes_rejected(self):
+        # NUnit 2 uses executed="False"; a success label must not override it.
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'fixture.xml'
+            for node in ('test-run', 'test-suite', 'test-case'):
+                with self.subTest(node=node):
+                    attributes = {tag: ' executed="False"' if tag == node else ''
+                                  for tag in ('test-run', 'test-suite', 'test-case')}
+                    path.write_text(f'<test-run result="Success"{attributes["test-run"]}>'
+                                    f'<test-suite result="Success"{attributes["test-suite"]}>'
+                                    f'<test-case result="Success"{attributes["test-case"]}/>'
+                                    '</test-suite></test-run>')
+                    with self.assertRaisesRegex(ValueError, 'unexecuted'):
+                        nunit.verify(path)
+
     def test_nested_passed_nunit_suites_accepted(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'fixture.xml'
             for status in ('Passed', 'Success'):
                 with self.subTest(status=status):
                     path.write_text(f'<test-run result="{status}"><test-suite result="{status}">'
-                                    f'<test-suite result="{status}"><test-case result="{status}"/>'
+                                    f'<test-suite result="{status}" executed="True"><test-case result="{status}" executed="True"/>'
                                     '</test-suite></test-suite></test-run>')
                     self.assertEqual(nunit.verify(path), 1)
 

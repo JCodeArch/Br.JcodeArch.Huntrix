@@ -165,3 +165,11 @@ prefabs and registry. Tests were authored before the guard; the runner exited 1
 because `UNITY_EDITOR` is unset. RED/GREEN behavior, Unity import/compilation and
 all PlayMode execution remain unverified. Run these scenarios and fan/Honmoon
 regressions on the exact integrated SHA before acceptance of card #44.
+
+## Card #58 — Fan encounters lifecycle and configuration (2026-10-16)
+
+PlayMode tests are authored in `FanEncounterPlayModeTests`:
+- `FanEncounterDefinition` structural validation (enforcing explicit registry group of 1..64 fans, rejection of scene instances and negative soul loss).
+- `FanEncounterController2D` lifecycle (rejection of null/invalid profiles, non-finite positions, verified instantiation of registry group with authored initial soul loss, reentrancy guards, and cleanup on `Stop()` and `OnDisable()`).
+
+Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset); tests are authored and statically reviewed only.

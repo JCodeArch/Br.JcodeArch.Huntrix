@@ -379,3 +379,18 @@ A suíte PlayMode `GroundEnemyPlayModeTests` foi autorada cobrindo o ciclo de vi
    - Cessação imediata de movimentação (`linearVelocity == Vector2.zero`) e transição para `EnemyState2D.Idle` no `OnDisable`.
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #33 concluído.
+
+## Card #31 — CharacterManager e Gestão de Personagens (2026-10-16)
+
+A suíte PlayMode `CharacterManagerPlayModeTests` foi autorada cobrindo a gestão de ciclo de vida, instanciação, transição de personagens e coordenação com o fluxo de tentativas/checkpoints:
+1. `HuntrXPlayerSlot_Prototype`:
+   - Instanciação de `Characters/HuntrXPlayerSlot_Prototype` e validação da composição de `CharacterManager2D`, `CharacterSwitchController2D` e `CheckpointAttemptFlow2D`.
+   - Inicialização e configuração de `StageStart` com `Rumi_Prototype`.
+   - Execução de `TrySpawn()` com transição para `CharacterManagerState2D.Alive`, vínculo estrito com `CheckpointAttemptFlow2D.BindActor()` e inicialização de tentativa (`flow.IsAttemptInProgress == true`).
+2. `CharacterManager2D`:
+   - Transição e troca entre personagens (`TrySwitch`) preservando pose espacial (posição e rotação) e momento linear/angular (`linearVelocity`), reatribuindo atomicamente o ator ao fluxo de tentativas (`flow.BoundActor`).
+   - Rejeição de troca quando o ator ativo estiver ocupado executando ações ativas (`AttackController2D`, `DashController2D`, parry ou proteção).
+   - Suporte à fronteira de estágios (`TryEnterStage`), transferindo o ator vivo para novo `StageStart`, reiniciando a tentativa no checkpoint manager e zerando velocidades residuais.
+   - Limpeza e ciclo de vida (`OnDisable`): cancelamento da tentativa ativa, desativação de inputs e descarte de todos os atores em cache, com estado transicionando para `CharacterManagerState2D.Disabled`.
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #31 concluído.

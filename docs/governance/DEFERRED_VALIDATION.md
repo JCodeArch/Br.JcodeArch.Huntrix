@@ -232,3 +232,11 @@ A suíte PlayMode `EquipmentProgressionPlayModeTests` foi autorada cobrindo a de
 5. `EquipmentPrototypeBinding2D`: vinculação automática de perfil e progressão e auto-equipamento ao desbloquear peças.
 
 Conforme a diretiva de adiamento, esses cenários foram autorados e inspecionados estaticamente, sem execução no Unity (`UNITY_EDITOR` ausente no ambiente). Executar os 20 casos no commit integrado durante a validação final da Definition of Done.
+
+## Card #60 — Blockouts jogáveis e controlador de level blockout (2026-10-16)
+
+A suíte PlayMode `BlockoutLevelControllerPlayModeTests` foi autorada cobrindo o ciclo de vida do carregador de fases em blockout e regiões de checkpoint:
+1. `BlockoutLevelController2D`: validação de dependências e rota (`builder`, `route`, `player`, `flow`, `playerPrefab` sem cena), validação de limites de estágio (`CurrentStageIndex`), construção da geometria via builder, instanciação e configuração do jogador no ponto de início, disparo seguro de `StageLoaded`, transição limpa entre estágios com descarte da fase anterior, e redefinição de estado ao desabilitar (`OnDisable`).
+2. `BlockoutCheckpointRegion2D`: configuração na montagem do estágio com `BoxCollider2D` tipo gatilho (tamanho 1.5x2.0), salvaguarda contra receptores externos/inimigos e ativação estrita de checkpoint apenas quando o ator do jogador correspondente entra na área.
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar os blockouts concluídos.

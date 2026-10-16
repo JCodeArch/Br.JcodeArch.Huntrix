@@ -313,3 +313,17 @@ A suíte PlayMode `SupportEnemyPlayModeTests` foi autorada cobrindo os três pap
    - Limpeza e ciclo de vida: descarte e desregistro de proteção externa no `OnDisable` e `OnDestroy`.
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #35 concluído.
+
+## Card #34 — Inimigos Voadores (2026-10-16)
+
+A suíte PlayMode `FlyingEnemyPlayModeTests` foi autorada cobrindo a locomoção aérea, ataques em mergulho, disparo de projéteis e cancelamento seguro de ações:
+1. `FlyingEnemyDefinition`: validação dos parâmetros de oscilação e altitude (`HoverHeight > 0`, `0 < AltitudeAmplitude < HoverHeight`, `AltitudeFrequency > 0`), velocidade e duração de mergulho (`DiveSpeed > 0`, `DiveDuration > 0`), velocidade/alcance/tempo de vida de projéteis e referência obrigatória a prefab.
+2. `FlyingEnemyController2D`:
+   - Carregamento e inicialização via `Enemies/FlyingDemon_Prototype`, instanciando `BoundedPrefabPool` com capacidade e alocação máxima de 4 instâncias de projétil.
+   - Oscilação harmônica contínua de altitude e perseguição sobre a banda de flutuação em relação à posição do alvo (`destination.y = target.y + HoverHeight + sin(phase) * Amplitude`).
+   - Ciclo alternado de ataque em estado `Attacking`:
+     - Ataque primário com mergulho telegrafado em direção ao alvo (`diving = true`), aplicando velocidade linear correspondente a `DiveSpeed` e disparando `TryExecuteMelee` ao atingir a proximidade ou esgotar a duração.
+     - Ataque secundário disparando projétil swept (`EnemyProjectile2D`) alugado do pool em direção ao alvo, com retorno gracioso e transição para recuperação do agente.
+   - Cancelamento atômico e limpeza de ações (`CancelActions`): término de mergulhos ativos, cancelamento de projéteis em vôo e parada do `EnemyAgent2D` no `OnDisable` e no evento de morte (`Self.Died`).
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #34 concluído.

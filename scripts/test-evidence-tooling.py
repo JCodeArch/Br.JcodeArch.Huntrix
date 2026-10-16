@@ -63,6 +63,30 @@ class EvidenceTests(unittest.TestCase):
                     with self.assertRaisesRegex(ValueError, 'unexecuted'):
                         nunit.verify(path)
 
+    def test_nunit_failure_counters_override_success_labels(self):
+        # Suite setup/teardown errors must not disappear behind passing cases.
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'fixture.xml'
+            for tag in ('test-run', 'test-suite'):
+                for counter in ('failed', 'failures', 'errors'):
+                    for value in ('1', '-1', 'invalid', '0.0', ''):
+                        with self.subTest(tag=tag, counter=counter, value=value):
+                            root_attr = f' {counter}="{value}"' if tag == 'test-run' else ''
+                            suite_attr = f' {counter}="{value}"' if tag == 'test-suite' else ''
+                            path.write_text(f'<test-run result="Passed"{root_attr}>'
+                                            f'<test-suite result="Passed"{suite_attr}>'
+                                            '<test-case result="Passed"/></test-suite></test-run>')
+                            with self.assertRaisesRegex(ValueError, 'counter'):
+                                nunit.verify(path)
+
+    def test_nunit_zero_failure_counters_accepted(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'fixture.xml'
+            path.write_text('<test-run result="Passed" failed="0" errors="0">'
+                            '<test-suite result="Passed" failures="0">'
+                            '<test-case result="Passed"/></test-suite></test-run>')
+            self.assertEqual(nunit.verify(path), 1)
+
     def test_nested_passed_nunit_suites_accepted(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'fixture.xml'

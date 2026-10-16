@@ -22,9 +22,27 @@ namespace HuntrX.Gameplay.Combat
         public float CooldownRemaining { get; private set; }
         public bool IsConfigurationValid => attacker != null && attacker.IsConfigurationValid &&
             definition != null && definition.IsValid(out _);
-        public event Action<Vector2, Vector2> ShotFired;
-        public event Action<CombatImpactEvent> HitConfirmed;
-        public event Action<CombatParryEvent> HitParried;
+        private Action<Vector2, Vector2> shotFired;
+        private Action<CombatImpactEvent> hitConfirmed;
+        private Action<CombatParryEvent> hitParried;
+        private Delegate[] shotListeners = Array.Empty<Delegate>();
+        private Delegate[] impactListeners = Array.Empty<Delegate>();
+        private Delegate[] parryListeners = Array.Empty<Delegate>();
+        public event Action<Vector2, Vector2> ShotFired
+        {
+            add { shotFired += value; shotListeners = Snapshot(shotFired); }
+            remove { shotFired -= value; shotListeners = Snapshot(shotFired); }
+        }
+        public event Action<CombatImpactEvent> HitConfirmed
+        {
+            add { hitConfirmed += value; impactListeners = Snapshot(hitConfirmed); }
+            remove { hitConfirmed -= value; impactListeners = Snapshot(hitConfirmed); }
+        }
+        public event Action<CombatParryEvent> HitParried
+        {
+            add { hitParried += value; parryListeners = Snapshot(hitParried); }
+            remove { hitParried -= value; parryListeners = Snapshot(hitParried); }
+        }
 
         private void Awake()
         {
@@ -84,16 +102,35 @@ namespace HuntrX.Gameplay.Combat
                         CombatContactResult result = hurtbox.ResolveHit(definition.Attack, attacker, facing, 0,
                             out DamageReceiver2D receiver, out CombatParryEvent parryEvent);
                         if (result == CombatContactResult.Damaged)
-                            HitConfirmed?.Invoke(new CombatImpactEvent(attacker, receiver, definition.Attack, 0));
-                        else if (result == CombatContactResult.Parried) HitParried?.Invoke(parryEvent);
+                            Publish(impactListeners, new CombatImpactEvent(attacker, receiver, definition.Attack, 0));
+                        else if (result == CombatContactResult.Parried) Publish(parryListeners, parryEvent);
                         break;
                     }
                     if (!collider.isTrigger) { end = contacts[i].point; break; }
                 }
-                ShotFired?.Invoke(origin, end);
+                PublishShot(origin, end);
                 return true;
             }
             finally { firing = false; }
+        }
+        // Subscription changes allocate snapshots; publishing an accepted shot does not.
+        private static Delegate[] Snapshot(Delegate handlers) => handlers?.GetInvocationList() ?? Array.Empty<Delegate>();
+        private void Publish<T>(Delegate[] listeners, T value)
+        {
+            foreach (Action<T> listener in listeners)
+            {
+                try { listener(value); }
+                catch (Exception exception) { Debug.LogException(exception, this); }
+            }
+        }
+        private void PublishShot(Vector2 origin, Vector2 end)
+        {
+            Delegate[] listeners = shotListeners;
+            foreach (Action<Vector2, Vector2> listener in listeners)
+            {
+                try { listener(origin, end); }
+                catch (Exception exception) { Debug.LogException(exception, this); }
+            }
         }
         private static bool Finite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
     }

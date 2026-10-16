@@ -192,6 +192,61 @@ namespace HuntrX.Tests.PlayMode
             }
             finally { foreach (var trigger in triggers) if (trigger != null) Object.Destroy(trigger); }
         }
+        [UnityTest] public IEnumerator ThrowingImpactSubscriberDoesNotInterruptAcceptedShotOrLaterSubscribers()
+        {
+            var receiver = target.GetComponent<DamageReceiver2D>();
+            float before = receiver.CurrentHealth;
+            int impacts = 0, shots = 0;
+            ranged.HitConfirmed += _ => throw new System.InvalidOperationException("Zoey impact subscriber failure");
+            ranged.HitConfirmed += _ => impacts++;
+            ranged.ShotFired += (_, __) => shots++;
+            LogAssert.Expect(LogType.Exception, new System.Text.RegularExpressions.Regex("InvalidOperationException: Zoey impact subscriber failure"));
+            Assert.That(ranged.TryFire(Vector2.right), Is.True);
+            Assert.That(receiver.CurrentHealth, Is.EqualTo(before - attack.Damage));
+            Assert.That(impacts, Is.EqualTo(1));
+            Assert.That(shots, Is.EqualTo(1));
+            Assert.That(ranged.CooldownRemaining, Is.GreaterThan(0f));
+            Assert.That(ranged.TryFire(Vector2.right), Is.False);
+            yield return null;
+        }
+        [UnityTest] public IEnumerator ThrowingShotSubscriberDoesNotInterruptLaterSubscribersOrLeaveFiringLocked()
+        {
+            int shots = 0;
+            bool reentered = true;
+            ranged.ShotFired += (_, __) => throw new System.InvalidOperationException("Zoey shot subscriber failure");
+            ranged.ShotFired += (_, __) => { shots++; reentered = ranged.TryFire(Vector2.left); };
+            LogAssert.Expect(LogType.Exception, new System.Text.RegularExpressions.Regex("InvalidOperationException: Zoey shot subscriber failure"));
+            Assert.That(ranged.TryFire(Vector2.left), Is.True);
+            Assert.That(shots, Is.EqualTo(1));
+            Assert.That(reentered, Is.False);
+            yield return new WaitForSeconds(definition.Cooldown + .05f);
+            LogAssert.Expect(LogType.Exception, new System.Text.RegularExpressions.Regex("InvalidOperationException: Zoey shot subscriber failure"));
+            Assert.That(ranged.TryFire(Vector2.left), Is.True);
+            Assert.That(shots, Is.EqualTo(2));
+        }
+        [UnityTest] public IEnumerator ThrowingParrySubscriberDoesNotInterruptLaterSubscribersOrShotNotification()
+        {
+            Object.Destroy(target);
+            target = Object.Instantiate(Resources.Load<GameObject>("Characters/Rumi_Prototype"), new Vector3(4f, 20f), Quaternion.identity);
+            target.GetComponent<Rigidbody2D>().gravityScale = 0f;
+            Set(actor.GetComponent<DamageReceiver2D>(), "faction", CombatFaction2D.Demon);
+            yield return null; Physics2D.SyncTransforms();
+            var receiver = target.GetComponent<DamageReceiver2D>();
+            float before = receiver.CurrentHealth;
+            int parries = 0, shots = 0, impacts = 0;
+            ranged.HitParried += _ => throw new System.InvalidOperationException("Zoey parry subscriber failure");
+            ranged.HitParried += _ => parries++;
+            ranged.HitConfirmed += _ => impacts++;
+            ranged.ShotFired += (_, __) => shots++;
+            Assert.That(target.GetComponent<ParryController2D>().TryStartParry(), Is.True);
+            LogAssert.Expect(LogType.Exception, new System.Text.RegularExpressions.Regex("InvalidOperationException: Zoey parry subscriber failure"));
+            Assert.That(ranged.TryFire(Vector2.right), Is.True);
+            Assert.That(receiver.CurrentHealth, Is.EqualTo(before));
+            Assert.That(parries, Is.EqualTo(1));
+            Assert.That(shots, Is.EqualTo(1));
+            Assert.That(impacts, Is.Zero);
+            Assert.That(target.GetComponent<ParryController2D>().IsWindowActive, Is.False);
+        }
         private static void Set(object value, string field, object data) => value.GetType().GetField(field, BindingFlags.Instance | BindingFlags.NonPublic).SetValue(value, data);
     }
 }

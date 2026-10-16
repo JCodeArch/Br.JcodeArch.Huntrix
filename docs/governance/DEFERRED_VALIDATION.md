@@ -365,3 +365,17 @@ A suíte PlayMode `HordePlayModeTests` foi autorada cobrindo a geração, cadên
    - Limpeza e reciclagem atômica de instâncias (`Stop` / `OnDisable`), desvinculando propriedade antes de publicar callbacks e devolvendo atores ao pool (`BoundedPrefabPool`) sem vazamentos de memória.
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #36 concluído.
+
+## Card #33 — Inimigos Terrestres e Perseguição Básica (2026-10-16)
+
+A suíte PlayMode `GroundEnemyPlayModeTests` foi autorada cobrindo o ciclo de vida, detecção, perseguição horizontal, ataque corpo a corpo e interrupção do inimigo terrestre:
+1. `GroundDemon_Prototype`:
+   - Instanciação de `Enemies/GroundDemon_Prototype` e validação da composição de componentes essenciais (`GroundEnemyController2D`, `EnemyAgent2D`, `DamageReceiver2D`, `Rigidbody2D`, `Hurtbox2D`).
+   - Validação da definição do agente (`EnemyDefinition`), garantindo alcance de detecção positivo, alcance de ataque, velocidade de locomoção e ataque corpo a corpo válido (`EnemyAttackDefinition`).
+2. `GroundEnemyController2D` / `EnemyAgent2D`:
+   - Perseguição horizontal ativa (`EnemyState2D.Chasing`) com velocidade orientada ao alvo quando este está fora do alcance de ataque imediato.
+   - Transição para estado de telegrafia (`EnemyState2D.Telegraph`) ao entrar no raio de ataque corpo a corpo.
+   - Execução do ataque melee e aplicação de dano ao `DamageReceiver2D` / `Hurtbox2D` do jogador no estado de ataque (`EnemyState2D.Attacking`), com transição para recuperação (`EnemyState2D.Recovering`).
+   - Cessação imediata de movimentação (`linearVelocity == Vector2.zero`) e transição para `EnemyState2D.Idle` no `OnDisable`.
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #33 concluído.

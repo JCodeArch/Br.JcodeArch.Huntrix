@@ -166,6 +166,34 @@ because `UNITY_EDITOR` is unset. RED/GREEN behavior, Unity import/compilation an
 all PlayMode execution remain unverified. Run these scenarios and fan/Honmoon
 regressions on the exact integrated SHA before acceptance of card #44.
 
+## Card #93 — UI flow views presentation contracts (2026-10-16)
+
+PlayMode contract tests authored in `MainMenuUiViewContractTests`, `TeamProfileUiViewContractTests`,
+and `ResultsReplayUiViewContractTests` cover presentation requirements for Figma frames 2:2,
+2:29, and 2:150:
+- Main menu start and options emission, plus strict disabled state of Continue without save/resume.
+- Team profile selection of characters (Rumi, Mira, Zoey), age profiles (4-5, 6-8, 9-12, 13-15, 16+), confirm and back events.
+- Results and replay score presentation, 1-5 survey slider clamping, feedback status coloring and navigation events.
+
+Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset); tests are authored and statically reviewed only.
+
+## Card #93 — integração do subpainel de remapeamento no UiLayoutLab (2026-10-16)
+
+O botão **Remapear teclas** deixou de estar indisponível no laboratório e passa a
+abrir `RemapPanelUiView` como sobreposição de Opções. O controlador preserva a tela
+origem, transfere o foco ao subpainel e o devolve ao botão de remapeamento ao voltar.
+O painel recebe `AccessibilityPreferences2D` próprio da sessão de demonstração;
+não persiste preferências nem altera a cena de gameplay. A cena também configura o
+controle de seleção de ação, campo de tecla, aplicar, restaurar e feedback.
+
+`RemapPanelOpensFromOptionsAndBackRestoresOptionsFocus` foi escrito antes desta
+integração e a verificação estática confirmou referências e rotas de eventos. Unity
+não está disponível neste ambiente (`UNITY_EDITOR` unset), portanto importação,
+compilação e execução PlayMode continuam **não executadas**. Executar esse cenário,
+`RemapPanelContractTests` e a regressão de navegação do UiLayoutLab no SHA integrado;
+validar visualmente dropdown, entrada de texto, aplicar/restaurar e foco em teclado,
+gamepad, touch e telas com safe area antes de concluir o card.
+
 ## Cards #55 & #56 — Level design grammar and stage route contracts (2026-10-16)
 
 EditMode and PlayMode tests are authored in `StageBlockoutDefinitionTests` and `StageBlockoutBuilderPlayModeTests`:

@@ -41,7 +41,7 @@ namespace HuntrX.Gameplay.Fans
                 IsTelegraphing = true; timer = definition.TelegraphDuration;
             }
         }
-        private bool Operational => isActiveAndEnabled && !resolving && agent != null && agent.IsConfigurationValid &&
+        private bool Operational => isActiveAndEnabled && !resolving && agent != null && agent.isActiveAndEnabled && agent.IsConfigurationValid &&
             agent.Self != null && agent.Self.isActiveAndEnabled && agent.Self.IsAlive && agent.Self.Faction == CombatFaction2D.Demon &&
             definition != null && definition.IsValid(out _) && registry != null && registry.isActiveAndEnabled;
         private FanActor2D FindNearest()

@@ -152,3 +152,16 @@ unset), so these cases are authored and statically reviewed only.
 ## Card #30 — Zoey presentation subscriber isolation (2026-10-16)
 
 Three additional PlayMode scenarios are authored in `ZoeyRangedAttack2DPlayModeTests`: a throwing first hit subscriber must preserve one committed damage result and deliver later impact/shot callbacks; a throwing first shot subscriber must preserve later callbacks, re-entry rejection and firing after cooldown; a throwing first parry subscriber must preserve consumed parry/no damage and later parry/shot callbacks. Source reviewed against the immediate precision-shot contract in [card #30](https://trello.com/c/DgAV9fe4/30-30-implementar-zoey). These scenarios have NOT been compiled or executed in Unity. Run them with existing Zoey, combat, Rumi and Mira regression on the exact integrated SHA before final card acceptance. No new balance, aim, asset or platform behavior is introduced.
+
+
+## Card #44 — disabled soul-drain agent (2026-10-16)
+
+`FanSoulDrainController2D` now requires its `EnemyAgent2D` to be active and enabled,
+matching the agent's own operational gate. Disabling only the agent previously
+left the sibling drain controller able to acquire fans and resolve a pending pulse.
+`FanDrainAgentLifecycleTests` authors acquisition rejection, pending telegraph
+cancellation and an enabled-agent positive control through the real fan/agent
+prefabs and registry. Tests were authored before the guard; the runner exited 1
+because `UNITY_EDITOR` is unset. RED/GREEN behavior, Unity import/compilation and
+all PlayMode execution remain unverified. Run these scenarios and fan/Honmoon
+regressions on the exact integrated SHA before acceptance of card #44.

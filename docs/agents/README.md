@@ -21,3 +21,7 @@ Each agent defines:
 - quality gates;
 - failure conditions;
 - handoff rules.
+
+## PR review and integration ownership
+
+Agent 06 owns independent PR review and, under the owner's authorization, a separate verified merge phase to `develop`. Its [contract](06-pull-request-review-analyst.md) defines head-specific re-review, required checks, GitHub identity limits and protected-branch gates. The Orchestrator records the resulting evidence and pending validation; no unattended monitoring is implied.

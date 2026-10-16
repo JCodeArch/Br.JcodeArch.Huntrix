@@ -16,6 +16,8 @@ Turn requirements into controlled, testable, maintainable work items without inv
 - Preserve contracts.
 - Route failures to the correct owner.
 - Block integration until required quality gates pass.
+- Assign independent PR review and the separate authorized integration phase to Agent 06; preserve its head-specific verdict and verified merge evidence.
+- Track deferred Unity/runtime validation explicitly; integration does not complete a card with open DoD gates.
 
 ## Standard Statuses
 

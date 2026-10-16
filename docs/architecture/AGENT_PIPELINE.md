@@ -12,8 +12,9 @@ Define how engineering agents collaborate without bypassing architecture or qual
 4. Pull Request Review Analyst independently reviews scope, the complete diff, requirement evidence, serialized Unity references, regressions, and readiness for specialist reviews. Findings route to the responsible agent; the analyst does not replace specialist gates.
 5. SOLID Auditor reviews structure and maintainability.
 6. Performance Engineer reviews runtime risks.
-7. QA Automation Engineer defines and executes tests after fixes and required reviews.
-8. Orchestrator integrates only when required gates pass and Trello records the evidence.
+7. QA Automation Engineer defines tests and executes applicable verification after fixes and required reviews, recording Unity/runtime execution deferred by the owner as pending.
+8. Pull Request Review Analyst enters its separate authorized integration phase only after required gates pass, revalidates the current PR head/base and branch protections, and verifies the merge to `develop`.
+9. Orchestrator records the verified review, approval and merge evidence in Trello/continuity. Static integration keeps the status **Implementado — validação pendente** where runtime gates remain open; merge alone does not complete a card.
 
 ## Rejection Rules
 

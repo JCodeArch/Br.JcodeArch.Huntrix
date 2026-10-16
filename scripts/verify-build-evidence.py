@@ -60,8 +60,11 @@ def verify(path):
         data = output.parent / (output.stem + '_Data')
         if not any(path.is_file() and path.stat().st_size > 0 for path in data.rglob('*')):
             raise ValueError('Windows Data directory contains no produced payload')
-    if evidence['target'] == 'iOS' and (not output.is_dir() or not list(output.glob('*.xcodeproj'))):
-        raise ValueError('iOS export requires a generated Xcode project')
+    if evidence['target'] == 'iOS':
+        projects = output.glob('*.xcodeproj') if output.is_dir() else ()
+        if not any(project.is_dir() and (project / 'project.pbxproj').is_file()
+                   and (project / 'project.pbxproj').stat().st_size > 0 for project in projects):
+            raise ValueError('iOS export requires a generated Xcode project with a nonempty project.pbxproj file')
     if type(evidence.get('totalBytes')) is not int or evidence['totalBytes'] <= 0:
         raise ValueError('Build report contains no produced bytes')
     if not re.fullmatch(r'[0-9a-f]{64}', evidence.get('artifactSha256', '')) or artifact_hash(root) != evidence['artifactSha256']:

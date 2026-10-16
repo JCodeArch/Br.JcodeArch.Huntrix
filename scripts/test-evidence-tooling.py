@@ -105,6 +105,31 @@ class EvidenceTests(unittest.TestCase):
                         with self.assertRaisesRegex(ValueError, 'Data'):
                             build.verify(path)
 
+    def test_ios_requires_project_directory_with_nonempty_project_file(self):
+        # Shape fixtures only; no Xcode export or Unity build is performed.
+        for shape in ('regular-project-file', 'empty-project-directory',
+                      'project-file-directory', 'empty-project-file', 'valid-project-file'):
+            with self.subTest(shape=shape), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory); output = root / 'Xcode'; output.mkdir()
+                project = output / 'Unity-iPhone.xcodeproj'
+                if shape == 'regular-project-file':
+                    project.write_bytes(b'fixture')
+                else:
+                    project.mkdir()
+                    project_file = project / 'project.pbxproj'
+                    if shape == 'project-file-directory': project_file.mkdir()
+                    elif shape == 'empty-project-file': project_file.touch()
+                    elif shape == 'valid-project-file': project_file.write_bytes(b'fixture project')
+                # Keep the digest meaningful even when the project shape has no files.
+                (output / 'fixture.txt').write_bytes(b'fixture')
+                path = root / 'fixture.evidence.json'
+                path.write_text(json.dumps(self.shape_evidence('iOS', output, output)))
+                if shape == 'valid-project-file':
+                    self.assertEqual(build.verify(path)['target'], 'iOS')
+                else:
+                    with self.assertRaisesRegex(ValueError, 'Xcode project'):
+                        build.verify(path)
+
     def test_android_regular_file_shapes_accepted(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); path = root / 'fixture.evidence.json'

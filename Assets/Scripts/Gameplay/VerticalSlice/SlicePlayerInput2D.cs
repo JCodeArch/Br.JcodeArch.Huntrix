@@ -195,6 +195,10 @@ namespace HuntrX.Gameplay.VerticalSlice
         private void OnDisable()
         {
             foreach (InputAction action in actions) action?.Disable(); ResetHeld();
+            // Options temporarily disable this component. Contacts held in the menu must
+            // return to neutral before gameplay resumes, just as after losing focus.
+            for (int i = 0; i < waitForRelease.Length; i++) waitForRelease[i] = true;
+            waitForStickNeutral = true;
             if (manager != null && manager.ActiveCharacter != null) { manager.ActiveCharacter.GetComponent<HorizontalMovement2D>()?.SetMovementInput(Vector2.zero); manager.ActiveCharacter.GetComponent<JumpController2D>()?.ReleaseJump(); }
         }
         private void OnDestroy() { foreach (InputAction action in actions) action?.Dispose(); }

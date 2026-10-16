@@ -161,8 +161,9 @@ namespace HuntrX.Gameplay.VerticalSlice
                 ClearEnemies();
                 if (!isActiveAndEnabled || !IsRunning || stopping) return false;
                 int next = BeatIndex+1;
-                if (next >= beats.Length) { IsRunning = false; IsComplete = true; Performance?.TryFinishRun(out _); return true; }
-                if (!beats[next].TryBegin(this)) { beats[next].Exit(); IsRunning = false; Debug.LogError("Slice beat failed: "+beats[next].Title, this); return false; }
+                // Retain the session's results/presentation while retiring its gameplay input.
+                if (next >= beats.Length) { IsRunning = false; IsComplete = true; if (Input != null) Input.enabled = false; Performance?.TryFinishRun(out _); return true; }
+                if (!beats[next].TryBegin(this)) { beats[next].Exit(); IsRunning = false; if (Input != null) Input.enabled = false; Debug.LogError("Slice beat failed: "+beats[next].Title, this); return false; }
                 if (!isActiveAndEnabled || !IsRunning) { beats[next].Exit(); return false; }
                 BeatIndex = next; Publish(BeatChanged, callback => callback(next));
                 return isActiveAndEnabled && IsRunning && BeatIndex == next;

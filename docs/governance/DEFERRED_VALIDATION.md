@@ -166,6 +166,62 @@ because `UNITY_EDITOR` is unset. RED/GREEN behavior, Unity import/compilation an
 all PlayMode execution remain unverified. Run these scenarios and fan/Honmoon
 regressions on the exact integrated SHA before acceptance of card #44.
 
+## Card #93 — UI flow views presentation contracts (2026-10-16)
+
+PlayMode contract tests authored in `MainMenuUiViewContractTests`, `TeamProfileUiViewContractTests`,
+and `ResultsReplayUiViewContractTests` cover presentation requirements for Figma frames 2:2,
+2:29, and 2:150:
+- Main menu start and options emission, plus strict disabled state of Continue without save/resume.
+- Team profile selection of characters (Rumi, Mira, Zoey), age profiles (4-5, 6-8, 9-12, 13-15, 16+), confirm and back events.
+- Results and replay score presentation, 1-5 survey slider clamping, feedback status coloring and navigation events.
+
+Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset); tests are authored and statically reviewed only.
+
+## Card #93 — integração do subpainel de remapeamento no UiLayoutLab (2026-10-16)
+
+O botão **Remapear teclas** deixou de estar indisponível no laboratório e passa a
+abrir `RemapPanelUiView` como sobreposição de Opções. O controlador preserva a tela
+origem, transfere o foco ao subpainel e o devolve ao botão de remapeamento ao voltar.
+O painel recebe `AccessibilityPreferences2D` próprio da sessão de demonstração;
+não persiste preferências nem altera a cena de gameplay. A cena também configura o
+controle de seleção de ação, campo de tecla, aplicar, restaurar e feedback.
+
+`RemapPanelOpensFromOptionsAndBackRestoresOptionsFocus` foi escrito antes desta
+integração e a verificação estática confirmou referências e rotas de eventos. Unity
+não está disponível neste ambiente (`UNITY_EDITOR` unset), portanto importação,
+compilação e execução PlayMode continuam **não executadas**. Executar esse cenário,
+`RemapPanelContractTests` e a regressão de navegação do UiLayoutLab no SHA integrado;
+validar visualmente dropdown, entrada de texto, aplicar/restaurar e foco em teclado,
+gamepad, touch e telas com safe area antes de concluir o card.
+
+## Cards #55 & #56 — Level design grammar and stage route contracts (2026-10-16)
+
+EditMode e PlayMode tests are authored in `StageBlockoutDefinitionTests` and
+`StageBlockoutBuilderPlayModeTests`, covering structural validation for authored
+stage definitions/routes and runtime blockout assembly (platform colliders,
+visuals, start/end points, checkpoint anchors, reentrancy and cleanup).
+
+Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset);
+importação, compilação e execução PlayMode continuam pendentes. Executar os
+cenários no Unity 6000.6.4f1 e validar a rota no VerticalSlice antes de concluir
+os cards.
+
+## Cards #57 & #59 — Aerial encounters and boss arenas contracts (2026-10-16)
+
+PlayMode tests are authored in `AerialStageEncounterPlayModeTests` and `BossArenaControllerPlayModeTests`:
+- `AerialStageEncounter2D` configuration and lifecycle (rejection of null parameters, scene instance prefabs, spawn guards without stage runtime root, and clean flyer disposal).
+- `BossArenaController2D` configuration and arena lifecycle (rejection of null dependencies, scene instance prefabs, spawn guards without stage runtime root, completion reset, and clean disposal).
+
+Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset); tests are authored and statically reviewed only.
+
+## Card #58 — Fan encounters lifecycle and configuration (2026-10-16)
+
+PlayMode tests are authored in `FanEncounterPlayModeTests`:
+- `FanEncounterDefinition` structural validation (enforcing explicit registry group of 1..64 fans, rejection of scene instances and negative soul loss).
+- `FanEncounterController2D` lifecycle (rejection of null/invalid profiles, non-finite positions, verified instantiation of registry group with authored initial soul loss, reentrancy guards, and cleanup on `Stop()` and `OnDisable()`).
+
+Unity execution remains unavailable in this environment (`UNITY_EDITOR` unset); tests are authored and statically reviewed only.
+
 ## Cards #52 & #53 — Progressão de equipamentos e efeitos mecânicos das peças (2026-10-16)
 
 A suíte PlayMode `EquipmentProgressionPlayModeTests` foi autorada cobrindo a definição, progressão e mecânicas das peças de equipamento:

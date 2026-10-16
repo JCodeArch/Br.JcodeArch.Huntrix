@@ -255,3 +255,12 @@ A suíte PlayMode `LocalReplayPlayModeTests` foi autorada cobrindo registros loc
 3. `LocalReplayController2D`: ciclo de vida completo (`Configure`, `TryBeginRun`, `TryRequestReplay`, `TryCompleteRun`, `TryReadRankings`), portão de autorização de replay via `IReplayChapterAccess`, binding de execução em `CombatPerformanceController2D` e emissão dos eventos `ReplayRequested` e `RunSaved`.
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o sistema de replay e rankings concluído.
+
+## Card #48 — Honmoon Crisis e União de Equipe (2026-10-16)
+
+A suíte PlayMode `HonmoonCrisisPlayModeTests` foi autorada cobrindo a intensificação da horda durante a crise e a mecânica de recuperação/proteção por união de equipe:
+1. `HonmoonCrisisDefinition`: limites bounded de multiplicador de intervalo de spawn (0..1], inimigos concorrentes extras [0..64], valor de recuperação de Honmoon (0..100] e duração da proteção de união (0..30].
+2. `HonmoonCrisisController2D`: escuta de histerese em `HonmoonController2D.CrisisChanged`, acionamento e cancelamento de intensidade em `HordeController2D` (`IsIntensifying` e evento `IntensityChanged`), salvaguarda de invocação única de união por ciclo de crise (`usedThisCrisis`), disparo de `TryExecuteTeamUnion()` e recuperação de recurso em `definition.UnionRecoveryValue`, além de emissão do evento `TeamUnited`.
+3. `CrisisTeamUnion2D`: validação de participantes (1..3 character managers vivos da facção HUNTR/X), concessão temporária de imunidade com registro externo de `IDamageProtectionSource2D` no ator e verificação estrita de cobertura (`Covers`) sem afetar entidades não autorizadas.
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o sistema de crise de Honmoon concluído.

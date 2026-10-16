@@ -394,3 +394,15 @@ A suíte PlayMode `CharacterManagerPlayModeTests` foi autorada cobrindo a gestã
    - Limpeza e ciclo de vida (`OnDisable`): cancelamento da tentativa ativa, desativação de inputs e descarte de todos os atores em cache, com estado transicionando para `CharacterManagerState2D.Disabled`.
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #31 concluído.
+
+## Card #32 — Troca de Personagens HUNTR/X (2026-10-16)
+
+A suíte PlayMode `CharacterSwitchPlayModeTests` foi autorada cobrindo a seleção, alternância sequencial, validação de roster e restrições de troca do trio HUNTR/X:
+1. `CharacterSwitchController2D`:
+   - Validação defensiva do roster de personagens em `Configure` (rejeição de proprietário nulo, coleções nulas ou menores que 2 integrantes, entradas nulas ou prefabs duplicados).
+   - Alternância sequencial cíclica (`TrySwitchNext`) entre Rumi (0) -> Mira (1) -> Zoey (2) -> Rumi (0), atualizando `ActiveIndex` e sincronizando com `CharacterManager2D.ActivePrefab`.
+   - Seleção direta via `TrySwitchTo(index)`, rejeitando transição para o mesmo personagem ativo e tratando erros de limites (`index < 0` ou `index >= RosterCount`).
+   - Bloqueio de troca quando o controlador ou manager estiverem desabilitados (`!isActiveAndEnabled`).
+   - Rejeição defensiva de troca sob ações em andamento (`AttackController2D`, dash ou parry) reportando erro claro sem corromper estado ou disparar callbacks espúrios.
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #32 concluído.

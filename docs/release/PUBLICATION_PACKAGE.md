@@ -4,7 +4,7 @@ Este pacote prepara materiais; não publica em lojas e não declara direitos sob
 
 ## Ficha interna
 
-Nome de trabalho: HUNTR/X — Honmoon. Gênero: ação e plataformas 2D, personagens alternáveis, resgate de fãs e combate cooperativo representado pelo Special. Plataformas previstas: Windows, Android e iOS. Estado: conteúdo e sistemas em implementação; requisitos de QA e build permanecem verificáveis no gate de RC.
+Nome de trabalho: HUNTR/X — Honmoon. Gênero: ação e plataformas 2D, personagens alternáveis, resgate de fãs e Special conjunto no protótipo solo com troca de personagens. O Special não comprova multiplayer: a cooperação para até três jogadores/personagens continua requisito pendente de implementação e validação. Plataformas previstas: Windows, Android e iOS. Estado: conteúdo e sistemas em implementação; requisitos de QA e build permanecem verificáveis no gate de RC.
 
 Texto de apresentação provisório: percorra plataformas e arenas, alterne personagens, proteja fãs e combine ataques para recuperar Honmoon. Escolha usar alimentos para sua personagem ou para quem precisa de ajuda. Este texto descreve mecânicas e ainda requer revisão de marca, conteúdo e classificação antes de publicação.
 

@@ -352,3 +352,16 @@ A suíte PlayMode `MinibossPlayModeTests` foi autorada cobrindo o controle de fa
    - Suporte a instanciação direta já abaixo do limiar ativando diretamente a Fase 2.
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #38 concluído.
+
+## Card #36 — Hordas e Encontros Concorrentes (2026-10-16)
+
+A suíte PlayMode `HordePlayModeTests` foi autorada cobrindo a geração, cadência e contenção de concorrência de hordas de inimigos:
+1. `HordeDefinition`: validação do prefab inimigo, limites de concorrência (`1 <= MaximumConcurrent <= 64`), total de spawns (`1 <= TotalSpawns <= 256`) e intervalo positivo de surgimento (`SpawnInterval > 0`).
+2. `HordeController2D`:
+   - Instanciação e vinculação estrutural através de `Enemies/GroundHordeEncounter_Prototype` e `EnemyEncounterBootstrap2D`.
+   - Validação defensiva de parâmetros em `TryConfigure` (rejeição de coleções de pontos vazias/nulas, definições inválidas ou alvos ausentes).
+   - Início seguro via `TryStart()`, gerando candidatos até o limite de concorrência efetiva (`EffectiveMaximumConcurrent`) com no máximo uma locação por frame renderizado (prevenindo catch-up bursts descontrolados).
+   - Modulação dinâmica de intensidade via `TrySetIntensity`, escalando cadência (`EffectiveSpawnInterval`) e concorrência máxima adicional (`ActiveExtraConcurrent`), com reversão atômica no `ClearIntensity`.
+   - Limpeza e reciclagem atômica de instâncias (`Stop` / `OnDisable`), desvinculando propriedade antes de publicar callbacks e devolvendo atores ao pool (`BoundedPrefabPool`) sem vazamentos de memória.
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #36 concluído.

@@ -339,3 +339,16 @@ A suíte PlayMode `EliteEnemyPlayModeTests` foi autorada cobrindo a alternância
    - Rejeição de definições nulas/inválidas no `TrySetDefinition` e reinicialização completa de ciclo (`ResetPattern`) e parada de agente no `OnDisable`.
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #37 concluído.
+
+## Card #38 — Mini-bosses e Fases de Combate (2026-10-16)
+
+A suíte PlayMode `MinibossPlayModeTests` foi autorada cobrindo o controle de fases e enfurecimento do mini-boss:
+1. `MinibossPhaseController2D`:
+   - Carregamento e instanciação do prefab `Enemies/Miniboss_Prototype`, compondo `EnemyPatternController2D`, `EnemyAgent2D` e `DamageReceiver2D`.
+   - Validação dos padrões de abertura (`openingPattern`) e enfurecido (`enragedPattern`), além da fração de limiar de vida (`0 < phaseHealthFraction < 1`).
+   - Inicialização da Fase 1 (`Phase == 1`) no primeiro `Update()` aplicando `openingPattern`.
+   - Transição monotônica de fronteira para Fase 2 (`Phase == 2`) e aplicação de `enragedPattern` quando a vida cruza abaixo do limiar de saúde, emitindo o evento `PhaseChanged(2)`.
+   - Preservação estrita da Fase 2 impedindo regressão de fase em caso de cura posterior.
+   - Suporte a instanciação direta já abaixo do limiar ativando diretamente a Fase 2.
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #38 concluído.

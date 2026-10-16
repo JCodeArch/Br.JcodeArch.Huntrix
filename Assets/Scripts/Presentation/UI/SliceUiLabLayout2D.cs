@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
+using HuntrX.Gameplay.AgeAccessibility;
 using HuntrX.Presentation.UI.Views;
 
 namespace HuntrX.Presentation.UI
@@ -59,7 +60,7 @@ namespace HuntrX.Presentation.UI
             Toggle(options,"toggleRescueToggle","Resgate: alternar",.54f,.34f,.90f,.45f);
             Button(options,"ptLanguageButton","Português",.10f,.32f,.28f,.44f); Button(options,"enLanguageButton","English",.30f,.32f,.48f,.44f);
             Label(options,"languageStatusText","Idioma selecionado: Português",.10f,.27f,.90f,.32f,18);
-            Button(options,"remapKeysButton","Remapear — indisponível",.10f,.15f,.48f,.27f).interactable=false;
+            Button(options,"remapKeysButton","Remapear teclas",.10f,.15f,.48f,.27f);
             Button(options,"closeButton","Voltar",.64f,.15f,.90f,.27f);
             var results=Panel("ResultsPanel",safe,"Resultado demonstrativo","Prévia ilustrativa; não representa uma partida realizada.");
             Label(results,"outcomeTitleText","Demonstração concluída",.06f,.70f,.46f,.79f); Label(results,"outcomeDetailsText","Explore as telas e volte ao HUD.",.06f,.60f,.46f,.70f);
@@ -75,12 +76,37 @@ namespace HuntrX.Presentation.UI
             Button(results,"submitSurveyButton","Enviar prévia",.54f,.17f,.93f,.29f);
             Label(results,"surveyStatusText","Nenhum arquivo será salvo nesta prévia.",.50f,.04f,.97f,.15f);
             Button(results,"replayButton","Voltar ao HUD",.06f,.20f,.45f,.32f); Button(results,"mainMenuButton","Menu principal",.06f,.05f,.45f,.17f);
+            var remap=Panel("RemapPanel",safe,"Remapear teclas","Ajustes valem apenas nesta prévia.");
+            Find<Text>(remap,"Title").name="titleText";
+            var actionRect=Rect("actionDropdown",remap,.12f,.59f,.88f,.69f); var actionImage=actionRect.gameObject.AddComponent<Image>(); actionImage.color=SliceUiTokens.Surface;
+            var actionDropdown=actionRect.gameObject.AddComponent<Dropdown>(); actionDropdown.targetGraphic=actionImage; actionDropdown.captionText=Label(actionRect,"Caption", "Ação: Attack",.04f,0,.96f,1,18);
+            var template=Rect("Template",actionRect,0,-3,1,-1); var templateImage=template.gameObject.AddComponent<Image>(); templateImage.color=SliceUiTokens.Surface;
+            var scroll=template.gameObject.AddComponent<ScrollRect>(); var viewport=Rect("Viewport",template,0,0,1,1); var viewportImage=viewport.gameObject.AddComponent<Image>(); var mask=viewport.gameObject.AddComponent<Mask>(); mask.showMaskGraphic=false;
+            var content=Rect("Content",viewport,0,0,1,1); var item=Rect("Item",content,0,0,1,1); var itemImage=item.gameObject.AddComponent<Image>(); var itemToggle=item.gameObject.AddComponent<Toggle>(); itemToggle.targetGraphic=itemImage;
+            var itemLabel=Label(item,"Item Label","Attack",.04f,0,.96f,1,18); scroll.viewport=viewport; scroll.content=content; actionDropdown.template=template; actionDropdown.itemText=itemLabel; template.gameObject.SetActive(false);
+            Label(remap,"currentBindingText","J",.12f,.50f,.88f,.57f,18);
+            var keyRect=Rect("keyInputField",remap,.12f,.37f,.88f,.47f); var keyImage=keyRect.gameObject.AddComponent<Image>(); keyImage.color=Color.white;
+            var keyInput=keyRect.gameObject.AddComponent<InputField>(); keyInput.targetGraphic=keyImage; keyInput.textComponent=Label(keyRect,"InputText","",.04f,.05f,.96f,.95f,18);
+            var keyPlaceholder=Label(keyRect,"Placeholder","Digite uma tecla",.04f,.05f,.96f,.95f,18); keyPlaceholder.color=SliceUiTokens.TextSecondary; keyInput.placeholder=keyPlaceholder;
+            Button(remap,"applyButton","Aplicar",.12f,.24f,.37f,.33f); Button(remap,"restoreButton","Restaurar padrão",.42f,.24f,.88f,.33f);
+            Label(remap,"helpText","",.12f,.16f,.88f,.22f,16); Label(remap,"statusText","",.12f,.09f,.88f,.15f,16);
+            Button(remap,"remapBackButton","Voltar às opções",.12f,.02f,.88f,.08f);
             var menuView=menu.gameObject.AddComponent<MainMenuUiView>(); var profileView=profile.gameObject.AddComponent<TeamProfileUiView>();
-            var hudView=hud.gameObject.AddComponent<MobileHudUiView>(); var optionsView=options.gameObject.AddComponent<OptionsUiView>(); var resultsView=results.gameObject.AddComponent<ResultsReplayUiView>();
+            var hudView=hud.gameObject.AddComponent<MobileHudUiView>(); var optionsView=options.gameObject.AddComponent<OptionsUiView>(); var resultsView=results.gameObject.AddComponent<ResultsReplayUiView>(); var remapView=remap.gameObject.AddComponent<RemapPanelUiView>();
+            var preferences=root.gameObject.AddComponent<AccessibilityPreferences2D>();
             // Activate once so every view resolves controls and binds before the controller hides screens.
-            foreach(var panel in new[]{menu,profile,hud,options,results}) panel.gameObject.SetActive(true);
+            foreach(var panel in new[]{menu,profile,hud,options,results,remap}) panel.gameObject.SetActive(true);
+            remapView.BindPreferences(preferences);
+            optionsView.SetPreferences(preferences.ReduceFlashes, preferences.CaptionsEnabled, preferences.AssistedAim,
+                preferences.ToggleModeFor(HuntrX.Gameplay.VerticalSlice.GameplayControl.Jump),
+                preferences.ToggleModeFor(HuntrX.Gameplay.VerticalSlice.GameplayControl.Interact), "PT");
+            optionsView.ReduceFlashesChanged += value => preferences.SetPresentationPreferences(value, preferences.CaptionsEnabled, preferences.AssistedAim);
+            optionsView.SubtitlesChanged += value => preferences.SetPresentationPreferences(preferences.ReduceFlashes, value, preferences.AssistedAim);
+            optionsView.AimAssistChanged += value => preferences.SetPresentationPreferences(preferences.ReduceFlashes, preferences.CaptionsEnabled, value);
+            optionsView.ToggleJumpChanged += value => preferences.TrySetToggle(HuntrX.Gameplay.VerticalSlice.GameplayControl.Jump, value);
+            optionsView.ToggleRescueChanged += value => preferences.TrySetToggle(HuntrX.Gameplay.VerticalSlice.GameplayControl.Interact, value);
             var flow=root.AddComponent<SliceUiFlow2D>(); var controller=root.AddComponent<SliceUiController2D>();
-            controller.Initialize(flow,menuView,profileView,hudView,optionsView,resultsView);
+            controller.Initialize(flow,menuView,profileView,hudView,optionsView,resultsView,remapView);
             Find<Button>(hud,"finishPreviewButton").onClick.AddListener(()=>flow.TransitionTo(UiScreen.ResultsReplay));
             UpdateSelection(profile,profileView,hudView);
             profileView.CharacterSelected += _ => UpdateSelection(profile,profileView,hudView);

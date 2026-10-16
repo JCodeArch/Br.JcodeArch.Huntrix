@@ -275,3 +275,16 @@ A suíte PlayMode `FoodResourceAndChoicePlayModeTests` foi autorada cobrindo a d
    - Uso no fã (`TryUseOnFan`): checagem de distância bounded por `fanUseRange` (3.0m), rejeição de fãs além do alcance ou com alma cheia (rollback imediato do item), e sucesso ao alimentar fãs drenados/danificados, recuperando a alma em `FanRecovery` e consumindo o item.
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar os cards #45 e #46 concluídos.
+
+## Card #41 — Boss Final Gwi-Ma e Encerramento Narrativo (2026-10-16)
+
+A suíte PlayMode `GwiMaFinalBossPlayModeTests` foi autorada cobrindo a definição, progressão de fases e transição para o encerramento narrativo do boss final:
+1. `GwiMaBossDefinition`: validação dos três padrões distintos (`opening`, `pressure`, `finale`), limiares de vida decrescentes (`0 < finaleHealthFraction < pressureHealthFraction < 1f`) e cue de encerramento (`endingCue`).
+2. `GwiMaBossController2D`:
+   - Inicialização em fase `Opening`.
+   - Transição monotônica de fases por limiares de vida (`Opening` -> `Pressure` -> `Finale`), rejeitando regressão em caso de cura.
+   - Gerenciamento de ciclo de vida e suspensão de padrões no `OnDisable`, restaurando no `OnEnable` se o boss estiver vivo.
+   - Transição de derrota (`Defeated`) acionada na morte (`self.Died`), emitindo `EndingRequested` com payload imutável `FinalBossOutcome2D` contendo identificador, cue e posição, e garantindo idempotência e não-duplicação de eventos.
+3. `FinalBossEndingController2D`: binding e recepção de `FinalBossOutcome2D` na derrota do boss, validação de conformidade da cue e instância da apresentação de encerramento (`EndingPresentation2D`).
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #41 concluído.

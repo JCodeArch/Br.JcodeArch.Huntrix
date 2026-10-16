@@ -1,5 +1,35 @@
 # HUNTR/X Project Context
 
+## Estado reconciliado — 16 de outubro de 2026 (UTC)
+
+Fonte observada: `develop` em [`0e3ce9a7c8414c82ddac7b8ad3ac1c776125a98e`](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/commit/0e3ce9a7c8414c82ddac7b8ad3ac1c776125a98e), confrontada com GitHub e handoff Supabase revisão 66. Este bloco prevalece sobre os snapshots históricos abaixo para orientar a retomada; não substitui GDD, Trello ou evidências de execução.
+
+O [PR #108](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/108) integrou o HUD somente leitura à VerticalSlice. Os PRs seguintes estão **merged** em `develop`, conforme os registros GitHub consultados:
+
+| PR | Escopo integrado |
+| --- | --- |
+| [109](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/109) | Contatos touch novos após cancelamento por opções, disable, foco ou rebind; gate explícito de foco. |
+| [110](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/110) | Verificação de arquivos de artefato Android/Windows e conteúdo do diretório Windows Data. |
+| [111](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/111) | Rejeição de suites NUnit internas com resultado não aprovado. |
+| [112](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/112) | Controles independentes de alternância de pulo/resgate no view de opções isolado. |
+| [113](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/113) | Fallback e normalização para métricas inválidas de safe area. |
+| [114](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/114) | Rejeição de contatos de dano de participantes inativos ou atacante morto. |
+| [115](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/115) | Ciclo de vida da câmera pertencente à sessão no reinício imediato. |
+| [116](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/116) | Liberação do HUD somente leitura ao encerrar a sessão. |
+| [117](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/117) | Nova identidade de relatório de playtest para uma nova sessão. |
+| [118](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/118) | Cancelamento de input físico ao perder foco e exigência de liberação/neutralidade ao retornar. |
+
+Merge de fonte e regressões autoradas não comprovam execução Unity. O [run CI 38834168049](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/actions/runs/38834168049), no SHA acima, terminou com `tooling: success`; `validate`, `development-build` e `ios-project` ficaram `skipped`. Esse run não fornece compilação Unity, XML de suites Unity ou build executável.
+
+Há evidência histórica de **81 EditMode + 293 PlayMode = 374 testes aprovados** e APK Android de desenvolvimento na entrega do [PR #100](https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/100), fonte `2fc41a1230e00e453dca04024a72746a1f8adfdf`. O handoff também registra uma execução de 374 testes em `0c4a8e4053140b76ded470cbd05f899f89a26bce`; esses registros pertencem às fontes indicadas e não validam o HEAD atual. O APK histórico tem SHA-256 `30ae3dd2b630f32515447ad5746844b6cf9a5f9989eaa95ef831802c1b9e2dee`; o registro preserva a ressalva de alterações geradas de importação/settings/atlas, sem atestação de checkout imutável. Instalação em aparelho, playtest humano e desempenho não foram demonstrados por essa entrega. Não transformar os snapshots antigos de ausência de APK em descrição do estado histórico posterior, nem usar esse APK para aceitar mudanças subsequentes.
+
+Próximas entregas concretas:
+
+- **Integração UI:** as etapas 4 e 5 de [UNITY_UI_IMPLEMENTATION_PLAN.md](ui/UNITY_UI_IMPLEMENTATION_PLAN.md) continuam pendentes: binding de opções/remapeamento e touch à sessão real; entrada/perfil/personagem inicial; conclusão com resultados e avaliação reais, falha de save e replay/restart. O laboratório visual e o HUD somente leitura não implementam todo esse fluxo. Continuar permanece indisponível sem contrato real de retomada.
+- **Kilo — execução Windows/Unity:** preparar e executar importação/compilação no Editor 6000.6.4f1, suites pertinentes, walkthrough e builds contra SHA identificado; preservar logs, XML, BuildReport e identidade dos artefatos. Esta é atribuição de próxima execução, sem alegação de agente externo acionado ou em execução nesta sessão.
+- **Agy — design/revisão visual:** comparar capturas reais das cinco telas com o [handoff Figma](ui/FIGMA_SCREENS.md), conferir seleção, navegação, legibilidade, PT/EN, cinco faixas e safe areas. Revisão humana/dispositivo continua necessária; esta atribuição não comprova acionamento externo.
+- **Aceitação:** executar [matriz QA](qa/QA_EXECUTION_MATRIX.md), [plano touch](qa/TOUCH_VALIDATION_PLAN.md) e playtest de 60 segundos; registrar resultados por commit/build/dispositivo antes de concluir diversão, performance ou prontidão RC. Preservar gates de cooperação, persistência, direitos e publicação ainda abertos.
+
 ## Contexto persistente e retomada por IAs
 
 O handoff operacional reside no Supabase `bkfjhgwxhcwhmvsitckp`, schema privado multiprojeto `ai_context`, chave `huntrx-honmoon` neste repositório. Outros projetos usam chaves, regras e fontes próprias, sem herdar premissas HUNTR/X. Toda IA deve ler o contexto do projeto em trabalho antes de iniciar e atualizá-lo nas transições e ao encerrar. Consulte `docs/integrations/SUPABASE_AI_CONTINUITY.md` e `AGENTS.md` para consultas, cadastro de projeto, CAS, leases, reconciliação e evidências.

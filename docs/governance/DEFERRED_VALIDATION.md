@@ -288,3 +288,16 @@ A suíte PlayMode `GwiMaFinalBossPlayModeTests` foi autorada cobrindo a definiç
 3. `FinalBossEndingController2D`: binding e recepção de `FinalBossOutcome2D` na derrota do boss, validação de conformidade da cue e instância da apresentação de encerramento (`EndingPresentation2D`).
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #41 concluído.
+
+## Cards #39 & #40 — Saja Boys e Encontro com Jinu (2026-10-16)
+
+A suíte PlayMode `SajaBoysAndJinuRivalsPlayModeTests` foi autorada cobrindo a definição, táticas e evolução narrativa dos rivais Saja Boys e Jinu:
+1. `SajaRivalDefinition`: validação de identidade (`SajaIdentity`: Abby, Baby, Mystery, Romance, Jinu), táticas (`SajaTactic`: Pressure, Burst, Ambush, KeepDistance), contagem de burst (`burstCount >= 1`), pausas e distâncias preferidas bounded.
+2. `SajaRivalController2D`: carregamento dos quatro protótipos de rivais (`Abby_Prototype`, `Baby_Prototype`, `Mystery_Prototype`, `Romance_Prototype`), execução de tática KeepDistance aplicando velocidade contrária à posição do alvo dentro da distância preferida, e espera estática na tática Ambush fora do alcance de ataque.
+3. `JinuEncounterDefinition` e `JinuEncounterController2D`:
+   - Configuração de perfil duplo (`Opening` e `Pressure`) de Jinu e cues narrativos (`EncounterCue`, `PressureCue`, `DefeatedCue`).
+   - Disparo do estágio inicial `Encounter` e emissão da cue de encontro no `Start()`.
+   - Transição segura em fronteira (`Idle`/`Chasing`) para o estágio `Pressure` ao cruzar o limiar `PressureHealthFraction`, emitindo a cue de pressão e reconfigurando a tática do rival.
+   - Transição terminal para `Defeated` ao ocorrer a morte (`self.Died`), emitindo a cue de derrota com comportamento idempotente.
+
+Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar os cards #39 e #40 concluídos.

@@ -159,7 +159,7 @@ namespace HuntrX.Tests.PlayMode
         public IEnumerator SceneBindsEveryViewControlAndContainsLegibleLabels()
         {
             var viewTypes = new[] { typeof(MainMenuUiView), typeof(TeamProfileUiView),
-                typeof(MobileHudUiView), typeof(OptionsUiView), typeof(ResultsReplayUiView) };
+                typeof(MobileHudUiView), typeof(OptionsUiView), typeof(RemapPanelUiView), typeof(ResultsReplayUiView) };
             foreach (var type in viewTypes)
             {
                 Component view = controller.GetComponentInChildren(type, true);
@@ -233,6 +233,24 @@ namespace HuntrX.Tests.PlayMode
             controller.MobileHudView.RenderState(state);
             Assert.That(Find<Button>("specialButton").interactable, Is.True);
             Assert.That(Find<Image>("specialReadyGlow").enabled, Is.True);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator RemapPanelOpensFromOptionsAndBackRestoresOptionsFocus()
+        {
+            Click("optionsButton");
+            Assert.That(controller.RemapPanelView.gameObject.activeInHierarchy, Is.False);
+
+            Click("remapKeysButton");
+            Assert.That(controller.Flow.CurrentScreen, Is.EqualTo(UiScreen.Options));
+            Assert.That(controller.OptionsView.gameObject.activeInHierarchy, Is.True);
+            Assert.That(controller.RemapPanelView.gameObject.activeInHierarchy, Is.True);
+            Assert.That(EventSystem.current.currentSelectedGameObject.transform.IsChildOf(controller.RemapPanelView.transform), Is.True);
+
+            Click("remapBackButton");
+            Assert.That(controller.RemapPanelView.gameObject.activeInHierarchy, Is.False);
+            Assert.That(EventSystem.current.currentSelectedGameObject, Is.EqualTo(Find<Button>("remapKeysButton").gameObject));
             yield return null;
         }
 

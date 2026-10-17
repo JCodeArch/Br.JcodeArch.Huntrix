@@ -247,6 +247,107 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(impacts, Is.Zero);
             Assert.That(target.GetComponent<ParryController2D>().IsWindowActive, Is.False);
         }
+        [UnityTest] public IEnumerator ExtremeFiniteVerticalAimHitsAirborneTargetAndReportsContact()
+        {
+            target.transform.position = actor.transform.position + Vector3.up * 4f;
+            Physics2D.SyncTransforms();
+            var receiver = target.GetComponent<DamageReceiver2D>();
+            float before = receiver.CurrentHealth;
+            int shots = 0;
+            Vector2 observedOrigin = Vector2.zero, observedEnd = Vector2.zero;
+            ranged.ShotFired += (origin, end) => { shots++; observedOrigin = origin; observedEnd = end; };
+            Assert.That(ranged.TryFire(new Vector2(0f, float.MaxValue)), Is.True);
+            Assert.That(receiver.CurrentHealth, Is.EqualTo(before - attack.Damage));
+            Assert.That(shots, Is.EqualTo(1));
+            Assert.That(observedOrigin, Is.EqualTo((Vector2)actor.transform.position));
+            Assert.That(observedEnd.x, Is.EqualTo(observedOrigin.x).Within(.001f));
+            Assert.That(observedEnd.y, Is.GreaterThan(observedOrigin.y));
+            Assert.That(observedEnd.y, Is.LessThan(target.transform.position.y));
+            yield return null;
+        }
+        [UnityTest] public IEnumerator DefinitionReplacementIsAtomicAcrossInvalidInputShotAndCooldown()
+        {
+            var replacement = ScriptableObject.CreateInstance<ZoeyRangedDefinition>();
+            try
+            {
+                Assert.That(ranged.TrySetDefinition(null, out var missingError), Is.False);
+                Assert.That(missingError, Is.Not.Empty);
+                Assert.That(ranged.TrySetDefinition(replacement, out var invalidError), Is.False);
+                Assert.That(invalidError, Is.Not.Empty);
+                Assert.That(ranged.Definition, Is.SameAs(definition));
+                Set(replacement, "attack", attack); Set(replacement, "range", 6f);
+                Set(replacement, "cooldown", .5f);
+                bool replacedDuringShot = true;
+                ranged.ShotFired += (origin, end) => replacedDuringShot = ranged.TrySetDefinition(replacement, out _);
+                Assert.That(ranged.TryFire(Vector2.left), Is.True);
+                Assert.That(replacedDuringShot, Is.False);
+                Assert.That(ranged.TrySetDefinition(replacement, out _), Is.False);
+                Assert.That(ranged.Definition, Is.SameAs(definition));
+                yield return new WaitForSeconds(definition.Cooldown + .05f);
+                Assert.That(ranged.TrySetDefinition(replacement, out var error), Is.True, error);
+                Assert.That(ranged.Definition, Is.SameAs(replacement));
+            }
+            finally { Object.Destroy(replacement); }
+        }
+        [UnityTest] public IEnumerator ShotSubscriberChangesApplyToNextShotWithoutChangingCurrentSnapshot()
+        {
+            int removedCalls = 0, addedCalls = 0;
+            System.Action<Vector2, Vector2> removed = (_, __) => removedCalls++;
+            System.Action<Vector2, Vector2> added = (_, __) => addedCalls++;
+            System.Action<Vector2, Vector2> mutate = null;
+            mutate = (_, __) =>
+            {
+                ranged.ShotFired -= removed;
+                ranged.ShotFired += added;
+                ranged.ShotFired -= mutate;
+            };
+            ranged.ShotFired += mutate;
+            ranged.ShotFired += removed;
+            Assert.That(ranged.TryFire(Vector2.left), Is.True);
+            Assert.That(removedCalls, Is.EqualTo(1));
+            Assert.That(addedCalls, Is.Zero);
+            yield return new WaitForSeconds(definition.Cooldown + .05f);
+            Assert.That(ranged.TryFire(Vector2.left), Is.True);
+            Assert.That(removedCalls, Is.EqualTo(1));
+            Assert.That(addedCalls, Is.EqualTo(1));
+        }
+        [UnityTest] public IEnumerator DisabledDamageReceiverRejectsShotWithoutSideEffects()
+        {
+            var receiver = target.GetComponent<DamageReceiver2D>();
+            float before = receiver.CurrentHealth;
+            int shots = 0;
+            ranged.ShotFired += (_, __) => shots++;
+            actor.GetComponent<DamageReceiver2D>().enabled = false;
+            Assert.That(ranged.TryFire(Vector2.right), Is.False);
+            Assert.That(ranged.CooldownRemaining, Is.Zero);
+            Assert.That(shots, Is.Zero);
+            Assert.That(receiver.CurrentHealth, Is.EqualTo(before));
+            yield return null;
+        }
+        [UnityTest] public IEnumerator ActiveDashMeleeAndParryRejectShotWithoutSideEffects()
+        {
+            var receiver = target.GetComponent<DamageReceiver2D>();
+            float before = receiver.CurrentHealth;
+            int shots = 0;
+            ranged.ShotFired += (_, __) => shots++;
+            var dash = actor.GetComponent<HuntrX.Gameplay.Dash.DashController2D>();
+            dash.SetGrounded(true);
+            Assert.That(dash.TryStartDash(1f), Is.True);
+            Assert.That(ranged.TryFire(Vector2.right), Is.False);
+            Assert.That(ranged.CooldownRemaining, Is.Zero);
+            actor.SetActive(false); actor.SetActive(true);
+            var melee = actor.GetComponent<AttackController2D>();
+            Assert.That(melee.TryStartAttack(1f), Is.True);
+            Assert.That(ranged.TryFire(Vector2.right), Is.False);
+            Assert.That(ranged.CooldownRemaining, Is.Zero);
+            actor.SetActive(false); actor.SetActive(true);
+            Assert.That(actor.GetComponent<ParryController2D>().TryStartParry(), Is.True);
+            Assert.That(ranged.TryFire(Vector2.right), Is.False);
+            Assert.That(ranged.CooldownRemaining, Is.Zero);
+            Assert.That(shots, Is.Zero);
+            Assert.That(receiver.CurrentHealth, Is.EqualTo(before));
+            yield return null;
+        }
         private static void Set(object value, string field, object data) => value.GetType().GetField(field, BindingFlags.Instance | BindingFlags.NonPublic).SetValue(value, data);
     }
 }

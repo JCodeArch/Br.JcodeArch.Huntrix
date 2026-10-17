@@ -99,6 +99,8 @@ namespace HuntrX.Tests.PlayMode
 
             var player = Spawn("Characters/Rumi_Prototype");
             var receiver = player.GetComponent<DamageReceiver2D>();
+            var bootstrap = encounter.GetComponent<EnemyEncounterBootstrap2D>();
+            if (bootstrap != null) bootstrap.enabled = false;
 
             yield return null;
 

@@ -20,6 +20,7 @@ namespace HuntrX.Gameplay.Enemies
         private bool pulsing;
         public event Action<DamageReceiver2D, float> DrainAccepted;
         private void Awake() => agent = GetComponent<EnemyAgent2D>();
+        private void OnEnable() { if (definition != null && definition.IsValid(out _)) cooldown = definition.Interval; }
         private void Update()
         {
             if (agent == null || agent.Self == null || !agent.IsConfigurationValid || !agent.Self.IsAlive || definition == null || !definition.IsValid(out _))
@@ -33,7 +34,7 @@ namespace HuntrX.Gameplay.Enemies
         }
         public bool TryPulse()
         {
-            if (!isActiveAndEnabled || pulsing || cooldown > 0f || agent == null || agent.Self == null ||
+            if (!isActiveAndEnabled || pulsing || agent == null || agent.Self == null ||
                 !agent.IsConfigurationValid || !agent.Self.isActiveAndEnabled || !agent.Self.IsAlive || agent.Self.Faction != CombatFaction2D.Demon ||
                 definition == null || !definition.IsValid(out _)) return false;
             cooldown = definition.Interval;
@@ -94,7 +95,7 @@ namespace HuntrX.Gameplay.Enemies
             foreach (DamageProtection2D target in protectedTargets) if (target != null) target.UnregisterExternalSource(this);
             protectedTargets.Clear(); protectionRemaining = 0f;
         }
-        private void OnDisable() { ClearProtection(); cooldown = 0f; visited.Clear(); }
+        private void OnDisable() { ClearProtection(); cooldown = definition != null && definition.IsValid(out _) ? definition.Interval : 0f; visited.Clear(); }
         private void OnDestroy() => ClearProtection();
     }
 }

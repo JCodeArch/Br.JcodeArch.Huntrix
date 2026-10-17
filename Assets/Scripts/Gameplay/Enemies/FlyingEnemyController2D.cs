@@ -87,6 +87,7 @@ namespace HuntrX.Gameplay.Enemies
                     Vector2 offset = (Vector2)agent.Target.transform.position - body.position;
                     diveDirection = offset.sqrMagnitude <= 0.0001f ? Vector2.down : offset.normalized;
                     diving = true; diveRemaining = definition.DiveDuration; nextIsDive = false;
+                    body.linearVelocity = diveDirection * definition.DiveSpeed;
                 }
                 else
                 {
@@ -97,9 +98,13 @@ namespace HuntrX.Gameplay.Enemies
                         if (!isActiveAndEnabled || !agent.HasValidTarget || agent.State != EnemyState2D.Attacking)
                         { instance.GetComponent<PooledInstance>()?.TryReturn(); return; }
                         EnemyProjectile2D projectile = instance.GetComponent<EnemyProjectile2D>();
+                        Vector2 aim = (Vector2)agent.Target.transform.position - (Vector2)transform.position;
+                        if (aim.sqrMagnitude <= 0.0001f) aim = Vector2.down;
                         if (projectile != null && projectile.TryLaunch(definition.Behavior.Attack, agent.Self, body.position,
-                            (Vector2)agent.Target.transform.position - body.position, definition.ProjectileSpeed,
-                            definition.ProjectileLifetime, definition.ProjectileRange, collisionMask)) projectiles.Add(projectile);
+                            aim, definition.ProjectileSpeed, definition.ProjectileLifetime, definition.ProjectileRange, collisionMask))
+                        {
+                            projectiles.Add(projectile);
+                        }
                         else instance.GetComponent<PooledInstance>()?.TryReturn();
                     }
                     nextIsDive = true; agent.BeginRecovery();

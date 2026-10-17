@@ -39,7 +39,7 @@ namespace HuntrX.Gameplay.Enemies
                 !source.isActiveAndEnabled || !source.IsAlive || !Finite(origin.x) || !Finite(origin.y) ||
                 !Finite(aim.x) || !Finite(aim.y) || !Positive(projectileSpeed) || !Positive(lifetime) || !Positive(range)) return false;
             float scale = Mathf.Max(Mathf.Abs(aim.x), Mathf.Abs(aim.y));
-            if (scale <= 0f) return false;
+            if (scale <= 0f) { aim = Vector2.down; scale = 1f; }
             direction = (aim / scale).normalized;
             attack = value; owner = source; speed = projectileSpeed; life = lifetime; remainingRange = range;
             collisionMask = mask; transform.position = origin; launched = true; return true;

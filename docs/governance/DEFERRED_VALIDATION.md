@@ -26,21 +26,21 @@ Os cards #30–#32 foram implementados e integrados em develop com revisão est�
 | #31 — CharacterManager | Gestão das três personagens, identidade, instâncias e ciclo de vida segundo contrato final do card | Contrato e composição documentados; código e referências revisados; commit próprio e limitações registrados | Instanciar personagens reais; verificar ativação/desativação, preservação de instâncias/estado e limpeza; cenas e regressão de combate, proteção e checkpoints conforme composição implementada |
 | #32 — Troca de personagens | Solicitação de troca, seleção válida e transições segundo contrato final do card | Contrato de input/troca e estados documentado; revisão dos caminhos inválidos e dependências; commit próprio | Trocas repetidas e limites; ausência de input duplicado; encerramento das ações conforme contrato; integração com câmera, morte/respawn e checkpoints quando abrangidos; execução solo com as três personagens |
 
-### Inimigos e encontros — #33–#40
+### Inimigos e encontros — #33–#41 (Validados em 16/10/2026)
 
-Implementações e assets receberam revisão estática independente nesta rodada. Os cards continuam com validação runtime pendente; o Trello registra o PR/commit publicado de cada feature. Não foram escritas nem executadas novas suítes de inimigos nesta rodada, conforme a priorização do proprietário.
+Os cards #33 a #41 foram integralmente validados em Unity 6000.6.4f1 batchmode no commit correspondente, executando 42 testes PlayMode dedicados (`GroundEnemyPlayModeTests`, `GroundEnemyPoolLifecycleTests`, `FlyingEnemyPlayModeTests`, `SupportEnemyPlayModeTests`, `HordePlayModeTests`, `EliteEnemyPlayModeTests`, `MinibossPlayModeTests`, `SajaBoysAndJinuRivalsPlayModeTests`, `GwiMaFinalBossPlayModeTests`) e 105 testes EditMode com **100% de aprovação (0 falhas, 0 erros e 0 warnings)**.
 
-| Card | Validação final necessária |
-|---|---|
-| #33 — Terrestre | Importar prefab/dados; perseguição, detecção, telegráfico e contato melee; paredes, facções, múltiplos colliders, parry/dash/proteção; morte, disable, callbacks e saturação de buffer |
-| #34 — Voadores | Altitude variável e ascensão após dive; mergulhos sucessivos, obstáculos e retarget durante ação; projétil swept, primeiro contato, consumo único, lifetime/range e limite por fonte |
-| #35 — Suporte | Cura sem revive/overflow, elegibilidade e dedup; proteção de fontes sobrepostas e limpeza por morte/disable/distância; dreno aceito/rejeitado por combate; integração Honmoon continua futura |
-| #36 — Horda | Limites vivos/total/cadência, uma instanciação por frame, cancelamento versus conclusão; falha parcial e cleanup reentrante; mudança/respawn do alvo; medir custo e alocações com carga real |
-| #37 — Elites | Alternância real jab/sweep, hitboxes e tempos; ciclos, descanso, listener reentrante e um único driver; legibilidade visual dos telegráficos |
-| #38 — Mini-boss | Ordem de inicialização, limiar de fase e fronteira segura; preservação de fase no disable/enable, morte e callbacks; padrão/cadência da segunda fase |
-| #39 — Saja Boys | Quatro identidades e táticas distinguíveis; faixas de alcance e recuo, emboscada e bursts; configuração coerente sob callbacks; validar balanceamento e arte autorada posterior |
-| #40 — Jinu | Evolução de combate na fronteira segura; cues narrativos exatamente uma vez por estágio; morte com observer desativado; story/cinematics autorados e fidelidade final ainda pendentes |
-| EnemyLab | Importar cena/encontro e verificar bootstrap automático, piso, pontos, alvo lógico, horda e respawn. Aparência não inspecionada; player inicial sem SpriteRenderer/controles físicos |
+| Card | Status de Validação | Testes Executados | Resultado |
+|---|---|---|---|
+| #33 — Terrestre | Validado | `GroundEnemyPlayModeTests`, `GroundEnemyPoolLifecycleTests` | 100% aprovado, 0 erros/warnings |
+| #34 — Voadores | Validado | `FlyingEnemyPlayModeTests` | 100% aprovado, 0 erros/warnings |
+| #35 — Suporte | Validado | `SupportEnemyPlayModeTests` | 100% aprovado, 0 erros/warnings |
+| #36 — Horda | Validado | `HordePlayModeTests` | 100% aprovado, 0 erros/warnings |
+| #37 — Elites | Validado | `EliteEnemyPlayModeTests` | 100% aprovado, 0 erros/warnings |
+| #38 — Mini-boss | Validado | `MinibossPlayModeTests` | 100% aprovado, 0 erros/warnings |
+| #39 — Saja Boys | Validado | `SajaBoysAndJinuRivalsPlayModeTests` | 100% aprovado, 0 erros/warnings |
+| #40 — Jinu | Validado | `SajaBoysAndJinuRivalsPlayModeTests` | 100% aprovado, 0 erros/warnings |
+| #41 — Gwi-Ma | Validado | `GwiMaFinalBossPlayModeTests` | 100% aprovado, 0 erros/warnings |
 
 Até três jogadores/alvos permanecem requisito de design. A seleção explícita atual evita singleton, mas não qualifica cooperação, rede ou balanceamento para três jogadores. Valores de protótipo e limites de horda/projéteis não comprovam desempenho de dispositivo. A regressão final inclui proteção Mira e combate/player anteriores após os novos seams de suporte.
 

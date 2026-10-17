@@ -126,6 +126,7 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(agent.Definition, Is.EqualTo(def.PrimaryBehavior));
 
             // Force burst depletion to trigger alternating transition
+            agent.Stop();
             SetField(pattern, "attacksRemaining", 0);
 
             yield return null;

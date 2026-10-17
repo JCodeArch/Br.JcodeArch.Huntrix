@@ -106,6 +106,12 @@ namespace HuntrX.Tests.PlayMode
 
             var player = Spawn("Characters/Rumi_Prototype");
             player.transform.position = new Vector3(0.5f, 0f, 0f);
+            var playerBody = player.GetComponent<Rigidbody2D>();
+            if (playerBody != null)
+            {
+                playerBody.gravityScale = 0f;
+                playerBody.constraints = RigidbodyConstraints2D.FreezeAll;
+            }
             var playerReceiver = player.GetComponent<DamageReceiver2D>();
 
             Assert.That(fan.TryDrain(10f), Is.True);

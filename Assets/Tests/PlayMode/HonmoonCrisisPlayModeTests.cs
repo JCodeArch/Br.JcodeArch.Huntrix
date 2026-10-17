@@ -195,10 +195,12 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(union.Covers(player.ActiveCharacter), Is.True);
 
             // Foreign receiver without HuntrX participation is not covered
-            GameObject foreignGo = new GameObject("ForeignActor");
+            var enemyPrefab = Resources.Load<GameObject>("Enemies/GroundDemon_Prototype");
+            Assert.That(enemyPrefab, Is.Not.Null, "GroundDemon_Prototype must exist.");
+            GameObject foreignGo = Object.Instantiate(enemyPrefab);
             disposables.Add(foreignGo);
-            var foreignReceiver = foreignGo.AddComponent<DamageReceiver2D>();
-            foreignReceiver.Configure(100f, CombatFaction2D.Demon, 1f, null, 1f, 1f);
+            var foreignReceiver = foreignGo.GetComponent<DamageReceiver2D>();
+            Assert.That(foreignReceiver, Is.Not.Null);
             Assert.That(union.Covers(foreignReceiver), Is.False);
         }
     }

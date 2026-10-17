@@ -69,7 +69,7 @@ namespace HuntrX.Gameplay.Combat
 
         public bool TryFire(Vector2 aimDirection)
         {
-            if (!isActiveAndEnabled || firing || !IsConfigurationValid || !attacker.IsAlive ||
+            if (!isActiveAndEnabled || firing || !IsConfigurationValid || !attacker.isActiveAndEnabled || !attacker.IsAlive ||
                 CooldownRemaining > 0f || (dash != null && dash.IsDashing) ||
                 (melee != null && melee.State != AttackState2D.Idle) ||
                 (parry != null && parry.IsWindowActive) || !Finite(aimDirection.x) ||

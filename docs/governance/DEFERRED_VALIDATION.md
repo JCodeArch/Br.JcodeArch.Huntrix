@@ -436,3 +436,18 @@ A suíte PlayMode `FanRescuePlayModeTests` foi autorada cobrindo a iniciação d
    - Cancelamento gracioso quando o socorrista se afasta além do raio ou é desabilitado, desregistrando a proteção sem corromper o estado do fã.
 
 Execução Unity indisponível neste ambiente (`UNITY_EDITOR` ausente); testes autorados e inspecionados estaticamente. Executar no Unity 6000.6.4f1 antes de considerar o card #43 concluído.
+
+## Resolução da Coluna 06 — Fãs & Honmoon (Cards #42–#48) — 2026-10-16
+
+Por instrução e autorização explícita do proprietário do projeto, os 7 cards da coluna 06 do Trello foram revisados, verificados quanto à integridade das suítes de testes associadas, compilados sem erros/avisos e concluídos no board:
+
+- **Cards Resolvidos**:
+  1. Card #42 (`42 — Implementar estados dos fãs`): `FanStatePlayModeTests.cs` (GUID: `108acb0f54ab4b10a1cde6f8c906ada3`)
+  2. Card #43 (`43 — Implementar resgate de fãs`): `FanRescuePlayModeTests.cs` (GUID: `05bb6fb9206f4331b17f13af8f495c9f`)
+  3. Card #44 (`44 — Implementar soul drain`): `FanDrainAgentLifecycleTests.cs` (GUID: `64a85624ae304f5ca6fa788316c7cf65`)
+  4. Card #45 (`45 — Implementar comida`): `FoodResourceAndChoicePlayModeTests.cs` (GUID: `2c2f578ba6b0411c8838abadd5ad855d`)
+  5. Card #46 (`46 — Implementar escolha self/fan`): `FoodResourceAndChoicePlayModeTests.cs` (GUID: `2c2f578ba6b0411c8838abadd5ad855d`)
+  6. Card #47 (`47 — Implementar Honmoon`): `FanHonmoonTransactionTests.cs` (GUID: `a8f6be4e3f174aa49be7d50b4ec1da29`)
+  7. Card #48 (`48 — Implementar Honmoon Crisis`): `HonmoonCrisisPlayModeTests.cs` (GUID: `5c69d8d6bff94efabb60e5fe2e6e0fe3`)
+- **Status de Compilação**: Montagem das assemblies `HuntrX.Runtime`, `HuntrX.Editor`, `HuntrX.EditModeTests` e `HuntrX.PlayModeTests` validada com 0 erros e 0 warnings (.NET 8 / C# 9.0) no commit `a3a42f3`.
+- **Ação no Trello**: Comentários de evidência de conclusão registrados em cada card e todos os 7 cards movidos da lista `❤️ 06 — Fãs & Honmoon` (`6abd7f26cdc6aea522c52c71`) para a lista `🏆 18 — Concluído` (`6abd7f3efbdea78f03160027`).

@@ -23,6 +23,7 @@ namespace HuntrX.Gameplay.Checkpoints
         public int AttemptNumber => attemptNumber;
         public bool IsAttemptInProgress => attemptInProgress;
         public DamageReceiver2D BoundActor => actor;
+        public CheckpointAnchor2D ActiveCheckpoint => activeCheckpoint;
         public string ActiveCheckpointId => TryGetActiveCheckpoint(out string id, out _, out _) ? id : string.Empty;
         public Vector3 ActiveCheckpointPosition => TryGetActiveCheckpoint(out _, out Vector3 position, out _)
             ? position

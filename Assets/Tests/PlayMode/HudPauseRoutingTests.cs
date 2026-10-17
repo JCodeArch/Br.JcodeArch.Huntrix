@@ -63,7 +63,7 @@ namespace HuntrX.Tests.PlayMode
             {
                 Object.DestroyImmediate(root);
                 InputSystem.RemoveDevice(keyboard);
-                var service = Object.FindFirstObjectByType<HitStopService>();
+                var service = Object.FindAnyObjectByType<HitStopService>();
                 if (service != null) Object.DestroyImmediate(service.gameObject);
                 Time.timeScale = previousScale;
             }
@@ -99,7 +99,7 @@ namespace HuntrX.Tests.PlayMode
             {
                 Object.DestroyImmediate(root);
                 InputSystem.RemoveDevice(gamepad);
-                var service = Object.FindFirstObjectByType<HitStopService>();
+                var service = Object.FindAnyObjectByType<HitStopService>();
                 if (service != null) Object.DestroyImmediate(service.gameObject);
                 Time.timeScale = previousScale;
             }

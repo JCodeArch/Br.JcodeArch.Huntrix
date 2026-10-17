@@ -32,8 +32,8 @@ namespace HuntrX.Tests.PlayMode
         }
         [UnityTest] public IEnumerator NewSessionResetsObservationAndKeepsPreviousSavedReport()
         {
-            var session = Object.FindFirstObjectByType<VerticalSliceSession2D>();
-            var recorder = Object.FindFirstObjectByType<SlicePlaytestRecorder2D>();
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
+            var recorder = Object.FindAnyObjectByType<SlicePlaytestRecorder2D>();
             var previous = recorder.Report;
             Assert.That(previous, Is.Not.Null);
             Assert.That(recorder.TrySubmitFeedback(2, 4, "first session"), Is.True);
@@ -56,7 +56,7 @@ namespace HuntrX.Tests.PlayMode
         }
         [UnityTest] public IEnumerator RecorderDisableEnableKeepsCurrentSessionAndReportIdentity()
         {
-            var recorder = Object.FindFirstObjectByType<SlicePlaytestRecorder2D>();
+            var recorder = Object.FindAnyObjectByType<SlicePlaytestRecorder2D>();
             var previous = recorder.Report;
             Assert.That(recorder.TrySubmitFeedback(4, 3, "same session"), Is.True);
             Assert.That(recorder.TrySaveReport(out firstPath), Is.True);

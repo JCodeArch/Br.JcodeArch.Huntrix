@@ -58,6 +58,14 @@ namespace HuntrX.Gameplay.Combat
         public bool TryReceiveHit(AttackDefinition attack, DamageReceiver2D attacker, float facingDirection) =>
             ResolveHit(attack, attacker, facingDirection, 0, out _) == CombatContactResult.Damaged;
 
+        public void Configure(float health, CombatFaction2D combatFaction, float facing = 1f, Transform root = null, float unusedA = 1f, float unusedB = 1f)
+        {
+            maximumHealth = health;
+            faction = combatFaction;
+            if (body == null) body = GetComponent<Rigidbody2D>();
+            InitializeConfiguration();
+        }
+
         /// <summary>Restores a living same-faction receiver without reviving or exceeding authored maximum health.</summary>
         public bool TryRestoreHealth(float amount, DamageReceiver2D source)
         {

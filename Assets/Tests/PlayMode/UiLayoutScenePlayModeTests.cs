@@ -30,7 +30,7 @@ namespace HuntrX.Tests.PlayMode
             yield return SceneManager.LoadSceneAsync("UiLayoutLab", LoadSceneMode.Single);
 #endif
             yield return null;
-            controller = Object.FindFirstObjectByType<SliceUiController2D>();
+            controller = Object.FindAnyObjectByType<SliceUiController2D>();
             Assert.That(controller, Is.Not.Null, "The actual lab scene must compose a UI controller.");
             Assert.That(EventSystem.current, Is.Not.Null);
             Canvas.ForceUpdateCanvases();

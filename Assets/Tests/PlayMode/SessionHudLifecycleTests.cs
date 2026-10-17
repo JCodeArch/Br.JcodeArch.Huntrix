@@ -32,9 +32,9 @@ namespace HuntrX.Tests.PlayMode
         }
         [UnityTest] public IEnumerator StopReleasesTelemetryAndNextFrameRestartRendersNewResources()
         {
-            var session = Object.FindFirstObjectByType<VerticalSliceSession2D>();
-            var hud = Object.FindFirstObjectByType<SliceReadOnlyHud2D>();
-            var owner = Object.FindFirstObjectByType<SliceHud2D>();
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
+            var hud = Object.FindAnyObjectByType<SliceReadOnlyHud2D>();
+            var owner = Object.FindAnyObjectByType<SliceHud2D>();
             Assert.That(session.IsRunning, Is.True);
             Assert.That(session.Honmoon.TrySetValue(23), Is.True);
             yield return null;
@@ -57,8 +57,8 @@ namespace HuntrX.Tests.PlayMode
         }
         [UnityTest] public IEnumerator CompletingAirplaneBeatReplacesTitleWithoutRecreatingHud()
         {
-            var session = Object.FindFirstObjectByType<VerticalSliceSession2D>();
-            var hud = Object.FindFirstObjectByType<SliceReadOnlyHud2D>();
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
+            var hud = Object.FindAnyObjectByType<SliceReadOnlyHud2D>();
             var canvas = hud.GetComponentInChildren<Canvas>(true);
             string previous = Label(hud, "Beat");
             Assert.That(session.BeatIndex, Is.Zero);

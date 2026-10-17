@@ -9,6 +9,8 @@ namespace HuntrX.Gameplay.Checkpoints
         [SerializeField] private string checkpointId;
         [SerializeField] private Transform respawnPoint;
 
+        public string CheckpointId => checkpointId;
+
         public bool TryConfigure(string identity, Transform destination)
         {
             if (!isActiveAndEnabled || !string.IsNullOrWhiteSpace(checkpointId) || string.IsNullOrWhiteSpace(identity) || destination == null ||

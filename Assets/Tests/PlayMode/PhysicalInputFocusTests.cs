@@ -30,7 +30,7 @@ namespace HuntrX.Tests.PlayMode
 #endif
             slice = SceneManager.GetActiveScene();
             yield return null;
-            input = Object.FindFirstObjectByType<VerticalSliceSession2D>().Input;
+            input = Object.FindAnyObjectByType<VerticalSliceSession2D>().Input;
             input.ActionsRequested += observed.Add;
         }
         [UnityTearDown] public IEnumerator Cleanup()
@@ -43,7 +43,7 @@ namespace HuntrX.Tests.PlayMode
         }
         [UnityTest] public IEnumerator KeyboardToggleIsReleasedOnFocusLossAndRequiresFreshContact()
         {
-            var preferences = Object.FindFirstObjectByType<AccessibilityPreferences2D>();
+            var preferences = Object.FindAnyObjectByType<AccessibilityPreferences2D>();
             Assert.That(preferences.TrySetToggle(GameplayControl.Interact, true), Is.True);
             InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.E));
             yield return null;

@@ -38,14 +38,14 @@ namespace HuntrX.Tests.PlayMode
         [UnityTest]
         public IEnumerator SceneShowsRealResourcesAndDoesNotCreateInputOrTouchProducers()
         {
-            var session = Object.FindFirstObjectByType<VerticalSliceSession2D>();
-            var presenter = Object.FindFirstObjectByType<SliceReadOnlyHud2D>();
-            var owner = Object.FindFirstObjectByType<SliceHud2D>();
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
+            var presenter = Object.FindAnyObjectByType<SliceReadOnlyHud2D>();
+            var owner = Object.FindAnyObjectByType<SliceHud2D>();
             Assert.That(session.IsRunning, Is.True);
             Assert.That(presenter, Is.Not.Null);
             Assert.That(owner.TelemetryPresentedExternally, Is.True);
             Assert.That(owner.enabled, Is.True);
-            Assert.That(Object.FindObjectsByType<SliceTouchControls2D>(FindObjectsSortMode.None).Length, Is.EqualTo(1));
+            Assert.That(Object.FindObjectsByType<SliceTouchControls2D>().Length, Is.EqualTo(1));
             Assert.That(presenter.GetComponentsInChildren<Selectable>(true), Is.Empty);
             Assert.That(presenter.GetComponentsInChildren<EventSystem>(true), Is.Empty);
             Assert.That(presenter.GetComponentsInChildren<GraphicRaycaster>(true), Is.Empty);
@@ -69,8 +69,8 @@ namespace HuntrX.Tests.PlayMode
         [UnityTest]
         public IEnumerator MissingSessionClearsValuesAndOwnerDisableHidesOverlay()
         {
-            var presenter = Object.FindFirstObjectByType<SliceReadOnlyHud2D>();
-            var owner = Object.FindFirstObjectByType<SliceHud2D>();
+            var presenter = Object.FindAnyObjectByType<SliceReadOnlyHud2D>();
+            var owner = Object.FindAnyObjectByType<SliceHud2D>();
             owner.enabled = false;
             yield return null;
             Assert.That(presenter.GetComponentInChildren<Canvas>(true).enabled, Is.False);
@@ -84,9 +84,9 @@ namespace HuntrX.Tests.PlayMode
         [UnityTest]
         public IEnumerator PresentationRefreshesChangedSourceAndOptionsWithoutOwningPause()
         {
-            var presenter = Object.FindFirstObjectByType<SliceReadOnlyHud2D>();
-            var session = Object.FindFirstObjectByType<VerticalSliceSession2D>();
-            var owner = Object.FindFirstObjectByType<SliceHud2D>();
+            var presenter = Object.FindAnyObjectByType<SliceReadOnlyHud2D>();
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
+            var owner = Object.FindAnyObjectByType<SliceHud2D>();
             var actor = session.Manager.ActiveCharacter;
             typeof(HuntrX.Gameplay.Combat.DamageReceiver2D).GetProperty("CurrentHealth")
                 .SetValue(actor, 37f);
@@ -104,8 +104,8 @@ namespace HuntrX.Tests.PlayMode
         [UnityTest]
         public IEnumerator RealSwitchAndResourceChangesReplacePreviouslyRenderedValues()
         {
-            var session = Object.FindFirstObjectByType<VerticalSliceSession2D>();
-            var presenter = Object.FindFirstObjectByType<SliceReadOnlyHud2D>();
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
+            var presenter = Object.FindAnyObjectByType<SliceReadOnlyHud2D>();
             var previous = session.Manager.ActiveCharacter;
             Assert.That(session.Manager.GetComponent<HuntrX.Gameplay.Characters.CharacterSwitchController2D>()
                 .TrySwitchNext(out _), Is.True);
@@ -123,8 +123,8 @@ namespace HuntrX.Tests.PlayMode
         [UnityTest]
         public IEnumerator PresenterCannotStealOrReleaseAnotherPresentersClaim()
         {
-            var presenter = Object.FindFirstObjectByType<SliceReadOnlyHud2D>();
-            var owner = Object.FindFirstObjectByType<SliceHud2D>();
+            var presenter = Object.FindAnyObjectByType<SliceReadOnlyHud2D>();
+            var owner = Object.FindAnyObjectByType<SliceHud2D>();
             presenter.enabled = false;
             var other = new GameObject("Other presenter").AddComponent<SliceUiFlow2D>();
             try
@@ -145,9 +145,9 @@ namespace HuntrX.Tests.PlayMode
         [UnityTest]
         public IEnumerator MissingOwnerRebindDisableEnableAndDestroyRestoreLegacyWithoutLeakingCanvas()
         {
-            var presenter = Object.FindFirstObjectByType<SliceReadOnlyHud2D>();
-            var owner = Object.FindFirstObjectByType<SliceHud2D>();
-            var session = Object.FindFirstObjectByType<VerticalSliceSession2D>();
+            var presenter = Object.FindAnyObjectByType<SliceReadOnlyHud2D>();
+            var owner = Object.FindAnyObjectByType<SliceHud2D>();
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
             var binding = typeof(SliceReadOnlyHud2D).GetField("owner", BindingFlags.Instance | BindingFlags.NonPublic);
             bool priorInput = session.Input.enabled;
             float priorScale = Time.timeScale;

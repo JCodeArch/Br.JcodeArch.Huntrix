@@ -217,7 +217,7 @@ namespace HuntrX.Presentation.UI.Views
                 case GameplayControl.Dash: return "leftShift";
                 case GameplayControl.Attack: return "J";
                 case GameplayControl.Parry: return "K";
-                case GameplayControl.Switch: return "Q";
+                case GameplayControl.SwitchCharacter: return "Q";
                 case GameplayControl.Interact: return "E";
                 case GameplayControl.FoodSelf: return "R";
                 case GameplayControl.FoodFan: return "F";

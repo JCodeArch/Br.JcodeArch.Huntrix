@@ -17,6 +17,7 @@ namespace HuntrX.Gameplay.Fans
         private readonly HashSet<MonoBehaviour> protectionSources = new HashSet<MonoBehaviour>();
         public FanDefinition Definition => definition;
         public float Soul { get; private set; }
+        public float MaximumSoul => definition != null ? definition.MaximumSoul : 0f;
         public FanState State { get; private set; }
         public FanContentIntensity ContentIntensity => contentIntensity;
         public bool IsConfigurationValid => definition != null && definition.IsValid(out _);

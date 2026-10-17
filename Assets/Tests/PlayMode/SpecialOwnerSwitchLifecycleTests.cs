@@ -39,7 +39,7 @@ namespace HuntrX.Tests.PlayMode
 
         private IEnumerator VerifySwitch(bool fromStageCallback)
         {
-            var session = Object.FindFirstObjectByType<VerticalSliceSession2D>();
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
             Assert.That(session.IsRunning, Is.True);
             var special = session.Special;
             var previous = session.Manager.ActiveCharacter;

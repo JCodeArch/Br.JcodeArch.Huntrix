@@ -54,12 +54,12 @@ namespace HuntrX.Tests.PlayMode
                 Assert.That(first.JumpPressed && first.Interact && first.InteractHeld, Is.True);
                 Assert.That(first.Move.x, Is.GreaterThan(.5f));
 
-                Key(keyboard, Key.Escape); Tick(hud); Tick(touch);
+                Key(keyboard, UnityEngine.InputSystem.Key.Escape); Tick(hud); Tick(touch);
                 Assert.That(input.enabled, Is.False);
                 // A finger first pressed inside the menu must also be quarantined.
                 Contact(screen, 4, ScreenPoint(buttons[1].center), UnityEngine.InputSystem.TouchPhase.Began);
                 Key(keyboard); Tick(hud); Tick(touch);
-                Key(keyboard, Key.Escape); Tick(hud); Tick(touch);
+                Key(keyboard, UnityEngine.InputSystem.Key.Escape); Tick(hud); Tick(touch);
                 Assert.That(input.enabled, Is.True);
                 AssertNeutral(Submitted(input));
                 Key(keyboard); Tick(hud); Tick(touch);
@@ -88,7 +88,7 @@ namespace HuntrX.Tests.PlayMode
                 Object.DestroyImmediate(root);
                 InputSystem.RemoveDevice(screen);
                 InputSystem.RemoveDevice(keyboard);
-                var service = Object.FindFirstObjectByType<HitStopService>();
+                var service = Object.FindAnyObjectByType<HitStopService>();
                 if (service != null) Object.DestroyImmediate(service.gameObject);
                 Time.timeScale = scale;
             }

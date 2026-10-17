@@ -27,7 +27,7 @@ namespace HuntrX.Tests.PlayMode
             yield return SceneManager.LoadSceneAsync("VerticalSlice", LoadSceneMode.Single);
 #endif
             slice = SceneManager.GetActiveScene();
-            session = Object.FindFirstObjectByType<VerticalSliceSession2D>();
+            session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
             Assert.That(session, Is.Not.Null);
             session.Stop();
             yield return null;

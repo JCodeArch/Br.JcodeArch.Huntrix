@@ -150,7 +150,7 @@ namespace HuntrX.Tests.PlayMode
             var attack = manager.ActiveCharacter.GetComponent<AttackController2D>();
             Assert.That(attack, Is.Not.Null);
 
-            attack.TryTriggerAttack();
+            attack.TryStartAttack(1f);
             yield return null;
 
             Assert.That(attack.State, Is.Not.EqualTo(AttackState2D.Idle));

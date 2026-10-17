@@ -62,7 +62,7 @@ namespace HuntrX.Tests.PlayMode
                 Object.DestroyImmediate(root);
                 InputSystem.RemoveDevice(keyboard);
                 InputSystem.RemoveDevice(gamepad);
-                var service = Object.FindFirstObjectByType<HuntrX.Gameplay.Combat.HitStopService>();
+                var service = Object.FindAnyObjectByType<HuntrX.Gameplay.Combat.HitStopService>();
                 if (service != null) Object.DestroyImmediate(service.gameObject);
                 Time.timeScale = priorScale;
             }

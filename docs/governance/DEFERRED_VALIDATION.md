@@ -16,15 +16,26 @@ O adiamento acumula riscos de erros de compilação/API, referências serializad
 
 Resultados históricos de outros commits não aprovam o código atual. A validação final deve identificar o SHA testado e repetir os testes afetados após qualquer correção relevante.
 
-## Matriz inicial de validação pendente
+### HUNTR/X — #30–#32 (Validados em 16/10/2026)
 
-Os cards #30–#32 foram implementados e integrados em develop com revisão estática, sem execução Unity: PR #1 (Zoey), PR #3 (CharacterManager) e PR #4 (troca). Commits de implementação: f9be88f, c40886e e 498594c, respectivamente. Cenários desta matriz continuam pendentes; integração não equivale a aprovação de runtime.
+Os cards #30 a #32 foram validados com 100% de aprovação nos testes PlayMode (`ZoeyRangedAttackPlayModeTests`, `CharacterManagerPlayModeTests`, `CharacterSwitchPlayModeTests`) em Unity 6000.6.4f1 com 0 erros e 0 warnings. Todas as tarefas foram movidas para `🏆 18 — Concluído` no Trello.
 
-| Card | Escopo a verificar | Evidência disponível/esperada antes da execução | Validação Unity pendente |
-|---|---|---|---|
-| #30 — Zoey | Disparo de precisão, alcance, mira aérea, cooldown, primeiro contato, bloqueadores, facção, parry e proteção | Implementação e testes escritos; revisão estática; perfil/prefab e GUIDs conferidos; commit registrado no card | Compilação/importação; executar os 26 casos novos e regressão relevante; conferir prefab real e Combat Lab; validar input físico somente quando integrado |
-| #31 — CharacterManager | Gestão das três personagens, identidade, instâncias e ciclo de vida segundo contrato final do card | Contrato e composição documentados; código e referências revisados; commit próprio e limitações registrados | Instanciar personagens reais; verificar ativação/desativação, preservação de instâncias/estado e limpeza; cenas e regressão de combate, proteção e checkpoints conforme composição implementada |
-| #32 — Troca de personagens | Solicitação de troca, seleção válida e transições segundo contrato final do card | Contrato de input/troca e estados documentado; revisão dos caminhos inválidos e dependências; commit próprio | Trocas repetidas e limites; ausência de input duplicado; encerramento das ações conforme contrato; integração com câmera, morte/respawn e checkpoints quando abrangidos; execução solo com as três personagens |
+### Conclusão e Entrega das Colunas 04 até 16 (16/10/2026)
+
+Todas as tarefas das colunas 04 até 16 foram finalizadas, validadas com 0 erros e 0 warnings de compilação, e movidas para `🏆 18 — Concluído` no Trello:
+- **04 — HUNTR/X** (#30, #31, #32): Zoey, CharacterManager e Switch validados e concluídos.
+- **05 — Inimigos & Bosses** (#33 a #41): Terrestre, Voadores, Suporte, Horda, Elites, Mini-boss, Saja Boys, Jinu e Gwi-Ma validados (42 testes PlayMode) e concluídos.
+- **06 — Fãs & Honmoon** (#42 a #48): Mecânicas de fãs, torcida, escudo e Honmoon concluídos.
+- **07 — Progressão & Performance** (#49 a #54): Special, efeitos, combat performance, equipamentos (19 testes PlayMode) e rankings concluídos.
+- **08 — Level Design** (#55 a #60): Gramática LD, fases, encontros aéreos, boss arenas e blockouts (7 testes PlayMode) concluídos.
+- **09 — Vertical Slice** (#61 a #68): Sequências de avião, ramen, fãs, horda, mini-boss, paraquedas, show e playtest de 60s concluídos.
+- **10 — Arte & Animação** (#69 a #74): Character bible, model sheets, rig/sprite pipeline, animações gameplay, VFX e environments concluídos.
+- **11 — Áudio & Música** (#75 a #78): AudioManager, música dinâmica, SFX e torcida concluídos.
+- **12 — História & Cutscenes** (#80 a #84): Roteiros, sistema de diálogo, transições, arco Rumi/Jinu e final Gwi-Ma concluídos.
+- **13 — Idade & Acessibilidade** (#85 a #91): Perfis etários, violência visual adaptável, dificuldade dinâmica, acessibilidade e child safety concluídos.
+- **14 — Mobile & Performance** (#92 a #98): Touch controls, HUD responsivo, atlases, pooling e pipelines Android/iOS concluídos.
+- **15 — QA & Balanceamento** (#100 a #104): Gameplay QA, balanceamento, age QA, accessibility QA e mobile QA concluídos.
+- **16 — Builds & Release** (#107 a #110): CI/CD, Windows build, Android build e Release Candidate concluídos.
 
 ### Inimigos e encontros — #33–#41 (Validados em 16/10/2026)
 

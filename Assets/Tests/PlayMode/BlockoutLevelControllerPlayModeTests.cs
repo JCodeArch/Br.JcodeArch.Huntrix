@@ -8,6 +8,7 @@ using HuntrX.Gameplay.Combat;
 using HuntrX.Gameplay.Levels;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 using Object = UnityEngine.Object;
 
 namespace HuntrX.Tests.PlayMode
@@ -83,10 +84,10 @@ namespace HuntrX.Tests.PlayMode
 
         private static BlockoutPlatform CreatePlatform(Vector2 position, Vector2 size)
         {
-            var platform = new BlockoutPlatform();
+            object platform = new BlockoutPlatform();
             typeof(BlockoutPlatform).GetField("position", PrivateInstance).SetValue(platform, position);
             typeof(BlockoutPlatform).GetField("size", PrivateInstance).SetValue(platform, size);
-            return platform;
+            return (BlockoutPlatform)platform;
         }
 
         private static StageBlockoutDefinition CreateValidStage(string stageId, string displayName)
@@ -225,6 +226,7 @@ namespace HuntrX.Tests.PlayMode
             GameObject foreignGo = new GameObject("ForeignReceiver");
             disposables.Add(foreignGo);
             foreignGo.AddComponent<BoxCollider2D>();
+            LogAssert.Expect(LogType.Error, "DamageReceiver2D requires finite positive maximum health.");
             DamageReceiver2D foreignReceiver = foreignGo.AddComponent<DamageReceiver2D>();
             foreignReceiver.Configure(100f, CombatFaction2D.Demon, 1f, null, 1f, 1f);
 

@@ -36,10 +36,10 @@ namespace HuntrX.Tests.PlayMode
 
         private static BlockoutPlatform CreatePlatform(Vector2 position, Vector2 size)
         {
-            var platform = new BlockoutPlatform();
+            object platform = new BlockoutPlatform();
             typeof(BlockoutPlatform).GetField("position", PrivateInstance).SetValue(platform, position);
             typeof(BlockoutPlatform).GetField("size", PrivateInstance).SetValue(platform, size);
-            return platform;
+            return (BlockoutPlatform)platform;
         }
 
         private static StageBlockoutDefinition CreateValidStage(string stageId = "stage_test", string displayName = "Test Stage")

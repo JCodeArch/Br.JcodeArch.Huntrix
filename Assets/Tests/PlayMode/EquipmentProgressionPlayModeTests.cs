@@ -489,6 +489,7 @@ namespace HuntrX.Tests.PlayMode
             // Dead owner rejects
             var receiver = player.GetComponent<DamageReceiver2D>();
             SetField(receiver, "maximumHealth", 0f);
+            LogAssert.Expect(LogType.Error, "DamageReceiver2D requires finite positive maximum health.");
             InvokeMethod(receiver, "InitializeConfiguration");
             Assert.That(mechanics.TryUseAbility(), Is.False);
         }

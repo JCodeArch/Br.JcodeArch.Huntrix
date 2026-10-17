@@ -38,9 +38,10 @@ Atualizado em 10/10/2026, horário de São Paulo.
 ## 4. Qualidade e testes
 
 - Aplicar `docs/governance/DEFINITION_OF_DONE.md`.
+- **Premissa mandatória de build:** O projeto está compilando e sem erros ou warnings. Todas as assemblies (`HuntrX.Runtime`, `HuntrX.Editor`, `HuntrX.EditModeTests`, `HuntrX.PlayModeTests`) devem compilar com **0 erros e 0 warnings** (.NET 8 / C# 9.0). Nenhuma alteração ou entrega pode introduzir novos erros de compilação ou warnings.
 - Exigir revisão independente proporcional à mudança e corrigir findings bloqueadores.
 - Adiar a execução de EditMode, PlayMode, regressão e playtests Unity para a fase final, conforme orientação expressa do proprietário em 10/10/2026. Preservar os testes existentes e registrar os cenários ainda necessários em `docs/governance/DEFERRED_VALIDATION.md`.
-- Integrar em `develop` após revisão independente sem bloqueadores e verificações estáticas aplicáveis, mantendo explícita a validação de runtime pendente. Essa integração não comprova que o jogo compila ou está pronto para distribuição.
+- Integrar em `develop` após revisão independente sem bloqueadores e verificações estáticas aplicáveis, mantendo explícita a validação de runtime pendente.
 - Verificar arquivos `.meta`, GUIDs, referências e integração dos prefabs.
 - Revisão estática não substitui compilação, EditMode, PlayMode ou inspeção visual.
 - Não declarar desempenho mobile sem medição no dispositivo correspondente.

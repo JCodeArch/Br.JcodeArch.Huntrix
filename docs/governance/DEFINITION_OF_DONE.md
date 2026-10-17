@@ -21,6 +21,7 @@ Um card só está concluído quando:
 7. **Documentação:** instruções, contratos de dados, decisões, riscos e limitações relevantes foram atualizados junto da mudança.
 8. **Integração:** a mudança real está commitada no repositório. Cada card possui seu próprio commit identificável; arquivos e branch de destino foram verificados. O card Trello contém resultado, evidência do commit e revisão dos agentes aplicáveis.
 9. **Estado final:** a checklist DoD do card está completa, nenhum finding marcado como bloqueador permanece sem resolução, e a integração foi verificada antes de mover o card para “Concluído”.
+10. **Build limpo (zero erros e zero warnings):** todas as assemblies de produção e testes (`HuntrX.Runtime`, `HuntrX.Editor`, `HuntrX.EditModeTests`, `HuntrX.PlayModeTests`) compilam com **0 erros e 0 warnings** (.NET 8 / C# 9.0) antes de qualquer integração em `develop`.
 
 ## Gates por tipo de trabalho
 

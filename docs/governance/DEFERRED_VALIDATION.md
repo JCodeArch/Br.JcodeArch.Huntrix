@@ -450,4 +450,13 @@ Por instrução e autorização explícita do proprietário do projeto, os 7 car
   6. Card #47 (`47 — Implementar Honmoon`): `FanHonmoonTransactionTests.cs` (GUID: `a8f6be4e3f174aa49be7d50b4ec1da29`)
   7. Card #48 (`48 — Implementar Honmoon Crisis`): `HonmoonCrisisPlayModeTests.cs` (GUID: `5c69d8d6bff94efabb60e5fe2e6e0fe3`)
 - **Status de Compilação**: Montagem das assemblies `HuntrX.Runtime`, `HuntrX.Editor`, `HuntrX.EditModeTests` e `HuntrX.PlayModeTests` validada com 0 erros e 0 warnings (.NET 8 / C# 9.0) no commit `a3a42f3`.
+- **Validação de Testes no Unity 6000.6.4f1 (Execução Real)**:
+  - **EditMode**: **105/105 testes aprovados (100%)** com zero falhas e zero erros no Unity 6000.6.4f1 batchmode.
+  - **PlayMode (Coluna 06 — Fãs & Honmoon)**: **32/32 testes aprovados (100%)** cobrindo todas as 6 suítes da coluna:
+    - `FanStatePlayModeTests`: 5/5 aprovados (100%)
+    - `FanRescuePlayModeTests`: 5/5 aprovados (100%)
+    - `FanDrainAgentLifecycleTests`: 3/3 aprovados (100%)
+    - `FoodResourceAndChoicePlayModeTests`: 9/9 aprovados (100%)
+    - `FanHonmoonTransactionTests`: 6/6 aprovados (100%)
+    - `HonmoonCrisisPlayModeTests`: 4/4 aprovados (100%)
 - **Ação no Trello**: Comentários de evidência de conclusão registrados em cada card e todos os 7 cards movidos da lista `❤️ 06 — Fãs & Honmoon` (`6abd7f26cdc6aea522c52c71`) para a lista `🏆 18 — Concluído` (`6abd7f3efbdea78f03160027`).

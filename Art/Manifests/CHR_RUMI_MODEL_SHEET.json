@@ -1,0 +1,27 @@
+{
+  "assetId": "CHR_RUMI_MODEL_SHEET",
+  "assetType": "character_model_sheet",
+  "character": "Rumi",
+  "gameplayRole": "sword_fighter",
+  "licenseMode": "AUTHORIZED_REFERENCE_REQUIRED",
+  "styleReference": "ArtBible.json",
+  "visualBrief": {
+    "silhouette": "agile, expressive, easy to recognize",
+    "accentPalette": [
+      "violet",
+      "lavender",
+      "pink"
+    ],
+    "rendering": "premium stylized 2D/3D cel painting",
+    "outfitState": "show_outfit",
+    "anatomy": "consistent across all poses",
+    "lighting": "neutral studio lighting",
+    "background": "transparent"
+  },
+  "exportFile": "Assets/Resources/Art/Characters/Rumi.png",
+  "variants": [
+    "Assets/Resources/Art/Characters/Rumi.png",
+    "Assets/Resources/Art/Characters/Rumi_Casual.png",
+    "Assets/Resources/Art/Characters/Rumi_Evolved.png"
+  ]
+}

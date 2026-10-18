@@ -1,0 +1,20 @@
+{
+  "assetId": "CHR_MIRA_DEATH",
+  "assetType": "character_animation",
+  "character": "Mira",
+  "costume": "show_outfit",
+  "animationName": "death",
+  "frameCountProposal": 4,
+  "framesPerSecondProposal": 12,
+  "loop": false,
+  "view": "side",
+  "direction": "right",
+  "baseReference": "CHR_MIRA_MODEL_SHEET",
+  "export": {
+    "method": "individual_reviewed_frames",
+    "format": "PNG_RGBA",
+    "pivot": "bottom_center",
+    "frameNaming": "CHR_MIRA_DEATH_000.png",
+    "resourcesPath": "Art/Animations/Mira/Death/"
+  }
+}

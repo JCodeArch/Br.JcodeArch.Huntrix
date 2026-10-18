@@ -93,7 +93,12 @@ namespace HuntrX.Presentation.UI.Views
 
             if (remapKeysButton != null)
             {
-                remapKeysButton.onClick.AddListener(() => RemapKeysRequested?.Invoke());
+                remapKeysButton.onClick.AddListener(() =>
+                {
+                    if (UnityEngine.EventSystems.EventSystem.current != null)
+                        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(remapKeysButton.gameObject);
+                    RemapKeysRequested?.Invoke();
+                });
             }
 
             if (closeButton != null)

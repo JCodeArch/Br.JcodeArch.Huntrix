@@ -1,0 +1,27 @@
+{
+  "assetId": "CHR_MIRA_MODEL_SHEET",
+  "assetType": "character_model_sheet",
+  "character": "Mira",
+  "gameplayRole": "shared_combat_and_shield",
+  "licenseMode": "AUTHORIZED_REFERENCE_REQUIRED",
+  "styleReference": "ArtBible.json",
+  "visualBrief": {
+    "silhouette": "agile, expressive, easy to recognize",
+    "accentPalette": [
+      "magenta",
+      "coral_red",
+      "warm_gold"
+    ],
+    "rendering": "premium stylized 2D/3D cel painting",
+    "outfitState": "show_outfit",
+    "anatomy": "consistent across all poses",
+    "lighting": "neutral studio lighting",
+    "background": "transparent"
+  },
+  "exportFile": "Assets/Resources/Art/Characters/Mira.png",
+  "variants": [
+    "Assets/Resources/Art/Characters/Mira.png",
+    "Assets/Resources/Art/Characters/Mira_Casual.png",
+    "Assets/Resources/Art/Characters/Mira_Evolved.png"
+  ]
+}

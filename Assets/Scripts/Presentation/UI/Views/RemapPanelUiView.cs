@@ -94,6 +94,8 @@ namespace HuntrX.Presentation.UI.Views
         public void BindPreferences(AccessibilityPreferences2D source)
         {
             preferences = source;
+            // Awake runs before preferences exist and leaves the "unavailable" status; clear it once bound.
+            if (preferences != null && Status == UnavailableMessage) SetStatus(InitialStatusMessage);
             RefreshCurrentBinding();
             UpdateControlAvailability();
         }

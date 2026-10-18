@@ -27,7 +27,9 @@ namespace HuntrX.Tests.PlayMode
                 if (session != null) break;
             }
             Assert.That(session, Is.Not.Null);
+            yield return null; // let autoStart (Start) run before taking ownership of the session
             session.Stop();
+            yield return null;
         }
 
         [UnityTearDown]

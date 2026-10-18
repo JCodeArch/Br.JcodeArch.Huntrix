@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -13,11 +14,17 @@ namespace HuntrX.Presentation.UI
     {
         private Font font;
         private void Awake() { if (GetComponentInChildren<Canvas>(true) == null) Build(); }
+        private void OnGUI()
+        {
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex < 0) return;
+            if (GUI.Button(new Rect(12, 12, 260, 32), "Jogar Campanha (Vertical Slice)"))
+                UnityEngine.SceneManagement.SceneManager.LoadScene("VerticalSlice");
+        }
 
         public void Build()
         {
             font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            var root = new GameObject("UiCanvasRoot", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+            var root = new GameObject("UiCanvasRoot", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(SliceLabGraphicRaycaster));
             root.transform.SetParent(transform, false);
             root.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
             var scaler = root.GetComponent<CanvasScaler>();
@@ -122,7 +129,19 @@ namespace HuntrX.Presentation.UI
         private static T Find<T>(Transform parent,string name) where T:Component { foreach(var item in parent.GetComponentsInChildren<T>(true)) if(item.name==name)return item; return null; }
         private RectTransform Panel(string name,Transform parent,string title,string subtitle)
         {
-            var panel=Rect(name,parent,0,0,1,1); panel.gameObject.SetActive(false); panel.gameObject.AddComponent<Image>().color=SliceUiTokens.Background;
+            var panel=Rect(name,parent,0,0,1,1); panel.gameObject.SetActive(false);
+            var bg = panel.gameObject.AddComponent<Image>();
+            bg.color=SliceUiTokens.Background;
+            string screenKey = name == "MainMenuPanel" ? "MainMenu_Screen" :
+                name == "TeamProfilePanel" ? "TeamProfile_Screen" :
+                name == "HudPanel" ? "Hud_Screen" :
+                name == "OptionsPanel" ? "Options_Screen" :
+                name == "ResultsPanel" ? "Results_Screen" : null;
+            if (!string.IsNullOrEmpty(screenKey))
+            {
+                Sprite bgSprite = Resources.Load<Sprite>("Art/Screens/" + screenKey);
+                if (bgSprite != null) { bg.sprite = bgSprite; bg.color = new Color(0.45f, 0.45f, 0.55f, 1f); }
+            }
             Label(panel,"Title",title,.04f,.86f,.96f,.97f,36); Label(panel,"Subtitle",subtitle,.04f,.79f,.96f,.86f,18); return panel;
         }
         private static RectTransform Rect(string name,Transform parent,float x,float y,float xx,float yy)
@@ -137,5 +156,42 @@ namespace HuntrX.Presentation.UI
         {var r=Rect(name,parent,x,y,xx,yy);r.gameObject.AddComponent<Image>().color=SliceUiTokens.Protection;var fill=Rect("Fill",r,0,0,1,1);fill.gameObject.AddComponent<Image>().color=SliceUiTokens.PrimaryAction;var slider=r.gameObject.AddComponent<Slider>();slider.fillRect=fill;slider.minValue=min;slider.maxValue=max;slider.wholeNumbers=interactive;slider.value=value;slider.interactable=interactive;if(interactive){var handle=Rect("Handle",r,.45f,0,.55f,1);var image=handle.gameObject.AddComponent<Image>();image.color=SliceUiTokens.Special;slider.handleRect=handle;slider.targetGraphic=image;}return slider;}
         private void Toggle(Transform parent,string name,string caption,float x,float y,float xx,float yy)
         {var r=Rect(name,parent,x,y,xx,yy);var bg=r.gameObject.AddComponent<Image>();bg.color=SliceUiTokens.Surface;var check=Rect("Selected",r,.01f,.18f,.14f,.82f).gameObject.AddComponent<Image>();check.color=SliceUiTokens.PrimaryAction;var toggle=r.gameObject.AddComponent<Toggle>();toggle.targetGraphic=bg;toggle.graphic=check;Label(r,"Label",caption,.16f,0,1,1);}
+    }
+
+    internal sealed class SliceLabGraphicRaycaster : GraphicRaycaster
+    {
+        public override void Raycast(PointerEventData eventData, List<RaycastResult> resultAppendList)
+        {
+            int before = resultAppendList.Count;
+            base.Raycast(eventData, resultAppendList);
+            if (resultAppendList.Count > before || eventData == null) return;
+
+            Canvas targetCanvas = GetComponent<Canvas>();
+            if (targetCanvas == null) return;
+            Camera cam = eventCamera;
+            Vector2 pos = eventData.position;
+            Graphic[] graphics = GetComponentsInChildren<Graphic>(false);
+            for (int i = graphics.Length - 1; i >= 0; i--)
+            {
+                Graphic g = graphics[i];
+                if (g == null || !g.isActiveAndEnabled || !g.raycastTarget || g.canvasRenderer.cull) continue;
+                if (!RectTransformUtility.RectangleContainsScreenPoint(g.rectTransform, pos, cam, g.raycastPadding)) continue;
+                if (!g.Raycast(pos, cam)) continue;
+                resultAppendList.Add(new RaycastResult
+                {
+                    gameObject = g.gameObject,
+                    module = this,
+                    distance = 0f,
+                    screenPosition = pos,
+                    displayIndex = targetCanvas.targetDisplay,
+                    index = resultAppendList.Count,
+                    depth = i,
+                    sortingLayer = targetCanvas.sortingLayerID,
+                    sortingOrder = targetCanvas.sortingOrder,
+                    worldPosition = pos,
+                    worldNormal = Vector3.back
+                });
+            }
+        }
     }
 }

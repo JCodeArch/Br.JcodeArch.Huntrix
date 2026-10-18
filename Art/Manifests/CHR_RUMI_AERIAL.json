@@ -1,0 +1,20 @@
+{
+  "assetId": "CHR_RUMI_AERIAL",
+  "assetType": "character_animation",
+  "character": "Rumi",
+  "costume": "show_outfit",
+  "animationName": "aerial",
+  "frameCountProposal": 4,
+  "framesPerSecondProposal": 12,
+  "loop": false,
+  "view": "side",
+  "direction": "right",
+  "baseReference": "CHR_RUMI_MODEL_SHEET",
+  "export": {
+    "method": "individual_reviewed_frames",
+    "format": "PNG_RGBA",
+    "pivot": "bottom_center",
+    "frameNaming": "CHR_RUMI_AERIAL_000.png",
+    "resourcesPath": "Art/Animations/Rumi/Aerial/"
+  }
+}

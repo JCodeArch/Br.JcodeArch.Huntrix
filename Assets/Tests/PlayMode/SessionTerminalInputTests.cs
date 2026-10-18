@@ -29,6 +29,7 @@ namespace HuntrX.Tests.PlayMode
             slice = SceneManager.GetActiveScene();
             session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
             Assert.That(session, Is.Not.Null);
+            yield return null; // let autoStart (Start) run before taking ownership of the session
             session.Stop();
             yield return null;
         }

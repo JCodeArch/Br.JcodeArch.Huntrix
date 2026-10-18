@@ -58,6 +58,7 @@ namespace HuntrX.Presentation.Art
                 case CharacterVisualPose.Death:cachedRoot.localRotation=Quaternion.Euler(0,0,facing*80);cachedRoot.localPosition+=Vector3.down*.25f;break;
                 case CharacterVisualPose.Special:Rotate(renderer2D.LeftArm,-70);Rotate(renderer2D.RightArm,70);Rotate(renderer2D.Weapon,Mathf.Sin(clock*6)*20);cachedRoot.localPosition+=Vector3.up*.08f;break;
             }
+            renderer2D.UpdatePoseFrame(Pose, clock, Pose == CharacterVisualPose.Idle ? rig.IdleCycleSeconds : rig.RunCycleSeconds);
         }
         private static void Rotate(Transform part,float degrees) { if(part!=null)part.localRotation=Quaternion.Euler(0,0,degrees); }
         private void ResetRotations() { if(renderer2D==null)return;Rotate(renderer2D.LeftLeg,0);Rotate(renderer2D.RightLeg,0);Rotate(renderer2D.LeftArm,0);Rotate(renderer2D.RightArm,0);Rotate(renderer2D.Weapon,renderer2D.Definition!=null&&renderer2D.Definition.Weapon==CharacterWeaponShape.TwinStars?45:0); }

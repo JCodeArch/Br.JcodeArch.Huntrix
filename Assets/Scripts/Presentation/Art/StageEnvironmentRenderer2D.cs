@@ -7,7 +7,7 @@ namespace HuntrX.Presentation.Art
     public sealed class StageEnvironmentRenderer2D : MonoBehaviour
     {
         [SerializeField] private StageEnvironmentDefinition[] profiles;
-        private Texture2D texture;private Sprite sprite;private Transform root,farLayer,nearLayer;private Camera view;private Vector3 cameraStart;
+        private Texture2D texture;private Sprite sprite;private Sprite stageArtSprite;private bool ownsStageArtSprite;private Transform root,farLayer,nearLayer;private Camera view;private Vector3 cameraStart;
         public string CurrentStageId { get; private set; }
         public bool TryBuild(StageBlockoutDefinition stage,Camera camera)
         {
@@ -19,6 +19,7 @@ namespace HuntrX.Presentation.Art
             root=new GameObject("Original_Environment_"+stage.StageId).transform;root.SetParent(transform,false);root.position=Vector3.zero;
             farLayer=Layer("Far",root);nearLayer=Layer("Near",root);
             Quad(root,"Sky",new Vector2(24,8),new Vector2(100,30),profile.Sky,-30);
+            TryAttachStageArtBackdrop(stage.StageId);
             for(int i=0;i<12;i++)
             {
                 float x=i*5-5;float h=3+(i%4)*1.1f;
@@ -34,10 +35,34 @@ namespace HuntrX.Presentation.Art
             if(profile.Theme==StageBlockoutTheme.NightUrban)Quad(farLayer,"Moon",new Vector2(18,7),new Vector2(.85f,.85f),profile.Accent,-24);
             return true;
         }
+        private void TryAttachStageArtBackdrop(string stageId)
+        {
+            stageArtSprite = Resources.Load<Sprite>("Art/Stages/" + stageId);
+            ownsStageArtSprite = false;
+            if (stageArtSprite == null)
+            {
+                Texture2D tex = Resources.Load<Texture2D>("Art/Stages/" + stageId);
+                if (tex != null)
+                {
+                    stageArtSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+                    ownsStageArtSprite = true;
+                }
+            }
+            if (stageArtSprite == null) return;
+            GameObject bg = new GameObject("HD_StageBackdrop_" + stageId);
+            bg.transform.SetParent(farLayer, false);
+            bg.transform.localPosition = new Vector3(24f, 4.5f, 0f);
+            float w = stageArtSprite.bounds.size.x;
+            float h = stageArtSprite.bounds.size.y;
+            if (w > 0.01f && h > 0.01f) bg.transform.localScale = new Vector3(64f / w, 18f / h, 1f);
+            SpriteRenderer sr = bg.AddComponent<SpriteRenderer>();
+            sr.sprite = stageArtSprite;
+            sr.sortingOrder = -18;
+        }
         private Transform Layer(string name,Transform parent){Transform layer=new GameObject(name).transform;layer.SetParent(parent,false);return layer;}
         private void Quad(Transform parent,string name,Vector2 position,Vector2 size,Color color,int sorting){GameObject item=new GameObject(name);item.transform.SetParent(parent,false);item.transform.localPosition=position;item.transform.localScale=new Vector3(size.x,size.y,1);SpriteRenderer renderer=item.AddComponent<SpriteRenderer>();renderer.sprite=sprite;renderer.color=color;renderer.sortingOrder=sorting;}
         private void LateUpdate(){if(view==null||root==null)return;Vector3 delta=view.transform.position-cameraStart;if(float.IsNaN(delta.x)||float.IsInfinity(delta.x)||float.IsNaN(delta.y)||float.IsInfinity(delta.y))return;delta.z=0;if(farLayer!=null)farLayer.localPosition=delta*.15f;if(nearLayer!=null)nearLayer.localPosition=delta*.06f;}
-        public void Clear(){if(root!=null){root.gameObject.SetActive(false);Destroy(root.gameObject);}root=null;farLayer=null;nearLayer=null;view=null;CurrentStageId=null;if(sprite!=null)Destroy(sprite);if(texture!=null)Destroy(texture);sprite=null;texture=null;}
+        public void Clear(){if(root!=null){root.gameObject.SetActive(false);Destroy(root.gameObject);}root=null;farLayer=null;nearLayer=null;view=null;CurrentStageId=null;if(ownsStageArtSprite&&stageArtSprite!=null)Destroy(stageArtSprite);stageArtSprite=null;ownsStageArtSprite=false;if(sprite!=null)Destroy(sprite);if(texture!=null)Destroy(texture);sprite=null;texture=null;}
         private void OnDisable(){Clear();}
     }
 }

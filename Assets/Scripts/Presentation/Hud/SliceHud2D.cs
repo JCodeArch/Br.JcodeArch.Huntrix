@@ -220,6 +220,18 @@ namespace HuntrX.Presentation.Hud
             }
             english=GUILayout.Toggle(english,"Narrativa em inglês");
             GUILayout.Label("A/D: mover • Espaço: pulo • Shift: dash\nJ: ataque • K: parry • Q: troca\nE: resgate • L: Special\nR: comida (você) • F: comida (fã)\nEsc / Start: pausar e opções");
+            GUILayout.Space(6);
+            GUILayout.Label("Navegação de Fases (Seul):");
+            string[] stageScenes = { "Aviao_Blockout", "Show_Blockout", "Cheongdam_Blockout", "Myeongdong_Blockout", "COEX_Blockout", "Hanok_Blockout", "Naksan_Blockout", "Namsan_Blockout", "Awards_Blockout", "UiLayoutLab" };
+            string[] stageLabels = { "1. Avião (Abertura)", "2. Show (Estádio)", "3. Cheongdam", "4. Myeongdong", "5. COEX Square", "6. Bukchon Hanok", "7. Naksan Park", "8. Namsan Tower", "9. Idol Awards", "Menu / Telas HD" };
+            for (int i = 0; i < stageScenes.Length; i++)
+            {
+                if (GUILayout.Button(stageLabels[i]))
+                {
+                    options = false; SetPause(false); SetInputBlocked(false); SetNarrativeBlocked(false);
+                    SceneManager.LoadScene(stageScenes[i]);
+                }
+            }
             if(!string.IsNullOrEmpty(feedback)) GUILayout.Label(feedback);
             GUILayout.EndScrollView(); GUILayout.EndArea();
         }

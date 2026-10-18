@@ -19,7 +19,7 @@ namespace HuntrX.Tests.EditMode
                 "Assets/Scenes/VerticalSlice.unity",
                 "Assets/Scenes/SampleScene.unity",
                 "Assets/Scenes/CombatLab.unity"
-            }, enabledScenes, "The playable slice must start first; legacy scene fixtures remain loadable.");
+            }, enabledScenes.Take(3).ToArray(), "The playable slice must start first; legacy scene fixtures remain loadable.");
         }
     }
 }

@@ -1,0 +1,20 @@
+{
+  "assetId": "CHR_ZOEY_PARRY",
+  "assetType": "character_animation",
+  "character": "Zoey",
+  "costume": "show_outfit",
+  "animationName": "parry",
+  "frameCountProposal": 4,
+  "framesPerSecondProposal": 12,
+  "loop": false,
+  "view": "side",
+  "direction": "right",
+  "baseReference": "CHR_ZOEY_MODEL_SHEET",
+  "export": {
+    "method": "individual_reviewed_frames",
+    "format": "PNG_RGBA",
+    "pivot": "bottom_center",
+    "frameNaming": "CHR_ZOEY_PARRY_000.png",
+    "resourcesPath": "Art/Animations/Zoey/Parry/"
+  }
+}

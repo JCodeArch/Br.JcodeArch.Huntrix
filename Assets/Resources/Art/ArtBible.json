@@ -1,0 +1,44 @@
+{
+  "project": "HUNTRX_HONMOON",
+  "version": "1.0",
+  "visualStyle": {
+    "medium": "2D HD digital illustration & 3D stylized cel render",
+    "finish": "stylized cel painting & Sony Animation KPop Demon Hunters fidelity",
+    "camera": "orthographic side view",
+    "referenceAspectRatio": "16:9",
+    "referenceCanvas": {
+      "width": 1920,
+      "height": 1080
+    },
+    "pixelsPerUnit": 100,
+    "lighting": "cinematic and readable",
+    "shadows": "clean grouped shadow shapes",
+    "lineArt": "controlled expressive outlines",
+    "rendering": "stylized hand-painted & 3D cel shaded",
+    "pixelArt": false,
+    "readabilityPriority": "gameplay first"
+  },
+  "paletteRoles": {
+    "heroA": ["#9B65E8", "#E89BE8", "#F5E8FF"],
+    "heroB": ["#EF4D86", "#C52D63", "#FFD0A5"],
+    "heroC": ["#48BCE8", "#214D91", "#E8F8FF"],
+    "safe": ["#FAD978", "#A4E9FF"],
+    "danger": ["#4B247F", "#BE335A"],
+    "honmoon": ["#ACF4FF", "#FFE5A8"]
+  },
+  "assetRules": {
+    "transparentCharacters": true,
+    "transparentVfx": true,
+    "separateBackgroundLayers": true,
+    "separateCollisionGeometry": true,
+    "preserveSourceFiles": true,
+    "recordModelAndSeed": true,
+    "requireReview": true,
+    "requireLicenseEvidence": true
+  },
+  "rights": {
+    "adaptationLicenseStatus": "UNVERIFIED",
+    "publicReleaseOfRestrictedContent": "BLOCKED"
+  },
+  "status": "PROPOSED_ART_PARAMETERS"
+}

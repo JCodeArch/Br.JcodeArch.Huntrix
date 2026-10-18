@@ -10,6 +10,11 @@ namespace HuntrX.Presentation.Art
         private Texture2D texture;
         private Sprite sprite;
         private bool ownsSprite;
+        private Sprite characterArtSprite;
+        private bool ownsCharacterArtSprite;
+        private SpriteRenderer hdSpriteRenderer;
+        private readonly System.Collections.Generic.List<Sprite> ownedPoseSprites = new System.Collections.Generic.List<Sprite>(64);
+        private Sprite[][] poseFrames;
         public CharacterArtDefinition Definition => definition;
         public Transform VisualRoot { get; private set; }
         public Transform LeftLeg { get; private set; }
@@ -49,7 +54,76 @@ namespace HuntrX.Presentation.Art
             Weapon=Part("Weapon",new Vector2(w*.95f,.04f*h),weaponSize,profile.Accent,14);
             if(profile.Weapon==CharacterWeaponShape.TwinStars) { Weapon.localRotation=Quaternion.Euler(0,0,45); Part("TwinStar",new Vector2(-w*.9f,.05f*h),weaponSize,profile.Accent,14).localRotation=Quaternion.Euler(0,0,45); }
             if(profile.Weapon==CharacterWeaponShape.Horns) { Weapon.gameObject.SetActive(false); Part("Horn_L",new Vector2(-w*.32f,.56f*h),new Vector2(.12f,.28f),profile.Accent,14).localRotation=Quaternion.Euler(0,0,25); Part("Horn_R",new Vector2(w*.32f,.56f*h),new Vector2(.12f,.28f),profile.Accent,14).localRotation=Quaternion.Euler(0,0,-25); }
+            TryAttachHighResCharacterSprite(profile.CharacterName, h);
             return true;
+        }
+        public void UpdatePoseFrame(CharacterVisualPose pose, float clock, float cycleSeconds)
+        {
+            if (hdSpriteRenderer == null || definition == null) return;
+            if (poseFrames == null) poseFrames = new Sprite[10][];
+            int pIndex = (int)pose;
+            if (pIndex < 0 || pIndex >= poseFrames.Length) return;
+            Sprite[] frames = poseFrames[pIndex];
+            if (frames == null)
+            {
+                frames = LoadPoseFrames(definition.CharacterName, pose.ToString());
+                poseFrames[pIndex] = frames;
+            }
+            if (frames.Length == 0)
+            {
+                if (characterArtSprite != null) hdSpriteRenderer.sprite = characterArtSprite;
+                return;
+            }
+            float period = Mathf.Max(0.15f, cycleSeconds);
+            int idx = Mathf.Abs(Mathf.FloorToInt((clock / period) * frames.Length)) % frames.Length;
+            hdSpriteRenderer.sprite = frames[idx];
+        }
+        private Sprite[] LoadPoseFrames(string characterName, string poseName)
+        {
+            string key = characterName == "Gwi-Ma" ? "GwiMa" : characterName;
+            var list = new System.Collections.Generic.List<Sprite>(8);
+            for (int i = 0; i < 12; i++)
+            {
+                string path = "Art/Animations/" + key + "/" + poseName + "/" + i;
+                Sprite s = Resources.Load<Sprite>(path);
+                if (s == null)
+                {
+                    Texture2D tex = Resources.Load<Texture2D>(path);
+                    if (tex != null)
+                    {
+                        s = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+                        ownedPoseSprites.Add(s);
+                    }
+                }
+                if (s == null) break;
+                list.Add(s);
+            }
+            return list.ToArray();
+        }
+        private void TryAttachHighResCharacterSprite(string characterName, float targetHeight)
+        {
+            string key = characterName == "Gwi-Ma" ? "GwiMa" : characterName;
+            characterArtSprite = Resources.Load<Sprite>("Art/Characters/" + key);
+            ownsCharacterArtSprite = false;
+            if (characterArtSprite == null)
+            {
+                Texture2D tex = Resources.Load<Texture2D>("Art/Characters/" + key);
+                if (tex != null)
+                {
+                    characterArtSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+                    ownsCharacterArtSprite = true;
+                }
+            }
+            if (characterArtSprite == null) return;
+            GameObject artObj = new GameObject("HD_CharacterSprite");
+            artObj.transform.SetParent(VisualRoot, false);
+            artObj.transform.localPosition = Vector3.zero;
+            float spriteWorldH = characterArtSprite.bounds.size.y;
+            float scale = spriteWorldH > 0.001f ? (targetHeight * 1.15f) / spriteWorldH : 1f;
+            artObj.transform.localScale = new Vector3(scale, scale, 1f);
+            hdSpriteRenderer = artObj.AddComponent<SpriteRenderer>();
+            hdSpriteRenderer.sprite = characterArtSprite;
+            hdSpriteRenderer.sortingOrder = 15;
         }
         private Transform Part(string name,Vector2 position,Vector2 size,Color color,int order)
         {
@@ -59,7 +133,7 @@ namespace HuntrX.Presentation.Art
         private void Awake() { if(definition!=null) TryConfigure(definition); }
         private void OnEnable() { if(VisualRoot!=null) VisualRoot.gameObject.SetActive(true); }
         private void OnDisable() { if(VisualRoot!=null) VisualRoot.gameObject.SetActive(false); }
-        private void Clear() { if(VisualRoot!=null) { VisualRoot.gameObject.SetActive(false); Destroy(VisualRoot.gameObject); } VisualRoot=null; LeftLeg=null;RightLeg=null;LeftArm=null;RightArm=null;Weapon=null; if(ownsSprite&&sprite!=null)Destroy(sprite);if(texture!=null)Destroy(texture);sprite=null;texture=null;ownsSprite=false; }
+        private void Clear() { if(VisualRoot!=null) { VisualRoot.gameObject.SetActive(false); Destroy(VisualRoot.gameObject); } VisualRoot=null; LeftLeg=null;RightLeg=null;LeftArm=null;RightArm=null;Weapon=null; hdSpriteRenderer=null; poseFrames=null; for(int i=0;i<ownedPoseSprites.Count;i++)if(ownedPoseSprites[i]!=null)Destroy(ownedPoseSprites[i]);ownedPoseSprites.Clear(); if(ownsCharacterArtSprite&&characterArtSprite!=null)Destroy(characterArtSprite);characterArtSprite=null;ownsCharacterArtSprite=false; if(ownsSprite&&sprite!=null)Destroy(sprite);if(texture!=null)Destroy(texture);sprite=null;texture=null;ownsSprite=false; }
         private void OnDestroy() { Clear(); }
     }
 }

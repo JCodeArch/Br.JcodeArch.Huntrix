@@ -14,5 +14,45 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CombatLab.unity
     guid: 1b5df0ea3cee459abc4eb5c5d78ddd01
+  - enabled: 1
+    path: Assets/Scenes/UiLayoutLab.unity
+    guid: 98ce116683987ce4f8efa7c32bca5f87
+  - enabled: 1
+    path: Assets/Scenes/ArtVerticalSlice.unity
+    guid: dbb8528b228e4c4ba303d60945015e75
+  - enabled: 1
+    path: Assets/Scenes/ArtBlockout.unity
+    guid: 39b95130693944c2824f289f72832858
+  - enabled: 1
+    path: Assets/Scenes/EnemyLab.unity
+    guid: 097fe16800144af88a5fe3667e28179d
+  - enabled: 1
+    path: Assets/Scenes/Aviao_Blockout.unity
+    guid: 4559201105374b3eb9febb2f51503cb7
+  - enabled: 1
+    path: Assets/Scenes/Show_Blockout.unity
+    guid: 0a013b3c01b946e0bd5d9be64aecd3a8
+  - enabled: 1
+    path: Assets/Scenes/Cheongdam_Blockout.unity
+    guid: 9a40e2a0ca864980ac081dcddb012783
+  - enabled: 1
+    path: Assets/Scenes/Myeongdong_Blockout.unity
+    guid: 26b3001aface4a5ea6891f2fa18c315c
+  - enabled: 1
+    path: Assets/Scenes/COEX_Blockout.unity
+    guid: 406bfb27333043d09d0c11ecbc1816c2
+  - enabled: 1
+    path: Assets/Scenes/Hanok_Blockout.unity
+    guid: eac2d54770014ae4bc1a9441ac16bc95
+  - enabled: 1
+    path: Assets/Scenes/Naksan_Blockout.unity
+    guid: c728bd87e90d450a90a4e94170686d1a
+  - enabled: 1
+    path: Assets/Scenes/Namsan_Blockout.unity
+    guid: 6df95f529d954842bcbf20f99183b216
+  - enabled: 1
+    path: Assets/Scenes/Awards_Blockout.unity
+    guid: ebc89280b89145e394c252d033b1d933
   m_configObjects:
+    com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

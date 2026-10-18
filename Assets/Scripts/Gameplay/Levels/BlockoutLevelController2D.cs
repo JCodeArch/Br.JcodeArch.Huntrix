@@ -55,9 +55,10 @@ namespace HuntrX.Gameplay.Levels
         private void OnGUI()
         {
             if (route == null || CurrentStageIndex < 0 || CurrentStageIndex >= route.StageCount) return;
-            GUILayout.BeginArea(new Rect(12, 12, 300, 65), GUI.skin.box);
-            GUILayout.Label("Blockout " + (CurrentStageIndex + 1) + "/" + route.StageCount + ": " + route.GetStage(CurrentStageIndex).DisplayName);
-            if (GUILayout.Button("Next area (prototype)")) TryLoad((CurrentStageIndex + 1) % route.StageCount);
+            GUILayout.BeginArea(new Rect(12, 12, 320, 95), GUI.skin.box);
+            GUILayout.Label("Fase " + (CurrentStageIndex + 1) + "/" + route.StageCount + ": " + route.GetStage(CurrentStageIndex).DisplayName);
+            if (GUILayout.Button("Próxima fase (" + ((CurrentStageIndex + 1) % route.StageCount + 1) + "/" + route.StageCount + ")")) TryLoad((CurrentStageIndex + 1) % route.StageCount);
+            if (GUILayout.Button("Voltar à Campanha Principal")) UnityEngine.SceneManagement.SceneManager.LoadScene("VerticalSlice");
             GUILayout.EndArea();
         }
     }

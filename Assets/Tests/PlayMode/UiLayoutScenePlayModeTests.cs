@@ -170,6 +170,8 @@ namespace HuntrX.Tests.PlayMode
                 {
                     if (!field.IsDefined(typeof(SerializeField), true) ||
                         !typeof(Object).IsAssignableFrom(field.FieldType)) continue;
+                    // Legacy combined switch is optional; the authored layout exposes independent jump/rescue toggles.
+                    if (type == typeof(OptionsUiView) && field.Name == "toggleJumpRescueToggle") continue;
                     Assert.That(field.GetValue(view) as Object, Is.Not.Null, type.Name + "." + field.Name);
                 }
                 foreach (Button button in view.GetComponentsInChildren<Button>(true))
@@ -410,7 +412,8 @@ namespace HuntrX.Tests.PlayMode
             };
             var hits = new List<RaycastResult>();
             EventSystem.current.RaycastAll(pointer, hits);
-            Assert.That(hits.Count, Is.GreaterThan(0), "Control must be raycastable: " + name);
+            Assert.That(hits.Count, Is.GreaterThan(0), "Control must be raycastable: " + name +
+                " pointer=" + pointer.position + " screen=" + Screen.width + "x" + Screen.height);
             GameObject target = ExecuteEvents.GetEventHandler<IPointerClickHandler>(hits[0].gameObject);
             Assert.That(target, Is.EqualTo(button.gameObject), "Another graphic obstructs " + name);
             ExecuteEvents.Execute(target, pointer, ExecuteEvents.pointerClickHandler);

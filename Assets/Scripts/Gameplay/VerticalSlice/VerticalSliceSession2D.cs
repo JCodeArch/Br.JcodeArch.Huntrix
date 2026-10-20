@@ -72,6 +72,9 @@ namespace HuntrX.Gameplay.VerticalSlice
             Input = slot.AddComponent<SlicePlayerInput2D>(); Input.TryBind(Manager, switching); Input.ActionsRequested += HandleInput;
             if (camera == null) { ownedCamera = new GameObject("Vertical slice camera"); camera = ownedCamera.AddComponent<Camera>(); }
             if (camera.GetComponent<AudioListener>() == null) camera.gameObject.AddComponent<AudioListener>();
+            if(!slot.AddComponent<HuntrX.Presentation.Effects.StageLightingRig2D>().TryBind(camera,
+                UnityEngine.Resources.Load<UnityEngine.Rendering.VolumeProfile>("Presentation/HuntrxBloom")))
+            { Stop(); return false; }
             camera.orthographic = true; camera.orthographicSize = 3.7f; camera.backgroundColor = new Color(.05f,.06f,.14f);
             slot.AddComponent<SlicePlayerPresentation2D>().TryBind(Manager, camera);
             Inventory = slot.AddComponent<FoodInventory2D>(); FoodChoice = slot.AddComponent<FoodChoiceController2D>();

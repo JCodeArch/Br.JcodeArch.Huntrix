@@ -46,14 +46,12 @@ namespace HuntrX.Gameplay.Levels
                     collider.size = authored.Size;
                     GameObject visual = new GameObject("Platform_Visual");
                     visual.transform.SetParent(platform.transform, false);
-                    // Keep collider world dimensions explicit; render a sleek Capcom metallic top catwalk deck.
+                    // The visible solid must match its collision volume; a thin top hides solid walls.
                     SpriteRenderer display = visual.AddComponent<SpriteRenderer>();
                     display.sprite = tile;
                     display.color = Color.white;
                     display.sortingOrder = 2;
-                    float visualHeight = Mathf.Min(authored.Size.y, 0.36f);
-                    visual.transform.localPosition = new Vector3(0f, (authored.Size.y - visualHeight) * 0.5f, 0f);
-                    visual.transform.localScale = new Vector3(authored.Size.x, visualHeight, 1f);
+                    visual.transform.localScale = new Vector3(authored.Size.x, authored.Size.y, 1f);
                 }
 
                 StartPoint = Point(candidate.transform, "Stage_Start", profile.StartPosition);

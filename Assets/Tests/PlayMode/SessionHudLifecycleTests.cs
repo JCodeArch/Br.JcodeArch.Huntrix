@@ -66,8 +66,13 @@ namespace HuntrX.Tests.PlayMode
             var body = session.Manager.ActiveCharacter.GetComponent<Rigidbody2D>();
             body.position = session.Stage.EndPoint.position;
             body.linearVelocity = Vector2.zero;
+            // A render-frame count does not guarantee a physics step in a fast batch run.
+            yield return new WaitForFixedUpdate();
             for (int frame = 0; frame < 10 && session.BeatIndex == 0; frame++) yield return null;
-            Assert.That(session.BeatIndex, Is.EqualTo(1));
+            Assert.That(session.BeatIndex, Is.EqualTo(1),
+                $"actor={session.Manager.ActiveCharacter.transform.position}, body={body.position}, " +
+                $"alive={session.Manager.ActiveCharacter.IsAlive}, running={session.IsRunning}, " +
+                $"canEnter={session.Manager.CanEnterStage}, enemies={session.LivingEnemies}, aerial={session.Aerial.Count}");
             yield return null;
             Assert.That(Label(hud, "Beat"), Is.EqualTo(session.BeatTitle).And.Not.EqualTo(previous));
             Assert.That(hud.GetComponentInChildren<Canvas>(true), Is.SameAs(canvas));

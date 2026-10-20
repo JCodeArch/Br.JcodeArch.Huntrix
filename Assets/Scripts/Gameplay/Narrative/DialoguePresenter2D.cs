@@ -25,6 +25,13 @@ namespace HuntrX.Gameplay.Narrative
         public void SetUiBlocked(bool value) { uiBlocked = value; }
         public bool IsPresenting=>sequence!=null;
         public NarrativeSequenceDefinition Current=>sequence;
+        public event Action PresentationChanged;
+        private void NotifyPresentationChanged()
+        {
+            var handlers = PresentationChanged;
+            if (handlers != null) foreach (Action handler in handlers.GetInvocationList())
+                try { handler(); } catch (Exception error) { Debug.LogException(error, this); }
+        }
         public event Action<NarrativeSequenceDefinition> SequenceCompleted;
         public event Action<NarrativeSequenceDefinition> SequenceCancelled;
         public bool BindPolicy(MonoBehaviour value)
@@ -37,7 +44,7 @@ namespace HuntrX.Gameplay.Narrative
         {
             if(!isActiveAndEnabled||publishing||resolvingPolicy||IsPresenting||value==null||!value.IsValid(out _))return false;
             int version=policyVersion;for(int i=0;i<value.Count;i++)if(!Resolve(value,i,out _))return false;
-            if(version!=policyVersion||!isActiveAndEnabled||IsPresenting)return false;sequence=value;index=0;revealed=0f;PlayVoice();return true;
+            if(version!=policyVersion||!isActiveAndEnabled||IsPresenting)return false;sequence=value;index=0;revealed=0f;PlayVoice();NotifyPresentationChanged();return true;
         }
         public void SetCaptionsEnabled(bool value) { captionsEnabled = value; }
         public void SetEnglish(bool value){english=value;}
@@ -51,13 +58,13 @@ namespace HuntrX.Gameplay.Narrative
             NarrativeSequenceDefinition completed=sequence;sequence=null;audioManager?.StopVoice();
             publishing=true;
             try{var handlers=SequenceCompleted;if(handlers!=null)foreach(Action<NarrativeSequenceDefinition> handler in handlers.GetInvocationList())try{handler(completed);}catch(Exception error){Debug.LogException(error,this);}}
-            finally{publishing=false;}
+            finally{publishing=false;NotifyPresentationChanged();}
             return true;
         }
         public void Cancel()
         {
             policyVersion++;NarrativeSequenceDefinition old=sequence;sequence=null;revealed=0f;audioManager?.StopVoice();if(old==null)return;
-            bool wasPublishing=publishing;publishing=true;try{var handlers=SequenceCancelled;if(handlers!=null)foreach(Action<NarrativeSequenceDefinition> handler in handlers.GetInvocationList())try{handler(old);}catch(Exception error){Debug.LogException(error,this);}}finally{publishing=wasPublishing;}
+            bool wasPublishing=publishing;publishing=true;try{var handlers=SequenceCancelled;if(handlers!=null)foreach(Action<NarrativeSequenceDefinition> handler in handlers.GetInvocationList())try{handler(old);}catch(Exception error){Debug.LogException(error,this);}}finally{publishing=wasPublishing;NotifyPresentationChanged();}
         }
         private void PlayVoice(){if(audioManager!=null){audioManager.StopVoice();AudioClip clip=sequence.GetLine(index).Voice;if(clip!=null&&!requiresPolicy)audioManager.TryPlayVoice(clip);}}
         private void Update(){if(uiBlocked)return;if(sequence!=null){if(!Resolve(sequence,index,out string text)){Cancel();return;}revealed=Mathf.Min(text.Length,revealed+sequence.CharactersPerSecond*Time.unscaledDeltaTime);}}

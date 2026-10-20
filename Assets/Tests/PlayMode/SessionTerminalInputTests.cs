@@ -90,10 +90,12 @@ namespace HuntrX.Tests.PlayMode
 
         private IEnumerator ReachAirplaneExit()
         {
+            yield return NarrativeTestFlow.CompleteCurrentDialogue();
             session.ClearEnemies();
             var body = session.Manager.ActiveCharacter.GetComponent<Rigidbody2D>();
             body.position = session.Stage.EndPoint.position;
             body.linearVelocity = Vector2.zero;
+            yield return new WaitForFixedUpdate();
             for (int frame = 0; frame < 10 && session.IsRunning; frame++) yield return null;
             Assert.That(session.IsRunning, Is.False, "The real airplane beat should cross its terminal boundary.");
         }

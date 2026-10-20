@@ -31,6 +31,7 @@ namespace HuntrX.Presentation.Hud
         private AgeVisualFeedback2D ageVisual;
         private bool english, narrativeOwned, priorNarrativeBlocked;
         private DialoguePresenter2D blockedPresenter;
+        private SliceNarrativeComposition2D observedNarrative;
         private CharacterManager2D boundManager, scopedManager;
         private HordeController2D boundHorde;
         private bool options, pauseOwned, inputOwned, priorInputEnabled;
@@ -79,10 +80,9 @@ namespace HuntrX.Presentation.Hud
         private void OnDestroy() { pauseAction?.Dispose(); }
         private void Update()
         {
+            ObserveNarrative();
             if(PausePressed()) options=!options;
-            SetPause(options);
-            SetInputBlocked(options || (session != null && session.IsComplete));
-            SetNarrativeBlocked(options);
+            ApplyGameplayPolicy();
             RefreshVisualSource();
             if(narrative != null && narrative.Presenter != null) { narrative.Presenter.SetEnglish(english); narrative.Presenter.SetCaptionsEnabled(preferences == null || preferences.CaptionsEnabled); }
             if(session==null || session.Manager==null || !session.Manager.isActiveAndEnabled) return;
@@ -128,7 +128,7 @@ namespace HuntrX.Presentation.Hud
             GUILayout.Label($"★ SCORE: {score:D6} (Próx. Marmita: {nextFood})  |  🍜 SUB-TANK [R]: {subTanks}x  |  [Setas/WASD] Mover  [Z/J] Ataque/Combo  [Espaço/X] Pulo  [C/Shift] Dash  [1/2/3/Q] Trocar Heroína");
             if (GUILayout.Button("Fases / Opções [ESC]", GUILayout.Width(175f)))
             {
-                options = true; SetPause(true); SetInputBlocked(true); SetNarrativeBlocked(true);
+                SetOptionsOpen(true);
             }
             if (session.IsComplete && recorder == null && GUILayout.Button("Jogar novamente", GUILayout.Width(140f))) RestartCompletedSession();
             GUILayout.EndHorizontal();
@@ -198,6 +198,28 @@ namespace HuntrX.Presentation.Hud
             if(visualProfile!=null) visualProfile.ProfileChanged-=VisualProfileChanged;
             visualManager=null; visualActor=null; visualProfile=null; ageVisual=null;
         }
+        private void ObserveNarrative()
+        {
+            if(observedNarrative == narrative) return;
+            if(observedNarrative != null) observedNarrative.PresentationChanged -= ApplyGameplayPolicy;
+            observedNarrative = narrative;
+            if(observedNarrative != null) observedNarrative.PresentationChanged += ApplyGameplayPolicy;
+        }
+        private void ApplyGameplayPolicy()
+        {
+            var presenter = narrative != null ? narrative.Presenter : null;
+            bool dialogue = presenter != null && presenter.isActiveAndEnabled && presenter.IsPresenting;
+            SetPause(options || dialogue);
+            SetInputBlocked(options || dialogue || (session != null && session.IsComplete));
+            SetNarrativeBlocked(options);
+        }
+        public void SetOptionsOpen(bool value)
+        {
+            if(!isActiveAndEnabled) return;
+            options = value;
+            ObserveNarrative();
+            ApplyGameplayPolicy();
+        }
         private void SetNarrativeBlocked(bool value)
         {
             DialoguePresenter2D current=narrative!=null?narrative.Presenter:null;
@@ -228,12 +250,12 @@ namespace HuntrX.Presentation.Hud
             if(inputOwned && (!value || blockedInput!=current)) { if(blockedInput!=null) blockedInput.enabled=priorInputEnabled; inputOwned=false; blockedInput=null; }
             if(value && !inputOwned && current!=null) { blockedInput=current; priorInputEnabled=current.enabled; inputOwned=true; current.enabled=false; }
         }
-        private void OnDisable() { pauseAction?.Disable(); options=false; SetPause(false); SetInputBlocked(false); SetNarrativeBlocked(false); UnbindVisualSource(); effects?.SetPresentationPolicy(0f,true,false); }
+        private void OnDisable() { if(observedNarrative!=null) observedNarrative.PresentationChanged-=ApplyGameplayPolicy; observedNarrative=null; pauseAction?.Disable(); options=false; SetPause(false); SetInputBlocked(false); SetNarrativeBlocked(false); UnbindVisualSource(); effects?.SetPresentationPolicy(0f,true,false); }
         private void DrawOptions(float width,float height)
         {
             GUILayout.BeginArea(new Rect(8,8,Mathf.Min(430,width-16),height-16),GUI.skin.box);
             optionsScroll=GUILayout.BeginScrollView(optionsScroll);
-            if(GUILayout.Button("Voltar ao jogo")) { options=false; SetPause(false); SetInputBlocked(session.IsComplete); SetNarrativeBlocked(false); }
+            if(GUILayout.Button("Voltar ao jogo")) { SetOptionsOpen(false); }
             if(ageSelection!=null && ageOptions!=null && ageOptions.Length>0 && ageOptions.Length<=5)
             {
                 GUILayout.Label("Faixa etária: "+(ageSelection.Current!=null?ageSelection.Current.Band.ToString():"Escolher"));
@@ -261,7 +283,7 @@ namespace HuntrX.Presentation.Hud
             {
                 if (GUILayout.Button(stageLabels[i]))
                 {
-                    options = false; SetPause(false); SetInputBlocked(false); SetNarrativeBlocked(false);
+                    SetOptionsOpen(false);
                     SceneManager.LoadScene(stageScenes[i]);
                 }
             }

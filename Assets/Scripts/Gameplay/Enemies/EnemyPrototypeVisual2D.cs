@@ -1,6 +1,7 @@
 using HuntrX.Gameplay.BossFinal;
 using HuntrX.Gameplay.Combat;
 using HuntrX.Gameplay.Rivals;
+using HuntrX.Data;
 using UnityEngine;
 
 namespace HuntrX.Gameplay.Enemies
@@ -24,6 +25,8 @@ namespace HuntrX.Gameplay.Enemies
         private float baseScale = 1f;
         private float targetSpriteHeight = 1.85f;
         private float animPhase;
+        private SajaRivalController2D rival;
+        private SajaIdentity? displayedRivalIdentity;
 
         private GameObject hpBarBg;
         private GameObject hpBarFill;
@@ -35,6 +38,7 @@ namespace HuntrX.Gameplay.Enemies
         private void Awake()
         {
             agent = GetComponent<EnemyAgent2D>();
+            rival = GetComponent<SajaRivalController2D>();
             body2D = GetComponent<Rigidbody2D>();
             lastPosition = transform.position;
             animPhase = Mathf.Abs(GetHashCode() % 100) * 0.07f;
@@ -62,13 +66,20 @@ namespace HuntrX.Gameplay.Enemies
             string objName = gameObject.name ?? string.Empty;
             morphFrames = null;
             actionFrames = null;
+            displayedRivalIdentity = rival != null && rival.Definition != null
+                ? rival.Definition.Identity : (SajaIdentity?)null;
 
             if (GetComponent<GwiMaBossController2D>() != null || objName.IndexOf("Gwi", System.StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 path = "Art/Characters/GwiMa";
                 targetSpriteHeight = 2.65f;
             }
-            else if (GetComponent<JinuEncounterController2D>() != null || GetComponent<SajaRivalController2D>() != null || GetComponent<MinibossPhaseController2D>() != null)
+            else if (displayedRivalIdentity.HasValue)
+            {
+                path = "Art/Characters/" + displayedRivalIdentity.Value;
+                targetSpriteHeight = 2.10f;
+            }
+            else if (GetComponent<JinuEncounterController2D>() != null || GetComponent<MinibossPhaseController2D>() != null)
             {
                 string[] rivals = { "Art/Characters/Jinu", "Art/Characters/Abby", "Art/Characters/Mystery", "Art/Characters/Romance", "Art/Characters/Baby" };
                 int idx = Mathf.Abs(GetHashCode()) % rivals.Length;
@@ -244,6 +255,8 @@ namespace HuntrX.Gameplay.Enemies
         private void LateUpdate()
         {
             if (visual == null || renderer2D == null || agent == null) return;
+            if (rival != null && rival.Definition != null && displayedRivalIdentity != rival.Definition.Identity)
+                AssignDemonCasteSprite();
             float dt = Mathf.Min(Time.unscaledDeltaTime, 0.1f);
             spawnClock += dt;
 

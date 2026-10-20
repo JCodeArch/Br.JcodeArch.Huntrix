@@ -24,6 +24,7 @@ namespace HuntrX.Data
         public float Duration => TryGetDuration(out float duration) ? duration : 0f;
         public bool Loop => loop;
         public int FrameCount => frames == null ? 0 : frames.Length;
+        internal Sprite FrameAtIndex(int index) => frames[index];
 
         public Sprite FrameAt(float elapsed)
         {

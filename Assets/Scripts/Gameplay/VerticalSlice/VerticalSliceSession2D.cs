@@ -40,6 +40,7 @@ namespace HuntrX.Gameplay.VerticalSlice
         public SlicePlayerInput2D Input { get; private set; }
         public FoodInventory2D Inventory { get; private set; }
         public FoodChoiceController2D FoodChoice { get; private set; }
+        public ScoreMilestoneFoodDelivery2D FoodDelivery { get; private set; }
         public FoodDefinition Ramen => ramen;
         public HonmoonController2D Honmoon { get; private set; }
         public HuntrXSpecialController2D Special { get; private set; }
@@ -71,7 +72,7 @@ namespace HuntrX.Gameplay.VerticalSlice
             Input = slot.AddComponent<SlicePlayerInput2D>(); Input.TryBind(Manager, switching); Input.ActionsRequested += HandleInput;
             if (camera == null) { ownedCamera = new GameObject("Vertical slice camera"); camera = ownedCamera.AddComponent<Camera>(); }
             if (camera.GetComponent<AudioListener>() == null) camera.gameObject.AddComponent<AudioListener>();
-            camera.orthographic = true; camera.orthographicSize = 5f; camera.backgroundColor = new Color(.08f,.1f,.2f);
+            camera.orthographic = true; camera.orthographicSize = 3.7f; camera.backgroundColor = new Color(.05f,.06f,.14f);
             slot.AddComponent<SlicePlayerPresentation2D>().TryBind(Manager, camera);
             Inventory = slot.AddComponent<FoodInventory2D>(); FoodChoice = slot.AddComponent<FoodChoiceController2D>();
             Honmoon = slot.AddComponent<HonmoonController2D>(); if (!Honmoon.TryConfigure(honmoonProfile)) { Stop(); return false; }
@@ -79,6 +80,8 @@ namespace HuntrX.Gameplay.VerticalSlice
             Performance = slot.AddComponent<CombatPerformanceController2D>();
             Fans = slot.AddComponent<FanEncounterController2D>(); Aerial = slot.AddComponent<AerialStageEncounter2D>(); BossArena = slot.AddComponent<BossArenaController2D>();
             if (!Fans.TryStart(fanProfile, new Vector3(65f, .8f, 0f))) { Stop(); return false; }
+            FoodDelivery = slot.AddComponent<ScoreMilestoneFoodDelivery2D>();
+            FoodDelivery.Configure(Manager, Inventory, ramen, Fans);
             Manager.ActiveCharacterChanged += HandleActor;
             IsRunning = true; IsComplete = false; BeatIndex = -1;
             if (!Advance()) { Stop(); return false; }

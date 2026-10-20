@@ -64,12 +64,49 @@ namespace HuntrX.Gameplay.Narrative
         private void OnGUI()
         {
             if(uiBlocked||sequence==null)return;NarrativeLine line=sequence.GetLine(index);if(!Resolve(sequence,index,out string text)){Cancel();return;}
-            float w=Screen.width,h=Screen.height;Rect panel=new Rect(w*.08f,h*.68f,w*.84f,h*.27f);GUI.Box(panel,GUIContent.none);
-            Color previous=GUI.color;GUI.color=line.PortraitColor;GUI.Box(new Rect(panel.x+12,panel.y+12,70,70),line.Speaker.Length>0?line.Speaker.Substring(0,1):"?");GUI.color=previous;
-            GUI.Label(new Rect(panel.x+94,panel.y+8,panel.width-110,24),line.Speaker);
+            float w=Screen.width,h=Screen.height;
+
+            // Mega Man X4 Style Anime Cutscene Backdrop Panel above dialogue
+            Texture2D animeScene = ResolveAnimeCutsceneTexture(sequence.CueId, line.Speaker);
+            if (animeScene != null)
+            {
+                Rect cinemaRect = new Rect(w * .14f, h * .08f, w * .72f, h * .56f);
+                Color prev = GUI.color;
+                GUI.color = new Color(0.05f, 0.03f, 0.12f, 0.92f);
+                GUI.DrawTexture(new Rect(cinemaRect.x - 4, cinemaRect.y - 4, cinemaRect.width + 8, cinemaRect.height + 8), Texture2D.whiteTexture);
+                GUI.color = Color.white;
+                GUI.DrawTexture(cinemaRect, animeScene, ScaleMode.ScaleAndCrop);
+                GUI.color = prev;
+            }
+
+            Rect panel=new Rect(w*.08f,h*.67f,w*.84f,h*.28f);GUI.Box(panel,GUIContent.none);
+            Texture2D portraitTex = ResolveSpeakerPortrait(line.Speaker);
+            if (portraitTex != null)
+            {
+                GUI.DrawTexture(new Rect(panel.x + 12, panel.y + 10, 88, 88), portraitTex, ScaleMode.ScaleToFit);
+            }
+            else
+            {
+                Color previous=GUI.color;GUI.color=line.PortraitColor;GUI.Box(new Rect(panel.x+12,panel.y+12,70,70),line.Speaker.Length>0?line.Speaker.Substring(0,1):"?");GUI.color=previous;
+            }
+            GUI.Label(new Rect(panel.x+110,panel.y+8,panel.width-126,24),line.Speaker);
             GUIStyle style=new GUIStyle(GUI.skin.label){wordWrap=true,fontSize=Mathf.Clamp(Mathf.RoundToInt(h/35f),14,26)};
-            if (captionsEnabled || line.Voice == null || requiresPolicy) GUI.Label(new Rect(panel.x+94,panel.y+35,panel.width-110,panel.height-78),text.Substring(0,Mathf.Min(text.Length,Mathf.FloorToInt(revealed))),style);
+            if (captionsEnabled || line.Voice == null || requiresPolicy) GUI.Label(new Rect(panel.x+110,panel.y+35,panel.width-126,panel.height-78),text.Substring(0,Mathf.Min(text.Length,Mathf.FloorToInt(revealed))),style);
             if(GUI.Button(new Rect(panel.xMax-155,panel.yMax-35,140,27),english?"Continue":"Continuar"))Advance();
+        }
+        private static Texture2D ResolveAnimeCutsceneTexture(string cueId, string speaker)
+        {
+            string s = ((cueId ?? string.Empty) + " " + (speaker ?? string.Empty)).ToLowerInvariant();
+            bool isClimax = s.Contains("jinu") || s.Contains("gwi") || s.Contains("saja") || s.Contains("boss") || s.Contains("final") || s.Contains("honmoon");
+            string path = isClimax ? "Art/Cutscenes/Anime_02_ClimaxShowdown" : "Art/Cutscenes/Anime_01_AirplaneFight";
+            return UnityEngine.Resources.Load<Texture2D>(path);
+        }
+        private static Texture2D ResolveSpeakerPortrait(string speaker)
+        {
+            if (string.IsNullOrEmpty(speaker)) return null;
+            string s = speaker.ToLowerInvariant();
+            string key = s.Contains("mira") ? "Mira" : s.Contains("zoey") ? "Zoey" : s.Contains("jinu") ? "Jinu" : s.Contains("gwi") ? "GwiMa" : "Rumi";
+            return UnityEngine.Resources.Load<Texture2D>("Art/Characters/" + key);
         }
         private void OnEnable(){requiresPolicy=requiresPolicy||!ReferenceEquals(narrativePolicy,null);policy=narrativePolicy as INarrativePresentationPolicy;if(policy!=null)policy.PolicyChanged+=HandlePolicyChanged;}
         private void OnDisable(){UnbindPolicy();Cancel();}

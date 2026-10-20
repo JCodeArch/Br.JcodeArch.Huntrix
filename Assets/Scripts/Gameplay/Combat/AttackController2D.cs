@@ -237,6 +237,21 @@ namespace HuntrX.Gameplay.Combat
             remainingPhaseDuration = step.Attack.RecoveryDuration;
         }
 
+        /// <summary>
+        /// Mega Man X / Zero style Dash-Cancel: cancels post-hit recovery frames immediately when a Dash starts.
+        /// </summary>
+        public bool TryCancelRecoveryForDash()
+        {
+            if (!isActiveAndEnabled || State != AttackState2D.Recovery)
+            {
+                return false;
+            }
+            FinishChain();
+            return true;
+        }
+
+        public float LastFacingDirection => facingDirection == 0f ? 1f : facingDirection;
+
         private void FinishChain()
         {
             attackHitbox.EndActivation();

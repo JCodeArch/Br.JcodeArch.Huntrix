@@ -107,22 +107,55 @@ namespace HuntrX.Presentation.Hud
             try
             {
                 if(options) { DrawOptions(width,height); return; }
-                GUILayout.BeginArea(new Rect(8,8,Mathf.Min(620,width-16),180),GUI.skin.box);
-                if (!TelemetryPresentedExternally)
-                {
-                GUILayout.Label(session.IsComplete?"Chegamos ao show!":session.BeatTitle);
-                var actor=session.Manager!=null?session.Manager.ActiveCharacter:null;
-                if(actor!=null) GUILayout.Label("Vida "+Mathf.CeilToInt(actor.CurrentHealth)+" / "+Mathf.CeilToInt(actor.MaximumHealth));
-                if(session.Honmoon!=null) GUILayout.Label("Honmoon "+Mathf.RoundToInt(session.Honmoon.Value));
-                if(session.Special!=null) GUILayout.Label("Special "+(session.Special.IsReady?"pronto":"carregando "+Mathf.RoundToInt(session.Special.Charge)));
-                if(session.Inventory!=null) GUILayout.Label("Comida "+session.Inventory.TotalCount+" • R: você • F: fã");
-                }
-                if(GUILayout.Button("Opções e acessibilidade")) { options=true; SetPause(true); SetInputBlocked(true); SetNarrativeBlocked(true); }
-                if(session.IsComplete && recorder==null && GUILayout.Button("Jogar novamente")) RestartCompletedSession();
-                GUILayout.EndArea();
+                DrawCapcomArcadeOverlay(width, height);
                 if(session.IsComplete && recorder!=null) DrawFeedback(width,height);
             }
             finally { GUI.matrix=previous; GUI.skin.label.fontSize=labelFont; GUI.skin.button.fontSize=buttonFont; GUI.skin.textField.fontSize=textFont; GUI.skin.toggle.fontSize=toggleFont; }
+        }
+
+        private void DrawCapcomArcadeOverlay(float width, float height)
+        {
+            var delivery = session.FoodDelivery;
+            int score = delivery != null ? delivery.ArcadeScore : (session.Performance != null ? Mathf.RoundToInt(session.Performance.Snapshot.Points * 100f) : 0);
+            int nextFood = delivery != null ? delivery.NextMilestoneTarget : 1000;
+            int subTanks = session.Inventory != null ? session.Inventory.TotalCount : 0;
+
+            // Sleek bottom-center Capcom Arcade Control Legend & Score bar (no ugly overlapping top-left debug boxes!)
+            float barW = Mathf.Min(920f, width - 32f);
+            float barX = (width - barW) * 0.5f;
+            GUILayout.BeginArea(new Rect(barX, height - 56f, barW, 50f), GUI.skin.box);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"★ SCORE: {score:D6} (Próx. Marmita: {nextFood})  |  🍜 SUB-TANK [R]: {subTanks}x  |  [Setas/WASD] Mover  [Z/J] Ataque/Combo  [Espaço/X] Pulo  [C/Shift] Dash  [1/2/3/Q] Trocar Heroína");
+            if (GUILayout.Button("Fases / Opções [ESC]", GUILayout.Width(175f)))
+            {
+                options = true; SetPause(true); SetInputBlocked(true); SetNarrativeBlocked(true);
+            }
+            if (session.IsComplete && recorder == null && GUILayout.Button("Jogar novamente", GUILayout.Width(140f))) RestartCompletedSession();
+            GUILayout.EndHorizontal();
+            if (!TelemetryPresentedExternally)
+            {
+                var actor = session.Manager != null ? session.Manager.ActiveCharacter : null;
+                if (actor != null) GUILayout.Label("Vida " + Mathf.CeilToInt(actor.CurrentHealth) + " / " + Mathf.CeilToInt(actor.MaximumHealth) + " • " + (session.IsComplete ? "Chegamos ao show!" : session.BeatTitle));
+            }
+            GUILayout.EndArea();
+
+            // Live Film Signature Move Banner (Rumi Kick, Zoey Leg Chokehold, Mira Coffee Pot Smash!)
+            if (delivery != null && delivery.SignatureMoveBannerTimer > 0f)
+            {
+                Color prev = GUI.color;
+                GUI.color = new Color(0.2f, 0.95f, 1f, 0.95f);
+                GUI.Box(new Rect(width * 0.5f - 260f, 64f, 520f, 32f), delivery.LastSignatureMoveLabel);
+                GUI.color = prev;
+            }
+
+            // Live Backstage Korean Food Delivery Toast ("Temos que comer antes do show!")
+            if (delivery != null && delivery.DeliveryBannerTimer > 0f)
+            {
+                Color prev = GUI.color;
+                GUI.color = new Color(1f, 0.88f, 0.25f, 0.98f);
+                GUI.Box(new Rect(width * 0.5f - 290f, 100f, 580f, 34f), "🍜 " + delivery.LastDeliveredFoodLabel);
+                GUI.color = prev;
+            }
         }
         private void RefreshVisualSource()
         {
@@ -222,8 +255,8 @@ namespace HuntrX.Presentation.Hud
             GUILayout.Label("A/D: mover • Espaço: pulo • Shift: dash\nJ: ataque • K: parry • Q: troca\nE: resgate • L: Special\nR: comida (você) • F: comida (fã)\nEsc / Start: pausar e opções");
             GUILayout.Space(6);
             GUILayout.Label("Navegação de Fases (Seul):");
-            string[] stageScenes = { "Aviao_Blockout", "Show_Blockout", "Cheongdam_Blockout", "Myeongdong_Blockout", "COEX_Blockout", "Hanok_Blockout", "Naksan_Blockout", "Namsan_Blockout", "Awards_Blockout", "UiLayoutLab" };
-            string[] stageLabels = { "1. Avião (Abertura)", "2. Show (Estádio)", "3. Cheongdam", "4. Myeongdong", "5. COEX Square", "6. Bukchon Hanok", "7. Naksan Park", "8. Namsan Tower", "9. Idol Awards", "Menu / Telas HD" };
+            string[] stageScenes = { "VerticalSlice", "Show_Blockout", "Cheongdam_Blockout", "Myeongdong_Blockout", "COEX_Blockout", "Hanok_Blockout", "Naksan_Blockout", "Namsan_Blockout", "Awards_Blockout", "UiLayoutLab" };
+            string[] stageLabels = { "1. Avião (Abertura - Campanha)", "2. Show (Estádio)", "3. Cheongdam", "4. Myeongdong", "5. COEX Square", "6. Bukchon Hanok", "7. Naksan Park", "8. Namsan Tower", "9. Idol Awards", "Menu / Telas HD" };
             for (int i = 0; i < stageScenes.Length; i++)
             {
                 if (GUILayout.Button(stageLabels[i]))

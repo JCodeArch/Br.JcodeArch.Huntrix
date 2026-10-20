@@ -57,7 +57,7 @@ namespace HuntrX.Presentation.Art
             TryAttachHighResCharacterSprite(profile.CharacterName, h);
             return true;
         }
-        public void UpdatePoseFrame(CharacterVisualPose pose, float clock, float cycleSeconds)
+        public void UpdatePoseFrame(CharacterVisualPose pose, float clock, float cycleSeconds, int forcedFrameIndex = -1)
         {
             if (hdSpriteRenderer == null || definition == null) return;
             if (poseFrames == null) poseFrames = new Sprite[10][];
@@ -74,9 +74,26 @@ namespace HuntrX.Presentation.Art
                 if (characterArtSprite != null) hdSpriteRenderer.sprite = characterArtSprite;
                 return;
             }
-            float period = Mathf.Max(0.15f, cycleSeconds);
-            int idx = Mathf.Abs(Mathf.FloorToInt((clock / period) * frames.Length)) % frames.Length;
-            hdSpriteRenderer.sprite = frames[idx];
+            int idx;
+            if (forcedFrameIndex >= 0)
+            {
+                idx = Mathf.Clamp(forcedFrameIndex, 0, frames.Length - 1);
+            }
+            else
+            {
+                float period = Mathf.Max(0.15f, cycleSeconds);
+                idx = Mathf.Abs(Mathf.FloorToInt((clock / period) * frames.Length)) % frames.Length;
+            }
+            Sprite active = frames[idx];
+            hdSpriteRenderer.sprite = active;
+            if (active != null && active.bounds.size.y > 0.001f)
+            {
+                float baseScale = (definition.Height * 1.15f) / active.bounds.size.y;
+                float breath = Mathf.Sin(clock * 4.5f);
+                float sx = pose == CharacterVisualPose.Run ? 1f + Mathf.Sin(clock * 16f) * 0.04f : 1f - breath * 0.015f;
+                float sy = pose == CharacterVisualPose.Run ? 1f - Mathf.Abs(Mathf.Sin(clock * 16f)) * 0.035f : 1f + breath * 0.02f;
+                hdSpriteRenderer.transform.localScale = new Vector3(baseScale * sx, baseScale * sy, 1f);
+            }
         }
         private Sprite[] LoadPoseFrames(string characterName, string poseName)
         {
@@ -128,7 +145,7 @@ namespace HuntrX.Presentation.Art
         private Transform Part(string name,Vector2 position,Vector2 size,Color color,int order)
         {
             GameObject part=new GameObject(name); part.transform.SetParent(VisualRoot,false); part.transform.localPosition=position; part.transform.localScale=new Vector3(size.x,size.y,1);
-            SpriteRenderer renderer=part.AddComponent<SpriteRenderer>(); renderer.sprite=sprite; color.a=1; renderer.color=color; renderer.sortingOrder=order; return part.transform;
+            SpriteRenderer renderer=part.AddComponent<SpriteRenderer>(); renderer.sprite=sprite; color.a=0f; renderer.color=color; renderer.sortingOrder=order; renderer.enabled=false; return part.transform;
         }
         private void Awake() { if(definition!=null) TryConfigure(definition); }
         private void OnEnable() { if(VisualRoot!=null) VisualRoot.gameObject.SetActive(true); }

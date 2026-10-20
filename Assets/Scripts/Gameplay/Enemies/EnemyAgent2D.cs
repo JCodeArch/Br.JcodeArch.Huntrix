@@ -114,6 +114,16 @@ namespace HuntrX.Gameplay.Enemies
                 (State != EnemyState2D.Idle && State != EnemyState2D.Chasing)) return;
             Vector2 offset = destination - body.position;
             if (offset.sqrMagnitude > definition.DetectionRange * definition.DetectionRange) { StopMotion(); SetState(EnemyState2D.Idle); return; }
+            if (!flying && target != null && Mathf.Abs(destination.x - target.transform.position.x) < 0.05f)
+            {
+                float desiredSpacing = Mathf.Clamp(definition.AttackRange * 0.72f, 0.75f, 1.35f);
+                if (Mathf.Abs(offset.x) < desiredSpacing)
+                {
+                    StopMotion();
+                    SetState(EnemyState2D.Idle);
+                    return;
+                }
+            }
             Vector2 velocity = offset.sqrMagnitude <= 0.01f ? Vector2.zero : offset.normalized * definition.MoveSpeed;
             body.linearVelocity = flying ? velocity : new Vector2(velocity.x, body.linearVelocity.y);
             SetState(EnemyState2D.Chasing);

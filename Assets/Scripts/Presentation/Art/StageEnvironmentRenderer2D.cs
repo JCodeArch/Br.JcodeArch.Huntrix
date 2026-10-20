@@ -58,9 +58,11 @@ namespace HuntrX.Presentation.Art
             SpriteRenderer sr = bg.AddComponent<SpriteRenderer>();
             sr.sprite = stageArtSprite;
             sr.sortingOrder = -18;
+            var anim = bg.AddComponent<HuntrX.Gameplay.Levels.LivingStageBackdropAnimator2D>();
+            anim.Configure(stageId, sr);
         }
         private Transform Layer(string name,Transform parent){Transform layer=new GameObject(name).transform;layer.SetParent(parent,false);return layer;}
-        private void Quad(Transform parent,string name,Vector2 position,Vector2 size,Color color,int sorting){GameObject item=new GameObject(name);item.transform.SetParent(parent,false);item.transform.localPosition=position;item.transform.localScale=new Vector3(size.x,size.y,1);SpriteRenderer renderer=item.AddComponent<SpriteRenderer>();renderer.sprite=sprite;renderer.color=color;renderer.sortingOrder=sorting;}
+        private void Quad(Transform parent,string name,Vector2 position,Vector2 size,Color color,int sorting){GameObject item=new GameObject(name);item.transform.SetParent(parent,false);item.transform.localPosition=position;item.transform.localScale=new Vector3(size.x,size.y,1);SpriteRenderer renderer=item.AddComponent<SpriteRenderer>();renderer.sprite=sprite;renderer.color=color;renderer.sortingOrder=sorting;if(stageArtSprite!=null)renderer.enabled=false;}
         private void LateUpdate(){if(view==null||root==null)return;Vector3 delta=view.transform.position-cameraStart;if(float.IsNaN(delta.x)||float.IsInfinity(delta.x)||float.IsNaN(delta.y)||float.IsInfinity(delta.y))return;delta.z=0;if(farLayer!=null)farLayer.localPosition=delta*.15f;if(nearLayer!=null)nearLayer.localPosition=delta*.06f;}
         public void Clear(){if(root!=null){root.gameObject.SetActive(false);Destroy(root.gameObject);}root=null;farLayer=null;nearLayer=null;view=null;CurrentStageId=null;if(ownsStageArtSprite&&stageArtSprite!=null)Destroy(stageArtSprite);stageArtSprite=null;ownsStageArtSprite=false;if(sprite!=null)Destroy(sprite);if(texture!=null)Destroy(texture);sprite=null;texture=null;}
         private void OnDisable(){Clear();}

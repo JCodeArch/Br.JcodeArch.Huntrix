@@ -61,6 +61,9 @@ namespace HuntrX.Editor.Build
             if(target==BuildTarget.Android)
             {
                 EditorUserBuildSettings.buildAppBundle=release;
+#if UNITY_ANDROID
+                UnityEditor.Android.UserBuildSettings.DebugSymbols.level = Unity.Android.Types.DebugSymbolLevel.SymbolTable;
+#endif
                 if(release)ConfigureAndroidSigning();
                 else PlayerSettings.Android.useCustomKeystore=false;
             }

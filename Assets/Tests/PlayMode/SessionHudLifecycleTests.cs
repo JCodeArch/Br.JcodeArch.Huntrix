@@ -79,6 +79,20 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(hud.GetComponentInChildren<Canvas>(true), Is.SameAs(canvas));
             Assert.That(canvas.enabled, Is.True);
         }
+        [UnityTest] public IEnumerator AirplaneIntroReleasesAllSeatedCharacterArtBeforeCombatPresentation()
+        {
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
+            var beat = Object.FindAnyObjectByType<SliceAirplaneBeat2D>();
+            var intro = session.Stage.RuntimeRoot.transform.Find("VIP_RearLounge_EatingScene");
+            Assert.That(intro, Is.Not.Null);
+            Assert.That(intro.GetComponentsInChildren<SpriteRenderer>().Length, Is.EqualTo(2));
+            beat.Tick(3.3f);
+            beat.Tick(0f);
+            Assert.That(intro.GetComponentsInChildren<SpriteRenderer>().All(renderer => !renderer.enabled), Is.True,
+                "Seated heroines must not remain as giant duplicate characters over live combat.");
+            Assert.That(session.Manager.ActiveCharacter, Is.Not.Null);
+            yield return null;
+        }
         private static string Label(Component hud, string name) =>
             hud.GetComponentsInChildren<Text>(true).Single(text => text.name == name).text;
     }

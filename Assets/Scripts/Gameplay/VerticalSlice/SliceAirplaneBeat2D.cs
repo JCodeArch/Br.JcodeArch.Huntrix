@@ -163,12 +163,10 @@ namespace HuntrX.Gameplay.VerticalSlice
             if (heroinesStoodUpFromTable) return;
             heroinesStoodUpFromTable = true;
             if (session != null) session.SetExternalCharacterArt(false);
-            if (rumiSeatRenderer != null && vipIntroFrames != null && vipIntroFrames.Length >= 3 && vipIntroFrames[2] != null)
-            {
-                rumiSeatRenderer.sprite = vipIntroFrames[2];
-                rumiSeatRenderer.sortingOrder = 8; // Empty/reacting VIP seat behind the player
-                rumiSeatRenderer.color = new Color(1f, 1f, 1f, 0.85f);
-            }
+            // Both images contain seated heroines, rather than reusable empty scenery.
+            // Release the whole tableau when gameplay takes ownership of the characters.
+            if (rumiSeatRenderer != null) rumiSeatRenderer.enabled = false;
+            if (zoeyMiraTableRenderer != null) zoeyMiraTableRenderer.enabled = false;
         }
 
         public override void Tick(float deltaTime)
@@ -190,11 +188,6 @@ namespace HuntrX.Gameplay.VerticalSlice
                     // Frame 0 (0..1.6s): Slurping ramyeon in VIP seat -> Frame 2 (1.6..2.6s): Tossing cup & drawing Saingeom sword!
                     rumiSeatRenderer.sprite = beatClock < 1.6f ? vipIntroFrames[0] : vipIntroFrames[2];
                 }
-            }
-            else if (rumiSeatRenderer != null && beatClock > 3.2f)
-            {
-                // Fade out the Rumi intro overlay once she is running down the cabin aisle, leaving the VIP table in the rear lounge
-                rumiSeatRenderer.enabled = false;
             }
 
             if (session.LivingEnemies > 0) return;

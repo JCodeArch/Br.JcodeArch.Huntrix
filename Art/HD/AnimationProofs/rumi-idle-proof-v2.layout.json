@@ -6,7 +6,7 @@
     1024,
     1536
   ],
-  "status": "geometry-approved-awaiting-Unity-playback",
+  "status": "technical-import-verified-in-Unity; final-motion-quality-pending",
   "rectCoordinateSystem": "Unity-bottom-left",
   "pivotNormalized": [
     0.6,
@@ -53,6 +53,15 @@
   ],
   "notes": [
     "PNG unchanged. Equal frame canvas and pivot; calibrated origins compensate column registration.",
-    "PPU and frame durations require in-engine review before runtime acceptance."
+    "Technical preview observed in Unity D3D11. Costume, palette, whole blade and open/closed eye frames verified.",
+    "Provisional 2.9s cycle replaces rejected 0.6s blink cadence; four frames do not establish final fluidity or lateral combat poses."
+  ],
+  "previewCatalog": "Assets/Art/HD/Rumi/IdleProofV2/RumiIdleProofV2.asset",
+  "previewScene": "Assets/Art/HD/Rumi/IdleProofV2/RumiIdleProofPreview.unity",
+  "provisionalFrameDurationsSeconds": [
+    2.0,
+    0.4,
+    0.1,
+    0.4
   ]
 }

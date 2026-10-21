@@ -4,7 +4,7 @@ Ferramenta: image_gen integrada; transparent_background=true; nenhuma edição p
 Referência/alvo: rumi-idle-proof-v1.png.
 Saída original: exec-fea66fc7-54b6-4827-904e-c146e797f8c7.png.
 SHA256: 2bee6f1261a993e6d17a1eacd9e1df3c6b703c479d5c4cec89137c3ef73cf8eb.
-Status: geometria aprovada pelo especialista; importação e ritmo do loop no Unity ainda pendentes.
+Status: importação técnica aprovada e observada em Play Mode no Unity; qualidade final de movimento e poses laterais pendentes.
 
 ## Motivo
 
@@ -23,3 +23,11 @@ Medir alpha, pés e arma. Se a grade fixa continuar inadequada, avaliar retângu
 RGBA 1024×1536. Quatro retângulos uniformes 448×744 com origens calibradas, registrados em `rumi-idle-proof-v2.layout.json`; nenhum pixel alpha>8 nas bordas. Espada preservada sem captura significativa da figura vizinha. Sobreposição das botas entre quadros consecutivos: 98,3–98,9%; no fechamento 4→1: botas 98,32%, cabeça 96,13%. Margens mínimas: 9px à direita da espada, 24px acima da cabeça e 26px abaixo dos pés.
 
 Aprovação restrita ao recorte e registro geométrico. Ritmo, leitura em movimento e integração com o chão ainda precisam ser vistos no Unity. O PNG permanece intacto.
+
+## Prova no Unity — 21/10/2026
+
+PNG copiado intacto para Assets/Art/HD/Rumi/IdleProofV2 e catálogo Idle-only importado via Sprite Data Provider público. Seis testes do importador passaram no D: e no clone; a suíte EditMode completa do clone passou143/143 antes do ajuste de cadência.
+
+Preview real em Unity D3D11 confirmou o figurino, a espada completa, transparência e quadros com olhos abertos/fechados. A primeira cena de prova carregou o legado por uma referência de prefab não persistida; o vínculo foi corrigido e OpenAndPlay agora o valida antes de executar. Capturas nativas em outputs/hd-validation/rumi-idle-v2-unity-proof.png e -proof-blink.png.
+
+Especialista aprovou a importação técnica, mas reprovou o loop inicial0,6s: a piscada se repetia100vezes/minuto. Cadência provisória adotada:2,0/0,4/0,10/0,4s (ciclo2,9s). Continua sendo prova de quatro quadros, sem aprovação de fluidez final ou combate lateral. Não atribuir este catálogo apenas Idle à heroína jogável como se Run/Attack/Death estivessem prontos.

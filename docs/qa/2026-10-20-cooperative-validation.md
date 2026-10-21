@@ -20,6 +20,12 @@ Verificação após correção:
 
 ## Trabalho cooperativo
 
+## Capitão com comportamento de miniboss
+
+O campo explícito captainEnemy nas duas cenas de slice aponta para Miniboss_Prototype. Apenas o último guarda extra emx42.5 usa esse prefab; os demais continuam terrestres comuns. O Capitão agora tem350HP e controlador de padrões com mudança de fase a50% de vida; sua identidade visual já reconhece o nomeCaptainDokkaebi. Continua registrado na sessão para troca de alvo, limpeza e contagem de inimigos necessários à saída.
+
+RED1/1 em airplane-captain-red.xml confirmou ausência do controlador no guarda antigo. GREEN completo537/537 em airplane-captain-green-full.xml, exit0. Revisão independente sem bloqueador introduzido. Isto não comprova arena, balanceamento, antecipação visual ou vitória em partida real. O loop dos extras ainda ignora uma eventual falha de spawn; tratar explicitamente na consolidação do encontro.
+
 Antigravity propôs aproveitar CharacterSpritePlayback2D e retirar seleção/normalização concorrentes dos apresentadores. Execução solicitada em sua cópia D:, com patch seletivo e testes antes de integrar no clone validado. Revisão preventiva enviada: ápice aéreo não pode virarIdle por velocity.zero, animação deve acompanhar fases reais do combate e respeitar pausa, takeover/unbind deve restaurar o presenter anterior. Integração ainda não aceita neste registro.
 
 ## Pendências que esta validação não encerra

@@ -9,6 +9,7 @@ namespace HuntrX.Gameplay.VerticalSlice
         [SerializeField] private StageBlockoutDefinition stage;
         [SerializeField] private GameObject groundEnemy;
         [SerializeField] private GameObject flyingEnemy;
+        [SerializeField] private GameObject captainEnemy;
         private VerticalSliceSession2D session;
         private GameObject vipLoungeRoot;
         private SpriteRenderer rumiSeatRenderer;
@@ -37,7 +38,9 @@ namespace HuntrX.Gameplay.VerticalSlice
 
         public override bool TryBegin(VerticalSliceSession2D owner)
         {
-            if (owner == null || groundEnemy == null || flyingEnemy == null || !owner.TryLoadStage(stage)) return false;
+            if (owner == null || groundEnemy == null || flyingEnemy == null || captainEnemy == null ||
+                captainEnemy.GetComponent<MinibossPhaseController2D>() == null ||
+                captainEnemy.GetComponent<EnemyPatternController2D>() == null || !owner.TryLoadStage(stage)) return false;
             session = owner;
             IsComplete = false;
             beatClock = 0f;
@@ -75,7 +78,8 @@ namespace HuntrX.Gameplay.VerticalSlice
             };
             for (int i = 0; i < extraCabinSpawns.Length; i++)
             {
-                if (owner.TrySpawnEnemy(groundEnemy, extraCabinSpawns[i], out EnemyAgent2D extra) && extra != null)
+                GameObject prefab = i == extraCabinSpawns.Length - 1 ? captainEnemy : groundEnemy;
+                if (owner.TrySpawnEnemy(prefab, extraCabinSpawns[i], out EnemyAgent2D extra) && extra != null)
                 {
                     extra.gameObject.name = extraRoles[i];
                     var vis = extra.GetComponent<EnemyPrototypeVisual2D>();

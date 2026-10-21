@@ -116,6 +116,19 @@ namespace HuntrX.Tests.PlayMode
                 }
             }
         }
+        [UnityTest] public IEnumerator AirplaneCaptainUsesThePhasedMinibossController()
+        {
+            var enemies = Object.FindObjectsByType<HuntrX.Gameplay.Enemies.EnemyAgent2D>(FindObjectsSortMode.None);
+            var captain = enemies.Single(enemy => enemy.name == "BOSS_Cockpit_CaptainDokkaebi");
+            var guard = enemies.First(enemy => enemy.name.StartsWith("FlightCrew_"));
+            Assert.That(captain.GetComponent<HuntrX.Gameplay.Enemies.MinibossPhaseController2D>(), Is.Not.Null,
+                "The captain must have a phased fight, rather than only a new name on a ground guard.");
+            var pattern = captain.GetComponent<HuntrX.Gameplay.Enemies.EnemyPatternController2D>();
+            Assert.That(pattern, Is.Not.Null);
+            Assert.That(pattern.Definition.IsValid(out string reason), Is.True, reason);
+            Assert.That(captain.Self.MaximumHealth, Is.GreaterThan(guard.Self.MaximumHealth));
+            yield return null;
+        }
         private static string Label(Component hud, string name) =>
             hud.GetComponentsInChildren<Text>(true).Single(text => text.name == name).text;
     }

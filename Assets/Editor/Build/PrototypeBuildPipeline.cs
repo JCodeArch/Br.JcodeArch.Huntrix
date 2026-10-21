@@ -94,6 +94,19 @@ namespace HuntrX.Editor.Build
         }
         private static string ArtifactHash(string root)
         {
+            // Unity may remove temporary managed bridge DLLs just after BuildPlayer returns.
+            // Restart the entire inventory when a file disappears, so the manifest describes
+            // one stable snapshot rather than a partial mix of two directory states.
+            for(int attempt=0;attempt<5;attempt++)
+            {
+                try { return ArtifactHashSnapshot(root); }
+                catch(FileNotFoundException) when(attempt<4) { System.Threading.Thread.Sleep(250); }
+                catch(DirectoryNotFoundException) when(attempt<4) { System.Threading.Thread.Sleep(250); }
+            }
+            throw new IOException("Artifact inventory did not stabilize after build.");
+        }
+        private static string ArtifactHashSnapshot(string root)
+        {
             bool directory=Directory.Exists(root);
             string[] files=directory?Directory.GetFiles(root,"*",SearchOption.AllDirectories):new[]{root};
             string prefix=directory?root.TrimEnd(Path.DirectorySeparatorChar,Path.AltDirectorySeparatorChar)+Path.DirectorySeparatorChar:Path.GetDirectoryName(root)+Path.DirectorySeparatorChar;

@@ -68,6 +68,9 @@ namespace HuntrX.Gameplay.VerticalSlice
 
         public CharacterSpriteSet2D SpriteSet => activeSpriteSet;
         public CharacterSpritePlayback2D Playback => spritePlayback;
+        public Vector2 CameraFocus => current != null
+            ? (Vector2)current.transform.position + new Vector2(1.55f * facing, 0.95f)
+            : Vector2.zero;
 
         public void SetCharacterVisible(bool visible)
         {
@@ -312,7 +315,6 @@ namespace HuntrX.Gameplay.VerticalSlice
         {
             if (current == null || followCamera == null) return;
             float dt = Mathf.Min(Time.deltaTime, 0.1f);
-            float cameraDt = Mathf.Min(Time.unscaledDeltaTime, 0.1f);
             animClock = (animClock + dt) % 1000f;
             if (rangedVfxTimer > 0f) rangedVfxTimer = Mathf.Max(0f, rangedVfxTimer - dt);
 
@@ -332,8 +334,6 @@ namespace HuntrX.Gameplay.VerticalSlice
             UpdateAnimatedHeroSprite(vel, dt);
             UpdateCapcomSlashAndMartialVfx();
 
-            Vector3 point = current.transform.position + new Vector3(1.55f * facing, 0.95f, -10f);
-            followCamera.transform.position = Vector3.Lerp(followCamera.transform.position, point, 1f - Mathf.Exp(-8f * cameraDt));
         }
 
         private void UpdateAnimatedHeroSprite(Vector2 vel, float dt)

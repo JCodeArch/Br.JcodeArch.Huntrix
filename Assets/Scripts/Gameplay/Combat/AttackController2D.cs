@@ -29,6 +29,10 @@ namespace HuntrX.Gameplay.Combat
         public int CurrentComboStepIndex { get; private set; }
         public int ActiveComboStepCount => activeSequence?.Count ?? 0;
         public CombatComboDefinition ComboDefinition => comboDefinition;
+        public AttackDefinition CurrentAttackDefinition => activeSequence != null &&
+            CurrentComboStepIndex >= 0 && CurrentComboStepIndex < activeSequence.Count
+                ? activeSequence[CurrentComboStepIndex].Attack : null;
+        public float RemainingPhaseDuration => remainingPhaseDuration;
 
         internal void SetValidatedDefinition(CombatComboDefinition definition)
         {

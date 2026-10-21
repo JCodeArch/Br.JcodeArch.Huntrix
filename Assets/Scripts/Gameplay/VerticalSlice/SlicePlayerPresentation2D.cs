@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using HuntrX.Data;
 using HuntrX.Gameplay.Characters;
 using HuntrX.Gameplay.Combat;
 using HuntrX.Gameplay.Dash;
+using HuntrX.Gameplay.Jump;
+using HuntrX.Presentation.Art;
 using UnityEngine;
 
 namespace HuntrX.Gameplay.VerticalSlice
@@ -11,19 +14,23 @@ namespace HuntrX.Gameplay.VerticalSlice
     {
         [SerializeField] private CharacterManager2D manager;
         [SerializeField] private Camera followCamera;
+        [SerializeField] private CharacterSpriteSet2D spriteSetOverride;
+        [SerializeField] private CharacterSpriteSet2D[] characterSpriteSets;
+
         private Sprite sprite;
-        private Sprite customSprite;
-        private bool ownsCustomSprite;
         private DamageReceiver2D current;
         private GameObject visual;
         private SpriteRenderer mainRenderer;
+        private CharacterSpritePlayback2D spritePlayback;
+        private CharacterSpriteSet2D activeSpriteSet;
         private GameObject vfxSlashObject;
         private SpriteRenderer vfxSlashRenderer;
         private bool characterVisible = true;
 
         private string activeHeroKey = "Rumi";
-        private readonly Dictionary<string, Sprite[]> poseCache = new Dictionary<string, Sprite[]>();
-        private readonly List<Sprite> ownedRuntimeSprites = new List<Sprite>(64);
+        // VFX survive actor switches; generated sprite sets belong to one actor binding only.
+        private readonly List<Object> ownedRuntimeAssets = new List<Object>(64);
+        private readonly List<Object> ownedActorRuntimeAssets = new List<Object>(64);
         private Sprite saberCyanSprite;
         private Sprite saberTurquoiseSprite;
         private Sprite coffeePotSmashSprite;
@@ -31,19 +38,36 @@ namespace HuntrX.Gameplay.VerticalSlice
 
         private AttackController2D attackController;
         private DashController2D dashController;
+        private JumpController2D jumpController;
+        private Collider2D bodyCollider;
         private ZoeyRangedAttack2D rangedController;
         private HuntrX.Gameplay.Resources.TemporaryPropWeapon2D propWeapon;
         private Rigidbody2D body2D;
         private float animClock;
         private float rangedVfxTimer;
         private int facing = 1;
-        private float baseScale = 1f;
+        private float worldScale = 1f;
+        private bool wasInAttack;
+        private int lastAttackStepIndex = -1;
+        private bool airborneLatched;
+
+        private CharacterGameplayAnimator2D suppressedAnimator;
+        private bool priorAnimatorEnabled;
+        private CharacterArtRenderer2D suppressedArtRenderer;
+        private bool priorArtRendererEnabled;
+        private GameObject suppressedVisualRoot;
+        private bool priorVisualRootActive;
+        private HuntrX.Gameplay.Levels.BlockoutPlayerSilhouette2D suppressedBlockout;
+        private bool priorBlockoutEnabled;
 
         private readonly SpriteRenderer[] ghostRenderers = new SpriteRenderer[3];
         private readonly Vector3[] historyPositions = new Vector3[3];
         private readonly Sprite[] historySprites = new Sprite[3];
         private readonly int[] historyFacing = new int[3];
         private float ghostSampleTimer;
+
+        public CharacterSpriteSet2D SpriteSet => activeSpriteSet;
+        public CharacterSpritePlayback2D Playback => spritePlayback;
 
         public void SetCharacterVisible(bool visible)
         {
@@ -69,9 +93,25 @@ namespace HuntrX.Gameplay.VerticalSlice
             return true;
         }
 
+        public bool TryBindSpriteSet(CharacterSpriteSet2D set)
+        {
+            if (!isActiveAndEnabled || set == null || !set.IsValid || mainRenderer == null || spritePlayback == null || visual == null)
+                return false;
+
+            if (!spritePlayback.TryBind(mainRenderer, set)) return false;
+            activeSpriteSet = set;
+            worldScale = set.WorldScale;
+            visual.transform.localPosition = CharacterGameplayAnimator2D.FootLocalPosition(visual.transform, bodyCollider);
+            visual.transform.localRotation = Quaternion.identity;
+            visual.transform.localScale = new Vector3(worldScale * facing, worldScale, 1f);
+            wasInAttack = false;
+            lastAttackStepIndex = -1;
+            return true;
+        }
+
         private void Awake()
         {
-            sprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, 1, 1), Vector2.one * 0.5f, 1f);
+            sprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0f, 0f, 1f, 1f), new Vector2(0.5f, 0f), 1f);
             saberCyanSprite = LoadOrCreateSprite("Art/Vfx/ZSaberArc_Cyan");
             saberTurquoiseSprite = LoadOrCreateSprite("Art/Vfx/ZSaberArc_Turquoise");
             coffeePotSmashSprite = LoadOrCreateSprite("Art/Vfx/CoffeePot_Smash");
@@ -91,24 +131,33 @@ namespace HuntrX.Gameplay.VerticalSlice
         private void OnActor(DamageReceiver2D before, DamageReceiver2D after)
         {
             if (rangedController != null) rangedController.ShotFired -= OnRangedShot;
+            RestoreSuppressedActorPresenters();
+            if (spritePlayback != null) spritePlayback.Unbind();
             if (visual != null) Destroy(visual);
             if (vfxSlashObject != null) Destroy(vfxSlashObject);
             for (int i = 0; i < ghostRenderers.Length; i++)
             {
                 if (ghostRenderers[i] != null) Destroy(ghostRenderers[i].gameObject);
                 ghostRenderers[i] = null;
+                historySprites[i] = null;
             }
-            if (ownsCustomSprite && customSprite != null) Destroy(customSprite);
-            customSprite = null;
-            ownsCustomSprite = false;
+            ReleaseActorRuntimeAssets();
+
             current = after;
             mainRenderer = null;
+            spritePlayback = null;
+            activeSpriteSet = null;
             vfxSlashRenderer = null;
             attackController = null;
             dashController = null;
+            jumpController = null;
+            bodyCollider = null;
             rangedController = null;
             propWeapon = null;
             body2D = null;
+            wasInAttack = false;
+            lastAttackStepIndex = -1;
+            airborneLatched = false;
 
             if (after == null)
             {
@@ -116,12 +165,12 @@ namespace HuntrX.Gameplay.VerticalSlice
                 return;
             }
 
-            // Ensure any legacy blockout rectangle on the character is hidden
-            var blockout = after.GetComponent<HuntrX.Gameplay.Levels.BlockoutPlayerSilhouette2D>();
-            if (blockout != null) blockout.enabled = false;
+            SuppressDuplicateActorPresenters(after);
 
             attackController = after.GetComponent<AttackController2D>();
             dashController = after.GetComponent<DashController2D>();
+            jumpController = after.GetComponent<JumpController2D>();
+            bodyCollider = CharacterGameplayAnimator2D.FindRootBodyCollider(after.transform);
             rangedController = after.GetComponent<ZoeyRangedAttack2D>();
             propWeapon = after.GetComponent<HuntrX.Gameplay.Resources.TemporaryPropWeapon2D>();
             body2D = after.GetComponent<Rigidbody2D>();
@@ -129,46 +178,36 @@ namespace HuntrX.Gameplay.VerticalSlice
 
             visual = new GameObject("Player prototype silhouette");
             visual.transform.SetParent(after.transform, false);
+            visual.transform.localPosition = CharacterGameplayAnimator2D.FootLocalPosition(visual.transform, bodyCollider);
+            visual.transform.localRotation = Quaternion.identity;
             mainRenderer = visual.AddComponent<SpriteRenderer>();
             mainRenderer.enabled = characterVisible;
             mainRenderer.sortingOrder = 15;
+            mainRenderer.color = Color.white;
+            spritePlayback = visual.AddComponent<CharacterSpritePlayback2D>();
 
-            string identity = manager.ActivePrefab != null ? manager.ActivePrefab.name : after.name;
+            string identity = manager != null && manager.ActivePrefab != null ? manager.ActivePrefab.name : after.name;
             activeHeroKey = identity.Contains("Mira") ? "Mira" : identity.Contains("Zoey") ? "Zoey" : "Rumi";
 
-            Sprite[] idleFrames = GetPoseFrames(activeHeroKey, "Idle");
-            if (idleFrames.Length > 0)
+            CharacterSpriteSet2D resolvedSet = ResolveAssignedSpriteSet(activeHeroKey);
+            if (resolvedSet == null)
             {
-                customSprite = idleFrames[0];
-            }
-            else
-            {
-                customSprite = LoadOrCreateSprite("Art/Characters/" + activeHeroKey);
+                resolvedSet = CharacterArtRenderer2D.BuildRuntimeSpriteSet(activeHeroKey, 2.25f, ownedActorRuntimeAssets);
             }
 
-            if (customSprite != null && customSprite.bounds.size.y > 0.01f)
+            if (resolvedSet == null || !TryBindSpriteSet(resolvedSet))
             {
-                mainRenderer.sprite = customSprite;
-                mainRenderer.color = Color.white;
-                baseScale = 2.25f / customSprite.bounds.size.y;
-                visual.transform.localScale = new Vector3(baseScale * facing, baseScale, 1f);
-            }
-            else
-            {
-                baseScale = 1f;
-                visual.transform.localScale = new Vector3(0.6f, 1.2f, 1f);
+                worldScale = 1f;
+                visual.transform.localScale = new Vector3(facing, 1f, 1f);
                 mainRenderer.sprite = sprite;
-                mainRenderer.color = Color.white;
             }
 
-            // Create Capcom Zero-style Z-Saber / Coffee Pot VFX child
             vfxSlashObject = new GameObject("Capcom_WeaponSlash_VFX");
             vfxSlashObject.transform.SetParent(after.transform, false);
             vfxSlashRenderer = vfxSlashObject.AddComponent<SpriteRenderer>();
             vfxSlashRenderer.sortingOrder = 22;
             vfxSlashRenderer.enabled = false;
 
-            // Create 3 Capcom Zero-style Neon Afterimage Ghost Trails
             for (int i = 0; i < ghostRenderers.Length; i++)
             {
                 GameObject ghostGo = new GameObject("Capcom_GhostTrail_" + i);
@@ -183,6 +222,86 @@ namespace HuntrX.Gameplay.VerticalSlice
             }
         }
 
+        private CharacterSpriteSet2D ResolveAssignedSpriteSet(string heroKey)
+        {
+            if (characterSpriteSets != null)
+            {
+                for (int i = 0; i < characterSpriteSets.Length; i++)
+                {
+                    CharacterSpriteSet2D candidate = characterSpriteSets[i];
+                    if (candidate != null && candidate.IsValid &&
+                        string.Equals(candidate.CharacterName, heroKey, System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        return candidate;
+                    }
+                }
+            }
+
+            if (spriteSetOverride != null && spriteSetOverride.IsValid)
+            {
+                return spriteSetOverride;
+            }
+
+            return null;
+        }
+
+        private void SuppressDuplicateActorPresenters(DamageReceiver2D actor)
+        {
+            if (actor == null) return;
+
+            suppressedBlockout = actor.GetComponent<HuntrX.Gameplay.Levels.BlockoutPlayerSilhouette2D>();
+            if (suppressedBlockout != null)
+            {
+                priorBlockoutEnabled = suppressedBlockout.enabled;
+                suppressedBlockout.enabled = false;
+            }
+
+            suppressedAnimator = actor.GetComponent<CharacterGameplayAnimator2D>();
+            if (suppressedAnimator != null)
+            {
+                priorAnimatorEnabled = suppressedAnimator.enabled;
+                suppressedAnimator.enabled = false;
+            }
+
+            suppressedArtRenderer = actor.GetComponent<CharacterArtRenderer2D>();
+            if (suppressedArtRenderer != null)
+            {
+                priorArtRendererEnabled = suppressedArtRenderer.enabled;
+                if (suppressedArtRenderer.VisualRoot != null)
+                {
+                    suppressedVisualRoot = suppressedArtRenderer.VisualRoot.gameObject;
+                    priorVisualRootActive = suppressedVisualRoot.activeSelf;
+                    suppressedVisualRoot.SetActive(false);
+                }
+                suppressedArtRenderer.enabled = false;
+            }
+        }
+
+        private void RestoreSuppressedActorPresenters()
+        {
+            if (suppressedArtRenderer != null)
+            {
+                suppressedArtRenderer.enabled = priorArtRendererEnabled;
+            }
+            if (suppressedVisualRoot != null)
+            {
+                suppressedVisualRoot.SetActive(priorVisualRootActive);
+            }
+            if (suppressedAnimator != null)
+            {
+                suppressedAnimator.enabled = priorAnimatorEnabled;
+            }
+            if (suppressedBlockout != null)
+            {
+                suppressedBlockout.enabled = priorBlockoutEnabled;
+            }
+
+            suppressedArtRenderer = null;
+            suppressedVisualRoot = null;
+            suppressedAnimator = null;
+            suppressedBlockout = null;
+        }
+
         private void OnRangedShot(Vector2 from, Vector2 to)
         {
             rangedVfxTimer = 0.22f;
@@ -192,7 +311,8 @@ namespace HuntrX.Gameplay.VerticalSlice
         private void LateUpdate()
         {
             if (current == null || followCamera == null) return;
-            float dt = Mathf.Min(Time.unscaledDeltaTime, 0.1f);
+            float dt = Mathf.Min(Time.deltaTime, 0.1f);
+            float cameraDt = Mathf.Min(Time.unscaledDeltaTime, 0.1f);
             animClock = (animClock + dt) % 1000f;
             if (rangedVfxTimer > 0f) rangedVfxTimer = Mathf.Max(0f, rangedVfxTimer - dt);
 
@@ -213,7 +333,7 @@ namespace HuntrX.Gameplay.VerticalSlice
             UpdateCapcomSlashAndMartialVfx();
 
             Vector3 point = current.transform.position + new Vector3(1.55f * facing, 0.95f, -10f);
-            followCamera.transform.position = Vector3.Lerp(followCamera.transform.position, point, 1f - Mathf.Exp(-8f * dt));
+            followCamera.transform.position = Vector3.Lerp(followCamera.transform.position, point, 1f - Mathf.Exp(-8f * cameraDt));
         }
 
         private void UpdateAnimatedHeroSprite(Vector2 vel, float dt)
@@ -224,130 +344,54 @@ namespace HuntrX.Gameplay.VerticalSlice
                 propWeapon = current.GetComponent<HuntrX.Gameplay.Resources.TemporaryPropWeapon2D>();
             }
 
+            bool isDead = !current.IsAlive;
             bool isAttacking = (attackController != null && attackController.State != AttackState2D.Idle) || rangedVfxTimer > 0f;
             bool isDashing = dashController != null && dashController.IsDashing;
-            bool isAirborne = Mathf.Abs(vel.y) > 0.2f;
+            bool isGrounded = CharacterGameplayAnimator2D.EvaluateGrounded(
+                current.transform,
+                bodyCollider,
+                jumpController,
+                dashController,
+                vel,
+                ref airborneLatched);
+            bool isAirborne = !isGrounded;
             bool isRunning = Mathf.Abs(vel.x) > 0.15f;
             int step = attackController != null ? attackController.CurrentComboStepIndex : 0;
-            bool hasEquippedProp = propWeapon != null && propWeapon.HasEquippedProp;
 
-            // Rumi's Aerial Red-Sole Downward Dive Kick when attacking in the air!
-            bool isAerialAttack = isAttacking && isAirborne;
-            string pose = isAerialAttack ? "Jump" : isAttacking ? "Attack" : (isAirborne || isDashing) ? "Jump" : isRunning ? "Run" : "Idle";
-            Sprite[] frames = GetPoseFrames(activeHeroKey, pose);
-
-            Sprite selectedSprite = null;
-            if (isAttacking && activeHeroKey == "Mira" && hasEquippedProp && miraCoffeePotEquippedSprite != null)
-            {
-                selectedSprite = miraCoffeePotEquippedSprite;
-            }
-            else if (frames.Length > 0)
-            {
-                int idx;
-                if (isAerialAttack)
-                {
-                    // Frame 3 of Jump is Rumi's Red-Sole Downward Dive Kick / Zoey's Aerial Kunai Storm / Mira's Aerial Cleave
-                    idx = frames.Length - 1;
-                }
-                else if (isAttacking && attackController != null && attackController.State != AttackState2D.Idle)
-                {
-                    // 0 = Slash 1 / Mira Brawler Punch, 1 = Slash 2 / Zoey Thrown Daggers / Mira Gokdo Sweep,
-                    // 2 = Rumi Kick / Zoey Leg Chokehold / Mira Spinning-Blade Shoryuken, 3 = Finisher
-                    idx = Mathf.Clamp(step, 0, frames.Length - 1);
-                }
-                else
-                {
-                    float cycleDuration = isRunning ? 0.36f : isAirborne ? 0.45f : 0.68f;
-                    idx = Mathf.Abs(Mathf.FloorToInt((animClock / cycleDuration) * frames.Length)) % frames.Length;
-                }
-                selectedSprite = frames[idx];
-            }
-
-            if (selectedSprite != null)
-            {
-                mainRenderer.sprite = selectedSprite;
-                if (selectedSprite.bounds.size.y > 0.01f)
-                {
-                    baseScale = 2.25f / selectedSprite.bounds.size.y;
-                }
-            }
-
-            // Natural 60 FPS breathing, running stride bounce, and martial arts squash-and-stretch
-            float tiltZ = 0f;
-            Vector3 offset = Vector3.zero;
-            float stretchX = 1f;
-            float stretchY = 1f;
-
-            if (isDashing)
-            {
-                tiltZ = -facing * 14f;
-                stretchX = 1.12f;
-                stretchY = 0.92f;
-                mainRenderer.color = new Color(0.8f, 0.96f, 1f, 1f);
-            }
+            CharacterVisualPose pose;
+            if (isDead)
+                pose = CharacterVisualPose.Death;
+            else if (isDashing)
+                pose = CharacterVisualPose.Dash;
             else if (isAttacking)
-            {
-                float attackPulse = Mathf.Sin(animClock * 28f) * 0.05f;
-                stretchX = 1.06f + attackPulse;
-                stretchY = 0.96f - attackPulse * 0.5f;
-                if (isAerialAttack && activeHeroKey == "Rumi")
-                {
-                    // Rumi's Aerial Red-Sole Downward Dive Kick lunge
-                    offset = new Vector3(facing * 0.25f, -0.18f, 0f);
-                    tiltZ = -facing * 10f;
-                }
-                else if (step >= 2)
-                {
-                    if (activeHeroKey == "Zoey")
-                    {
-                        offset = new Vector3(facing * 0.22f, 0.25f, 0f);
-                        tiltZ = -facing * 8f;
-                    }
-                    else if (activeHeroKey == "Rumi")
-                    {
-                        offset = new Vector3(facing * 0.2f, 0.14f, 0f);
-                        tiltZ = facing * 6f;
-                    }
-                    else
-                    {
-                        // Mira's Spinning-Blade Shoryuken rising vertical uppercut!
-                        offset = new Vector3(facing * 0.22f, 0.38f, 0f);
-                        tiltZ = facing * 8f;
-                    }
-                }
-                mainRenderer.color = Color.white;
-            }
+                pose = isAirborne ? CharacterVisualPose.Aerial : CharacterVisualPose.Attack;
             else if (isAirborne)
-            {
-                float airStretch = Mathf.Clamp(vel.y * 0.018f, -0.08f, 0.10f);
-                stretchX = 1f - airStretch * 0.6f;
-                stretchY = 1f + airStretch;
-                tiltZ = -facing * Mathf.Clamp(vel.y * 1.4f, -10f, 10f);
-                mainRenderer.color = Color.white;
-            }
+                pose = CharacterVisualPose.Jump;
             else if (isRunning)
-            {
-                float runWave = Mathf.Sin(animClock * 18f);
-                offset = new Vector3(0f, Mathf.Abs(runWave) * 0.07f, 0f);
-                stretchX = 1f + runWave * 0.045f;
-                stretchY = 1f - Mathf.Abs(runWave) * 0.04f;
-                tiltZ = -facing * (5f + runWave * 3f);
-                mainRenderer.color = Color.white;
-            }
+                pose = CharacterVisualPose.Run;
             else
+                pose = CharacterVisualPose.Idle;
+
+            if (spritePlayback != null && activeSpriteSet != null)
             {
-                // Subtle natural idle breathing & rhythm sway
-                float breath = Mathf.Sin(animClock * 4.2f);
-                offset = new Vector3(0f, breath * 0.025f, 0f);
-                stretchX = 1f - breath * 0.018f;
-                stretchY = 1f + breath * 0.024f;
-                mainRenderer.color = Color.white;
+                worldScale = activeSpriteSet.WorldScale;
+                CharacterGameplayAnimator2D.DrivePlayback(
+                    spritePlayback,
+                    activeSpriteSet,
+                    pose,
+                    vel,
+                    isAirborne,
+                    attackController,
+                    ref wasInAttack,
+                    ref lastAttackStepIndex);
             }
 
-            visual.transform.localPosition = offset;
-            visual.transform.localScale = new Vector3(baseScale * stretchX * facing, baseScale * stretchY, 1f);
-            visual.transform.localRotation = Quaternion.Euler(0f, 0f, tiltZ);
+            mainRenderer.color = isDashing ? new Color(0.8f, 0.96f, 1f, 1f) : Color.white;
+            visual.transform.localPosition = CharacterGameplayAnimator2D.FootLocalPosition(visual.transform, bodyCollider);
+            visual.transform.localScale = new Vector3(worldScale * facing, worldScale, 1f);
+            visual.transform.localRotation = Quaternion.identity;
 
+            bool isAerialAttack = isAttacking && isAirborne;
             UpdateGhostTrails(dt, isDashing || isAerialAttack || (isAttacking && step >= 1));
         }
 
@@ -364,7 +408,7 @@ namespace HuntrX.Gameplay.VerticalSlice
                     historySprites[i] = historySprites[i - 1];
                     historyFacing[i] = historyFacing[i - 1];
                 }
-                historyPositions[0] = current.transform.position + visual.transform.localPosition;
+                historyPositions[0] = current.transform.position;
                 historySprites[0] = mainRenderer.sprite;
                 historyFacing[0] = facing;
             }
@@ -386,9 +430,8 @@ namespace HuntrX.Gameplay.VerticalSlice
                 }
                 gr.enabled = true;
                 gr.sprite = historySprites[i];
-                float h = gr.sprite.bounds.size.y > 0.01f ? (2.25f / gr.sprite.bounds.size.y) : baseScale;
                 gr.transform.position = historyPositions[i] - new Vector3(historyFacing[i] * (i + 1) * 0.22f, 0f, 0f);
-                gr.transform.localScale = new Vector3(h * historyFacing[i], h, 1f);
+                gr.transform.localScale = new Vector3(worldScale * historyFacing[i], worldScale, 1f);
                 Color c = ghostBase;
                 c.a = ghostBase.a * (1f - i * 0.28f);
                 gr.color = c;
@@ -417,7 +460,6 @@ namespace HuntrX.Gameplay.VerticalSlice
 
             if (hasEquippedProp && coffeePotSmashSprite != null)
             {
-                // Temporary Equippable Stage Prop (e.g. Airline Coffee Pot Smash!)
                 chosenVfx = coffeePotSmashSprite;
                 vfxHeight = 1.75f;
                 localPos = new Vector3(facing * 1.25f, 0.25f, 0f);
@@ -427,9 +469,9 @@ namespace HuntrX.Gameplay.VerticalSlice
             {
                 chosenVfx = saberCyanSprite;
                 vfxHeight = step >= 2 ? 2.55f : 1.95f;
-                rotZ = step >= 2 ? (animClock * 720f) % 360f : 0f; // 360-degree Spinning-Blade Shoryuken vortex
+                rotZ = step >= 2 ? (animClock * 720f) % 360f : 0f;
                 localPos = step >= 2 ? new Vector3(facing * 0.55f, 0.45f, 0f) : new Vector3(facing * 1.05f, 0.15f, 0f);
-                vfxSlashRenderer.color = new Color(1f, 0.35f, 0.55f, 0.95f); // Crimson-gold Gokdo arc
+                vfxSlashRenderer.color = new Color(1f, 0.35f, 0.55f, 0.95f);
             }
             else if (activeHeroKey == "Zoey")
             {
@@ -440,7 +482,6 @@ namespace HuntrX.Gameplay.VerticalSlice
             }
             else
             {
-                // Rumi's Saingeom Z-Saber Arc, Taekwondo High Kick Wave & Red-Sole Dive Kick
                 chosenVfx = saberCyanSprite;
                 bool isAirborne = body2D != null && Mathf.Abs(body2D.linearVelocity.y) > 0.2f;
                 vfxHeight = step >= 2 || isAirborne ? 2.45f : 1.95f;
@@ -463,23 +504,6 @@ namespace HuntrX.Gameplay.VerticalSlice
             vfxSlashObject.transform.localRotation = Quaternion.Euler(0f, 0f, rotZ);
         }
 
-        private Sprite[] GetPoseFrames(string heroKey, string poseName)
-        {
-            string cacheKey = heroKey + ":" + poseName;
-            if (poseCache.TryGetValue(cacheKey, out Sprite[] cached)) return cached;
-
-            var list = new List<Sprite>(4);
-            for (int i = 0; i < 4; i++)
-            {
-                Sprite s = LoadOrCreateSprite("Art/Animations/" + heroKey + "/" + poseName + "/" + i);
-                if (s == null) break;
-                list.Add(s);
-            }
-            Sprite[] arr = list.ToArray();
-            poseCache[cacheKey] = arr;
-            return arr;
-        }
-
         private Sprite LoadOrCreateSprite(string resourcePath)
         {
             Sprite s = UnityEngine.Resources.Load<Sprite>(resourcePath);
@@ -487,8 +511,8 @@ namespace HuntrX.Gameplay.VerticalSlice
             Texture2D tex = UnityEngine.Resources.Load<Texture2D>(resourcePath);
             if (tex != null)
             {
-                s = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
-                ownedRuntimeSprites.Add(s);
+                s = Sprite.Create(tex, new Rect(0f, 0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+                ownedRuntimeAssets.Add(s);
                 return s;
             }
             return null;
@@ -498,34 +522,49 @@ namespace HuntrX.Gameplay.VerticalSlice
         {
             if (rangedController != null) rangedController.ShotFired -= OnRangedShot;
             if (manager != null) manager.ActiveCharacterChanged -= OnActor;
+            RestoreSuppressedActorPresenters();
+            if (spritePlayback != null) spritePlayback.Unbind();
             if (visual != null) Destroy(visual);
             if (vfxSlashObject != null) Destroy(vfxSlashObject);
             for (int i = 0; i < ghostRenderers.Length; i++)
             {
                 if (ghostRenderers[i] != null) Destroy(ghostRenderers[i].gameObject);
                 ghostRenderers[i] = null;
+                historySprites[i] = null;
             }
-            if (ownsCustomSprite && customSprite != null) Destroy(customSprite);
-            customSprite = null;
-            ownsCustomSprite = false;
+            ReleaseActorRuntimeAssets();
             current = null;
             visual = null;
             vfxSlashObject = null;
             mainRenderer = null;
+            spritePlayback = null;
+            activeSpriteSet = null;
             vfxSlashRenderer = null;
+            wasInAttack = false;
+            lastAttackStepIndex = -1;
+            airborneLatched = false;
         }
 
         private void OnDisable() => Unbind();
+
+        private void ReleaseActorRuntimeAssets()
+        {
+            for (int i = ownedActorRuntimeAssets.Count - 1; i >= 0; i--)
+            {
+                if (ownedActorRuntimeAssets[i] != null) Destroy(ownedActorRuntimeAssets[i]);
+            }
+            ownedActorRuntimeAssets.Clear();
+        }
 
         private void OnDestroy()
         {
             Unbind();
             if (sprite != null) Destroy(sprite);
-            for (int i = 0; i < ownedRuntimeSprites.Count; i++)
+            for (int i = 0; i < ownedRuntimeAssets.Count; i++)
             {
-                if (ownedRuntimeSprites[i] != null) Destroy(ownedRuntimeSprites[i]);
+                if (ownedRuntimeAssets[i] != null) Destroy(ownedRuntimeAssets[i]);
             }
-            ownedRuntimeSprites.Clear();
+            ownedRuntimeAssets.Clear();
         }
     }
 }

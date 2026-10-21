@@ -49,6 +49,8 @@ namespace HuntrX.Tests.PlayMode
             // Waited one frame so this tests presentation rebinding, independent of same-frame camera teardown.
             Assert.That(session.TryBegin(), Is.True);
             Assert.That(session.Manager, Is.Not.SameAs(previousManager));
+            // Finish the restarted composition's intro, just as the initial Load setup does.
+            yield return NarrativeTestFlow.CompleteCurrentDialogue();
             Assert.That(session.Honmoon.TrySetValue(47), Is.True);
             yield return null;
             Assert.That(hud.GetComponentInChildren<Canvas>(true).enabled, Is.True);
@@ -101,7 +103,7 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(session.TryBegin(), Is.True);
             Physics2D.SyncTransforms();
             var platforms = session.Stage.RuntimeRoot.GetComponentsInChildren<BoxCollider2D>();
-            var enemies = Object.FindObjectsByType<HuntrX.Gameplay.Enemies.EnemyAgent2D>(FindObjectsSortMode.None);
+            var enemies = Object.FindObjectsByType<HuntrX.Gameplay.Enemies.EnemyAgent2D>();
             Assert.That(enemies.Length, Is.GreaterThanOrEqualTo(6), "Include the extra corridor guards, not only authored spawn points.");
             foreach (var enemy in enemies)
             {
@@ -118,7 +120,7 @@ namespace HuntrX.Tests.PlayMode
         }
         [UnityTest] public IEnumerator AirplaneCaptainUsesThePhasedMinibossController()
         {
-            var enemies = Object.FindObjectsByType<HuntrX.Gameplay.Enemies.EnemyAgent2D>(FindObjectsSortMode.None);
+            var enemies = Object.FindObjectsByType<HuntrX.Gameplay.Enemies.EnemyAgent2D>();
             var captain = enemies.Single(enemy => enemy.name == "BOSS_Cockpit_CaptainDokkaebi");
             var guard = enemies.First(enemy => enemy.name.StartsWith("FlightCrew_"));
             Assert.That(captain.GetComponent<HuntrX.Gameplay.Enemies.MinibossPhaseController2D>(), Is.Not.Null,

@@ -13,6 +13,7 @@ namespace HuntrX.Presentation.Art
         private SpriteAnimationClip2D clip;
         private Sprite lastOwnedFrame;
         private double elapsed;
+        private bool externallySampled;
 
         public string CurrentState { get; private set; }
         public float Elapsed => (float)elapsed;
@@ -33,8 +34,10 @@ namespace HuntrX.Presentation.Art
         public bool SetState(string stateId, bool restart)
         {
             if (!isActiveAndEnabled || target == null || definition == null) return false;
-            if (!restart && string.Equals(CurrentState, stateId, StringComparison.Ordinal)) return true;
             if (!definition.TryGetClip(stateId, out SpriteAnimationClip2D next)) return false;
+            // Returning to an automatic pose also releases external clock ownership for the same state.
+            externallySampled = false;
+            if (!restart && string.Equals(CurrentState, stateId, StringComparison.Ordinal)) return true;
             clip = next;
             CurrentState = stateId;
             elapsed = 0d;
@@ -42,9 +45,25 @@ namespace HuntrX.Presentation.Art
             return true;
         }
 
+        /// <summary>Samples an absolute presentation time; automatic advancement stays suspended until SetState.</summary>
+        public bool SampleStateAt(string stateId, float seconds)
+        {
+            if (!isActiveAndEnabled || target == null || definition == null ||
+                float.IsNaN(seconds) || float.IsInfinity(seconds) || seconds < 0f ||
+                !definition.TryGetClip(stateId, out SpriteAnimationClip2D next)) return false;
+            double duration = next.Duration;
+            if (duration <= 0d) return false;
+            clip = next;
+            CurrentState = stateId;
+            externallySampled = true;
+            elapsed = clip.Loop ? seconds % duration : Math.Min(seconds, duration);
+            Present();
+            return true;
+        }
+
         public void Tick(float deltaTime)
         {
-            if (!isActiveAndEnabled || target == null || clip == null ||
+            if (externallySampled || !isActiveAndEnabled || target == null || clip == null ||
                 float.IsNaN(deltaTime) || float.IsInfinity(deltaTime) || deltaTime <= 0f) return;
             double duration = clip.Duration;
             if (duration <= 0d) { Unbind(); return; }
@@ -63,6 +82,7 @@ namespace HuntrX.Presentation.Art
             lastOwnedFrame = null;
             CurrentState = null;
             elapsed = 0d;
+            externallySampled = false;
         }
 
         private void Present()

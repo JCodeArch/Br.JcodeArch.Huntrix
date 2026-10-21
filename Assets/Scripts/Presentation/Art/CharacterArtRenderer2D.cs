@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
-using System.Reflection;
 using HuntrX.Data;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace HuntrX.Presentation.Art
 {
@@ -160,7 +161,13 @@ namespace HuntrX.Presentation.Art
         }
 
         internal static CharacterSpriteSet2D BuildRuntimeSpriteSet(string characterName, float targetWorldHeight, List<Object> ownedAssets)
+            => BuildRuntimeSpriteSet(characterName, targetWorldHeight, ownedAssets, Resources.Load<Texture2D>);
+
+        internal static CharacterSpriteSet2D BuildRuntimeSpriteSet(string characterName, float targetWorldHeight,
+            List<Object> ownedAssets, Func<string, Texture2D> loadTexture)
         {
+            if (ownedAssets == null) throw new ArgumentNullException(nameof(ownedAssets));
+            if (loadTexture == null) throw new ArgumentNullException(nameof(loadTexture));
             string safeName = string.IsNullOrWhiteSpace(characterName) ? "Rumi" : characterName;
             string key = safeName == "Gwi-Ma" ? "GwiMa" : safeName;
 
@@ -168,39 +175,55 @@ namespace HuntrX.Presentation.Art
             if (loadedSet == null) loadedSet = Resources.Load<CharacterSpriteSet2D>("Art/SpriteSets/" + key);
             if (loadedSet != null && loadedSet.IsValid) return loadedSet;
 
-            Texture2D baseTex = Resources.Load<Texture2D>("Art/Animations/" + key + "/Idle/0");
-            if (baseTex == null) baseTex = Resources.Load<Texture2D>("Art/Characters/" + key);
-
-            int canvasW = baseTex != null ? baseTex.width : 64;
-            int canvasH = baseTex != null ? baseTex.height : 64;
-            float ppu = Mathf.Clamp(canvasH / Mathf.Max(0.5f, targetWorldHeight), 1f, 4096f);
-            Vector2 footAnchor = new Vector2(0.5f, 0f);
-
-            if (baseTex == null)
+            int firstNewAsset = ownedAssets.Count;
+            bool transferred = false;
+            try
             {
-                baseTex = new Texture2D(canvasW, canvasH);
-                ownedAssets.Add(baseTex);
+                Texture2D baseTex = loadTexture("Art/Animations/" + key + "/Idle/0");
+                if (baseTex == null) baseTex = loadTexture("Art/Characters/" + key);
+                int canvasW = baseTex != null ? baseTex.width : 64;
+                int canvasH = baseTex != null ? baseTex.height : 64;
+                float ppu = Mathf.Clamp(canvasH / Mathf.Max(0.5f, targetWorldHeight), 1f, 4096f);
+                Vector2 footAnchor = new Vector2(0.5f, 0f);
+                if (baseTex == null)
+                {
+                    baseTex = new Texture2D(canvasW, canvasH);
+                    ownedAssets.Add(baseTex);
+                }
+
+                Sprite fallbackSprite = Sprite.Create(baseTex, new Rect(0f, 0f, canvasW, canvasH), footAnchor, ppu);
+                ownedAssets.Add(fallbackSprite);
+                string[] stateNames = { "Idle", "Run", "Jump", "Fall", "Attack", "Death" };
+                float[] durations = { 0.16f, 0.10f, 0.12f, 0.12f, 0.08f, 0.12f };
+                var states = new SpriteAnimationState2D[stateNames.Length];
+                for (int i = 0; i < stateNames.Length; i++)
+                {
+                    SpriteAnimationClip2D clip = LoadClipOrFallback(key, stateNames[i], canvasW, canvasH,
+                        footAnchor, ppu, durations[i], i < 2, fallbackSprite, ownedAssets, loadTexture);
+                    if (clip == null) return null;
+                    states[i] = new SpriteAnimationState2D(stateNames[i], clip);
+                }
+                if (!CharacterSpriteSet2D.TryCreate(safeName, ppu, 1f, footAnchor, states, out var runtimeSet)) return null;
+                ownedAssets.Add(runtimeSet);
+                transferred = true;
+                return runtimeSet;
             }
-
-            Sprite fallbackSprite = Sprite.Create(baseTex, new Rect(0f, 0f, canvasW, canvasH), footAnchor, ppu);
-            ownedAssets.Add(fallbackSprite);
-
-            var states = new List<SpriteAnimationState2D>(6);
-            states.Add(new SpriteAnimationState2D("Idle", LoadClipOrFallback(key, "Idle", canvasW, canvasH, footAnchor, ppu, 0.16f, true, fallbackSprite, ownedAssets)));
-            states.Add(new SpriteAnimationState2D("Run", LoadClipOrFallback(key, "Run", canvasW, canvasH, footAnchor, ppu, 0.10f, true, fallbackSprite, ownedAssets)));
-            states.Add(new SpriteAnimationState2D("Jump", LoadClipOrFallback(key, "Jump", canvasW, canvasH, footAnchor, ppu, 0.12f, false, fallbackSprite, ownedAssets)));
-            states.Add(new SpriteAnimationState2D("Fall", LoadClipOrFallback(key, "Fall", canvasW, canvasH, footAnchor, ppu, 0.12f, false, fallbackSprite, ownedAssets)));
-            states.Add(new SpriteAnimationState2D("Attack", LoadClipOrFallback(key, "Attack", canvasW, canvasH, footAnchor, ppu, 0.08f, false, fallbackSprite, ownedAssets)));
-            states.Add(new SpriteAnimationState2D("Death", LoadClipOrFallback(key, "Death", canvasW, canvasH, footAnchor, ppu, 0.12f, false, fallbackSprite, ownedAssets)));
-
-            var runtimeSet = ScriptableObject.CreateInstance<CharacterSpriteSet2D>();
-            ownedAssets.Add(runtimeSet);
-            SetPrivateField(runtimeSet, "characterName", safeName);
-            SetPrivateField(runtimeSet, "pixelsPerUnit", ppu);
-            SetPrivateField(runtimeSet, "worldScale", 1f);
-            SetPrivateField(runtimeSet, "footAnchor", footAnchor);
-            SetPrivateField(runtimeSet, "states", states.ToArray());
-            return runtimeSet;
+            finally
+            {
+                if (!transferred)
+                {
+                    for (int i = ownedAssets.Count - 1; i >= firstNewAsset; i--)
+                    {
+                        Object asset = ownedAssets[i];
+                        if (asset != null)
+                        {
+                            if (Application.isPlaying) Destroy(asset);
+                            else DestroyImmediate(asset);
+                        }
+                        ownedAssets.RemoveAt(i);
+                    }
+                }
+            }
         }
 
         private static SpriteAnimationClip2D LoadClipOrFallback(
@@ -213,15 +236,30 @@ namespace HuntrX.Presentation.Art
             float frameDuration,
             bool loop,
             Sprite fallbackSprite,
-            List<Object> ownedAssets)
+            List<Object> ownedAssets,
+            Func<string, Texture2D> loadTexture)
         {
             var frames = new List<Sprite>(4);
             var durations = new List<float>(4);
+            var textures = new List<Texture2D>(8);
+            // Validate the complete clip before allocating sprites, so a later mismatch cannot leave partial poses.
             for (int i = 0; i < 8; i++)
             {
-                Texture2D tex = Resources.Load<Texture2D>("Art/Animations/" + key + "/" + stateName + "/" + i);
+                string path = "Art/Animations/" + key + "/" + stateName + "/" + i;
+                Texture2D tex = loadTexture(path);
                 if (tex == null) break;
-                if (tex.width < canvasW || tex.height < canvasH) continue;
+                if (tex.width != canvasW || tex.height != canvasH)
+                {
+                    Debug.LogWarning("Character sprite frame '" + path + "' has dimensions " + tex.width + "x" + tex.height +
+                        "; expected " + canvasW + "x" + canvasH + ". Clip '" + stateName +
+                        "' was rejected; using the full compatible Idle fallback for this state.");
+                    textures.Clear();
+                    break;
+                }
+                textures.Add(tex);
+            }
+            foreach (Texture2D tex in textures)
+            {
                 Sprite s = Sprite.Create(tex, new Rect(0f, 0f, canvasW, canvasH), footAnchor, ppu);
                 ownedAssets.Add(s);
                 frames.Add(s);
@@ -235,12 +273,6 @@ namespace HuntrX.Presentation.Art
             }
 
             return new SpriteAnimationClip2D(frames.ToArray(), durations.ToArray(), loop);
-        }
-
-        private static void SetPrivateField(object target, string fieldName, object value)
-        {
-            FieldInfo field = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
-            if (field != null) field.SetValue(target, value);
         }
 
         private Transform Part(string name, Vector2 position, Vector2 size, Color color, int order)

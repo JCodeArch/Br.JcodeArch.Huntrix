@@ -32,36 +32,52 @@ namespace HuntrX.Data
         public float PixelsPerUnit => pixelsPerUnit;
         public Vector2 FootAnchor => footAnchor;
 
-        public bool IsValid
+        public bool IsValid => Validate(characterName, pixelsPerUnit, worldScale, footAnchor, states);
+
+        /// <summary>Creates a runtime catalog only after validation, without retaining the caller's array.</summary>
+        public static bool TryCreate(string characterName, float pixelsPerUnit, float worldScale,
+            Vector2 footAnchor, SpriteAnimationState2D[] states, out CharacterSpriteSet2D result)
         {
-            get
+            result = null;
+            var copiedStates = states == null ? null : (SpriteAnimationState2D[])states.Clone();
+            if (!Validate(characterName, pixelsPerUnit, worldScale, footAnchor, copiedStates)) return false;
+            result = CreateInstance<CharacterSpriteSet2D>();
+            result.characterName = characterName;
+            result.pixelsPerUnit = pixelsPerUnit;
+            result.worldScale = worldScale;
+            result.footAnchor = footAnchor;
+            result.states = copiedStates;
+            return true;
+        }
+
+        private static bool Validate(string characterName, float pixelsPerUnit, float worldScale,
+            Vector2 footAnchor, SpriteAnimationState2D[] states)
+        {
+            if (string.IsNullOrWhiteSpace(characterName) || characterName.Length > 64 ||
+                !Finite(pixelsPerUnit) || pixelsPerUnit <= 0f || pixelsPerUnit > 4096f ||
+                !Finite(worldScale) || worldScale <= 0f || worldScale > 10f ||
+                !Unit(footAnchor.x) || !Unit(footAnchor.y) || states == null ||
+                states.Length < 1 || states.Length > 32) return false;
+
+            Vector2 canvas = Vector2.zero;
+            for (int i = 0; i < states.Length; i++)
             {
-                if (string.IsNullOrWhiteSpace(characterName) || characterName.Length > 64 ||
-                    !Finite(pixelsPerUnit) || pixelsPerUnit <= 0f || pixelsPerUnit > 4096f ||
-                    !Finite(worldScale) || worldScale <= 0f || worldScale > 10f ||
-                    !Unit(footAnchor.x) || !Unit(footAnchor.y) || states == null ||
-                    states.Length < 1 || states.Length > 32) return false;
+                SpriteAnimationState2D state = states[i];
+                if (state == null || string.IsNullOrWhiteSpace(state.Id) || state.Id.Length > 64 ||
+                    state.Clip == null || !state.Clip.IsValid) return false;
+                for (int j = 0; j < i; j++)
+                    if (string.Equals(states[j].Id, state.Id, StringComparison.Ordinal)) return false;
 
-                Vector2 canvas = Vector2.zero;
-                for (int i = 0; i < states.Length; i++)
+                for (int frame = 0; frame < state.Clip.FrameCount; frame++)
                 {
-                    SpriteAnimationState2D state = states[i];
-                    if (state == null || string.IsNullOrWhiteSpace(state.Id) || state.Id.Length > 64 ||
-                        state.Clip == null || !state.Clip.IsValid) return false;
-                    for (int j = 0; j < i; j++)
-                        if (string.Equals(states[j].Id, state.Id, StringComparison.Ordinal)) return false;
-
-                    for (int frame = 0; frame < state.Clip.FrameCount; frame++)
-                    {
-                        Sprite sprite = state.Clip.FrameAtIndex(frame);
-                        Vector2 size = sprite.rect.size;
-                        if (i == 0 && frame == 0) canvas = size;
-                        if (size != canvas || !Mathf.Approximately(sprite.pixelsPerUnit, pixelsPerUnit) ||
-                            Vector2.Distance(sprite.pivot, Vector2.Scale(size, footAnchor)) > .01f) return false;
-                    }
+                    Sprite sprite = state.Clip.FrameAtIndex(frame);
+                    Vector2 size = sprite.rect.size;
+                    if (i == 0 && frame == 0) canvas = size;
+                    if (size != canvas || !Mathf.Approximately(sprite.pixelsPerUnit, pixelsPerUnit) ||
+                        Vector2.Distance(sprite.pivot, Vector2.Scale(size, footAnchor)) > .01f) return false;
                 }
-                return true;
             }
+            return true;
         }
 
         public bool TryGetClip(string stateId, out SpriteAnimationClip2D clip)

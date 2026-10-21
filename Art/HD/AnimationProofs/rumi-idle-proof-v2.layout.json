@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "source": "rumi-idle-proof-v2.png",
+  "sha256": "2bee6f1261a993e6d17a1eacd9e1df3c6b703c479d5c4cec89137c3ef73cf8eb",
+  "textureSize": [
+    1024,
+    1536
+  ],
+  "status": "geometry-approved-awaiting-Unity-playback",
+  "rectCoordinateSystem": "Unity-bottom-left",
+  "pivotNormalized": [
+    0.6,
+    0.03629
+  ],
+  "meshType": "FullRect",
+  "frames": [
+    {
+      "name": "rumi_idle_00",
+      "rect": [
+        64,
+        776,
+        448,
+        744
+      ]
+    },
+    {
+      "name": "rumi_idle_01",
+      "rect": [
+        544,
+        776,
+        448,
+        744
+      ]
+    },
+    {
+      "name": "rumi_idle_02",
+      "rect": [
+        64,
+        8,
+        448,
+        744
+      ]
+    },
+    {
+      "name": "rumi_idle_03",
+      "rect": [
+        544,
+        8,
+        448,
+        744
+      ]
+    }
+  ],
+  "notes": [
+    "PNG unchanged. Equal frame canvas and pivot; calibrated origins compensate column registration.",
+    "PPU and frame durations require in-engine review before runtime acceptance."
+  ]
+}

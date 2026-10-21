@@ -93,6 +93,29 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(session.Manager.ActiveCharacter, Is.Not.Null);
             yield return null;
         }
+        [UnityTest] public IEnumerator AirplaneRuntimeEnemiesStartOutsideSolidPlatforms()
+        {
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
+            session.Stop();
+            yield return null;
+            Assert.That(session.TryBegin(), Is.True);
+            Physics2D.SyncTransforms();
+            var platforms = session.Stage.RuntimeRoot.GetComponentsInChildren<BoxCollider2D>();
+            var enemies = Object.FindObjectsByType<HuntrX.Gameplay.Enemies.EnemyAgent2D>(FindObjectsSortMode.None);
+            Assert.That(enemies.Length, Is.GreaterThanOrEqualTo(6), "Include the extra corridor guards, not only authored spawn points.");
+            foreach (var enemy in enemies)
+            {
+                var capsule = enemy.GetComponent<CapsuleCollider2D>();
+                Assert.That(capsule, Is.Not.Null);
+                foreach (var platform in platforms)
+                {
+                    var a = capsule.bounds;
+                    var b = platform.bounds;
+                    bool overlaps = a.min.x < b.max.x && a.max.x > b.min.x && a.min.y < b.max.y && a.max.y > b.min.y;
+                    Assert.That(overlaps, Is.False, enemy.name + " starts inside " + platform.name + " at " + enemy.transform.position);
+                }
+            }
+        }
         private static string Label(Component hud, string name) =>
             hud.GetComponentsInChildren<Text>(true).Single(text => text.name == name).text;
     }

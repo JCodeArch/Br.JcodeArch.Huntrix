@@ -32,13 +32,13 @@ MonoBehaviour:
   arenaCenter: {x: 41, y: 0.8}
   checkpoints:
   - {x: 14, y: 0.8}
-  - {x: 33, y: 0.8}
+  - {x: 33, y: 1.5}
   enemySpawns:
-  - {x: 8, y: 0.8}
-  - {x: 22, y: 0.8}
+  - {x: 8, y: 1.55}
+  - {x: 22, y: 1.7}
   aerialSpawns:
   - {x: 12, y: 3}
-  - {x: 23, y: 5}
+  - {x: 23, y: 3.5}
   - {x: 36, y: 4}
   fanSpawns:
   - {x: 11, y: 0.8}

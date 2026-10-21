@@ -63,7 +63,7 @@ namespace HuntrX.Gameplay.VerticalSlice
             {
                 new Vector2(15.5f, 0.8f),
                 new Vector2(28.5f, 0.8f),
-                new Vector2(36.0f, 0.8f),
+                new Vector2(36.0f, 1.5f),
                 new Vector2(42.5f, 0.8f) // Cockpit Boss Captain Dokkaebi right in front of the Cockpit Door!
             };
             string[] extraRoles =

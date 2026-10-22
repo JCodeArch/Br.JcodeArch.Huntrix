@@ -42,7 +42,7 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(heroine != null && heroine.sprite != null, Is.True, "The active heroine needs a gameplay sprite.");
 
             EnemyAgent2D crew = null;
-            foreach (var enemy in Object.FindObjectsByType<EnemyAgent2D>(FindObjectsSortMode.None))
+            foreach (var enemy in Object.FindObjectsByType<EnemyAgent2D>())
                 if (enemy.name.StartsWith("FlightCrew_MagentaStewardess_")) { crew = enemy; break; }
             Assert.That(crew, Is.Not.Null, "The airplane needs a regular crew reference for scale calibration.");
             var demon = crew.transform.Find("Prototype silhouette")?.GetComponent<SpriteRenderer>();
@@ -66,7 +66,7 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(trail, Is.Not.Null);
 
             EnemyAgent2D crew = null;
-            foreach (var enemy in Object.FindObjectsByType<EnemyAgent2D>(FindObjectsSortMode.None))
+            foreach (var enemy in Object.FindObjectsByType<EnemyAgent2D>())
                 if (enemy.name.StartsWith("FlightCrew_MagentaStewardess_")) { crew = enemy; break; }
             Assert.That(crew, Is.Not.Null);
             var demon = crew.transform.Find("Prototype silhouette")?.GetComponent<SpriteRenderer>();
@@ -83,7 +83,7 @@ namespace HuntrX.Tests.PlayMode
             var cam = session.Manager.GetComponent<SliceCameraDirector2D>().View;
             var actor = session.Manager.ActiveCharacter;
             float halfWidth = cam.orthographicSize * Mathf.Max(cam.aspect, 16f / 9f); // headless aspect may be narrower than a real 16:9 player
-            foreach (var enemy in Object.FindObjectsByType<EnemyAgent2D>(FindObjectsSortMode.None))
+            foreach (var enemy in Object.FindObjectsByType<EnemyAgent2D>())
                 Assert.That(Mathf.Abs(enemy.transform.position.x - actor.transform.position.x), Is.GreaterThan(halfWidth + 1f),
                     enemy.name + " starts inside or beside the opening viewport at " + enemy.transform.position);
 
@@ -97,7 +97,7 @@ namespace HuntrX.Tests.PlayMode
             var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
             var actor = session.Manager.ActiveCharacter;
             EnemyAgent2D enemy = null;
-            foreach (var candidate in Object.FindObjectsByType<EnemyAgent2D>(FindObjectsSortMode.None))
+            foreach (var candidate in Object.FindObjectsByType<EnemyAgent2D>())
                 if (candidate.name.StartsWith("FlightCrew_")) { enemy = candidate; break; }
             Assert.That(enemy, Is.Not.Null);
 

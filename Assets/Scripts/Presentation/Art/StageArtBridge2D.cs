@@ -48,9 +48,11 @@ namespace HuntrX.Presentation.Art
         {
             CharacterManager2D owner=session!=null?session.Manager:player;StageBlockoutBuilder2D activeStage=session!=null?session.Stage:builder;
             if(owner==null||art==null||animationBinder==null)return;
-            if(configuredPlayer!=owner&&art.TryConfigure(owner,characterPrefabs,characters)&&animationBinder.TryConfigure(art,rigs)){configuredPlayer=owner;effectsBound=false;}
+            if(session==null)
+            {
+                if(configuredPlayer!=owner&&art.TryConfigure(owner,characterPrefabs,characters)&&animationBinder.TryConfigure(art,rigs)){configuredPlayer=owner;effectsBound=false;}
+            }
             if(activeStage!=null&&activeStage.Definition!=configuredStage)Build(activeStage.Definition);
-            if(session!=null)session.SetExternalCharacterArt(art.CurrentRenderer!=null&&art.CurrentRenderer.VisualRoot!=null);
             DamageReceiver2D actor=owner.ActiveCharacter;EnemyAgent2D boss=session!=null&&session.BossArena!=null?session.BossArena.Boss:null;
             if(effectAdapter!=null&&effects!=null&&(!effectsBound||actor!=configuredActor||boss!=configuredBoss))
             {

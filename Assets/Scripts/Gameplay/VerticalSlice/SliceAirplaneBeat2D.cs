@@ -25,7 +25,7 @@ namespace HuntrX.Gameplay.VerticalSlice
         {
             get
             {
-                if (!heroinesStoodUpFromTable && beatClock < 2.6f)
+                if (!heroinesStoodUpFromTable && beatClock < 3.1f)
                 {
                     return "Fundo do Jato VIP: Comendo Ramyeon e Kimbap antes do Show! (Ande ou Ataque [Z/J] para levantar!)";
                 }
@@ -188,14 +188,30 @@ namespace HuntrX.Gameplay.VerticalSlice
 
             if (!heroinesStoodUpFromTable)
             {
-                if (distFromStart > 0.35f || beatClock >= 2.6f)
+                if (distFromStart > 0.35f || beatClock >= 3.1f)
                 {
                     TriggerStandUpFromVipTable();
                 }
-                else if (rumiSeatRenderer != null && vipIntroFrames != null && vipIntroFrames.Length >= 3)
+                else if (rumiSeatRenderer != null && vipIntroFrames != null && vipIntroFrames.Length >= 4)
                 {
-                    // Frame 0 (0..1.6s): Slurping ramyeon in VIP seat -> Frame 2 (1.6..2.6s): Tossing cup & drawing Saingeom sword!
-                    rumiSeatRenderer.sprite = beatClock < 1.6f ? vipIntroFrames[0] : vipIntroFrames[2];
+                    // Frame 0 (0..1.35s): Slurping ramyeon in VIP seat
+                    // Frame 2 (1.35..2.25s): Alert! Standing up & tossing cup while grabbing Saingeom hilt
+                    // Frame 3 (2.25..3.10s): Leaping forward slashing cyan-gold Honmoon arc into combat stance!
+                    if (beatClock < 1.35f)
+                    {
+                        rumiSeatRenderer.sprite = vipIntroFrames[0];
+                        rumiSeatRenderer.transform.localPosition = new Vector3(0.05f, 0.15f, 0f);
+                    }
+                    else if (beatClock < 2.25f)
+                    {
+                        rumiSeatRenderer.sprite = vipIntroFrames[2];
+                        rumiSeatRenderer.transform.localPosition = new Vector3(0.16f, 0.22f, 0f);
+                    }
+                    else
+                    {
+                        rumiSeatRenderer.sprite = vipIntroFrames[3];
+                        rumiSeatRenderer.transform.localPosition = new Vector3(0.32f, 0.28f, 0f);
+                    }
                 }
             }
 

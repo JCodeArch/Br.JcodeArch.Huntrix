@@ -168,24 +168,24 @@ namespace HuntrX.Gameplay.Levels
         {
             var tex = new Texture2D(32, 32, TextureFormat.RGBA32, false);
             tex.filterMode = FilterMode.Point;
-            Color neonTop = theme == StageBlockoutTheme.DayUrban ? new Color(0.15f, 0.92f, 1f, 0.98f) :
-                            theme == StageBlockoutTheme.NightUrban ? new Color(0.95f, 0.25f, 0.85f, 0.98f) :
-                            theme == StageBlockoutTheme.Interior ? new Color(0.18f, 0.92f, 1f, 0.98f) :
-                            new Color(0.45f, 0.95f, 0.75f, 0.98f);
-            Color bodyDark = new Color(0.08f, 0.09f, 0.16f, 0.95f);
-            Color steelMid = new Color(0.18f, 0.21f, 0.32f, 0.95f);
-            Color hazardGold = new Color(0.95f, 0.68f, 0.15f, 0.92f);
+            Color neonTop = theme == StageBlockoutTheme.DayUrban ? new Color(0.18f, 0.68f, 0.82f, 0.95f) :
+                            theme == StageBlockoutTheme.NightUrban ? new Color(0.68f, 0.24f, 0.65f, 0.95f) :
+                            theme == StageBlockoutTheme.Interior ? new Color(0.22f, 0.58f, 0.78f, 0.94f) :
+                            new Color(0.32f, 0.72f, 0.62f, 0.95f);
+            Color bodyDark = new Color(0.06f, 0.07f, 0.12f, 0.96f);
+            Color steelMid = new Color(0.12f, 0.15f, 0.24f, 0.96f);
+            Color trimSubtle = new Color(0.24f, 0.30f, 0.44f, 0.94f);
 
             for (int y = 0; y < 32; y++)
             {
                 for (int x = 0; x < 32; x++)
                 {
                     Color c;
-                    if (y >= 28) c = neonTop; // Glowing Capcom cyan/magenta top energy rail
-                    else if (y >= 23 && y <= 26) c = ((x + y) % 8 < 4) ? hazardGold : bodyDark; // Capcom industrial hazard stripe
-                    else if (y == 27 || y <= 2 || x == 0 || x == 31) c = steelMid;
-                    else if ((x % 4 == 0) && y >= 6 && y <= 20) c = new Color(0.03f, 0.04f, 0.08f, 0.95f); // Grated floor slots
-                    else c = steelMid;
+                    if (y >= 29) c = neonTop; // Subtle top deck trim rail so character silhouettes pop
+                    else if (y >= 25 && y <= 27) c = ((x + y) % 8 < 4) ? trimSubtle : bodyDark;
+                    else if (y == 28 || y <= 2 || x == 0 || x == 31) c = steelMid;
+                    else if ((x % 4 == 0) && y >= 6 && y <= 20) c = new Color(0.03f, 0.04f, 0.08f, 0.96f); // Grated floor slots
+                    else c = bodyDark;
                     tex.SetPixel(x, y, c);
                 }
             }

@@ -130,7 +130,7 @@ namespace HuntrX.Gameplay.Levels
 
                 var sr = streakGo.AddComponent<SpriteRenderer>();
                 sr.sprite = softGlowSprite;
-                sr.sortingOrder = -20; // Renders across the window glass band behind characters and platforms
+                sr.sortingOrder = -24; // Renders across the window glass band behind characters and platforms
                 sr.color = isCloud
                     ? new Color(0.55f, 0.42f, 0.98f, 0.38f)
                     : ((i % 2 == 0) ? new Color(0.20f, 0.95f, 1f, 0.52f) : new Color(1f, 0.30f, 0.85f, 0.46f));
@@ -139,10 +139,13 @@ namespace HuntrX.Gameplay.Levels
                 windowStreakSpeeds.Add(isCloud ? (8.5f + (i % 4) * 2.2f) : (18f + (i % 5) * 4.5f));
             }
 
-            // Right-end Cockpit Bulkhead Boss Door at the front of the aircraft (local X ~ +21.5f, matching world X ~ 45.5f)
+            // Right-end Cockpit Bulkhead Boss Door anchored in stage space (not drifting with backdrop parallax)
+            Transform stageAnchorParent = transform.parent != null ? transform.parent : transform;
             var bulkheadRoot = new GameObject("Airplane_CockpitBossBulkhead");
-            bulkheadRoot.transform.SetParent(transform, false);
-            bulkheadRoot.transform.localPosition = new Vector3(21.5f, -0.2f, 0f);
+            bulkheadRoot.transform.SetParent(stageAnchorParent, false);
+            bulkheadRoot.transform.localPosition = stageAnchorParent != transform
+                ? new Vector3(baseLocalPos.x + 22.2f, baseLocalPos.y - 0.2f, 0f)
+                : new Vector3(22.2f, -0.2f, 0f);
 
             var doorFrame = new GameObject("Cockpit_ArmorDoorFrame");
             doorFrame.transform.SetParent(bulkheadRoot.transform, false);

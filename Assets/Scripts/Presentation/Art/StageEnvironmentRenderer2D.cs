@@ -48,18 +48,8 @@ namespace HuntrX.Presentation.Art
                     ownsStageArtSprite = true;
                 }
             }
-            if (stageArtSprite == null) return;
-            GameObject bg = new GameObject("HD_StageBackdrop_" + stageId);
-            bg.transform.SetParent(farLayer, false);
-            bg.transform.localPosition = new Vector3(24f, 4.5f, 0f);
-            float w = stageArtSprite.bounds.size.x;
-            float h = stageArtSprite.bounds.size.y;
-            if (w > 0.01f && h > 0.01f) bg.transform.localScale = new Vector3(64f / w, 18f / h, 1f);
-            SpriteRenderer sr = bg.AddComponent<SpriteRenderer>();
-            sr.sprite = stageArtSprite;
-            sr.sortingOrder = -18;
-            var anim = bg.AddComponent<HuntrX.Gameplay.Levels.LivingStageBackdropAnimator2D>();
-            anim.Configure(stageId, sr);
+            // StageBlockoutBuilder2D owns the undistorted 16:9 tiled HD_StageBackdrop_<key> and its single LivingStageBackdropAnimator2D.
+            // Keep stageArtSprite resolved here so procedural foreground blocks remain suppressed when HD stage art is present.
         }
         private Transform Layer(string name,Transform parent){Transform layer=new GameObject(name).transform;layer.SetParent(parent,false);return layer;}
         private void Quad(Transform parent,string name,Vector2 position,Vector2 size,Color color,int sorting){GameObject item=new GameObject(name);item.transform.SetParent(parent,false);item.transform.localPosition=position;item.transform.localScale=new Vector3(size.x,size.y,1);SpriteRenderer renderer=item.AddComponent<SpriteRenderer>();renderer.sprite=sprite;renderer.color=color;renderer.sortingOrder=sorting;if(stageArtSprite!=null)renderer.enabled=false;}

@@ -113,6 +113,8 @@ namespace HuntrX.Gameplay.Narrative
             if (string.IsNullOrEmpty(speaker)) return null;
             string s = speaker.ToLowerInvariant();
             string key = s.Contains("mira") ? "Mira" : s.Contains("zoey") ? "Zoey" : s.Contains("jinu") ? "Jinu" : s.Contains("gwi") ? "GwiMa" : "Rumi";
+            Texture2D framedPortrait = UnityEngine.Resources.Load<Texture2D>("Art/Portraits/" + key + "_Portrait");
+            if (framedPortrait != null) return framedPortrait;
             return UnityEngine.Resources.Load<Texture2D>("Art/Characters/" + key);
         }
         private void OnEnable(){requiresPolicy=requiresPolicy||!ReferenceEquals(narrativePolicy,null);policy=narrativePolicy as INarrativePresentationPolicy;if(policy!=null)policy.PolicyChanged+=HandlePolicyChanged;}

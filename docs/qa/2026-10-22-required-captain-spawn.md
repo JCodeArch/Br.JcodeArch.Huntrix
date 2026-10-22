@@ -7,3 +7,5 @@ The new PlayMode test temporarily invalidates the captain prefab's enemy definit
 This checks failure handling at stage startup. It does not establish that a player can defeat the captain or reach the exit; a controlled full playthrough is still needed.
 
 The Windows Development build from commit `dff8521d139429f677658e66bcf8350f823f0ed7` succeeded with zero errors and warnings (`outputs/b81/Windows.evidence.json`). Artifact: `outputs/b81/Windows/Huntrix.exe`, SHA-256 `fabb3747c9c7aeca8b5153ad5793e7a84e09b057148087295c78eb36f5378f32`. This validates packaging; it is not a substitute for a complete player-run encounter.
+
+The Android Development build from commit `df7c8635c7019cc54f8bc6cf5b4113e0fb492e8a` succeeded (`outputs/b82/Android/Android.evidence.json`): `outputs/b82/Android/Huntrix.apk`, 187,353,350 bytes. The report records zero errors and one warning: Unity Cloud had no token to upload native symbols; local symbols were generated. `apksigner verify --print-certs` passed with the Android Debug certificate. `adb devices` found no attached device, so installation, performance and a complete touch-control playthrough remain unverified.

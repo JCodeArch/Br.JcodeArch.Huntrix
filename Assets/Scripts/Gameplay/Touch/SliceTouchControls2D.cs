@@ -90,7 +90,7 @@ namespace HuntrX.Gameplay.Touch
         }
         private void OnGUI()
         {
-            if ((!showInDesktop && Touchscreen.current == null) || session == null || !session.IsRunning || session.Input == null || !session.Input.isActiveAndEnabled) return;
+            if (Touchscreen.current == null || (!showInDesktop && Touchscreen.current == null) || session == null || !session.IsRunning || session.Input == null || !session.Input.isActiveAndEnabled) return;
             Layout(); GUI.Box(pad,"Mover"); for (int i=0;i<buttons.Length;i++) GUI.Box(buttons[i],labels[i]);
         }
         private void OnDisable() { ReadContacts(true); Release(); }

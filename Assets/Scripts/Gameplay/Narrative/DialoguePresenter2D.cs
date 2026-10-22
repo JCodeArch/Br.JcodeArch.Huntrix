@@ -25,6 +25,13 @@ namespace HuntrX.Gameplay.Narrative
         public void SetUiBlocked(bool value) { uiBlocked = value; }
         public bool IsPresenting=>sequence!=null;
         public NarrativeSequenceDefinition Current=>sequence;
+        public event Action PresentationChanged;
+        private void NotifyPresentationChanged()
+        {
+            var handlers = PresentationChanged;
+            if (handlers != null) foreach (Action handler in handlers.GetInvocationList())
+                try { handler(); } catch (Exception error) { Debug.LogException(error, this); }
+        }
         public event Action<NarrativeSequenceDefinition> SequenceCompleted;
         public event Action<NarrativeSequenceDefinition> SequenceCancelled;
         public bool BindPolicy(MonoBehaviour value)
@@ -37,11 +44,13 @@ namespace HuntrX.Gameplay.Narrative
         {
             if(!isActiveAndEnabled||publishing||resolvingPolicy||IsPresenting||value==null||!value.IsValid(out _))return false;
             int version=policyVersion;for(int i=0;i<value.Count;i++)if(!Resolve(value,i,out _))return false;
-            if(version!=policyVersion||!isActiveAndEnabled||IsPresenting)return false;sequence=value;index=0;revealed=0f;PlayVoice();return true;
+            if(version!=policyVersion||!isActiveAndEnabled||IsPresenting)return false;sequence=value;index=0;revealed=0f;PlayVoice();NotifyPresentationChanged();return true;
         }
         public void SetCaptionsEnabled(bool value) { captionsEnabled = value; }
         public void SetEnglish(bool value){english=value;}
         public void SetAudio(GameAudioManager2D value){audioManager=value;}
+        public static Rect GetCutsceneInsetViewportRect(float width, float height) => new Rect(width * 0.72f, height * 0.03f, width * 0.24f, height * 0.22f);
+        public static Rect GetDialoguePanelViewportRect(float width, float height) => new Rect(width * 0.08f, height * 0.72f, width * 0.84f, height * 0.23f);
         public bool Advance()
         {
             if(!isActiveAndEnabled||publishing||sequence==null)return false;
@@ -51,25 +60,65 @@ namespace HuntrX.Gameplay.Narrative
             NarrativeSequenceDefinition completed=sequence;sequence=null;audioManager?.StopVoice();
             publishing=true;
             try{var handlers=SequenceCompleted;if(handlers!=null)foreach(Action<NarrativeSequenceDefinition> handler in handlers.GetInvocationList())try{handler(completed);}catch(Exception error){Debug.LogException(error,this);}}
-            finally{publishing=false;}
+            finally{publishing=false;NotifyPresentationChanged();}
             return true;
         }
         public void Cancel()
         {
             policyVersion++;NarrativeSequenceDefinition old=sequence;sequence=null;revealed=0f;audioManager?.StopVoice();if(old==null)return;
-            bool wasPublishing=publishing;publishing=true;try{var handlers=SequenceCancelled;if(handlers!=null)foreach(Action<NarrativeSequenceDefinition> handler in handlers.GetInvocationList())try{handler(old);}catch(Exception error){Debug.LogException(error,this);}}finally{publishing=wasPublishing;}
+            bool wasPublishing=publishing;publishing=true;try{var handlers=SequenceCancelled;if(handlers!=null)foreach(Action<NarrativeSequenceDefinition> handler in handlers.GetInvocationList())try{handler(old);}catch(Exception error){Debug.LogException(error,this);}}finally{publishing=wasPublishing;NotifyPresentationChanged();}
         }
         private void PlayVoice(){if(audioManager!=null){audioManager.StopVoice();AudioClip clip=sequence.GetLine(index).Voice;if(clip!=null&&!requiresPolicy)audioManager.TryPlayVoice(clip);}}
         private void Update(){if(uiBlocked)return;if(sequence!=null){if(!Resolve(sequence,index,out string text)){Cancel();return;}revealed=Mathf.Min(text.Length,revealed+sequence.CharactersPerSecond*Time.unscaledDeltaTime);}}
         private void OnGUI()
         {
             if(uiBlocked||sequence==null)return;NarrativeLine line=sequence.GetLine(index);if(!Resolve(sequence,index,out string text)){Cancel();return;}
-            float w=Screen.width,h=Screen.height;Rect panel=new Rect(w*.08f,h*.68f,w*.84f,h*.27f);GUI.Box(panel,GUIContent.none);
-            Color previous=GUI.color;GUI.color=line.PortraitColor;GUI.Box(new Rect(panel.x+12,panel.y+12,70,70),line.Speaker.Length>0?line.Speaker.Substring(0,1):"?");GUI.color=previous;
-            GUI.Label(new Rect(panel.x+94,panel.y+8,panel.width-110,24),line.Speaker);
+            float w=Screen.width,h=Screen.height;
+
+            // Compact Mega Man X4 Style Anime Cutscene Picture-in-Picture Card (top-right, never occluding the in-world VIP stage tableau!)
+            Texture2D animeScene = ResolveAnimeCutsceneTexture(sequence.CueId, line.Speaker);
+            if (animeScene != null)
+            {
+                Rect cinemaRect = GetCutsceneInsetViewportRect(w, h);
+                Color prev = GUI.color;
+                GUI.color = new Color(0.05f, 0.03f, 0.12f, 0.92f);
+                GUI.DrawTexture(new Rect(cinemaRect.x - 3, cinemaRect.y - 3, cinemaRect.width + 6, cinemaRect.height + 6), Texture2D.whiteTexture);
+                GUI.color = Color.white;
+                GUI.DrawTexture(cinemaRect, animeScene, ScaleMode.ScaleAndCrop);
+                GUI.color = prev;
+            }
+
+            Rect panel = GetDialoguePanelViewportRect(w, h);
+            GUI.Box(panel,GUIContent.none);
+            Texture2D portraitTex = ResolveSpeakerPortrait(line.Speaker);
+            if (portraitTex != null)
+            {
+                GUI.DrawTexture(new Rect(panel.x + 12, panel.y + 10, 88, 88), portraitTex, ScaleMode.ScaleToFit);
+            }
+            else
+            {
+                Color previous=GUI.color;GUI.color=line.PortraitColor;GUI.Box(new Rect(panel.x+12,panel.y+12,70,70),line.Speaker.Length>0?line.Speaker.Substring(0,1):"?");GUI.color=previous;
+            }
+            GUI.Label(new Rect(panel.x+110,panel.y+8,panel.width-126,24),line.Speaker);
             GUIStyle style=new GUIStyle(GUI.skin.label){wordWrap=true,fontSize=Mathf.Clamp(Mathf.RoundToInt(h/35f),14,26)};
-            if (captionsEnabled || line.Voice == null || requiresPolicy) GUI.Label(new Rect(panel.x+94,panel.y+35,panel.width-110,panel.height-78),text.Substring(0,Mathf.Min(text.Length,Mathf.FloorToInt(revealed))),style);
+            if (captionsEnabled || line.Voice == null || requiresPolicy) GUI.Label(new Rect(panel.x+110,panel.y+35,panel.width-126,panel.height-78),text.Substring(0,Mathf.Min(text.Length,Mathf.FloorToInt(revealed))),style);
             if(GUI.Button(new Rect(panel.xMax-155,panel.yMax-35,140,27),english?"Continue":"Continuar"))Advance();
+        }
+        private static Texture2D ResolveAnimeCutsceneTexture(string cueId, string speaker)
+        {
+            string s = ((cueId ?? string.Empty) + " " + (speaker ?? string.Empty)).ToLowerInvariant();
+            bool isClimax = s.Contains("jinu") || s.Contains("gwi") || s.Contains("saja") || s.Contains("boss") || s.Contains("final") || s.Contains("honmoon");
+            string path = isClimax ? "Art/Cutscenes/Anime_02_ClimaxShowdown" : "Art/Cutscenes/Anime_01_AirplaneFight";
+            return UnityEngine.Resources.Load<Texture2D>(path);
+        }
+        private static Texture2D ResolveSpeakerPortrait(string speaker)
+        {
+            if (string.IsNullOrEmpty(speaker)) return null;
+            string s = speaker.ToLowerInvariant();
+            string key = s.Contains("mira") ? "Mira" : s.Contains("zoey") ? "Zoey" : s.Contains("jinu") ? "Jinu" : s.Contains("gwi") ? "GwiMa" : "Rumi";
+            Texture2D framedPortrait = UnityEngine.Resources.Load<Texture2D>("Art/Portraits/" + key + "_Portrait");
+            if (framedPortrait != null) return framedPortrait;
+            return UnityEngine.Resources.Load<Texture2D>("Art/Characters/" + key);
         }
         private void OnEnable(){requiresPolicy=requiresPolicy||!ReferenceEquals(narrativePolicy,null);policy=narrativePolicy as INarrativePresentationPolicy;if(policy!=null)policy.PolicyChanged+=HandlePolicyChanged;}
         private void OnDisable(){UnbindPolicy();Cancel();}

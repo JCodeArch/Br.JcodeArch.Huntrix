@@ -1,0 +1,279 @@
+fileFormatVersion: 2
+guid: f23f119e2b9c1484f8d97f513d8ae00a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2900517116987926498
+    second: rumi-idle-proof-v2_0
+  - first:
+      213: 5995157069359725289
+    second: rumi-idle-proof-v2_1
+  - first:
+      213: -3487200820718139684
+    second: rumi-idle-proof-v2_2
+  - first:
+      213: -4774646125139650312
+    second: rumi-idle-proof-v2_3
+  - first:
+      213: 6439048538039253322
+    second: rumi-idle-proof-v2_4
+  - first:
+      213: -2607214376081866949
+    second: rumi-idle-proof-v2_5
+  - first:
+      213: -3759345752740039018
+    second: rumi-idle-proof-v2_6
+  - first:
+      213: 5859604095060902964
+    second: rumi-idle-proof-v2_7
+  - first:
+      213: -5002840540961663361
+    second: rumi-idle-proof-v2_8
+  - first:
+      213: -6830454680020140589
+    second: rumi-idle-proof-v2_9
+  - first:
+      213: 1633488364314792316
+    second: rumi-idle-proof-v2_10
+  - first:
+      213: 4240035914071578110
+    second: rumi-idle-proof-v2_11
+  - first:
+      213: -8561277030323609847
+    second: rumi-idle-proof-v2_12
+  - first:
+      213: -8395245301647307312
+    second: rumi-idle-proof-v2_13
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 9
+  spritePivot: {x: 0.6, y: 0.03629}
+  spritePixelsToUnits: 200
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: rumi_idle_00
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 776
+        width: 448
+        height: 744
+      alignment: 9
+      pivot: {x: 0.6, y: 0.03629}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bee6f1261a993e6d17a1eacd9e1df00
+      internalID: -1805507168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rumi_idle_01
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 776
+        width: 448
+        height: 744
+      alignment: 9
+      pivot: {x: 0.6, y: 0.03629}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bee6f1261a993e6d17a1eacd9e1df01
+      internalID: -2073942624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rumi_idle_02
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 8
+        width: 448
+        height: 744
+      alignment: 9
+      pivot: {x: 0.6, y: 0.03629}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bee6f1261a993e6d17a1eacd9e1df02
+      internalID: -1268636256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rumi_idle_03
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 8
+        width: 448
+        height: 744
+      alignment: 9
+      pivot: {x: 0.6, y: 0.03629}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bee6f1261a993e6d17a1eacd9e1df03
+      internalID: -1537071712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 3034f300098c203478258e8e2ad04d39
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      rumi_idle_00: -1805507168
+      rumi_idle_01: -2073942624
+      rumi_idle_02: -1268636256
+      rumi_idle_03: -1537071712
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: HuntrX.RumiIdleProofV2
+  assetBundleName: 
+  assetBundleVariant: 

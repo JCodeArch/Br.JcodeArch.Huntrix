@@ -203,6 +203,7 @@ MonoBehaviour:
   stage: {fileID: 11400000, guid: a6a8db0008b94c63987c40ca17e8d896, type: 2}
   groundEnemy: {fileID: 114295073500037013, guid: e9ad72e0df15404f899e4d77112009e3, type: 3}
   flyingEnemy: {fileID: 114295073500037013, guid: ddcd37b0127449dbb58e9958440f3c1a, type: 3}
+  captainEnemy: {fileID: 114295073500037013, guid: 3eb014e5835943feac406812c351f53e, type: 3}
 --- !u!114 &9697401
 MonoBehaviour:
   m_ObjectHideFlags: 0

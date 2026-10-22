@@ -1,0 +1,687 @@
+﻿================================================================================
+ DUMP COMPLETO DO SUPABASE — PROJETO: HUNTR/X — Honmoon (bkfjhgwxhcwhmvsitckp)
+ Project Key: huntrx-honmoon | Schema: ai_context
+ Data de Extração: 2026-10-19 14:32:30 -03:00
+================================================================================
+
+1. TABELA: ai_context.projects
+--------------------------------------------------------------------------------
+project_key    : huntrx-honmoon
+name           : HUNTR/X — Honmoon
+repository_url : https://github.com/JCodeArch/Br.JcodeArch.Huntrix
+revision       : 127
+created_at     : 2026-10-13 16:13:31.130194+00
+updated_at     : 2026-10-19 17:08:41.955781+00
+
+================================================================================
+2. CHECKPOINT ATUAL (REVISÃO 127) — PAYLOAD INTEGRAL JSON
+--------------------------------------------------------------------------------
+{
+  "revision": 127,
+  "writer": "agent-antigravity-57749161",
+  "created_at": "2026-10-19 17:08:41.955781+00",
+  "source_metadata": {
+    "action": "stage1_capcom_overhaul_and_windows_exe_build",
+    "branch": "feat/art-animations-and-vertical-slice",
+    "head": "c42fbd031466115209f23f71f49ddcecc978b556",
+    "exe_path": "C:\\Users\\Jonathas\\Desktop\\Huntrix Game\\Huntrix.exe",
+    "observed_at": "2026-10-19T14:08:15-03:00"
+  },
+  "payload": {
+    "project": {
+      "name": "HUNTR/X - Honmoon",
+      "branch": "feat/art-animations-and-vertical-slice",
+      "head_sha": "c42fbd031466115209f23f71f49ddcecc978b556",
+      "develop_head": "8e5777f4299151e4b82ebab4221bf786b75400b7",
+      "repository": "https://github.com/JCodeArch/Br.JcodeArch.Huntrix"
+    },
+    "current_state": {
+      "build_status": "0 errors, 0 warnings across all 4 assemblies (HuntrX.Runtime, HuntrX.Editor, HuntrX.EditModeTests, HuntrX.PlayModeTests) verified with dotnet build -warnaserror.",
+      "standalone_exe_status": "Built fresh Windows 64-bit standalone executable at C:\\Users\\Jonathas\\Desktop\\Huntrix Game\\Huntrix.exe via HuntrX.Editor.Build.PrototypeBuildPipeline.WindowsRelease with Assets/Scenes/VerticalSlice.unity as Scene 0 (startup scene).",
+      "stage1_capcom_overhaul": {
+        "vip_lounge_eating_intro": "SliceAirplaneBeat2D starts heroines at the rear VIP lounge (x = 1.0) with Zoey & Mira seated at the VIP booth table feasting on kimbap/mandu/coffee pot (Art/Props/VipLoungeIntro/1) and Rumi seated in her VIP chair slurping ramyeon (Art/Props/VipLoungeIntro/0), transitioning to tossing the cup & drawing her Saingeom sword (Art/Props/VipLoungeIntro/2) when moving/attacking or after 2.6s.",
+        "window_flight_motion": "LivingStageBackdropAnimator2D spawns 28 scrolling night clouds, Seoul city lights, and cyan/magenta Honmoon streaks rushing right-to-left across the cabin window band so the jet feels like it is flying at high speed.",
+        "enemy_walk_and_attack_cycles": "EnemyPrototypeVisual2D loads 4-frame walk & claw-slash action sheets (Art/Enemies/Actions/CaptainDokkaebi/0..3 and Art/Enemies/Actions/MagentaStewardess/0..3), animating 2-frame walk strides after the 2.0s human disguise morph, telegraph windups, and ferocious claw lunge slashes.",
+        "cockpit_boss_progression": "Corridor waves progress from rear VIP lounge (x = 1) to the reinforced Capcom Cockpit Boss Bulkhead Door (x = 42.5..45.5) with flashing red/amber warning beacons where BOSS_Cockpit_CaptainDokkaebi awaits.",
+        "controls_and_hud": "Intuitive Capcom/Arcade keyboard bindings added (Arrows + Z=Attack, X/Space=Jump, C/Shift=Dash, V=Special, A/Q=Switch, S/K=Parry, D/E=Rescue) alongside WASD+J/K/L, with on-screen control bar and Mega Man X style vertical boss/player HUD."
+      },
+      "column05_status": "All 9 cards (#33 to #41) concluded, commented with evidence, and moved to 18 - Concluido; Column 05 is completely empty (0 cards).",
+      "column06_status": "All 7 cards (#42 to #48) concluded and moved to 18 - Concluido; Column 06 is completely empty.",
+      "columns_status": "All cards from Column 04 through Column 16 (#30 to #110, total 61 cards) concluded, verified, and moved to 18 - Concluido on Trello.",
+      "develop_head": "8e5777f4299151e4b82ebab4221bf786b75400b7",
+      "last_action": "Implemented Stage 1 (VIP Jet) Capcom Mega Man X overhaul: orthographic side-view corridor background, scrolling window flight streaks, rear VIP lounge eating intro (Rumi, Zoey & Mira seated eating ramyeon/kimbap before standing up to fight), 2.0s human-to-Dokkaebi disguise morph + 4-frame enemy walk/claw-attack animations, progression to the Cockpit Boss Bulkhead Door, intuitive Z/X/C/Arrows + WASD controls, and rebuilt C:\\Users\\Jonathas\\Desktop\\Huntrix Game\\Huntrix.exe with VerticalSlice.unity as Scene 0.",
+      "unity_validation": "0 warnings / 0 errors on all 4 .csproj assemblies; Windows64 standalone build succeeded on Unity 6000.6.4f1."
+    },
+    "resume": {
+      "latest_delivery": "Stage 1 VIP Jet Capcom Overhaul + VIP Lounge Eating Intro + Window Flight Motion + Enemy Walk/Attack Cycles + Cockpit Boss Door + Fresh Huntrix.exe build (2026-10-19)",
+      "next_action": "Await user playtest feedback on C:\\Users\\Jonathas\\Desktop\\Huntrix Game\\Huntrix.exe and commit/push working tree changes when approved.",
+      "status": "stage1_capcom_overhaul_built_and_ready_for_playtest"
+    },
+    "operating_rules": [
+      "MANDATORY: Every AI working on HUNTR/X must consume Supabase context before any work; acknowledge checkpoint revision and reconcile actual source state.",
+      "MANDATORY: Clean build premise - All assemblies (HuntrX.Runtime, HuntrX.Editor, HuntrX.EditModeTests, HuntrX.PlayModeTests) must compile with 0 errors and 0 warnings (.NET 8 / C# 9.0).",
+      "MANDATORY: Update Supabase project context, active tasks, evidence and handoff at session start, task status transitions, commits/PR/merges, build results, blockers and session end."
+    ]
+  }
+}
+
+================================================================================
+3. HISTÓRICO DE CHECKPOINTS (ai_context.checkpoints — 127 revisões)
+--------------------------------------------------------------------------------
+[Rev 127] writer=agent-antigravity-57749161 | at=2026-10-19 17:08 | status=stage1_capcom_overhaul_built_and_ready_for_playtest | delivery=Stage 1 VIP Jet Capcom Overhaul + VIP Lounge Eating Intro + Window Flight Motion + Enemy Walk/Attack Cycles + 
+[Rev 126] writer=agent-antigravity | at=2026-10-17 03:13 | status=columns_04_to_16_completed_and_concluded | delivery=Commit 8e5777f: docs(governance): record completion of columns 04 through 16 to Concluido
+[Rev 125] writer=antigravity-ide-column05-resolver | at=2026-10-17 02:03 | status=column_05_completed_and_concluded | delivery=Commit 6ae7595: fix(enemies): resolve Column 05 enemy combat contracts and 42/42 PlayMode tests
+[Rev 124] writer=antigravity-column06-agent | at=2026-10-17 01:39 | status=column_06_runtime_validated | delivery=Commit 6a5e3d0: docs(governance): record 100% passing Unity runtime test execution for Column 06
+[Rev 123] writer=antigravity-column06-agent | at=2026-10-17 00:45 | status=premises_updated | delivery=Commit 6b583c0: docs(governance): establish mandatory zero-error and zero-warning build premise
+[Rev 122] writer=antigravity-column06-agent | at=2026-10-17 00:40 | status=column_06_completed | delivery=Commit 74ad935: docs(governance): record resolution and completion of Trello Column 06 cards
+[Rev 121] writer=codex-column05-20261017 | at=2026-10-17 00:28 | status=playmode_tests_compilation_fixed | delivery=Commit a3a42f3: fix(tests): resolve PlayMode test compilation errors and remove obsolete warnings
+[Rev 120] writer=antigravity-session | at=2026-10-17 00:23 | status=playmode_tests_compilation_fixed | delivery=Commit a3a42f3: fix(tests): resolve PlayMode test compilation errors and remove obsolete warnings
+[Rev 119] writer=codex-zoey-20261017 | at=2026-10-17 00:09 | status=zoey_implementation_merged_runtime_blocked | delivery=Authored and integrated PlayMode tests for Fan Rescue & Rewards (FanRescuePlayModeTests, RescuableFan_Prototyp
+[Rev 118] writer=codex-zoey-20261017 | at=2026-10-17 00:06 | status=focus_card30_zoey | delivery=Authored and integrated PlayMode tests for Fan Rescue & Rewards (FanRescuePlayModeTests, RescuableFan_Prototyp
+[Rev 117] writer=codex-card99-20261016-2348 | at=2026-10-16 23:53 | status=card99_increment_merged_runtime_pending | delivery=Authored and integrated PlayMode tests for Fan Rescue & Rewards (FanRescuePlayModeTests, RescuableFan_Prototyp
+[Rev 116] writer=codex-card99-20261016-2348 | at=2026-10-16 23:49 | status=card_43_merged_into_develop | delivery=Authored and integrated PlayMode tests for Fan Rescue & Rewards (FanRescuePlayModeTests, RescuableFan_Prototyp
+[Rev 115] writer=antigravity-ai | at=2026-10-16 21:24 | status=card_43_merged_into_develop | delivery=Authored and integrated PlayMode tests for Fan Rescue & Rewards (FanRescuePlayModeTests, RescuableFan_Prototyp
+[Rev 114] writer=antigravity-ai | at=2026-10-16 21:19 | status=card_42_merged_into_develop | delivery=Authored and integrated PlayMode tests for Fan States & Protection (FanStatePlayModeTests, RescuableFan_Protot
+[Rev 113] writer=antigravity-ai | at=2026-10-16 21:14 | status=card_32_merged_into_develop | delivery=Authored and integrated PlayMode tests for CharacterSwitchController2D (CharacterSwitchPlayModeTests, HuntrXPl
+[Rev 112] writer=antigravity-ai | at=2026-10-16 21:10 | status=card_31_merged_into_develop | delivery=Authored and integrated PlayMode tests for CharacterManager (CharacterManager2D, HuntrXPlayerSlot_Prototype, C
+[Rev 111] writer=codex-orchestrator-20261016-2110 | at=2026-10-16 21:08 | status=card_33_merged_into_develop | delivery=Authored and integrated PlayMode tests for Ground Enemy Controller (GroundEnemyController2D, GroundDemon_Proto
+[Rev 110] writer=antigravity-ai | at=2026-10-16 21:04 | status=card_33_merged_into_develop | delivery=Authored and integrated PlayMode tests for Ground Enemy Controller (GroundEnemyController2D, GroundDemon_Proto
+[Rev 109] writer=antigravity-ai | at=2026-10-16 20:47 | status=card_36_merged_into_develop | delivery=Authored and integrated PlayMode tests for Horde Concurrent Encounters (HordeController2D, HordeDefinition, En
+[Rev 108] writer=codex-orchestrator-20261016-1943 | at=2026-10-16 20:43 | status=card_38_merged_into_develop | delivery=Authored and integrated PlayMode tests for Miniboss Phases (MinibossPhaseController2D, EnemyPatternController2
+[Rev 107] writer=antigravity-ai | at=2026-10-16 20:41 | status=card_38_merged_into_develop | delivery=Authored and integrated PlayMode tests for Miniboss Phases (MinibossPhaseController2D, EnemyPatternController2
+[Rev 106] writer=antigravity-ai | at=2026-10-16 20:37 | status=card_37_merged_into_develop | delivery=Authored and integrated PlayMode tests for Elite Enemies (EnemyPatternController2D, EnemyPatternDefinition, En
+[Rev 105] writer=antigravity-ai | at=2026-10-16 20:32 | status=card_34_merged_into_develop | delivery=Authored and integrated PlayMode tests for Flying Enemies (FlyingEnemyController2D, EnemyAgent2D, EnemyProject
+[Rev 104] writer=antigravity-ai | at=2026-10-16 20:23 | status=card_35_merged_into_develop | delivery=Authored and integrated PlayMode tests for Support Enemies (SupportEnemyController2D, SupportEnemyDefinition) 
+[Rev 103] writer=antigravity-ai | at=2026-10-16 20:18 | status=cards_39_40_merged_into_develop | delivery=Authored and integrated PlayMode tests for Saja Boys rivals (SajaRivalController2D, SajaRivalDefinition) and J
+[Rev 102] writer=antigravity-ai | at=2026-10-16 20:12 | status=card_41_merged_into_develop | delivery=Authored and integrated PlayMode tests for Gwi-Ma Final Boss (GwiMaBossController2D, GwiMaBossDefinition, Fina
+[Rev 101] writer=antigravity-ai | at=2026-10-16 20:04 | status=cards_45_46_merged_into_develop | delivery=Authored and integrated PlayMode tests for Food Resources (FoodPickup2D, FoodInventory2D, FoodDefinition) and 
+[Rev 100] writer=antigravity-ai | at=2026-10-16 19:58 | status=card_48_merged_into_develop | delivery=Authored and integrated PlayMode tests for Honmoon Crisis and Team Union (HonmoonCrisisPlayModeTests.cs) cover
+[Rev 99] writer=antigravity-orchestrator | at=2026-10-16 19:50 | status=all_prs_reconciled_and_merged_into_develop | delivery=Authored LocalReplayPlayModeTests covering LocalReplayRecord, LocalReplayRecordStore and LocalReplayController
+[Rev 98] writer=antigravity-orchestrator | at=2026-10-16 19:39 | status=all_prs_reconciled_and_merged_into_develop | delivery=Authored BlockoutLevelControllerPlayModeTests covering BlockoutLevelController2D and BlockoutCheckpointRegion2
+[Rev 97] writer=codex-orchestrator-20261016-1930 | at=2026-10-16 19:29 | status=all_prs_reconciled_and_merged_into_develop | delivery=Reconciled merge conflicts in DEFERRED_VALIDATION.md across PRs 138, 134, 136, 137; all merged into develop
+[Rev 96] writer=antigravity-orchestrator | at=2026-10-16 19:05 | status=all_prs_reconciled_and_merged_into_develop | delivery=Reconciled merge conflicts in DEFERRED_VALIDATION.md across PRs 138, 134, 136, 137; all merged into develop
+[Rev 95] writer=codex-orchestrator-20261016-1844 | at=2026-10-16 18:44 | status=two_prs_integrated_runtime_acceptance_pending | delivery=PR #137 created for develop (EquipmentProgressionPlayModeTests for Cards #52 and #53)
+[Rev 94] writer=codex-orchestrator-20261016-1838 | at=2026-10-16 18:38 | status=two_prs_integrated_runtime_acceptance_pending | delivery=PR #137 created for develop (EquipmentProgressionPlayModeTests for Cards #52 and #53)
+[Rev 93] writer=antigravity-orchestrator | at=2026-10-16 17:22 | status=two_prs_integrated_runtime_acceptance_pending | delivery=PR #137 created for develop (EquipmentProgressionPlayModeTests for Cards #52 and #53)
+[Rev 92] writer=antigravity-orchestrator | at=2026-10-16 17:08 | status=two_prs_integrated_runtime_acceptance_pending | delivery=PR #136 created for develop (FanEncounterController2D and FanEncounterDefinition PlayMode tests)
+[Rev 91] writer=codex-orchestrator-20261016-1659 | at=2026-10-16 16:59 | status=two_prs_integrated_runtime_acceptance_pending | delivery=PR #134 created for develop (AerialStageEncounter2D and BossArenaController2D PlayMode tests)
+[Rev 90] writer=antigravity-orchestrator | at=2026-10-16 16:57 | status=two_prs_integrated_runtime_acceptance_pending | delivery=PR #134 created for develop (AerialStageEncounter2D and BossArenaController2D PlayMode tests)
+[Rev 89] writer=antigravity-orchestrator | at=2026-10-16 16:51 | status=two_prs_integrated_runtime_acceptance_pending | delivery=PR #132 created for develop (StageBlockoutDefinition, StageRouteDefinition and StageBlockoutBuilder2D tests)
+[Rev 88] writer=codex-orchestrator-20261016-1649 | at=2026-10-16 16:47 | status=two_prs_integrated_runtime_acceptance_pending | delivery=PR #131 created for develop (MainMenu, TeamProfile, and ResultsReplay presentation contract tests)
+[Rev 87] writer=antigravity-orchestrator | at=2026-10-16 16:39 | status=two_prs_integrated_runtime_acceptance_pending | delivery=PR #131 created for develop (MainMenu, TeamProfile, and ResultsReplay presentation contract tests)
+[Rev 86] writer=antigravity-orchestrator | at=2026-10-16 16:18 | status=two_prs_integrated_runtime_acceptance_pending | delivery=PR #130 created for develop (RemapPanelUiView & RemapPanelContractTests)
+[Rev 85] writer=codex-orchestrator-20261016-1608 | at=2026-10-16 16:17 | status=two_prs_integrated_runtime_acceptance_pending | delivery=-
+[Rev 84] writer=codex-orchestrator-20261016-1608 | at=2026-10-16 16:15 | status=eight_cards_completed_runtime_gates_pending | delivery=-
+[Rev 83] writer=codex-orchestrator-20261016-1608 | at=2026-10-16 16:13 | status=eight_cards_completed_runtime_gates_pending | delivery=-
+[Rev 82] writer=codex-orchestrator-20261016-1608 | at=2026-10-16 16:12 | status=eight_cards_completed_runtime_gates_pending | delivery=-
+[Rev 81] writer=codex-orchestrator-20261016-1608 | at=2026-10-16 16:11 | status=eight_cards_completed_runtime_gates_pending | delivery=-
+[Rev 80] writer=codex-orchestrator-20261016-1608 | at=2026-10-16 16:10 | status=eight_cards_completed_runtime_gates_pending | delivery=-
+[Rev 79] writer=codex-run-20261016-1424 | at=2026-10-16 14:26 | status=eight_cards_completed_runtime_gates_pending | delivery=-
+[Rev 78] writer=codex-run-20261016-1327 | at=2026-10-16 13:31 | status=eight_cards_completed_runtime_gates_pending | delivery=-
+[Rev 77] writer=codex-run-20261016-1327 | at=2026-10-16 13:30 | status=eight_cards_completed_runtime_gates_pending | delivery=-
+[Rev 76] writer=codex-orchestrator | at=2026-10-16 12:34 | status=eight_cards_completed_runtime_gates_pending | delivery=-
+[Rev 75] writer=codex-orchestrator | at=2026-10-16 11:40 | status=eight_cards_completed_runtime_gates_pending | delivery=-
+[Rev 74] writer=codex-orchestrator | at=2026-10-16 11:38 | status=eight_cards_completed_runtime_gates_pending | delivery=-
+[Rev 73] writer=codex-orchestrator | at=2026-10-16 10:53 | status=eight_cards_completed_runtime_gates_pending | delivery=-
+[Rev 72] writer=codex-orchestrator | at=2026-10-16 10:50 | status=seven_prs_integrated_verified | delivery=-
+[Rev 71] writer=codex-orchestrator | at=2026-10-16 10:46 | status=seven_prs_integrated_verified | delivery=-
+[Rev 70] writer=codex-orchestrator | at=2026-10-16 10:37 | status=seven_prs_integrated_verified | delivery=-
+[Rev 69] writer=codex-orchestrator | at=2026-10-16 10:36 | status=seven_prs_integrated_final_checks | delivery=-
+[Rev 68] writer=codex-orchestrator | at=2026-10-16 10:31 | status=active_specialist_followup | delivery=-
+[Rev 67] writer=codex-orchestrator | at=2026-10-16 10:28 | status=active_specialist_followup | delivery=-
+[Rev 66] writer=codex-orchestrator | at=2026-10-16 01:41 | status=active_specialist_followup | delivery=-
+[Rev 65] writer=codex-orchestrator | at=2026-10-15 21:28 | status=active_specialist_followup | delivery=-
+[Rev 64] writer=codex-orchestrator | at=2026-10-15 21:26 | status=active_specialist_followup | delivery=-
+[Rev 63] writer=codex-orchestrator | at=2026-10-15 21:25 | status=active_specialist_followup | delivery=-
+[Rev 62] writer=codex-orchestrator | at=2026-10-15 21:24 | status=active_specialist_followup | delivery=-
+[Rev 61] writer=codex-orchestrator | at=2026-10-15 21:23 | status=active_specialist_followup | delivery=-
+[Rev 60] writer=codex-orchestrator | at=2026-10-15 21:21 | status=active_specialist_followup | delivery=-
+[Rev 59] writer=codex-orchestrator | at=2026-10-15 21:20 | status=active_specialist_followup | delivery=-
+[Rev 58] writer=codex-orchestrator | at=2026-10-15 21:18 | status=active_specialist_followup | delivery=-
+[Rev 57] writer=codex-orchestrator | at=2026-10-15 20:44 | status=active_specialist_followup | delivery=-
+[Rev 56] writer=codex-orchestrator | at=2026-10-15 20:44 | status=active_specialist_followup | delivery=-
+[Rev 55] writer=codex-orchestrator | at=2026-10-15 19:08 | status=active_specialist_followup | delivery=-
+[Rev 54] writer=codex-orchestrator | at=2026-10-15 19:06 | status=active_specialist_followup | delivery=-
+[Rev 53] writer=codex-orchestrator | at=2026-10-15 19:05 | status=active_specialist_followup | delivery=-
+[Rev 52] writer=codex-orchestrator | at=2026-10-15 19:02 | status=active_specialist_followup | delivery=-
+[Rev 51] writer=codex-orchestrator | at=2026-10-15 19:00 | status=active_specialist_followup | delivery=-
+[Rev 50] writer=codex-orchestrator | at=2026-10-15 18:44 | status=local_corrections_reviewed_publication_blocked | delivery=-
+[Rev 49] writer=codex-orchestrator | at=2026-10-15 18:41 | status=local_corrections_reviewed_publication_blocked | delivery=-
+[Rev 48] writer=codex-orchestrator | at=2026-10-15 18:40 | status=local_corrections_reviewed_publication_blocked | delivery=-
+[Rev 47] writer=codex-orchestrator | at=2026-10-15 18:38 | status=local_corrections_reviewed_publication_blocked | delivery=-
+[Rev 46] writer=codex-orchestrator | at=2026-10-15 18:06 | status=local_corrections_reviewed_publication_blocked | delivery=-
+[Rev 45] writer=codex-orchestrator | at=2026-10-15 18:04 | status=local_corrections_reviewed_publication_blocked | delivery=-
+[Rev 44] writer=codex-orchestrator | at=2026-10-15 18:02 | status=local_corrections_reviewed_publication_blocked | delivery=-
+[Rev 43] writer=codex-orchestrator | at=2026-10-15 18:01 | status=local_corrections_reviewed_publication_blocked | delivery=-
+[Rev 42] writer=codex-orchestrator | at=2026-10-15 17:59 | status=local_corrections_reviewed_publication_blocked | delivery=-
+[Rev 41] writer=codex-orchestrator | at=2026-10-15 16:11 | status=local_corrections_reviewed_publication_blocked | delivery=-
+[Rev 40] writer=codex-orchestrator | at=2026-10-15 16:03 | status=local_corrections_reviewed_publication_blocked | delivery=-
+[Rev 39] writer=codex-orchestrator | at=2026-10-15 15:59 | status=local_corrections_reviewed_publication_blocked | delivery=-
+[Rev 38] writer=codex-orchestrator | at=2026-10-15 10:25 | status=local_corrections_reviewed_publication_blocked | delivery=-
+[Rev 37] writer=codex-orchestrator | at=2026-10-15 10:22 | status=all_open_implementation_tasks_completed | delivery=-
+[Rev 36] writer=codex-orchestrator | at=2026-10-15 10:21 | status=all_open_implementation_tasks_completed | delivery=-
+[Rev 35] writer=codex-orchestrator | at=2026-10-15 10:19 | status=all_open_implementation_tasks_completed | delivery=-
+[Rev 34] writer=codex-orchestrator | at=2026-10-15 10:17 | status=all_open_implementation_tasks_completed | delivery=-
+[Rev 33] writer=codex-review-continuation | at=2026-10-15 10:15 | status=all_open_implementation_tasks_completed | delivery=-
+[Rev 32] writer=antigravity-windows | at=2026-10-15 02:36 | status=all_open_implementation_tasks_completed | delivery=-
+[Rev 31] writer=codex-resume-audit | at=2026-10-15 02:15 | status=- | delivery=-
+[Rev 30] writer=antigravity-windows | at=2026-10-15 01:46 | status=- | delivery=-
+[Rev 29] writer=antigravity-windows | at=2026-10-15 01:19 | status=- | delivery=-
+[Rev 28] writer=antigravity-windows | at=2026-10-15 01:00 | status=- | delivery=-
+[Rev 27] writer=codex-windows-publication | at=2026-10-15 00:22 | status=- | delivery=-
+[Rev 26] writer=codex-windows-publication | at=2026-10-15 00:20 | status=- | delivery=-
+[Rev 25] writer=codex-windows-local-validation | at=2026-10-15 00:12 | status=- | delivery=-
+[Rev 24] writer=codex-windows-local-validation | at=2026-10-15 00:08 | status=- | delivery=-
+[Rev 23] writer=codex-windows-local-validation | at=2026-10-14 23:56 | status=- | delivery=-
+[Rev 22] writer=codex-windows-local-validation | at=2026-10-14 23:49 | status=- | delivery=-
+[Rev 21] writer=codex-windows-local-validation | at=2026-10-14 23:44 | status=- | delivery=-
+[Rev 20] writer=codex-windows-local-validation | at=2026-10-14 23:42 | status=- | delivery=-
+[Rev 19] writer=codex-local-build-attempt | at=2026-10-14 22:55 | status=- | delivery=-
+[Rev 18] writer=codex-google-retry | at=2026-10-14 21:02 | status=- | delivery=-
+[Rev 17] writer=codex-browser-resume-20261014 | at=2026-10-14 20:54 | status=- | delivery=-
+[Rev 16] writer=codex-live-trello-audit | at=2026-10-14 15:20 | status=- | delivery=-
+[Rev 15] writer=codex-remap-ui-contract | at=2026-10-14 01:43 | status=- | delivery=-
+[Rev 14] writer=codex-build2-log-analysis | at=2026-10-14 01:19 | status=- | delivery=-
+[Rev 13] writer=codex-build2-raw-log | at=2026-10-14 01:13 | status=- | delivery=-
+[Rev 12] writer=codex-build2-log-link | at=2026-10-14 00:51 | status=- | delivery=-
+[Rev 11] writer=codex-user-build-report | at=2026-10-14 00:49 | status=- | delivery=-
+[Rev 10] writer=codex-unity-login-recheck | at=2026-10-13 23:54 | status=- | delivery=-
+[Rev 9] writer=codex-unity-login-handoff | at=2026-10-13 23:50 | status=- | delivery=-
+[Rev 8] writer=codex-pause-tests-20261013 | at=2026-10-13 19:15 | status=- | delivery=-
+[Rev 7] writer=codex-pause-tests-20261013 | at=2026-10-13 19:12 | status=- | delivery=-
+[Rev 6] writer=codex-resume-auth-timeout | at=2026-10-13 19:11 | status=- | delivery=-
+[Rev 5] writer=codex-coordinator-final-handoff | at=2026-10-13 17:33 | status=- | delivery=-
+[Rev 4] writer=codex-coordinator-after-PR98 | at=2026-10-13 16:38 | status=- | delivery=-
+[Rev 3] writer=codex-coordinator-after-PR97 | at=2026-10-13 16:26 | status=- | delivery=-
+[Rev 2] writer=codex-coordinator-supabase-setup | at=2026-10-13 16:22 | status=- | delivery=-
+[Rev 1] writer=codex-coordinator | at=2026-10-13 16:13 | status=- | delivery=-
+
+================================================================================
+4. TAREFAS DO PROJETO (ai_context.tasks — 134 tarefas)
+--------------------------------------------------------------------------------
+[android-playtest] status=pending | v=2 | card=- | col=- | title=Obtain installable APK/AAB and complete full VerticalSlice plus human 60-second playtest
+[build-evidence-audit] status=done | v=2 | card=- | col=- | title=-
+[feedback-review] status=done | v=2 | card=- | col=- | title=-
+[feedback-session-idempotence] status=implemented_pending_validation | v=6 | card=- | col=- | title=-
+[figma-age-policy-review] status=done | v=2 | card=- | col=- | title=-
+[figma-screens] status=implemented_pending_validation | v=6 | card=- | col=- | title=-
+[input-pause-route] status=implemented_pending_validation | v=4 | card=- | col=- | title=-
+[integrated-unity-validation] status=implemented_pending_validation | v=8 | card=- | col=- | title=Import/compile and run EditMode/PlayMode on exact integrated commit; retain XML and provenance
+[legal-publication] status=implemented_pending_validation | v=2 | card=- | col=- | title=Resolve adaptation/character/brand/music rights, privacy/child safety/store requirements and publication decision
+[local-coop] status=pending | v=4 | card=- | col=- | title=Implement and validate cooperative play up to3 per owner requirement
+[qa-device-matrix] status=implemented_pending_validation | v=2 | card=- | col=- | title=Execute gameplay, balance, age, accessibility and mobile QA; measure CPU/GPU/memory/FPS on approved devices
+[release-candidate] status=implemented_pending_validation | v=2 | card=- | col=- | title=Qualify RC only with same-commit build/test/device/human acceptance and evidence digests
+[release-platform-builds] status=implemented_pending_validation | v=2 | card=- | col=- | title=Verify Windows build and iOS export/archive/install with signing and device evidence
+[supabase-continuity] status=done | v=2 | card=- | col=- | title=-
+[test-provenance-start-head] status=implemented_pending_validation | v=7 | card=- | col=- | title=-
+[touch-coverage-audit] status=done | v=2 | card=- | col=- | title=-
+[trello-card-1] status=done | v=0 | card=1 | col=- | title=01 â€” Consolidar GDD Mestre
+[trello-card-10] status=done | v=0 | card=10 | col=- | title=10 â€” Definir pipeline de assets
+[trello-card-100] status=implemented_pending_validation | v=2 | card=100 | col=- | title=100 â€” Gameplay QA
+[trello-card-101] status=implemented_pending_validation | v=0 | card=101 | col=- | title=101 â€” Balanceamento
+[trello-card-102] status=implemented_pending_validation | v=0 | card=102 | col=- | title=102 â€” Age QA
+[trello-card-103] status=implemented_pending_validation | v=0 | card=103 | col=- | title=103 â€” Accessibility QA
+[trello-card-104] status=implemented_pending_validation | v=0 | card=104 | col=- | title=104 â€” Mobile QA
+[trello-card-106] status=done | v=2 | card=106 | col=- | title=106 â€” Versionamento
+[trello-card-107] status=implemented_pending_validation | v=1 | card=107 | col=- | title=107 â€” CI/CD
+[trello-card-108] status=implemented_pending_validation | v=0 | card=108 | col=- | title=108 â€” Build Windows
+[trello-card-109] status=implemented_pending_validation | v=2 | card=109 | col=- | title=109 â€” Build Android
+[trello-card-11] status=done | v=0 | card=11 | col=- | title=11 â€” Criar plano de riscos
+[trello-card-110] status=implemented_pending_validation | v=4 | card=110 | col=- | title=110 â€” Release Candidate
+[trello-card-111] status=done | v=2 | card=111 | col=- | title=111 â€” Plano de publicaÃ§Ã£o
+[trello-card-112] status=done | v=2 | card=112 | col=- | title=112 â€” README do projeto
+[trello-card-113] status=done | v=2 | card=113 | col=- | title=113 â€” Guia de arquitetura
+[trello-card-114] status=done | v=2 | card=114 | col=- | title=114 â€” Guia de criaÃ§Ã£o de conteÃºdo
+[trello-card-115] status=done | v=2 | card=115 | col=- | title=115 â€” Changelog
+[trello-card-116] status=done | v=2 | card=116 | col=- | title=116 â€” Backlog pÃ³s-lanÃ§amento
+[trello-card-12] status=done | v=0 | card=12 | col=- | title=12 â€” Criar projeto Unity 6 2D URP
+[trello-card-13] status=done | v=0 | card=13 | col=- | title=13 â€” Configurar pacotes essenciais
+[trello-card-14] status=done | v=0 | card=14 | col=- | title=14 â€” Criar estrutura de pastas
+[trello-card-15] status=done | v=0 | card=15 | col=- | title=15 â€” Configurar Git e Git LFS
+[trello-card-16] status=done | v=0 | card=16 | col=- | title=16 â€” Criar GameBootstrap
+[trello-card-17] status=done | v=0 | card=17 | col=- | title=17 â€” Criar arquitetura data-driven
+[trello-card-18] status=done | v=0 | card=18 | col=- | title=18 â€” Configurar cena Combat Lab
+[trello-card-19] status=done | v=0 | card=19 | col=- | title=19 â€” Implementar movimento base
+[trello-card-2] status=done | v=0 | card=2 | col=- | title=02 â€” Definir pilares de design
+[trello-card-20] status=done | v=0 | card=20 | col=- | title=20 â€” Implementar salto
+[trello-card-21] status=done | v=0 | card=21 | col=- | title=21 â€” Implementar dash
+[trello-card-22] status=done | v=0 | card=22 | col=- | title=22 â€” Implementar dash aÃ©reo
+[trello-card-23] status=done | v=0 | card=23 | col=- | title=23 â€” Implementar wall jump
+[trello-card-24] status=done | v=0 | card=24 | col=- | title=24 â€” Implementar combate base
+[trello-card-25] status=done | v=0 | card=25 | col=- | title=25 â€” Implementar combos
+[trello-card-26] status=done | v=0 | card=26 | col=- | title=26 â€” Implementar parry
+[trello-card-27] status=done | v=0 | card=27 | col=- | title=27 â€” Implementar checkpoints
+[trello-card-28] status=done | v=0 | card=28 | col=- | title=28 â€” Implementar Rumi
+[trello-card-29] status=done | v=0 | card=29 | col=- | title=29 â€” Implementar Mira
+[trello-card-3] status=done | v=0 | card=3 | col=- | title=03 â€” Fechar escopo do MVP
+[trello-card-30] status=implemented_pending_validation | v=2 | card=30 | col=- | title=30 â€” Implementar Zoey
+[trello-card-31] status=implemented_pending_validation | v=0 | card=31 | col=- | title=31 â€” Implementar CharacterManager
+[trello-card-32] status=implemented_pending_validation | v=0 | card=32 | col=- | title=32 â€” Implementar troca de HUNTR/X
+[trello-card-33] status=implemented_pending_validation | v=0 | card=33 | col=- | title=33 â€” Criar inimigo terrestre bÃ¡sico
+[trello-card-34] status=implemented_pending_validation | v=0 | card=34 | col=- | title=34 â€” Criar inimigos voadores
+[trello-card-35] status=implemented_pending_validation | v=0 | card=35 | col=- | title=35 â€” Criar inimigos de suporte
+[trello-card-36] status=implemented_pending_validation | v=0 | card=36 | col=- | title=36 â€” Criar swarm/horda
+[trello-card-37] status=implemented_pending_validation | v=0 | card=37 | col=- | title=37 â€” Criar elites
+[trello-card-38] status=implemented_pending_validation | v=0 | card=38 | col=- | title=38 â€” Criar mini-boss
+[trello-card-39] status=implemented_pending_validation | v=0 | card=39 | col=- | title=39 â€” Criar Saja Boys
+[trello-card-4] status=done | v=0 | card=4 | col=- | title=04 â€” Definir Definition of Done
+[trello-card-40] status=implemented_pending_validation | v=0 | card=40 | col=- | title=40 â€” Criar Jinu
+[trello-card-41] status=implemented_pending_validation | v=0 | card=41 | col=- | title=41 â€” Criar Gwi-Ma
+[trello-card-42] status=implemented_pending_validation | v=0 | card=42 | col=- | title=42 â€” Implementar estados dos fÃ£s
+[trello-card-43] status=implemented_pending_validation | v=0 | card=43 | col=- | title=43 â€” Implementar resgate de fÃ£s
+[trello-card-44] status=implemented_pending_validation | v=5 | card=44 | col=- | title=44 â€” Implementar soul drain
+[trello-card-45] status=implemented_pending_validation | v=0 | card=45 | col=- | title=45 â€” Implementar comida
+[trello-card-46] status=implemented_pending_validation | v=0 | card=46 | col=- | title=46 â€” Implementar escolha self/fan
+[trello-card-47] status=implemented_pending_validation | v=0 | card=47 | col=- | title=47 â€” Implementar Honmoon
+[trello-card-48] status=implemented_pending_validation | v=0 | card=48 | col=- | title=48 â€” Implementar Honmoon Crisis
+[trello-card-49] status=implemented_pending_validation | v=2 | card=49 | col=- | title=49 â€” Implementar Special
+[trello-card-5] status=done | v=0 | card=5 | col=- | title=05 â€” Definir mÃ©tricas de diversÃ£o
+[trello-card-50] status=implemented_pending_validation | v=0 | card=50 | col=- | title=50 â€” Implementar efeitos do Special
+[trello-card-51] status=implemented_pending_validation | v=0 | card=51 | col=- | title=51 â€” Implementar Combat Performance
+[trello-card-52] status=implemented_pending_validation | v=0 | card=52 | col=- | title=52 â€” Implementar progressÃ£o de equipamentos
+[trello-card-53] status=implemented_pending_validation | v=0 | card=53 | col=- | title=53 â€” Definir efeitos das peÃ§as
+[trello-card-54] status=implemented_pending_validation | v=0 | card=54 | col=- | title=54 â€” Implementar replay e rankings
+[trello-card-55] status=implemented_pending_validation | v=0 | card=55 | col=- | title=55 â€” Definir gramÃ¡tica de level design
+[trello-card-56] status=implemented_pending_validation | v=0 | card=56 | col=- | title=56 â€” Planejar fases do filme
+[trello-card-57] status=implemented_pending_validation | v=0 | card=57 | col=- | title=57 â€” Projetar encontros aÃ©reos
+[trello-card-58] status=implemented_pending_validation | v=0 | card=58 | col=- | title=58 â€” Projetar encontros com fÃ£s
+[trello-card-59] status=implemented_pending_validation | v=0 | card=59 | col=- | title=59 â€” Projetar boss arenas
+[trello-card-6] status=done | v=0 | card=6 | col=- | title=06 â€” Definir estilo visual 2D
+[trello-card-60] status=implemented_pending_validation | v=0 | card=60 | col=- | title=60 â€” Criar blockouts
+[trello-card-61] status=implemented_pending_validation | v=0 | card=61 | col=- | title=61 â€” Vertical Slice: AviÃ£o
+[trello-card-62] status=implemented_pending_validation | v=0 | card=62 | col=- | title=62 â€” Vertical Slice: Ramen
+[trello-card-63] status=implemented_pending_validation | v=0 | card=63 | col=- | title=63 â€” Vertical Slice: FÃ£s
+[trello-card-64] status=implemented_pending_validation | v=0 | card=64 | col=- | title=64 â€” Vertical Slice: Horda + Special
+[trello-card-65] status=implemented_pending_validation | v=0 | card=65 | col=- | title=65 â€” Vertical Slice: Mini-boss
+[trello-card-66] status=implemented_pending_validation | v=0 | card=66 | col=- | title=66 â€” Vertical Slice: Paraquedas
+[trello-card-67] status=implemented_pending_validation | v=0 | card=67 | col=- | title=67 â€” Vertical Slice: Show
+[trello-card-68] status=implemented_pending_validation | v=5 | card=68 | col=- | title=68 â€” Playtest de 60 segundos
+[trello-card-69] status=implemented_pending_validation | v=0 | card=69 | col=- | title=69 â€” Character Bible
+[trello-card-7] status=done | v=0 | card=7 | col=- | title=07 â€” Definir resoluÃ§Ã£o e cÃ¢mera
+[trello-card-70] status=implemented_pending_validation | v=0 | card=70 | col=- | title=70 â€” Model sheets
+[trello-card-71] status=implemented_pending_validation | v=0 | card=71 | col=- | title=71 â€” Sprite/rig pipeline
+[trello-card-72] status=implemented_pending_validation | v=0 | card=72 | col=- | title=72 â€” AnimaÃ§Ãµes de gameplay
+[trello-card-73] status=implemented_pending_validation | v=0 | card=73 | col=- | title=73 â€” VFX gameplay
+[trello-card-74] status=implemented_pending_validation | v=0 | card=74 | col=- | title=74 â€” Environments
+[trello-card-75] status=implemented_pending_validation | v=0 | card=75 | col=- | title=75 â€” AudioManager
+[trello-card-76] status=implemented_pending_validation | v=0 | card=76 | col=- | title=76 â€” MÃºsica dinÃ¢mica
+[trello-card-77] status=implemented_pending_validation | v=0 | card=77 | col=- | title=77 â€” SFX de combate
+[trello-card-78] status=implemented_pending_validation | v=0 | card=78 | col=- | title=78 â€” Sistema de torcida
+[trello-card-79] status=done | v=2 | card=79 | col=- | title=79 â€” PolÃ­tica de mÃºsica/licenciamento
+[trello-card-8] status=done | v=0 | card=8 | col=- | title=08 â€” Definir controles multiplataforma
+[trello-card-80] status=implemented_pending_validation | v=0 | card=80 | col=- | title=80 â€” Roteiro das cutscenes
+[trello-card-81] status=implemented_pending_validation | v=0 | card=81 | col=- | title=81 â€” Sistema de diÃ¡logos
+[trello-card-82] status=implemented_pending_validation | v=0 | card=82 | col=- | title=82 â€” Roteiro das transiÃ§Ãµes
+[trello-card-83] status=implemented_pending_validation | v=0 | card=83 | col=- | title=83 â€” Arco Rumi/Jinu
+[trello-card-84] status=implemented_pending_validation | v=0 | card=84 | col=- | title=84 â€” Final e Gwi-Ma
+[trello-card-85] status=implemented_pending_validation | v=0 | card=85 | col=- | title=85 â€” AgeProfileData
+[trello-card-86] status=implemented_pending_validation | v=0 | card=86 | col=- | title=86 â€” Adaptar violÃªncia visual
+[trello-card-87] status=implemented_pending_validation | v=0 | card=87 | col=- | title=87 â€” Adaptar dificuldade
+[trello-card-88] status=implemented_pending_validation | v=0 | card=88 | col=- | title=88 â€” Adaptar diÃ¡logos/cutscenes
+[trello-card-89] status=implemented_pending_validation | v=0 | card=89 | col=- | title=89 â€” Dynamic Difficulty
+[trello-card-9] status=done | v=0 | card=9 | col=- | title=09 â€” Definir estrutura de save
+[trello-card-90] status=implemented_pending_validation | v=4 | card=90 | col=- | title=90 â€” Accessibility
+[trello-card-91] status=implemented_pending_validation | v=0 | card=91 | col=- | title=91 â€” Child Safety
+[trello-card-92] status=implemented_pending_validation | v=2 | card=92 | col=- | title=92 â€” Touch controls
+[trello-card-93] status=implemented_pending_validation | v=3 | card=93 | col=- | title=93 â€” UI responsiva
+[trello-card-94] status=implemented_pending_validation | v=0 | card=94 | col=- | title=94 â€” Otimizar sprites e atlases
+[trello-card-95] status=implemented_pending_validation | v=0 | card=95 | col=- | title=95 â€” Object pooling
+[trello-card-96] status=implemented_pending_validation | v=0 | card=96 | col=- | title=96 â€” Performance 60 FPS
+[trello-card-97] status=implemented_pending_validation | v=0 | card=97 | col=- | title=97 â€” Android build pipeline
+[trello-card-98] status=implemented_pending_validation | v=2 | card=98 | col=- | title=98 â€” iOS pipeline
+[trello-card-99] status=done | v=17 | card=99 | col=- | title=99 â€” Testes automatizados
+[ui-lab-navigation-focus] status=implemented_pending_validation | v=7 | card=- | col=- | title=-
+[unity-cloud-build-2] status=blocked | v=0 | card=- | col=- | title=Finish Unity authentication, then submit Build #2 on exact integrated develop commit
+[unity-ui-layout] status=implemented_pending_validation | v=3 | card=- | col=- | title=Implementar layout visual Unity isolado conforme Figma
+
+================================================================================
+5. DOCUMENTOS CATALOGADOS (ai_context.documents — 167 documentos)
+--------------------------------------------------------------------------------
+[.mcp.json] chars=172 | sha256=5db00b5c91ed0a7d... | commit=8ebd177c48 | captured=2026-10-13 16:26
+[AGENTS.md] chars=1084 | sha256=8a729fd21ae8a156... | commit=8ebd177c48 | captured=2026-10-13 16:26
+[CHANGELOG.md] chars=2623 | sha256=40837573602d240c... | commit=2c696aa | captured=2026-10-16 12:54
+[CONTEXTO_PROJETO.md] chars=16368 | sha256=8ec0e64e0b4b7590... | commit=2c696aa | captured=2026-10-16 12:54
+[docs/agents/00-game-orchestrator.md] chars=831 | sha256=1daab7233c88f8a7... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/agents/01-system-architect.md] chars=835 | sha256=b687b99be83ffc51... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/agents/02-core-gameplay-developer.md] chars=705 | sha256=a88bf57e8504ec50... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/agents/03-solid-auditor.md] chars=636 | sha256=110d719f3525413c... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/agents/04-performance-engineer.md] chars=724 | sha256=5765bd7b22294189... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/agents/05-qa-automation-engineer.md] chars=622 | sha256=cc7eba3088b2c2e9... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/agents/06-pull-request-review-analyst.md] chars=4730 | sha256=8d0171b27637397b... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/agents/README.md] chars=462 | sha256=cfa9d9b52136a422... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/ACCESSIBILITY_AND_CHILD_SAFETY.md] chars=2191 | sha256=c3cbf76833cbe68a... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/AERIAL_STAGE_ENCOUNTERS.md] chars=693 | sha256=d624c59eb58bcfac... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/AGE_PROFILES.md] chars=3418 | sha256=999f885410ee75a1... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/AGENT_PIPELINE.md] chars=1472 | sha256=5aebba9b6e33d5ba... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/AIR_DASH.md] chars=4746 | sha256=17f026569d03059e... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/AUDIO_MANAGER.md] chars=806 | sha256=b917d57aa89cd0a5... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/AUDIO_RIGHTS.md] chars=871 | sha256=a8666a548bd4d4e6... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/BASE_COMBAT.md] chars=4317 | sha256=2c663cbdcf8ea5bf... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/BLOCKOUT_SCENES.md] chars=2451 | sha256=1bc638dc26c916be... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/BOSS_ARENAS.md] chars=1030 | sha256=d311aa33ca5a6d2d... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/CHARACTER_MANAGER.md] chars=7871 | sha256=e5f6cfc90749db3e... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/CHARACTER_SWITCHING.md] chars=4341 | sha256=81168fe1bb7a1f27... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/CHECKPOINTS_AND_ATTEMPTS.md] chars=3368 | sha256=b04c5291a075ab2b... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/COMBAT_AUDIO.md] chars=800 | sha256=9fe676d84de18e3b... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/COMBAT_LAB.md] chars=1665 | sha256=2f0fc9e213397855... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/COMBO_COMBAT.md] chars=7470 | sha256=bab5e58593e23939... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/CROWD_AUDIO.md] chars=854 | sha256=89bbd0c077b573c2... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/CUTSCENE_SCRIPTS.md] chars=676 | sha256=6560ad566ccec31d... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/DATA_DRIVEN_DEFINITIONS.md] chars=5530 | sha256=2fe2e239394f3528... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/DIALOGUE_PRESENTATION.md] chars=944 | sha256=a894f073c9f372e5... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/DYNAMIC_MUSIC.md] chars=600 | sha256=ca5a06c580d7602a... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/ENEMY_FOUNDATION.md] chars=4675 | sha256=34d688c3a52ae051... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/ENEMY_LAB.md] chars=1725 | sha256=fbc728256c0de46a... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/ENEMY_PATTERNS_AND_MINIBOSS.md] chars=2872 | sha256=4c9ebcc5f28b35de... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/EQUIPMENT_MECHANICS.md] chars=1941 | sha256=455ca22340190a7e... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/EQUIPMENT_PROGRESSION.md] chars=1457 | sha256=55d7c9e00fb524a3... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/FAN_RESCUE.md] chars=1983 | sha256=a885f86769485d36... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/FAN_SOUL_DRAIN.md] chars=2271 | sha256=ada4e7d94b4613f6... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/FAN_STATES.md] chars=1980 | sha256=f00c3dd4182d64e1... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/FILM_STAGE_ROUTE.md] chars=1654 | sha256=dd564fd58c9f41db... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/FINAL_ENDING.md] chars=1071 | sha256=83815fb482efd03b... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/FLYING_ENEMIES.md] chars=3543 | sha256=d7eec95a1902f706... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/FOOD_RESOURCES.md] chars=2219 | sha256=32daea0a488ef123... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/GAME_BOOTSTRAP.md] chars=2295 | sha256=b304fd0175d5a64d... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/GROUND_DASH.md] chars=1889 | sha256=0ade1663980276a5... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/GWI_MA_FINAL_BOSS.md] chars=2070 | sha256=6331961483f63e7a... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/HONMOON_CRISIS.md] chars=2906 | sha256=a17680cfa1786a43... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/HONMOON.md] chars=2722 | sha256=44a16923ad3c4357... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/HORDE_ENCOUNTERS.md] chars=2713 | sha256=db353c9e2406a7f2... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/architecture/HORIZONTAL_MOVEMENT.md] chars=3134 | sha256=9ab89dcef005f0f8... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/HUNTRX_SPECIAL.md] chars=3991 | sha256=cb6e9f62942795e0... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/INPUT_CONTROLS.md] chars=6539 | sha256=1e793254c46146e9... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/JUMP_CONTROLLER.md] chars=3599 | sha256=0580cef9d1c2dc59... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/LEVEL_GRAMMAR.md] chars=2032 | sha256=a4214441e88c2406... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/MIRA_CHARACTER.md] chars=7606 | sha256=06f5948b8d8db241... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/NARRATIVE_TRANSITIONS.md] chars=807 | sha256=1f1a10cab77e72be... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/PERFORMANCE_AND_LOCAL_REPLAY.md] chars=7111 | sha256=732cdb21d42bec6a... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/RESOLUTION_AND_CAMERA.md] chars=6296 | sha256=307fe86114d98c15... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/RUMI_CHARACTER.md] chars=4154 | sha256=4549059748f420db... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/RUMI_JINU_ARC.md] chars=836 | sha256=150f1443b766334f... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/SAJA_RIVALS_JINU.md] chars=5934 | sha256=a8ee15984e8ad661... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/SAVE_AND_PROFILES.md] chars=7899 | sha256=c396d26cb0a3a052... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/SPECIAL_SEQUENCE_EFFECTS.md] chars=1930 | sha256=9a8699a396ad9b03... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/SUPPORT_ENEMIES.md] chars=2469 | sha256=43ed5b8b1d7f1904... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/SYSTEM_MAP.md] chars=3672 | sha256=52a66de5b37c77b9... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/WALL_JUMP.md] chars=2616 | sha256=e1ff0bd05a31f92c... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/architecture/ZOEY_CHARACTER.md] chars=2790 | sha256=fbb6f64a031e4a6b... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/art/ASSET_PIPELINE.md] chars=8178 | sha256=273ad7dc238e3d9f... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/art/CHARACTER_BIBLE.md] chars=1876 | sha256=fac6909afa87a570... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/art/CHARACTER_RIG_PIPELINE.md] chars=1438 | sha256=7930011d9b844cf9... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/art/ENVIRONMENT_PROTOTYPES.md] chars=2117 | sha256=4be4c613866eeb51... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/art/GAMEPLAY_ANIMATION.md] chars=1783 | sha256=f94192d8d4f79bb4... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/art/GAMEPLAY_VFX.md] chars=2417 | sha256=ea5a6dc4e409f69a... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/art/MODEL_SHEETS.md] chars=494 | sha256=99a0dd320d8d8ff3... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/art/VISUAL_STYLE_GUIDE.md] chars=5358 | sha256=c7bfccce5aa1ba99... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/build/UNITY_BUILD_AUTOMATION.md] chars=5124 | sha256=80bec06c36587808... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/build/UNITY_PIPELINES.md] chars=3562 | sha256=20549b37a59163be... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/content/CONTENT_AUTHORING.md] chars=3290 | sha256=900c03a2c050a9a0... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/enemies/INTEGRATION_GUIDE.md] chars=11435 | sha256=6caf79338a73046b... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/features/FAN_ENCOUNTERS.md] chars=779 | sha256=d1374249acdcaf9e... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/features/SLICE_62.md] chars=465 | sha256=9f4154244707ea9c... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/features/SLICE_63.md] chars=503 | sha256=c9e85858f82bc7b5... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/features/SLICE_64.md] chars=765 | sha256=2501ca61972e1a10... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/features/SLICE_65.md] chars=462 | sha256=5be17c25f47eafb1... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/features/SLICE_66.md] chars=585 | sha256=d4dcc638f0642bc1... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/features/SLICE_67.md] chars=498 | sha256=957c1ff9a1dead3b... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/features/SLICE_68.md] chars=577 | sha256=3598015956e10d54... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/features/SLICE_92.md] chars=635 | sha256=73512fe5942df29e... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/features/SLICE_93.md] chars=1533 | sha256=bee7dd69e7160e73... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/features/VERTICAL_SLICE.md] chars=1298 | sha256=b321aa49aae6fffa... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/GDD_MASTER.md] chars=24648 | sha256=1aeccaefff0e6545... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/governance/CONTRIBUTING.md] chars=433 | sha256=7915033033b8f6ba... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/governance/DEFERRED_VALIDATION.md] chars=9142 | sha256=f7045b9881c19699... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/governance/DEFINITION_OF_DONE.md] chars=6903 | sha256=7a32e9547a45d4ff... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/governance/PARALLEL_TEAM.md] chars=6462 | sha256=c93986787f8385a1... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/governance/RISK_REGISTER.md] chars=14862 | sha256=2f1e11e0688f285a... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/IMPLEMENTATION_STATUS.md] chars=22250 | sha256=02a3989ee1dd17fa... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/integrations/PROJECT_HANDOFF.json] chars=46014 | sha256=9503447b3a0969bf... | commit=8ebd177c48 | captured=2026-10-13 16:26
+[docs/integrations/SUPABASE_AI_CONTINUITY.md] chars=8952 | sha256=980b79feef12aad2... | commit=8ebd177c48 | captured=2026-10-13 16:26
+[docs/integrations/SUPABASE_CONTEXT_SCHEMA.sql] chars=9844 | sha256=77728d7911fdf7f8... | commit=8ebd177c48 | captured=2026-10-13 16:26
+[docs/integrations/SUPABASE_CONTEXT_VALIDATION.sql] chars=4939 | sha256=a2fc6a0fcd2ae2f2... | commit=8ebd177c48 | captured=2026-10-13 16:26
+[docs/POST_LAUNCH_BACKLOG.md] chars=1748 | sha256=99fb3676ba39ec71... | commit=7d96dfa00d | captured=2026-10-13 16:15
+[docs/PROJECT_CONTEXT.md] chars=16743 | sha256=40ca8dfae74b4f53... | commit=8ebd177c48 | captured=2026-10-13 16:26
+[docs/qa/CARD_100.md] chars=345 | sha256=5a3198283bbc36de... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/qa/CARD_101.md] chars=404 | sha256=2aa25cbfa03520f2... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/qa/CARD_102.md] chars=417 | sha256=33d6e96c89915279... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/qa/CARD_103.md] chars=352 | sha256=5186509e1b54c5d7... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/qa/CARD_104.md] chars=361 | sha256=7c1a011e7826ae8f... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/qa/CARD_108.md] chars=457 | sha256=d37baf7acf7f93bc... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/qa/CARD_109.md] chars=459 | sha256=8b54f494c33f4802... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/qa/CARD_98.md] chars=424 | sha256=c5d06767fc8672f9... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/qa/OPTIMIZATION_AND_PERFORMANCE.md] chars=4899 | sha256=136f3b8e1f7abb9e... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/qa/PAUSE_INPUT_REGRESSION.md] chars=1831 | sha256=3c6858e64fe02e58... | commit=2e9f2a7e44 | captured=2026-10-13 19:15
+[docs/qa/PLAYTEST_60S.md] chars=10974 | sha256=fd5fb033c3d3a9e5... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/qa/QA_EXECUTION_MATRIX.md] chars=3566 | sha256=0b5fd7f7a57f6509... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/qa/RELEASE_CANDIDATE_GATE.md] chars=1687 | sha256=69b7834900abfa70... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/qa/STABILIZATION_LEDGER.md] chars=1280 | sha256=05861320a9f0453d... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/qa/TOUCH_VALIDATION_PLAN.md] chars=5207 | sha256=2b75a4f9012767f7... | commit=eab016a440 | captured=2026-10-13 17:33
+[docs/release/PUBLICATION_PACKAGE.md] chars=2656 | sha256=0d337bd1ac515ba9... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/release/VERSIONING.md] chars=1556 | sha256=33a1be680da164dd... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/reviews/2026-10-05-card-29-mira.md] chars=2709 | sha256=57c338a5bf4e0965... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/reviews/2026-10-10-card-30-zoey.md] chars=2899 | sha256=d1bda0265fdd33dc... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/reviews/2026-10-10-cards-41-54.md] chars=5637 | sha256=d664faa51b8e2367... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/reviews/2026-10-10-character-management-assets-performance.md] chars=5783 | sha256=17408df67ebdaf08... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/reviews/2026-10-10-character-management.md] chars=7247 | sha256=3a4e7e23dd8cfff7... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/reviews/2026-10-10-enemies-33-40.md] chars=7695 | sha256=1523e5514c793f08... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/reviews/2026-10-12-critical-gameplay-test-source.md] chars=1899 | sha256=f361f699ffdd35c9... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/reviews/2026-10-12-integration-55-116.md] chars=7637 | sha256=24d9cdf3986813d6... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/reviews/2026-10-12-pool-authoring-references.md] chars=786 | sha256=d3d682f8cb86b8c5... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-air-dash.md] chars=4424 | sha256=3bdb0ce93715f27d... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-asset-folder-structure.md] chars=1679 | sha256=865ee2f79d44e067... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-base-combat.md] chars=10618 | sha256=2e8f2f8b2e3af5a6... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-base-movement.md] chars=2139 | sha256=92004cb5f9aae7bd... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-checkpoints.md] chars=6325 | sha256=9da4b9a8ba58de1b... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-combat-lab-scene.md] chars=1883 | sha256=fd0702a0220013e8... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-combo.md] chars=12414 | sha256=2bdf93114b7c7d3c... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-data-driven-architecture.md] chars=4332 | sha256=da159ccdbd737569... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-essential-packages.md] chars=1748 | sha256=ae09ede37124ba84... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-game-bootstrap.md] chars=3252 | sha256=f21e8ee3d5f893cb... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-git-lfs.md] chars=2075 | sha256=ac816942ef7d9564... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-ground-dash.md] chars=2331 | sha256=bd93fb9c107d6a69... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-jump-controller.md] chars=1940 | sha256=52b9f4da0a1d23f1... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-mira-defensive-field.md] chars=12264 | sha256=8c9639c2f2e81016... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-parry.md] chars=3084 | sha256=fd695c87fd826606... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-rumi-character.md] chars=4529 | sha256=21b73fdd6fc8c0b9... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/plans/2026-10-04-wall-jump.md] chars=5833 | sha256=1f40c5db34b88d22... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/specs/2026-10-04-air-dash-design.md] chars=3600 | sha256=f00d812f33669ee3... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/specs/2026-10-04-base-combat-design.md] chars=8699 | sha256=631f37f991c8fac4... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/specs/2026-10-04-checkpoints-design.md] chars=6272 | sha256=8176f34e2a39eac3... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/specs/2026-10-04-combat-lab-scene-design.md] chars=1532 | sha256=f69a9109bb4d3cf1... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/specs/2026-10-04-combo-design.md] chars=10194 | sha256=860c480b09ab1b81... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/specs/2026-10-04-data-driven-definitions-design.md] chars=2115 | sha256=e5ca0c51a79c01c4... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/specs/2026-10-04-ground-dash-design.md] chars=2234 | sha256=f7b420d87491e3d9... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/specs/2026-10-04-jump-controller-design.md] chars=1818 | sha256=f92bef7ccbdba1e0... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/specs/2026-10-04-mira-defensive-field-design.md] chars=7961 | sha256=b4b5888ca2c72d0a... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/specs/2026-10-04-parry-design.md] chars=4381 | sha256=2eeaa5d7e755d78b... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/specs/2026-10-04-rumi-character-design.md] chars=3276 | sha256=d5c5b48c5a081cda... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/superpowers/specs/2026-10-04-wall-jump-design.md] chars=3397 | sha256=674f0642675ce9a1... | commit=7d96dfa00d | captured=2026-10-13 16:16
+[docs/ui/FIGMA_HANDOFF.json] chars=4148 | sha256=29afe1eb12bf784b... | commit=eab016a440 | captured=2026-10-13 17:33
+[docs/ui/FIGMA_SCREENS.md] chars=3282 | sha256=baa75b9092a7ea9d... | commit=eab016a440 | captured=2026-10-13 17:33
+[docs/ui/REMAP_PANEL_CONTRACT.md] chars=4447 | sha256=d252d868c79fcaf9... | commit=27d4f5219f | captured=2026-10-14 01:43
+[docs/ui/REMAP_PANEL_REFERENCE.svg] chars=2215 | sha256=33ba8ff4554dd3b0... | commit=27d4f5219f | captured=2026-10-14 01:43
+[docs/ui/UNITY_UI_IMPLEMENTATION_PLAN.md] chars=12185 | sha256=b636fe8499b158a0... | commit=eab016a440 | captured=2026-10-13 17:33
+[PROJECT_RULES.md] chars=6829 | sha256=5999e7025af0ac3d... | commit=8ebd177c48 | captured=2026-10-13 16:26
+[README.md] chars=4692 | sha256=ce9e130d63353f88... | commit=7d96dfa00d | captured=2026-10-13 16:15
+
+================================================================================
+6. LOG DE EVENTOS RECENTES (ai_context.events — últimos 150 eventos)
+--------------------------------------------------------------------------------
+[Event #260] checkpoint_committed | actor=agent-antigravity-57749161 | task=- | at=2026-10-19 17:08:41
+[Event #259] checkpoint_committed | actor=agent-antigravity | task=- | at=2026-10-17 03:13:39
+[Event #258] checkpoint_committed | actor=antigravity-ide-column05-resolver | task=- | at=2026-10-17 02:03:35
+[Event #257] checkpoint_committed | actor=antigravity-column06-agent | task=- | at=2026-10-17 01:39:39
+[Event #256] checkpoint_committed | actor=antigravity-column06-agent | task=- | at=2026-10-17 00:45:38
+[Event #255] checkpoint_committed | actor=antigravity-column06-agent | task=- | at=2026-10-17 00:40:42
+[Event #254] checkpoint_committed | actor=codex-column05-20261017 | task=- | at=2026-10-17 00:28:44
+[Event #253] checkpoint_committed | actor=antigravity-session | task=- | at=2026-10-17 00:23:09
+[Event #252] checkpoint_committed | actor=codex-zoey-20261017 | task=- | at=2026-10-17 00:09:37
+[Event #251] task_updated | actor=codex-zoey-20261017 | task=trello-card-30 | at=2026-10-17 00:09:37
+[Event #250] checkpoint_committed | actor=codex-zoey-20261017 | task=- | at=2026-10-17 00:06:50
+[Event #249] task_updated | actor=codex-zoey-20261017 | task=trello-card-99 | at=2026-10-17 00:06:50
+[Event #248] task_claimed | actor=codex-zoey-20261017 | task=trello-card-99 | at=2026-10-17 00:06:32
+[Event #247] task_claimed | actor=codex-zoey-20261017 | task=trello-card-30 | at=2026-10-17 00:05:39
+[Event #246] checkpoint_committed | actor=codex-card99-20261016-2348 | task=- | at=2026-10-16 23:53:16
+[Event #245] task_updated | actor=codex-card99-20261016-2348 | task=trello-card-99 | at=2026-10-16 23:53:16
+[Event #244] checkpoint_committed | actor=codex-card99-20261016-2348 | task=- | at=2026-10-16 23:49:49
+[Event #243] task_claimed | actor=codex-card99-20261016-2348 | task=trello-card-99 | at=2026-10-16 23:49:23
+[Event #242] checkpoint_committed | actor=antigravity-ai | task=- | at=2026-10-16 21:24:04
+[Event #241] checkpoint_committed | actor=antigravity-ai | task=- | at=2026-10-16 21:19:48
+[Event #240] checkpoint_committed | actor=antigravity-ai | task=- | at=2026-10-16 21:14:21
+[Event #239] checkpoint_committed | actor=antigravity-ai | task=- | at=2026-10-16 21:10:18
+[Event #238] checkpoint_committed | actor=codex-orchestrator-20261016-2110 | task=- | at=2026-10-16 21:08:56
+[Event #237] checkpoint_committed | actor=antigravity-ai | task=- | at=2026-10-16 21:04:17
+[Event #236] checkpoint_committed | actor=antigravity-ai | task=- | at=2026-10-16 20:47:13
+[Event #235] checkpoint_committed | actor=codex-orchestrator-20261016-1943 | task=- | at=2026-10-16 20:43:29
+[Event #234] checkpoint_committed | actor=antigravity-ai | task=- | at=2026-10-16 20:41:10
+[Event #233] checkpoint_committed | actor=antigravity-ai | task=- | at=2026-10-16 20:37:24
+[Event #232] checkpoint_committed | actor=antigravity-ai | task=- | at=2026-10-16 20:32:44
+[Event #231] checkpoint_committed | actor=antigravity-ai | task=- | at=2026-10-16 20:23:06
+[Event #230] checkpoint_committed | actor=antigravity-ai | task=- | at=2026-10-16 20:18:08
+[Event #229] checkpoint_committed | actor=antigravity-ai | task=- | at=2026-10-16 20:12:46
+[Event #228] checkpoint_committed | actor=antigravity-ai | task=- | at=2026-10-16 20:04:55
+[Event #227] checkpoint_committed | actor=antigravity-ai | task=- | at=2026-10-16 19:58:19
+[Event #226] checkpoint_committed | actor=antigravity-orchestrator | task=- | at=2026-10-16 19:50:44
+[Event #225] checkpoint_committed | actor=antigravity-orchestrator | task=- | at=2026-10-16 19:39:02
+[Event #224] checkpoint_committed | actor=codex-orchestrator-20261016-1930 | task=- | at=2026-10-16 19:29:08
+[Event #223] checkpoint_committed | actor=antigravity-orchestrator | task=- | at=2026-10-16 19:05:02
+[Event #222] checkpoint_committed | actor=codex-orchestrator-20261016-1844 | task=- | at=2026-10-16 18:44:00
+[Event #221] checkpoint_committed | actor=codex-orchestrator-20261016-1838 | task=- | at=2026-10-16 18:38:27
+[Event #220] checkpoint_committed | actor=antigravity-orchestrator | task=- | at=2026-10-16 17:22:14
+[Event #219] checkpoint_committed | actor=antigravity-orchestrator | task=- | at=2026-10-16 17:08:34
+[Event #218] checkpoint_committed | actor=codex-orchestrator-20261016-1659 | task=- | at=2026-10-16 16:59:21
+[Event #217] checkpoint_committed | actor=antigravity-orchestrator | task=- | at=2026-10-16 16:57:26
+[Event #216] checkpoint_committed | actor=antigravity-orchestrator | task=- | at=2026-10-16 16:51:23
+[Event #215] checkpoint_committed | actor=codex-orchestrator-20261016-1649 | task=- | at=2026-10-16 16:47:43
+[Event #214] checkpoint_committed | actor=antigravity-orchestrator | task=- | at=2026-10-16 16:39:23
+[Event #213] checkpoint_committed | actor=antigravity-orchestrator | task=- | at=2026-10-16 16:18:14
+[Event #212] checkpoint_committed | actor=codex-orchestrator-20261016-1608 | task=- | at=2026-10-16 16:17:26
+[Event #211] task_updated | actor=codex-orchestrator-20261016-1608 | task=trello-card-99 | at=2026-10-16 16:17:26
+[Event #210] task_updated | actor=codex-orchestrator-20261016-1608 | task=trello-card-44 | at=2026-10-16 16:17:26
+[Event #209] task_claimed | actor=codex-orchestrator-20261016-1608 | task=trello-card-99 | at=2026-10-16 16:17:00
+[Event #208] task_claimed | actor=codex-orchestrator-20261016-1608 | task=trello-card-44 | at=2026-10-16 16:17:00
+[Event #207] checkpoint_committed | actor=codex-orchestrator-20261016-1608 | task=- | at=2026-10-16 16:15:33
+[Event #206] checkpoint_committed | actor=codex-orchestrator-20261016-1608 | task=- | at=2026-10-16 16:13:22
+[Event #205] checkpoint_committed | actor=codex-orchestrator-20261016-1608 | task=- | at=2026-10-16 16:12:03
+[Event #204] task_updated | actor=codex-orchestrator-20261016-1608 | task=trello-card-99 | at=2026-10-16 16:12:03
+[Event #203] task_updated | actor=codex-orchestrator-20261016-1608 | task=trello-card-44 | at=2026-10-16 16:12:03
+[Event #202] checkpoint_committed | actor=codex-orchestrator-20261016-1608 | task=- | at=2026-10-16 16:11:16
+[Event #201] task_updated | actor=codex-orchestrator-20261016-1608 | task=trello-card-99 | at=2026-10-16 16:11:16
+[Event #200] task_updated | actor=codex-orchestrator-20261016-1608 | task=trello-card-44 | at=2026-10-16 16:11:16
+[Event #199] task_claimed | actor=codex-orchestrator-20261016-1608 | task=trello-card-99 | at=2026-10-16 16:10:43
+[Event #198] task_claimed | actor=codex-orchestrator-20261016-1608 | task=trello-card-44 | at=2026-10-16 16:10:43
+[Event #197] checkpoint_committed | actor=codex-orchestrator-20261016-1608 | task=- | at=2026-10-16 16:10:01
+[Event #196] checkpoint_committed | actor=codex-run-20261016-1424 | task=- | at=2026-10-16 14:26:49
+[Event #195] task_updated | actor=codex-run-20261016-1424 | task=trello-card-99 | at=2026-10-16 14:26:49
+[Event #194] task_claimed | actor=codex-run-20261016-1424 | task=trello-card-99 | at=2026-10-16 14:26:03
+[Event #193] checkpoint_committed | actor=codex-run-20261016-1327 | task=- | at=2026-10-16 13:31:49
+[Event #192] task_updated | actor=codex-run-20261016-1327 | task=trello-card-99 | at=2026-10-16 13:31:49
+[Event #191] checkpoint_committed | actor=codex-run-20261016-1327 | task=- | at=2026-10-16 13:30:23
+[Event #190] task_claimed | actor=codex-run-20261016-1327 | task=trello-card-99 | at=2026-10-16 13:29:56
+[Event #189] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-16 12:34:37
+[Event #188] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-16 11:40:13
+[Event #187] task_updated | actor=trello-target40-20261016 | task=trello-card-99 | at=2026-10-16 11:40:13
+[Event #186] task_claimed | actor=trello-target40-20261016 | task=trello-card-99 | at=2026-10-16 11:39:17
+[Event #185] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-16 11:38:56
+[Event #184] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-16 10:53:16
+[Event #183] task_updated | actor=trello-acceptance-20261016 | task=trello-card-79 | at=2026-10-16 10:53:16
+[Event #182] task_updated | actor=trello-acceptance-20261016 | task=trello-card-115 | at=2026-10-16 10:53:16
+[Event #181] task_updated | actor=trello-acceptance-20261016 | task=trello-card-112 | at=2026-10-16 10:53:16
+[Event #180] task_updated | actor=trello-acceptance-20261016 | task=trello-card-111 | at=2026-10-16 10:53:16
+[Event #179] task_updated | actor=trello-acceptance-20261016 | task=trello-card-116 | at=2026-10-16 10:53:16
+[Event #178] task_updated | actor=trello-acceptance-20261016 | task=trello-card-114 | at=2026-10-16 10:53:16
+[Event #177] task_updated | actor=trello-acceptance-20261016 | task=trello-card-113 | at=2026-10-16 10:53:16
+[Event #176] task_updated | actor=trello-acceptance-20261016 | task=trello-card-106 | at=2026-10-16 10:53:16
+[Event #175] task_claimed | actor=trello-acceptance-20261016 | task=trello-card-79 | at=2026-10-16 10:51:34
+[Event #174] task_claimed | actor=trello-acceptance-20261016 | task=trello-card-115 | at=2026-10-16 10:51:09
+[Event #173] task_claimed | actor=trello-acceptance-20261016 | task=trello-card-112 | at=2026-10-16 10:51:09
+[Event #172] task_claimed | actor=trello-acceptance-20261016 | task=trello-card-111 | at=2026-10-16 10:51:09
+[Event #171] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-16 10:50:50
+[Event #170] task_claimed | actor=trello-acceptance-20261016 | task=trello-card-116 | at=2026-10-16 10:49:24
+[Event #169] task_claimed | actor=trello-acceptance-20261016 | task=trello-card-114 | at=2026-10-16 10:49:24
+[Event #168] task_claimed | actor=trello-acceptance-20261016 | task=trello-card-113 | at=2026-10-16 10:49:24
+[Event #167] task_claimed | actor=trello-acceptance-20261016 | task=trello-card-106 | at=2026-10-16 10:49:24
+[Event #166] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-16 10:46:15
+[Event #165] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-16 10:37:35
+[Event #164] task_updated | actor=trello-coordinator-20261016 | task=trello-card-110 | at=2026-10-16 10:37:35
+[Event #163] task_updated | actor=trello-coordinator-20261016 | task=trello-card-98 | at=2026-10-16 10:37:35
+[Event #162] task_updated | actor=trello-coordinator-20261016 | task=trello-card-90 | at=2026-10-16 10:37:35
+[Event #161] task_updated | actor=trello-coordinator-20261016 | task=trello-card-68 | at=2026-10-16 10:37:35
+[Event #160] task_updated | actor=trello-coordinator-20261016 | task=trello-card-49 | at=2026-10-16 10:37:35
+[Event #159] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-16 10:36:35
+[Event #158] task_claimed | actor=trello-coordinator-20261016 | task=trello-card-110 | at=2026-10-16 10:33:10
+[Event #157] task_claimed | actor=trello-coordinator-20261016 | task=trello-card-98 | at=2026-10-16 10:33:10
+[Event #156] task_claimed | actor=trello-coordinator-20261016 | task=trello-card-90 | at=2026-10-16 10:33:10
+[Event #155] task_claimed | actor=trello-coordinator-20261016 | task=trello-card-68 | at=2026-10-16 10:33:10
+[Event #154] task_claimed | actor=trello-coordinator-20261016 | task=trello-card-49 | at=2026-10-16 10:33:10
+[Event #153] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-16 10:31:13
+[Event #152] task_updated | actor=trello-coordinator-20261016 | task=trello-card-110 | at=2026-10-16 10:31:13
+[Event #151] task_updated | actor=trello-coordinator-20261016 | task=trello-card-109 | at=2026-10-16 10:31:13
+[Event #150] task_updated | actor=trello-coordinator-20261016 | task=trello-card-100 | at=2026-10-16 10:31:13
+[Event #149] task_updated | actor=trello-coordinator-20261016 | task=trello-card-99 | at=2026-10-16 10:31:13
+[Event #148] task_updated | actor=trello-coordinator-20261016 | task=trello-card-93 | at=2026-10-16 10:31:13
+[Event #147] task_updated | actor=trello-coordinator-20261016 | task=trello-card-92 | at=2026-10-16 10:31:13
+[Event #146] task_updated | actor=trello-coordinator-20261016 | task=trello-card-90 | at=2026-10-16 10:31:13
+[Event #145] task_updated | actor=trello-coordinator-20261016 | task=trello-card-68 | at=2026-10-16 10:31:13
+[Event #144] task_claimed | actor=trello-coordinator-20261016 | task=trello-card-110 | at=2026-10-16 10:29:03
+[Event #143] task_claimed | actor=trello-coordinator-20261016 | task=trello-card-109 | at=2026-10-16 10:29:03
+[Event #142] task_claimed | actor=trello-coordinator-20261016 | task=trello-card-100 | at=2026-10-16 10:29:03
+[Event #141] task_claimed | actor=trello-coordinator-20261016 | task=trello-card-99 | at=2026-10-16 10:29:03
+[Event #140] task_claimed | actor=trello-coordinator-20261016 | task=trello-card-93 | at=2026-10-16 10:29:03
+[Event #139] task_claimed | actor=trello-coordinator-20261016 | task=trello-card-92 | at=2026-10-16 10:29:03
+[Event #138] task_claimed | actor=trello-coordinator-20261016 | task=trello-card-90 | at=2026-10-16 10:29:03
+[Event #137] task_claimed | actor=trello-coordinator-20261016 | task=trello-card-68 | at=2026-10-16 10:29:03
+[Event #136] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-16 10:28:42
+[Event #135] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-16 01:41:45
+[Event #134] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 21:28:48
+[Event #133] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 21:26:36
+[Event #132] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 21:25:32
+[Event #131] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 21:24:32
+[Event #130] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 21:23:21
+[Event #129] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 21:21:53
+[Event #128] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 21:20:16
+[Event #127] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 21:18:25
+[Event #126] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 20:44:52
+[Event #125] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 20:44:06
+[Event #124] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 19:08:08
+[Event #123] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 19:06:00
+[Event #122] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 19:05:25
+[Event #121] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 19:02:49
+[Event #120] task_updated | actor=codex-orchestrator | task=local-coop | at=2026-10-15 19:02:49
+[Event #119] task_claimed | actor=codex-orchestrator | task=local-coop | at=2026-10-15 19:02:49
+[Event #118] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 19:00:54
+[Event #117] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 18:44:27
+[Event #116] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 18:41:30
+[Event #115] task_updated | actor=codex-orchestrator | task=ui-lab-navigation-focus | at=2026-10-15 18:41:30
+[Event #114] task_claimed | actor=codex-orchestrator | task=ui-lab-navigation-focus | at=2026-10-15 18:41:30
+[Event #113] task_updated | actor=codex-orchestrator | task=test-provenance-start-head | at=2026-10-15 18:41:30
+[Event #112] task_claimed | actor=codex-orchestrator | task=test-provenance-start-head | at=2026-10-15 18:41:30
+[Event #111] checkpoint_committed | actor=codex-orchestrator | task=- | at=2026-10-15 18:40:04
+
+================================================================================
+7. ARTEFATOS REGISTRADOS (ai_context.artifacts — 12 artefatos)
+--------------------------------------------------------------------------------
+[Artifact: figma-mobile-screens] kind=figma_design | state=design_created_visual_review_complete | commit=eab016a44083276649a8393789d938184422e000 | uri=https://www.figma.com/design/AoNgky0oNVLU31UvML5xns | details={"page": "01 Â· Mobile landscape", "frames": [{"url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=2-2", "name": "Menu principal", "width": 1280, "height": 720, "node_id": "2:2"}, {"url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=2-29", "name": "Equipe e perfil", "width": 1280, "height": 720, "node_id": "2:29"}, {"url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=2-71", "name": "HUD mobile â€” protÃ³tipo", "width": 1280, "height": 720, "node_id": "2:71"}, {"url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=2-110", "name": "OpÃ§Ãµes e acessibilidade", "width": 1280, "height": 720, "node_id": "2:110"}, {"url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=2-150", "name": "ConclusÃ£o e replay", "width": 1280, "height": 720, "node_id": "2:150"}], "status": "design_created_visual_review_complete", "page_id": "0:1", "file_key": "AoNgky0oNVLU31UvML5xns", "file_url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns", "decisions": ["Landscape 1280Ã—720, alinhado ao jogo 2D/mobile e referÃªncia 16:9; proposta de interface, nÃ£o novo contrato de resoluÃ§Ã£o Unity.", "DireÃ§Ã£o original amigÃ¡vel: fundos claros, azul aÃ§Ã£o, mint proteÃ§Ã£o, rosa/dourado/lilÃ¡s para personagens, tipografia Inter, formas geomÃ©tricas placeholders sem arte do filme.", "Menu principal, seleÃ§Ã£o de personagem/perfil, HUD com vida/Honmoon/fÃ£s/comida/troca/pausa/dash/pulo/ataque/Special, opÃ§Ãµes de conforto e conclusÃ£o/replay.", "Cinco perfis do protÃ³tipo confirmado: 4â€“5, 6â€“8, 9â€“12, 13â€“15, 16+; faixa 6â€“8 selecionada ilustrativamente; sem cadastro/data de nascimento.", "Identidades atuais: Rumi espada, Mira campo de proteÃ§Ã£o, Zoey precisÃ£o; valores e resultados apresentados sÃ£o ilustrativos.", "CooperaÃ§Ã£o atÃ© 3 continua requisito; modalidade/prova nÃ£o decididas por estas telas."], "file_name": "HUNTRX â€” Telas mobile", "notes_url": "https://www.figma.com/design/AoNgky0oNVLU31UvML5xns?node-id=7-28", "remaining": ["RevisÃ£o humana das telas e legibilidade em dispositivo alvo", "Definir navegaÃ§Ã£o, estados vazio/disabled/pausa, remapeamento e adaptaÃ§Ã£o Ã s safe areas", "Estender direÃ§Ã£o final e assets aprovados; entÃ£o integrar Unity e testar acessibilidade/touch", "NÃ£o promover resultados fictÃ­cios da conclusÃ£o a evidÃªncia de playtest"], "project_key": "huntrx-honmoon", "source_paths": ["docs/GDD_MASTER.md", "docs/architecture/AGE_PROFILES.md", "docs/PROJECT_CONTEXT.md", "docs/IMPLEMENTATION_STATUS.md"], "verification": {"unity": "Nenhuma tela implementada ou validada no Unity nesta frente.", "visual": "Screenshots das cinco telas revisadas conferidos em 13/10/2026; nenhuma implementaÃ§Ã£o Unity.", "structural": "5 frames 1280Ã—720 e IDs retornados pela criaÃ§Ã£o", "interaction": "Frames estÃ¡ticos, sem wiring de navegaÃ§Ã£o ou execuÃ§Ã£o no jogo."}, "created_nodes": 167, "notes_node_id": "7:28", "design_revision": "2026-10-13-aligned-runtime-source", "final_visual_fix": {"text": "Special", "reason": "Remove 2px overflow; ready state remains in external notes 7:28", "node_id": "7:20", "button_id": "7:19", "verification": "HUD screenshot inspected after minimal text correction on 2026-10-13", "unity_executed": false}, "revision_changes": ["Continuar indisponÃ­vel; sem promessa de save", "Perfil check/texto selecionado", "9 aÃ§Ãµes touch e movimento2D; retratos informativos/troca circular", "OpÃ§Ãµes suportadas e semÃ¢ntica imediata/session-only", "Notas tÃ©cnicas e Special states fora dos frames produto"], "implementation_plan": {"path": "/workspace/scratch/969ad424b423/ui-implementation-plan.md", "sha256": "e10c1cd17f795d338956c09e4c8b7f76e39a1f476393fe9540179034f4b58c75", "status": "planned_not_implemented", "source_commit": "8ebd177c48f945d04b9f816bac1c841d4e03c068"}}
+
+[Artifact: github-actions-pr97-tooling-run-38430324590] kind=github_actions_evidence | state=tooling_verified_unity_skipped | commit=8053de3bfa6d0e0d770bb29f70a8fa1af72dbcb4 | uri=https://github.com/JCodeArch/Br.JcodeArch.Huntrix/actions/runs/38430324590 | details={"pr": 97, "jobs": {"tooling": "success", "validate": "skipped", "ios-project": "skipped", "development-build": "skipped"}, "owner": "task_inventory", "scope": "read-only GitHub Actions evidence audit", "limits": ["No Unity import/compile/EditMode/PlayMode execution or APK evidenced by this Actions run.", "Run checks synthetic PR merge; does not verify current develop merge SHA.", "PR91â€“96 rechecks not repeated: no concrete additional tooling risk; runtime validation remains pending.", "Unity Cloud authentication/build owned by root and not accessed by this agent."], "run_id": 38430324590, "tooling": {"version": "0.1.0-dev.1", "bash_syntax": "passed", "python_tests_passed": 7}, "head_sha": "3b28546803b25f97b6e36c51c60464a25f18a84a", "run_status": "completed", "observed_at": "2026-10-13T16:30:22.443Z", "run_conclusion": "success", "workflow_artifacts": [], "actual_checkout_sha": "8053de3bfa6d0e0d770bb29f70a8fa1af72dbcb4"}
+
+[Artifact: pr-91] kind=github_pr | state=merged_static_review_runtime_pending | commit=8f9c5230b5cac9776051205d37ad6b7874a77d3e | uri=https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/91 | details={"base": "develop", "title": "fix(build): migra identidade de resgate para Unity EntityId", "pr_url": "https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/91", "status": "source_merged_runtime_pending", "merge_sha": "8f9c5230b5cac9776051205d37ad6b7874a77d3e", "pr_number": 91, "evidence_file": "stabilization-20261013/1.md", "merge_evidence": "Parent session GitHub get_pr_info verified merged:true and base develop on 2026-10-13", "validation_record": "O build Unity 6000.6.4f1 falhou com CS0619 ao usar GetInstanceID. Usa GetEntityId e HashSet<EntityId> para manter a deduplicaÃ§Ã£o sem reduzir o identificador a um hash. API oficial e revisÃ£o independente verificadas; git diff --check aprovado. CompilaÃ§Ã£o Unity e testes dependem do prÃ³ximo build cloud.\n\nRevisÃ£o independente estÃ¡tica sem bloqueadores. IntegraÃ§Ã£o em develop para validaÃ§Ã£o Unity; nÃ£o representa build ou runtime aprovado. Relacionado aos cards 97, 99, 107 e 109 de estabilizaÃ§Ã£o.\n"}
+
+[Artifact: pr-92] kind=github_pr | state=merged_static_review_runtime_pending | commit=5c6f738c41172b31ddcb79dfa99cbdd44be7a487 | uri=https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/92 | details={"base": "develop", "title": "fix(tests): preserve legacy scene hosts after playable startup", "pr_url": "https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/92", "status": "source_merged_runtime_pending", "merge_sha": "5c6f738c41172b31ddcb79dfa99cbdd44be7a487", "pr_number": 92, "evidence_file": "stabilization-20261013/2.md", "merge_evidence": "Parent session GitHub get_pr_info verified merged:true and base develop on 2026-10-13", "validation_record": "Keep VerticalSlice first while enabling SampleScene and CombatLab for existing scene-loading regression fixtures. Update the EditMode build-settings contract to verify the current startup and legacy host order.\n\nValidated exact enabled scene order, scene asset existence, GUID correspondence and git diff --check. Independent Android static review approved. Unity compilation and EditMode/PlayMode execution remain pending; Unity Cloud scene overrides require separate verification.\n\nRevisÃ£o independente estÃ¡tica sem bloqueadores. IntegraÃ§Ã£o em develop para validaÃ§Ã£o Unity; nÃ£o representa build ou runtime aprovado. Relacionado aos cards 97, 99, 107 e 109 de estabilizaÃ§Ã£o.\n"}
+
+[Artifact: pr-93] kind=github_pr | state=merged_static_review_runtime_pending | commit=ce76e1530e517f4a3d5f58ddd66c677eaa8a428b | uri=https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/93 | details={"base": "develop", "title": "fix(hud): coordena pausa das opÃ§Ãµes com hit-stop", "pr_url": "https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/93", "status": "source_merged_runtime_pending", "merge_sha": "ce76e1530e517f4a3d5f58ddd66c677eaa8a428b", "pr_number": 93, "evidence_file": "stabilization-20261013/3.md", "merge_evidence": "Parent session GitHub get_pr_info verified merged:true and base develop on 2026-10-13", "validation_record": "O tÃ©rmino do hit-stop podia retomar o mundo com opÃ§Ãµes abertas. O HUD passa a usar HitStopService, preserva pausa preexistente e libera a prÃ³pria pausa ao desabilitar. Inclui quatro cenÃ¡rios de regressÃ£o. RevisÃ£o independente e git diff --check aprovados; testes Unity escritos, ainda nÃ£o executados.\n\nRevisÃ£o independente estÃ¡tica sem bloqueadores. IntegraÃ§Ã£o em develop para validaÃ§Ã£o Unity; nÃ£o representa build ou runtime aprovado. Relacionado aos cards 97, 99, 107 e 109 de estabilizaÃ§Ã£o.\n"}
+
+[Artifact: pr-94] kind=github_pr | state=merged_static_review_runtime_pending | commit=2e788291c995e427e621f835408d1e5c096b4bad | uri=https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/94 | details={"base": "develop", "title": "fix(gameplay): permite repetir VerticalSlice preservando avaliaÃ§Ã£o", "pr_url": "https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/94", "status": "source_merged_runtime_pending", "merge_sha": "2e788291c995e427e621f835408d1e5c096b4bad", "pr_number": 94, "evidence_file": "stabilization-20261013/4.md", "merge_evidence": "Parent session GitHub get_pr_info verified merged:true and base develop on 2026-10-13", "validation_record": "ApÃ³s concluir o show, o HUD bloqueava controles sem oferecer nova sessÃ£o. Adiciona aÃ§Ã£o explÃ­cita para salvar avaliaÃ§Ã£o e recarregar a cena incluÃ­da no build; uma falha de persistÃªncia mantÃ©m os dados e a tela para nova tentativa. Quando nÃ£o existe recorder, oferece reinÃ­cio simples. NÃ£o altera o fluxo de pausa.\n\nVerificaÃ§Ã£o: git diff --check sem erros e revisÃ£o dos contratos TrySubmitFeedback/TrySaveReport. ExecuÃ§Ã£o Unity, importaÃ§Ã£o e playtest de reinÃ­cio pendentes no Build Automation. Requer revisÃ£o independente e integraÃ§Ã£o sequencial apÃ³s correÃ§Ã£o de pausa do HUD.\n\nRevisÃ£o independente estÃ¡tica sem bloqueadores. IntegraÃ§Ã£o em develop para validaÃ§Ã£o Unity; nÃ£o representa build ou runtime aprovado. Relacionado aos cards 97, 99, 107 e 109 de estabilizaÃ§Ã£o.\n"}
+
+[Artifact: pr-95] kind=github_pr | state=merged_static_review_runtime_pending | commit=5cb051730cdedef19c325b18475eebfb336c5fd2 | uri=https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/95 | details={"base": "develop", "title": "fix(combat): encerra callbacks de impacto apÃ³s reutilizaÃ§Ã£o", "pr_url": "https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/95", "status": "source_merged_runtime_pending", "merge_sha": "5cb051730cdedef19c325b18475eebfb336c5fd2", "pr_number": 95, "evidence_file": "stabilization-20261013/5.md", "merge_evidence": "Parent session GitHub get_pr_info verified merged:true and base develop on 2026-10-13", "validation_record": "Um assinante podia devolver e alugar o projÃ©til durante o despacho de impacto, expondo a nova geraÃ§Ã£o aos callbacks antigos. Verifica geraÃ§Ã£o antes de cada assinante e inclui regressÃ£o com pool real. RevisÃ£o independente e git diff --check aprovados; execuÃ§Ã£o Unity pendente.\n\nRevisÃ£o independente estÃ¡tica sem bloqueadores. IntegraÃ§Ã£o em develop para validaÃ§Ã£o Unity; nÃ£o representa build ou runtime aprovado. Relacionado aos cards 97, 99, 107 e 109 de estabilizaÃ§Ã£o.\n"}
+
+[Artifact: pr-96] kind=github_pr | state=merged_static_review_runtime_pending | commit=7d96dfa00def38227f7b6834ec3ccd5f515cd189 | uri=https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/96 | details={"base": "develop", "title": "docs(build): registra falha de compilaÃ§Ã£o do primeiro build cloud", "pr_url": "https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/96", "status": "source_merged_runtime_pending", "merge_sha": "7d96dfa00def38227f7b6834ec3ccd5f515cd189", "pr_number": 96, "evidence_file": "stabilization-20261013/6.md", "merge_evidence": "Parent session GitHub get_pr_info verified merged:true and base develop on 2026-10-13", "validation_record": "Substitui o estado de fila pelo resultado Failed do build #1 no SHA 1a907af, com CS0619 na linha 144, suites bloqueadas sem XML e ausÃªncia de APK. Registra horÃ¡rios e duraÃ§Ãµes observados, corrige a continuidade apÃ³s integraÃ§Ã£o da configuraÃ§Ã£o e mantÃ©m correÃ§Ãµes e nova execuÃ§Ã£o como pendentes.\n\nVerificaÃ§Ã£o: revisÃ£o dos dois registros contra evidÃªncia fornecida e git diff --check. Sem execuÃ§Ã£o Unity, novo build, push ou merge.\n\nRevisÃ£o independente estÃ¡tica sem bloqueadores. IntegraÃ§Ã£o em develop para validaÃ§Ã£o Unity; nÃ£o representa build ou runtime aprovado. Relacionado aos cards 97, 99, 107 e 109 de estabilizaÃ§Ã£o.\n"}
+
+[Artifact: pr-97] kind=github_pr | state=merged_verified | commit=8ebd177c48f945d04b9f816bac1c841d4e03c068 | uri=https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/97 | details={"feature": "multi-project AI context + Figma screens docs", "static_review": "approved", "SQL_validation": "passed"}
+
+[Artifact: pr-98] kind=github_pr | state=merged_runtime_pending | commit=b5cc9bfcf98942f94a1869b39196ef9eedb891fd | uri=https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/98 | details={"source": "GitHub get_pr_info", "Unity_run": "blocked UNITY_EDITOR absent", "tests_authored": 5}
+
+[Artifact: pr-99] kind=github_pr | state=merged_documentation_verified | commit=eab016a44083276649a8393789d938184422e000 | uri=https://github.com/JCodeArch/Br.JcodeArch.Huntrix/pull/99 | details={"Figma_screens": "5 created and revised", "static_review": "approved", "Unity_UI_implementation": "pending"}
+
+[Artifact: unity-build-1] kind=unity_build | state=failed_compilation | commit=1a907af9d68fb586f0740821337077f993917d16 | uri=https://cloud.unity.com/organizations/4674262819723/projects/acc5ceb5-588f-4ef7-9b7b-3e50d3139a49/cloud-build/buildtargets/huntrix-android-develop/builds/1 | details={"commit": "1a907af9d68fb586f0740821337077f993917d16", "status": "failed_compilation", "failure": "CS0619 GetInstanceID obsolete in CombatPerformanceController2D.cs:144", "evidence": "huntrix/docs/build/UNITY_BUILD_AUTOMATION.md", "test_status": "compilation_blocked_no_XML", "apk_produced": false, "build_number": 1, "unity_version": "6000.6.4f1"}

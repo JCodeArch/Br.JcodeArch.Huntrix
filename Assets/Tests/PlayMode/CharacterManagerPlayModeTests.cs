@@ -89,6 +89,10 @@ namespace HuntrX.Tests.PlayMode
 
             yield return null;
 
+            // A real physics step may have occurred since assigning the test motion.
+            // Switching must transfer the current actor state, rather than rewind that step.
+            Vector3 positionAtSwitch = rumiActor.transform.position;
+            Vector2 velocityAtSwitch = rumiBody.linearVelocity;
             bool switchedToMira = manager.TrySwitch(miraPrefab);
             Assert.That(switchedToMira, Is.True);
             Assert.That(manager.ActivePrefab, Is.EqualTo(miraPrefab));
@@ -98,9 +102,9 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(rumiActor.gameObject.activeInHierarchy, Is.False);
             Assert.That(manager.ActiveCharacter.gameObject.activeInHierarchy, Is.True);
 
-            Assert.That(manager.ActiveCharacter.transform.position, Is.EqualTo(testPosition));
+            Assert.That(manager.ActiveCharacter.transform.position, Is.EqualTo(positionAtSwitch));
             var miraBody = manager.ActiveCharacter.GetComponent<Rigidbody2D>();
-            Assert.That(miraBody.linearVelocity, Is.EqualTo(testVelocity));
+            Assert.That(miraBody.linearVelocity, Is.EqualTo(velocityAtSwitch));
 
             bool switchedToZoey = manager.TrySwitch(zoeyPrefab);
             Assert.That(switchedToZoey, Is.True);

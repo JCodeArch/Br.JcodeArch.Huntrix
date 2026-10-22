@@ -3,6 +3,7 @@ using System.Reflection;
 using HuntrX.Gameplay.VerticalSlice;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
@@ -50,6 +51,7 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(session.TryBegin(), Is.True);
             Camera first = (Camera)CameraField.GetValue(session);
             Assert.That(first, Is.Not.Null);
+            Assert.That(first.GetUniversalAdditionalCameraData().renderPostProcessing, Is.True);
             session.Stop();
             Assert.That(first.gameObject.activeSelf, Is.False, "Stopped camera must stop rendering immediately.");
             Assert.That(session.TryBegin(), Is.True);
@@ -59,6 +61,7 @@ namespace HuntrX.Tests.PlayMode
             Assert.That(first == null, Is.True);
             Assert.That(replacement != null && replacement.isActiveAndEnabled, Is.True);
             Assert.That(session.IsRunning, Is.True);
+            Assert.That(replacement.GetUniversalAdditionalCameraData().renderPostProcessing, Is.True);
         }
 
         [UnityTest]
@@ -74,6 +77,7 @@ namespace HuntrX.Tests.PlayMode
             yield return null;
             Assert.That(external != null && external.isActiveAndEnabled, Is.True);
             Assert.That(CameraField.GetValue(session), Is.SameAs(external));
+            Assert.That(external.GetUniversalAdditionalCameraData().renderPostProcessing, Is.True);
         }
     }
 }

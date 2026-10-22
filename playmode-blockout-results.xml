@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="7" result="Passed" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-17 03:05:34Z" end-time="2026-10-17 03:05:34Z" duration="0,1453948">
+  <test-suite type="TestSuite" id="1599" name="HUNTR_X" fullname="HUNTR_X" runstate="Runnable" testcasecount="515" result="Passed" start-time="2026-10-17 03:05:34Z" end-time="2026-10-17 03:05:34Z" duration="0.145395" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="2191" name="HuntrX.PlayModeTests.dll" fullname="D:/Workspace/Br.JcodeArch.Huntrix/Library/ScriptAssemblies/HuntrX.PlayModeTests.dll" runstate="Runnable" testcasecount="515" result="Passed" start-time="2026-10-17 03:05:34Z" end-time="2026-10-17 03:05:34Z" duration="0.131197" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="15204" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="2192" name="HuntrX" fullname="HuntrX" runstate="Runnable" testcasecount="515" result="Passed" start-time="2026-10-17 03:05:34Z" end-time="2026-10-17 03:05:34Z" duration="0.117056" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="2193" name="Tests" fullname="HuntrX.Tests" runstate="Runnable" testcasecount="515" result="Passed" start-time="2026-10-17 03:05:34Z" end-time="2026-10-17 03:05:34Z" duration="0.111051" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="2194" name="PlayMode" fullname="HuntrX.Tests.PlayMode" runstate="Runnable" testcasecount="515" result="Passed" start-time="2026-10-17 03:05:34Z" end-time="2026-10-17 03:05:34Z" duration="0.105775" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1747" name="BlockoutLevelControllerPlayModeTests" fullname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests" classname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-17 03:05:34Z" end-time="2026-10-17 03:05:34Z" duration="0.084525" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1754" name="BlockoutCheckpointRegionActivatesCheckpointWhenMatchingPlayerEnters" fullname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests.BlockoutCheckpointRegionActivatesCheckpointWhenMatchingPlayerEnters" methodname="BlockoutCheckpointRegionActivatesCheckpointWhenMatchingPlayerEnters" classname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests" runstate="Runnable" seed="131854832" result="Passed" start-time="2026-10-17 03:05:34Z" end-time="2026-10-17 03:05:34Z" duration="0.053835" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[DamageReceiver2D requires finite positive maximum health.
+DamageReceiver2D requires finite positive maximum health.
+]]></output>
+              </test-case>
+              <test-case id="1748" name="InitialStageIndexDefaultsToNegativeOneWhenAutoStartIsDisabled" fullname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests.InitialStageIndexDefaultsToNegativeOneWhenAutoStartIsDisabled" methodname="InitialStageIndexDefaultsToNegativeOneWhenAutoStartIsDisabled" classname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests" runstate="Runnable" seed="1361993445" result="Passed" start-time="2026-10-17 03:05:34Z" end-time="2026-10-17 03:05:34Z" duration="0.004579" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1753" name="OnDisableClearsBuilderAndResetsStageIndex" fullname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests.OnDisableClearsBuilderAndResetsStageIndex" methodname="OnDisableClearsBuilderAndResetsStageIndex" classname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests" runstate="Runnable" seed="1836830206" result="Passed" start-time="2026-10-17 03:05:34Z" end-time="2026-10-17 03:05:34Z" duration="0.001570" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1752" name="TryLoadAdvancesToNextStageAndClearsPreviousStage" fullname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests.TryLoadAdvancesToNextStageAndClearsPreviousStage" methodname="TryLoadAdvancesToNextStageAndClearsPreviousStage" classname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests" runstate="Runnable" seed="927961633" result="Passed" start-time="2026-10-17 03:05:34Z" end-time="2026-10-17 03:05:34Z" duration="0.001750" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1751" name="TryLoadConstructsStageSpawnsPlayerWiresCheckpointsAndFiresEvent" fullname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests.TryLoadConstructsStageSpawnsPlayerWiresCheckpointsAndFiresEvent" methodname="TryLoadConstructsStageSpawnsPlayerWiresCheckpointsAndFiresEvent" classname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests" runstate="Runnable" seed="416891520" result="Passed" start-time="2026-10-17 03:05:34Z" end-time="2026-10-17 03:05:34Z" duration="0.003474" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1750" name="TryLoadRejectsInvalidRoute" fullname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests.TryLoadRejectsInvalidRoute" methodname="TryLoadRejectsInvalidRoute" classname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests" runstate="Runnable" seed="1410918081" result="Passed" start-time="2026-10-17 03:05:34Z" end-time="2026-10-17 03:05:34Z" duration="0.000622" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1749" name="TryLoadReturnsFalseOnMissingDependenciesOrInvalidIndex" fullname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests.TryLoadReturnsFalseOnMissingDependenciesOrInvalidIndex" methodname="TryLoadReturnsFalseOnMissingDependenciesOrInvalidIndex" classname="HuntrX.Tests.PlayMode.BlockoutLevelControllerPlayModeTests" runstate="Runnable" seed="2105047721" result="Passed" start-time="2026-10-17 03:05:34Z" end-time="2026-10-17 03:05:34Z" duration="0.000789" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/Jonathas/AppData/LocalLow/JCodeArch/HUNTR_X\TestResults.xml
+Saving results to: C:/Users/Jonathas/AppData/LocalLow/JCodeArch/HUNTR_X\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

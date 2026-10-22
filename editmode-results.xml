@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="105" result="Passed" total="105" passed="105" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:26Z" duration="2,4121849">
+  <test-suite type="TestSuite" id="1000" name="HUNTR_X" fullname="HUNTR_X" runstate="Runnable" testcasecount="105" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:26Z" duration="2.412185" total="105" passed="105" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1132" name="HuntrX.EditModeTests.dll" fullname="D:/Workspace/Br.JcodeArch.Huntrix/Library/ScriptAssemblies/HuntrX.EditModeTests.dll" runstate="Runnable" testcasecount="104" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:26Z" duration="2.388487" total="104" passed="104" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="19048" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1133" name="HuntrX" fullname="HuntrX" runstate="Runnable" testcasecount="104" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:26Z" duration="2.386255" total="104" passed="104" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1134" name="Tests" fullname="HuntrX.Tests" runstate="Runnable" testcasecount="104" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:26Z" duration="2.384505" total="104" passed="104" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1135" name="EditMode" fullname="HuntrX.Tests.EditMode" runstate="Runnable" testcasecount="104" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:26Z" duration="2.382435" total="104" passed="104" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="CharacterDefinitionTests" fullname="HuntrX.Tests.EditMode.CharacterDefinitionTests" classname="HuntrX.Tests.EditMode.CharacterDefinitionTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.150083" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1010" name="CharacterDefinitionRequiresNameAndCompleteValidStaticKit" fullname="HuntrX.Tests.EditMode.CharacterDefinitionTests.CharacterDefinitionRequiresNameAndCompleteValidStaticKit" methodname="CharacterDefinitionRequiresNameAndCompleteValidStaticKit" classname="HuntrX.Tests.EditMode.CharacterDefinitionTests" runstate="Runnable" seed="1167989144" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.038885" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1003" name="CharacterMovementDefinitionAcceptsValidPrototypeSettings" fullname="HuntrX.Tests.EditMode.CharacterDefinitionTests.CharacterMovementDefinitionAcceptsValidPrototypeSettings" methodname="CharacterMovementDefinitionAcceptsValidPrototypeSettings" classname="HuntrX.Tests.EditMode.CharacterDefinitionTests" runstate="Runnable" seed="2089796861" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000860" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1009" name="CharacterMovementDefinitionRejectsInvalidSettings" fullname="HuntrX.Tests.EditMode.CharacterDefinitionTests.CharacterMovementDefinitionRejectsInvalidSettings" classname="HuntrX.Tests.EditMode.CharacterDefinitionTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.006045" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1004" name="CharacterMovementDefinitionRejectsInvalidSettings(&quot;maxHorizontalSpeed&quot;,float.NaN)" fullname="HuntrX.Tests.EditMode.CharacterDefinitionTests.CharacterMovementDefinitionRejectsInvalidSettings(&quot;maxHorizontalSpeed&quot;,float.NaN)" methodname="CharacterMovementDefinitionRejectsInvalidSettings" classname="HuntrX.Tests.EditMode.CharacterDefinitionTests" runstate="Runnable" seed="1183317621" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000854" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1005" name="CharacterMovementDefinitionRejectsInvalidSettings(&quot;acceleration&quot;,float.PositiveInfinity)" fullname="HuntrX.Tests.EditMode.CharacterDefinitionTests.CharacterMovementDefinitionRejectsInvalidSettings(&quot;acceleration&quot;,float.PositiveInfinity)" methodname="CharacterMovementDefinitionRejectsInvalidSettings" classname="HuntrX.Tests.EditMode.CharacterDefinitionTests" runstate="Runnable" seed="2093498867" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000466" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1006" name="CharacterMovementDefinitionRejectsInvalidSettings(&quot;wallJumpHorizontalSpeed&quot;,-1.0f)" fullname="HuntrX.Tests.EditMode.CharacterDefinitionTests.CharacterMovementDefinitionRejectsInvalidSettings(&quot;wallJumpHorizontalSpeed&quot;,-1.0f)" methodname="CharacterMovementDefinitionRejectsInvalidSettings" classname="HuntrX.Tests.EditMode.CharacterDefinitionTests" runstate="Runnable" seed="1738842249" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000397" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1007" name="CharacterMovementDefinitionRejectsInvalidSettings(&quot;jumpCutMultiplier&quot;,1.0f)" fullname="HuntrX.Tests.EditMode.CharacterDefinitionTests.CharacterMovementDefinitionRejectsInvalidSettings(&quot;jumpCutMultiplier&quot;,1.0f)" methodname="CharacterMovementDefinitionRejectsInvalidSettings" classname="HuntrX.Tests.EditMode.CharacterDefinitionTests" runstate="Runnable" seed="709916779" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000447" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1008" name="CharacterMovementDefinitionRejectsInvalidSettings(&quot;airDashDuration&quot;,0.0f)" fullname="HuntrX.Tests.EditMode.CharacterDefinitionTests.CharacterMovementDefinitionRejectsInvalidSettings(&quot;airDashDuration&quot;,0.0f)" methodname="CharacterMovementDefinitionRejectsInvalidSettings" classname="HuntrX.Tests.EditMode.CharacterDefinitionTests" runstate="Runnable" seed="2008098905" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000343" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1002" name="RumiPrototypeAssetsAreValidAndUseSharedControllers" fullname="HuntrX.Tests.EditMode.CharacterDefinitionTests.RumiPrototypeAssetsAreValidAndUseSharedControllers" methodname="RumiPrototypeAssetsAreValidAndUseSharedControllers" classname="HuntrX.Tests.EditMode.CharacterDefinitionTests" runstate="Runnable" seed="128269605" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.080385" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1011" name="CheckpointAttemptFlowEditModeTests" fullname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests" classname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.028565" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1019" name="AnchorRejectsDisabledAnchorAndInactiveAlternateDestination" fullname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests.AnchorRejectsDisabledAnchorAndInactiveAlternateDestination" methodname="AnchorRejectsDisabledAnchorAndInactiveAlternateDestination" classname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests" runstate="Runnable" seed="1796437709" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.001949" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1015" name="AnchorRejectsMissingIdentity" fullname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests.AnchorRejectsMissingIdentity" classname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.001749" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1013" name="AnchorRejectsMissingIdentity(&quot;&quot;)" fullname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests.AnchorRejectsMissingIdentity(&quot;&quot;)" methodname="AnchorRejectsMissingIdentity" classname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests" runstate="Runnable" seed="2118102587" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000674" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1014" name="AnchorRejectsMissingIdentity(&quot;   &quot;)" fullname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests.AnchorRejectsMissingIdentity(&quot;   &quot;)" methodname="AnchorRejectsMissingIdentity" classname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests" runstate="Runnable" seed="716495865" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000203" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1012" name="AnchorUsesConfiguredRespawnPointAndReturnsStableIdentity" fullname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests.AnchorUsesConfiguredRespawnPointAndReturnsStableIdentity" methodname="AnchorUsesConfiguredRespawnPointAndReturnsStableIdentity" classname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests" runstate="Runnable" seed="698871056" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.002839" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1016" name="FlowStartsAtConfiguredDestinationAndLatestActivationWins" fullname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests.FlowStartsAtConfiguredDestinationAndLatestActivationWins" methodname="FlowStartsAtConfiguredDestinationAndLatestActivationWins" classname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests" runstate="Runnable" seed="719703521" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.004948" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1017" name="InvalidCheckpointActivationPreservesLastValidSelection" fullname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests.InvalidCheckpointActivationPreservesLastValidSelection" methodname="InvalidCheckpointActivationPreservesLastValidSelection" classname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests" runstate="Runnable" seed="268436029" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.002562" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1018" name="ThrowingCheckpointObserverDoesNotBlockLaterObservers" fullname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests.ThrowingCheckpointObserverDoesNotBlockLaterObservers" methodname="ThrowingCheckpointObserverDoesNotBlockLaterObservers" classname="HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests" runstate="Runnable" seed="2074151069" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.012121" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[InvalidOperationException: checkpoint subscriber failed
+HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests+<>c.<ThrowingCheckpointObserverDoesNotBlockLaterObservers>b__7_0 (System.String _) (at Assets/Tests/EditMode/CheckpointAttemptFlowEditModeTests.cs:175)
+HuntrX.Gameplay.Checkpoints.CheckpointAttemptFlow2D.PublishCheckpointActivated (System.String checkpointId) (at Assets/Scripts/Gameplay/Checkpoints/CheckpointAttemptFlow2D.cs:136)
+UnityEngine.Debug:LogException(Exception, Object)
+HuntrX.Gameplay.Checkpoints.CheckpointAttemptFlow2D:PublishCheckpointActivated(String) (at Assets/Scripts/Gameplay/Checkpoints/CheckpointAttemptFlow2D.cs:140)
+HuntrX.Gameplay.Checkpoints.CheckpointAttemptFlow2D:ActivateCheckpoint(CheckpointAnchor2D) (at Assets/Scripts/Gameplay/Checkpoints/CheckpointAttemptFlow2D.cs:96)
+HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests:ThrowingCheckpointObserverDoesNotBlockLaterObservers() (at Assets/Tests/EditMode/CheckpointAttemptFlowEditModeTests.cs:178)
+System.Reflection.MethodBase:Invoke(Object, Object[])
+NUnit.Framework.Internal.Reflect:InvokeMethod(MethodInfo, Object, Object[])
+NUnit.Framework.Internal.MethodWrapper:Invoke(Object, Object[])
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunNonAsyncTestMethod(ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunTestMethod(ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:Execute(ITestExecutionContext)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions()
+
+InvalidOperationException: checkpoint subscriber failed
+HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests+<>c.<ThrowingCheckpointObserverDoesNotBlockLaterObservers>b__7_0 (System.String _) (at Assets/Tests/EditMode/CheckpointAttemptFlowEditModeTests.cs:175)
+HuntrX.Gameplay.Checkpoints.CheckpointAttemptFlow2D.PublishCheckpointActivated (System.String checkpointId) (at Assets/Scripts/Gameplay/Checkpoints/CheckpointAttemptFlow2D.cs:136)
+UnityEngine.Debug:LogException(Exception, Object)
+HuntrX.Gameplay.Checkpoints.CheckpointAttemptFlow2D:PublishCheckpointActivated(String) (at Assets/Scripts/Gameplay/Checkpoints/CheckpointAttemptFlow2D.cs:140)
+HuntrX.Gameplay.Checkpoints.CheckpointAttemptFlow2D:ActivateCheckpoint(CheckpointAnchor2D) (at Assets/Scripts/Gameplay/Checkpoints/CheckpointAttemptFlow2D.cs:96)
+HuntrX.Tests.EditMode.CheckpointAttemptFlowEditModeTests:ThrowingCheckpointObserverDoesNotBlockLaterObservers() (at Assets/Tests/EditMode/CheckpointAttemptFlowEditModeTests.cs:178)
+System.Reflection.MethodBase:Invoke(Object, Object[])
+NUnit.Framework.Internal.Reflect:InvokeMethod(MethodInfo, Object, Object[])
+NUnit.Framework.Internal.MethodWrapper:Invoke(Object, Object[])
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunNonAsyncTestMethod(ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunTestMethod(ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:Execute(ITestExecutionContext)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions()
+
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1020" name="CombatComboDefinitionEditModeTests" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.038535" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1021" name="IsValidAcceptsGroundAndAirSequencesWithAtLeastTwoSteps" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidAcceptsGroundAndAirSequencesWithAtLeastTwoSteps" methodname="IsValidAcceptsGroundAndAirSequencesWithAtLeastTwoSteps" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="624270481" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.005669" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1045" name="IsValidIgnoresMalformedFinalStepWindow" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidIgnoresMalformedFinalStepWindow" methodname="IsValidIgnoresMalformedFinalStepWindow" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="445911396" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000771" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1024" name="IsValidRejectsEmptySequence" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsEmptySequence" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.002466" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1022" name="IsValidRejectsEmptySequence(&quot;groundedSteps&quot;)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsEmptySequence(&quot;groundedSteps&quot;)" methodname="IsValidRejectsEmptySequence" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="926163033" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.001034" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1023" name="IsValidRejectsEmptySequence(&quot;aerialSteps&quot;)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsEmptySequence(&quot;aerialSteps&quot;)" methodname="IsValidRejectsEmptySequence" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="505267145" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000768" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1030" name="IsValidRejectsFiniteAttackDurationsWhoseTotalOverflows" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsFiniteAttackDurationsWhoseTotalOverflows" methodname="IsValidRejectsFiniteAttackDurationsWhoseTotalOverflows" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="782205239" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.001138" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1040" name="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.010543" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1031" name="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(float.NaN,0.2f)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(float.NaN,0.2f)" methodname="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="326993491" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000949" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1032" name="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(float.PositiveInfinity,0.2f)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(float.PositiveInfinity,0.2f)" methodname="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="1092088628" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000783" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1033" name="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(-0.1f,0.2f)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(-0.1f,0.2f)" methodname="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="644502714" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.001133" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1034" name="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(0.2f,float.NaN)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(0.2f,float.NaN)" methodname="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="354896002" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000926" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1035" name="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(0.2f,float.NegativeInfinity)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(0.2f,float.NegativeInfinity)" methodname="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="1493543382" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000482" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1036" name="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(0.2f,float.PositiveInfinity)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(0.2f,float.PositiveInfinity)" methodname="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="594603879" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000605" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1037" name="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(0.2f,0.2f)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(0.2f,0.2f)" methodname="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="1270795715" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000923" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1038" name="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(0.3f,0.2f)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(0.3f,0.2f)" methodname="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="724458281" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000999" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1039" name="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(0.2f,0.61f)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow(0.2f,0.61f)" methodname="IsValidRejectsMalformedNonFiniteOrOutOfRangeNonFinalWindow" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="867476343" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000934" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="1044" name="IsValidRejectsNonFiniteOrNegativeHitStopDuration" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsNonFiniteOrNegativeHitStopDuration" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.005212" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1041" name="IsValidRejectsNonFiniteOrNegativeHitStopDuration(float.NaN)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsNonFiniteOrNegativeHitStopDuration(float.NaN)" methodname="IsValidRejectsNonFiniteOrNegativeHitStopDuration" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="880106025" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.001714" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1042" name="IsValidRejectsNonFiniteOrNegativeHitStopDuration(float.PositiveInfinity)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsNonFiniteOrNegativeHitStopDuration(float.PositiveInfinity)" methodname="IsValidRejectsNonFiniteOrNegativeHitStopDuration" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="1565742475" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.001065" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1043" name="IsValidRejectsNonFiniteOrNegativeHitStopDuration(-0.01f)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsNonFiniteOrNegativeHitStopDuration(-0.01f)" methodname="IsValidRejectsNonFiniteOrNegativeHitStopDuration" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="411100128" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000738" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1028" name="IsValidRejectsNullAttackReference" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsNullAttackReference" methodname="IsValidRejectsNullAttackReference" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="781918327" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.001512" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1029" name="IsValidRejectsReferencedAttackWithInvalidDefinition" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsReferencedAttackWithInvalidDefinition" methodname="IsValidRejectsReferencedAttackWithInvalidDefinition" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="1942771328" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.002486" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1027" name="IsValidRejectsSingleStepSequence" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsSingleStepSequence" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.004239" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1025" name="IsValidRejectsSingleStepSequence(&quot;groundedSteps&quot;)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsSingleStepSequence(&quot;groundedSteps&quot;)" methodname="IsValidRejectsSingleStepSequence" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="491208786" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.001773" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1026" name="IsValidRejectsSingleStepSequence(&quot;aerialSteps&quot;)" fullname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests.IsValidRejectsSingleStepSequence(&quot;aerialSteps&quot;)" methodname="IsValidRejectsSingleStepSequence" classname="HuntrX.Tests.EditMode.CombatComboDefinitionEditModeTests" runstate="Runnable" seed="1037044668" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.001164" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+            <test-suite type="TestFixture" id="1046" name="CombatLabBuildSettingsTests" fullname="HuntrX.Tests.EditMode.CombatLabBuildSettingsTests" classname="HuntrX.Tests.EditMode.CombatLabBuildSettingsTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.003655" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1047" name="VerticalSliceStartsBeforeEnabledLegacyTestHosts" fullname="HuntrX.Tests.EditMode.CombatLabBuildSettingsTests.VerticalSliceStartsBeforeEnabledLegacyTestHosts" methodname="VerticalSliceStartsBeforeEnabledLegacyTestHosts" classname="HuntrX.Tests.EditMode.CombatLabBuildSettingsTests" runstate="Runnable" seed="1961449160" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.002280" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1048" name="DataDefinitionTests" fullname="HuntrX.Tests.EditMode.DataDefinitionTests" classname="HuntrX.Tests.EditMode.DataDefinitionTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:24Z" duration="0.292480" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1049" name="DefinitionsAreDistinctScriptableObjectsWithUniqueAssetMenuEntries" fullname="HuntrX.Tests.EditMode.DataDefinitionTests.DefinitionsAreDistinctScriptableObjectsWithUniqueAssetMenuEntries" methodname="DefinitionsAreDistinctScriptableObjectsWithUniqueAssetMenuEntries" classname="HuntrX.Tests.EditMode.DataDefinitionTests" runstate="Runnable" seed="1191199357" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.003782" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1051" name="ProfileDefinitionDoesNotDeclareSerializedUserState" fullname="HuntrX.Tests.EditMode.DataDefinitionTests.ProfileDefinitionDoesNotDeclareSerializedUserState" methodname="ProfileDefinitionDoesNotDeclareSerializedUserState" classname="HuntrX.Tests.EditMode.DataDefinitionTests" runstate="Runnable" seed="583397482" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:23Z" duration="0.000872" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1050" name="StableIdSurvivesAssetSaveAndReload" fullname="HuntrX.Tests.EditMode.DataDefinitionTests.StableIdSurvivesAssetSaveAndReload" methodname="StableIdSurvivesAssetSaveAndReload" classname="HuntrX.Tests.EditMode.DataDefinitionTests" runstate="Runnable" seed="1564128534" result="Passed" start-time="2026-10-17 11:38:23Z" end-time="2026-10-17 11:38:24Z" duration="0.286123" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1052" name="DataDefinitionValidationTests" fullname="HuntrX.Tests.EditMode.DataDefinitionValidationTests" classname="HuntrX.Tests.EditMode.DataDefinitionValidationTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-17 11:38:24Z" end-time="2026-10-17 11:38:24Z" duration="0.284787" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1057" name="ProjectValidatorReportsDuplicateIdsWithAssetPaths" fullname="HuntrX.Tests.EditMode.DataDefinitionValidationTests.ProjectValidatorReportsDuplicateIdsWithAssetPaths" methodname="ProjectValidatorReportsDuplicateIdsWithAssetPaths" classname="HuntrX.Tests.EditMode.DataDefinitionValidationTests" runstate="Runnable" seed="1352702381" result="Passed" start-time="2026-10-17 11:38:24Z" end-time="2026-10-17 11:38:24Z" duration="0.274711" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1056" name="ValidationAcceptsDifferentNonEmptyIds" fullname="HuntrX.Tests.EditMode.DataDefinitionValidationTests.ValidationAcceptsDifferentNonEmptyIds" methodname="ValidationAcceptsDifferentNonEmptyIds" classname="HuntrX.Tests.EditMode.DataDefinitionValidationTests" runstate="Runnable" seed="225726783" result="Passed" start-time="2026-10-17 11:38:24Z" end-time="2026-10-17 11:38:24Z" duration="0.000836" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1054" name="ValidationFindsDuplicateIdsAcrossDifferentTypes" fullname="HuntrX.Tests.EditMode.DataDefinitionValidationTests.ValidationFindsDuplicateIdsAcrossDifferentTypes" methodname="ValidationFindsDuplicateIdsAcrossDifferentTypes" classname="HuntrX.Tests.EditMode.DataDefinitionValidationTests" runstate="Runnable" seed="571319309" result="Passed" start-time="2026-10-17 11:38:24Z" end-time="2026-10-17 11:38:24Z" duration="0.000916" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1058" name="ValidationRejectsANullCollectionWithArgumentNullException" fullname="HuntrX.Tests.EditMode.DataDefinitionValidationTests.ValidationRejectsANullCollectionWithArgumentNullException" methodname="ValidationRejectsANullCollectionWithArgumentNullException" classname="HuntrX.Tests.EditMode.DataDefinitionValidationTests" runstate="Runnable" seed="870699674" result="Passed" start-time="2026-10-17 11:38:24Z" end-time="2026-10-17 11:38:24Z" duration="0.004061" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1053" name="ValidationRejectsBlankId" fullname="HuntrX.Tests.EditMode.DataDefinitionValidationTests.ValidationRejectsBlankId" methodname="ValidationRejectsBlankId" classname="HuntrX.Tests.EditMode.DataDefinitionValidationTests" runstate="Runnable" seed="216594512" result="Passed" start-time="2026-10-17 11:38:24Z" end-time="2026-10-17 11:38:24Z" duration="0.001211" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1055" name="ValidationReportsNullDefinitions" fullname="HuntrX.Tests.EditMode.DataDefinitionValidationTests.ValidationReportsNullDefinitions" methodname="ValidationReportsNullDefinitions" classname="HuntrX.Tests.EditMode.DataDefinitionValidationTests" runstate="Runnable" seed="1802137521" result="Passed" start-time="2026-10-17 11:38:24Z" end-time="2026-10-17 11:38:24Z" duration="0.000394" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1059" name="LocalReplayPersistenceTests" fullname="HuntrX.Tests.EditMode.LocalReplayPersistenceTests" classname="HuntrX.Tests.EditMode.LocalReplayPersistenceTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-17 11:38:24Z" end-time="2026-10-17 11:38:25Z" duration="1.503566" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1060" name="AppendIsIdempotentAndReturnsCopies" fullname="HuntrX.Tests.EditMode.LocalReplayPersistenceTests.AppendIsIdempotentAndReturnsCopies" methodname="AppendIsIdempotentAndReturnsCopies" classname="HuntrX.Tests.EditMode.LocalReplayPersistenceTests" runstate="Runnable" seed="120640056" result="Passed" start-time="2026-10-17 11:38:24Z" end-time="2026-10-17 11:38:24Z" duration="0.045961" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1064" name="ExplicitResetClearsOnlyReplayHistory" fullname="HuntrX.Tests.EditMode.LocalReplayPersistenceTests.ExplicitResetClearsOnlyReplayHistory" methodname="ExplicitResetClearsOnlyReplayHistory" classname="HuntrX.Tests.EditMode.LocalReplayPersistenceTests" runstate="Runnable" seed="1121205170" result="Passed" start-time="2026-10-17 11:38:24Z" end-time="2026-10-17 11:38:24Z" duration="0.084463" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1061" name="HistoryIsBoundedAndRankingsPrioritizeRescuedFans" fullname="HuntrX.Tests.EditMode.LocalReplayPersistenceTests.HistoryIsBoundedAndRankingsPrioritizeRescuedFans" methodname="HistoryIsBoundedAndRankingsPrioritizeRescuedFans" classname="HuntrX.Tests.EditMode.LocalReplayPersistenceTests" runstate="Runnable" seed="955704861" result="Passed" start-time="2026-10-17 11:38:24Z" end-time="2026-10-17 11:38:25Z" duration="1.366389" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1063" name="InvalidProfileCannotEscapeStorageDirectory" fullname="HuntrX.Tests.EditMode.LocalReplayPersistenceTests.InvalidProfileCannotEscapeStorageDirectory" methodname="InvalidProfileCannotEscapeStorageDirectory" classname="HuntrX.Tests.EditMode.LocalReplayPersistenceTests" runstate="Runnable" seed="211036792" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000423" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1062" name="InvalidSchemaIsPreservedAndCannotBeSilentlyOverwritten" fullname="HuntrX.Tests.EditMode.LocalReplayPersistenceTests.InvalidSchemaIsPreservedAndCannotBeSilentlyOverwritten" methodname="InvalidSchemaIsPreservedAndCannotBeSilentlyOverwritten" classname="HuntrX.Tests.EditMode.LocalReplayPersistenceTests" runstate="Runnable" seed="653179897" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.003088" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1065" name="MiraCharacterTests" fullname="HuntrX.Tests.EditMode.MiraCharacterTests" classname="HuntrX.Tests.EditMode.MiraCharacterTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.022389" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1066" name="MiraProfileHasOwnIdentityAndValidProvisionalSharedBasicKit" fullname="HuntrX.Tests.EditMode.MiraCharacterTests.MiraProfileHasOwnIdentityAndValidProvisionalSharedBasicKit" methodname="MiraProfileHasOwnIdentityAndValidProvisionalSharedBasicKit" classname="HuntrX.Tests.EditMode.MiraCharacterTests" runstate="Runnable" seed="547576374" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.001120" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1067" name="MiraResourcesPrefabComposesSeparateValidFieldAndIndependentChildTrigger" fullname="HuntrX.Tests.EditMode.MiraCharacterTests.MiraResourcesPrefabComposesSeparateValidFieldAndIndependentChildTrigger" methodname="MiraResourcesPrefabComposesSeparateValidFieldAndIndependentChildTrigger" classname="HuntrX.Tests.EditMode.MiraCharacterTests" runstate="Runnable" seed="822201200" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.020041" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1068" name="MiraProtectionDefinitionTests" fullname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests" classname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.005923" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="ParameterizedMethod" id="1075" name="RejectsInvalidDuration" fullname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests.RejectsInvalidDuration" classname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.001926" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1070" name="RejectsInvalidDuration(0.0f)" fullname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests.RejectsInvalidDuration(0.0f)" methodname="RejectsInvalidDuration" classname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests" runstate="Runnable" seed="1650920737" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000446" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1071" name="RejectsInvalidDuration(-1.0f)" fullname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests.RejectsInvalidDuration(-1.0f)" methodname="RejectsInvalidDuration" classname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests" runstate="Runnable" seed="344643802" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000333" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1072" name="RejectsInvalidDuration(float.NaN)" fullname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests.RejectsInvalidDuration(float.NaN)" methodname="RejectsInvalidDuration" classname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests" runstate="Runnable" seed="1422334420" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000106" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1073" name="RejectsInvalidDuration(float.PositiveInfinity)" fullname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests.RejectsInvalidDuration(float.PositiveInfinity)" methodname="RejectsInvalidDuration" classname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests" runstate="Runnable" seed="1486807530" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000098" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1074" name="RejectsInvalidDuration(float.NegativeInfinity)" fullname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests.RejectsInvalidDuration(float.NegativeInfinity)" methodname="RejectsInvalidDuration" classname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests" runstate="Runnable" seed="1704351075" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000098" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="1081" name="RejectsInvalidRadius" fullname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests.RejectsInvalidRadius" classname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.001821" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1076" name="RejectsInvalidRadius(0.0f)" fullname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests.RejectsInvalidRadius(0.0f)" methodname="RejectsInvalidRadius" classname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests" runstate="Runnable" seed="328588971" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000320" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1077" name="RejectsInvalidRadius(-1.0f)" fullname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests.RejectsInvalidRadius(-1.0f)" methodname="RejectsInvalidRadius" classname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests" runstate="Runnable" seed="1788807601" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000106" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1078" name="RejectsInvalidRadius(float.NaN)" fullname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests.RejectsInvalidRadius(float.NaN)" methodname="RejectsInvalidRadius" classname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests" runstate="Runnable" seed="583348154" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000104" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1079" name="RejectsInvalidRadius(float.PositiveInfinity)" fullname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests.RejectsInvalidRadius(float.PositiveInfinity)" methodname="RejectsInvalidRadius" classname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests" runstate="Runnable" seed="1659708481" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000099" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1080" name="RejectsInvalidRadius(float.NegativeInfinity)" fullname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests.RejectsInvalidRadius(float.NegativeInfinity)" methodname="RejectsInvalidRadius" classname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests" runstate="Runnable" seed="433145450" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000098" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1069" name="ValidatesFinitePositiveDurationAndRadius" fullname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests.ValidatesFinitePositiveDurationAndRadius" methodname="ValidatesFinitePositiveDurationAndRadius" classname="HuntrX.Tests.EditMode.MiraProtectionDefinitionTests" runstate="Runnable" seed="345566376" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.001011" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1082" name="ParryDefinitionEditModeTests" fullname="HuntrX.Tests.EditMode.ParryDefinitionEditModeTests" classname="HuntrX.Tests.EditMode.ParryDefinitionEditModeTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.002602" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="ParameterizedMethod" id="1088" name="ValidatesFinitePositiveWindowDuration" fullname="HuntrX.Tests.EditMode.ParryDefinitionEditModeTests.ValidatesFinitePositiveWindowDuration" classname="HuntrX.Tests.EditMode.ParryDefinitionEditModeTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.002131" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1083" name="ValidatesFinitePositiveWindowDuration(0.1f,True)" fullname="HuntrX.Tests.EditMode.ParryDefinitionEditModeTests.ValidatesFinitePositiveWindowDuration(0.1f,True)" methodname="ValidatesFinitePositiveWindowDuration" classname="HuntrX.Tests.EditMode.ParryDefinitionEditModeTests" runstate="Runnable" seed="1225051209" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000422" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1084" name="ValidatesFinitePositiveWindowDuration(0.0f,False)" fullname="HuntrX.Tests.EditMode.ParryDefinitionEditModeTests.ValidatesFinitePositiveWindowDuration(0.0f,False)" methodname="ValidatesFinitePositiveWindowDuration" classname="HuntrX.Tests.EditMode.ParryDefinitionEditModeTests" runstate="Runnable" seed="318404650" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000166" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1085" name="ValidatesFinitePositiveWindowDuration(-0.1f,False)" fullname="HuntrX.Tests.EditMode.ParryDefinitionEditModeTests.ValidatesFinitePositiveWindowDuration(-0.1f,False)" methodname="ValidatesFinitePositiveWindowDuration" classname="HuntrX.Tests.EditMode.ParryDefinitionEditModeTests" runstate="Runnable" seed="1983764276" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000216" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1086" name="ValidatesFinitePositiveWindowDuration(float.PositiveInfinity,False)" fullname="HuntrX.Tests.EditMode.ParryDefinitionEditModeTests.ValidatesFinitePositiveWindowDuration(float.PositiveInfinity,False)" methodname="ValidatesFinitePositiveWindowDuration" classname="HuntrX.Tests.EditMode.ParryDefinitionEditModeTests" runstate="Runnable" seed="774784961" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000118" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1087" name="ValidatesFinitePositiveWindowDuration(float.NaN,False)" fullname="HuntrX.Tests.EditMode.ParryDefinitionEditModeTests.ValidatesFinitePositiveWindowDuration(float.NaN,False)" methodname="ValidatesFinitePositiveWindowDuration" classname="HuntrX.Tests.EditMode.ParryDefinitionEditModeTests" runstate="Runnable" seed="1512539897" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000104" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+            <test-suite type="TestFixture" id="1089" name="SafeAreaNormalizationTests" fullname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests" classname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.006263" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1101" name="LandscapeFlipPreservesAsymmetricInsetsOnBothSides" fullname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests.LandscapeFlipPreservesAsymmetricInsetsOnBothSides" methodname="LandscapeFlipPreservesAsymmetricInsetsOnBothSides" classname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests" runstate="Runnable" seed="1418246378" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.001345" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1100" name="NonFiniteMetricsNeverReachAnchors" fullname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests.NonFiniteMetricsNeverReachAnchors" classname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.001452" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1097" name="NonFiniteMetricsNeverReachAnchors(float.NaN)" fullname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests.NonFiniteMetricsNeverReachAnchors(float.NaN)" methodname="NonFiniteMetricsNeverReachAnchors" classname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests" runstate="Runnable" seed="2071481424" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000640" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1098" name="NonFiniteMetricsNeverReachAnchors(float.PositiveInfinity)" fullname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests.NonFiniteMetricsNeverReachAnchors(float.PositiveInfinity)" methodname="NonFiniteMetricsNeverReachAnchors" classname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests" runstate="Runnable" seed="1057609222" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000109" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1099" name="NonFiniteMetricsNeverReachAnchors(float.NegativeInfinity)" fullname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests.NonFiniteMetricsNeverReachAnchors(float.NegativeInfinity)" methodname="NonFiniteMetricsNeverReachAnchors" classname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests" runstate="Runnable" seed="1918952248" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000085" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1096" name="PartiallyOutsideSafeAreaClipsToScreenBounds" fullname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests.PartiallyOutsideSafeAreaClipsToScreenBounds" methodname="PartiallyOutsideSafeAreaClipsToScreenBounds" classname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests" runstate="Runnable" seed="608286152" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000426" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1095" name="UnusableSafeAreaFallsBackToFullScreen" fullname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests.UnusableSafeAreaFallsBackToFullScreen" classname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.001733" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1090" name="UnusableSafeAreaFallsBackToFullScreen(0,0,0,0)" fullname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests.UnusableSafeAreaFallsBackToFullScreen(0,0,0,0)" methodname="UnusableSafeAreaFallsBackToFullScreen" classname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests" runstate="Runnable" seed="29116822" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000438" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1091" name="UnusableSafeAreaFallsBackToFullScreen(100,0,-50,720)" fullname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests.UnusableSafeAreaFallsBackToFullScreen(100,0,-50,720)" methodname="UnusableSafeAreaFallsBackToFullScreen" classname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests" runstate="Runnable" seed="581694193" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000091" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1092" name="UnusableSafeAreaFallsBackToFullScreen(0,0,1280,-1)" fullname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests.UnusableSafeAreaFallsBackToFullScreen(0,0,1280,-1)" methodname="UnusableSafeAreaFallsBackToFullScreen" classname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests" runstate="Runnable" seed="105216397" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000080" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1093" name="UnusableSafeAreaFallsBackToFullScreen(1400,0,50,720)" fullname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests.UnusableSafeAreaFallsBackToFullScreen(1400,0,50,720)" methodname="UnusableSafeAreaFallsBackToFullScreen" classname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests" runstate="Runnable" seed="366275909" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000077" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1094" name="UnusableSafeAreaFallsBackToFullScreen(0,-100,1280,50)" fullname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests.UnusableSafeAreaFallsBackToFullScreen(0,-100,1280,50)" methodname="UnusableSafeAreaFallsBackToFullScreen" classname="HuntrX.Tests.EditMode.SafeAreaNormalizationTests" runstate="Runnable" seed="1275616944" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000077" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+            <test-suite type="TestFixture" id="1102" name="StageBlockoutDefinitionTests" fullname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests" classname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.011450" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1111" name="RouteValidationAcceptsUniqueValidStages" fullname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests.RouteValidationAcceptsUniqueValidStages" methodname="RouteValidationAcceptsUniqueValidStages" classname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests" runstate="Runnable" seed="1515628453" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.002432" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1110" name="RouteValidationRejectsDuplicateStagesOrIds" fullname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests.RouteValidationRejectsDuplicateStagesOrIds" methodname="RouteValidationRejectsDuplicateStagesOrIds" classname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests" runstate="Runnable" seed="1300351779" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.001905" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1108" name="RouteValidationRejectsEmptyOrExcessiveStages" fullname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests.RouteValidationRejectsEmptyOrExcessiveStages" methodname="RouteValidationRejectsEmptyOrExcessiveStages" classname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests" runstate="Runnable" seed="628622404" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000365" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1109" name="RouteValidationRejectsNullOrInvalidStages" fullname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests.RouteValidationRejectsNullOrInvalidStages" methodname="RouteValidationRejectsNullOrInvalidStages" classname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests" runstate="Runnable" seed="893697166" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000749" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1107" name="ValidationAcceptsWellFormedBlockoutDefinition" fullname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests.ValidationAcceptsWellFormedBlockoutDefinition" methodname="ValidationAcceptsWellFormedBlockoutDefinition" classname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests" runstate="Runnable" seed="1676538654" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.001537" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1103" name="ValidationRejectsBlankIdentity" fullname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests.ValidationRejectsBlankIdentity" methodname="ValidationRejectsBlankIdentity" classname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests" runstate="Runnable" seed="127290445" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000650" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1104" name="ValidationRejectsEmptyOrExcessivePlatforms" fullname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests.ValidationRejectsEmptyOrExcessivePlatforms" methodname="ValidationRejectsEmptyOrExcessivePlatforms" classname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests" runstate="Runnable" seed="932123955" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000715" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1106" name="ValidationRejectsInvalidOrExcessiveSpawnPoints" fullname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests.ValidationRejectsInvalidOrExcessiveSpawnPoints" methodname="ValidationRejectsInvalidOrExcessiveSpawnPoints" classname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests" runstate="Runnable" seed="1828570260" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000399" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1105" name="ValidationRejectsInvalidPlatformSizesAndCoordinates" fullname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests.ValidationRejectsInvalidPlatformSizesAndCoordinates" methodname="ValidationRejectsInvalidPlatformSizesAndCoordinates" classname="HuntrX.Tests.EditMode.StageBlockoutDefinitionTests" runstate="Runnable" seed="658200039" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000463" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1112" name="UiLayoutTests" fullname="HuntrX.Tests.EditMode.UiLayoutTests" classname="HuntrX.Tests.EditMode.UiLayoutTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:26Z" duration="0.010790" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1117" name="MainMenuUiView_ContinueButtonIsStrictlyUnavailable" fullname="HuntrX.Tests.EditMode.UiLayoutTests.MainMenuUiView_ContinueButtonIsStrictlyUnavailable" methodname="MainMenuUiView_ContinueButtonIsStrictlyUnavailable" classname="HuntrX.Tests.EditMode.UiLayoutTests" runstate="Runnable" seed="1225210562" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:25Z" duration="0.000527" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1114" name="SliceSafeAreaFitter_CalculatesNormalizedAnchorsCorrectly" fullname="HuntrX.Tests.EditMode.UiLayoutTests.SliceSafeAreaFitter_CalculatesNormalizedAnchorsCorrectly" methodname="SliceSafeAreaFitter_CalculatesNormalizedAnchorsCorrectly" classname="HuntrX.Tests.EditMode.UiLayoutTests" runstate="Runnable" seed="240265404" result="Passed" start-time="2026-10-17 11:38:25Z" end-time="2026-10-17 11:38:26Z" duration="0.000613" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1116" name="SliceUiFlow2D_ManagesTransitionsAndHistoryCorrectly" fullname="HuntrX.Tests.EditMode.UiLayoutTests.SliceUiFlow2D_ManagesTransitionsAndHistoryCorrectly" methodname="SliceUiFlow2D_ManagesTransitionsAndHistoryCorrectly" classname="HuntrX.Tests.EditMode.UiLayoutTests" runstate="Runnable" seed="1148087148" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.001677" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1115" name="SliceUiState2D_DefaultValuesAndEquality" fullname="HuntrX.Tests.EditMode.UiLayoutTests.SliceUiState2D_DefaultValuesAndEquality" methodname="SliceUiState2D_DefaultValuesAndEquality" classname="HuntrX.Tests.EditMode.UiLayoutTests" runstate="Runnable" seed="293910071" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.001079" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1113" name="SliceUiTokens_MatchFigmaSpecifications" fullname="HuntrX.Tests.EditMode.UiLayoutTests.SliceUiTokens_MatchFigmaSpecifications" methodname="SliceUiTokens_MatchFigmaSpecifications" classname="HuntrX.Tests.EditMode.UiLayoutTests" runstate="Runnable" seed="1187203540" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.002274" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1118" name="ZoeyRangedDefinitionTests" fullname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests" classname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.016480" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1119" name="AcceptsValidAuthoredAttackAndRange" fullname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests.AcceptsValidAuthoredAttackAndRange" methodname="AcceptsValidAuthoredAttackAndRange" classname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests" runstate="Runnable" seed="1144724001" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.001377" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1129" name="RejectsInvalidCooldown" fullname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests.RejectsInvalidCooldown" classname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.002050" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1125" name="RejectsInvalidCooldown(0.0f)" fullname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests.RejectsInvalidCooldown(0.0f)" methodname="RejectsInvalidCooldown" classname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests" runstate="Runnable" seed="2107359189" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.000446" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1126" name="RejectsInvalidCooldown(-1.0f)" fullname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests.RejectsInvalidCooldown(-1.0f)" methodname="RejectsInvalidCooldown" classname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests" runstate="Runnable" seed="1270794520" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.000209" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1127" name="RejectsInvalidCooldown(float.NaN)" fullname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests.RejectsInvalidCooldown(float.NaN)" methodname="RejectsInvalidCooldown" classname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests" runstate="Runnable" seed="1198355657" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.000194" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1128" name="RejectsInvalidCooldown(float.PositiveInfinity)" fullname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests.RejectsInvalidCooldown(float.PositiveInfinity)" methodname="RejectsInvalidCooldown" classname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests" runstate="Runnable" seed="797352445" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.000195" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="1124" name="RejectsInvalidRange" fullname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests.RejectsInvalidRange" classname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.001872" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1120" name="RejectsInvalidRange(0.0f)" fullname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests.RejectsInvalidRange(0.0f)" methodname="RejectsInvalidRange" classname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests" runstate="Runnable" seed="1956829267" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.000418" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1121" name="RejectsInvalidRange(-1.0f)" fullname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests.RejectsInvalidRange(-1.0f)" methodname="RejectsInvalidRange" classname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests" runstate="Runnable" seed="706707206" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.000208" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1122" name="RejectsInvalidRange(float.NaN)" fullname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests.RejectsInvalidRange(float.NaN)" methodname="RejectsInvalidRange" classname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests" runstate="Runnable" seed="144286455" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.000199" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1123" name="RejectsInvalidRange(float.PositiveInfinity)" fullname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests.RejectsInvalidRange(float.PositiveInfinity)" methodname="RejectsInvalidRange" classname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests" runstate="Runnable" seed="1373372716" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.000196" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1130" name="RejectsMissingOrInvalidAttack" fullname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests.RejectsMissingOrInvalidAttack" methodname="RejectsMissingOrInvalidAttack" classname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests" runstate="Runnable" seed="2048930660" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.000342" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1131" name="RejectsNonfiniteMuzzleOffset" fullname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests.RejectsNonfiniteMuzzleOffset" methodname="RejectsNonfiniteMuzzleOffset" classname="HuntrX.Tests.EditMode.ZoeyRangedDefinitionTests" runstate="Runnable" seed="1947952546" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.000365" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1138" name="Unity.Addressables.DocExampleCode.Editor.Tests.dll" fullname="D:/Workspace/Br.JcodeArch.Huntrix/Library/ScriptAssemblies/Unity.Addressables.DocExampleCode.Editor.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.001930" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="19048" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1139" name="AddressableAssets" fullname="AddressableAssets" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.001548" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1140" name="DocExampleCode" fullname="AddressableAssets.DocExampleCode" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.001337" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1136" name="TestStub" fullname="AddressableAssets.DocExampleCode.TestStub" classname="AddressableAssets.DocExampleCode.TestStub" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.001129" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1137" name="RequiredTest" fullname="AddressableAssets.DocExampleCode.TestStub.RequiredTest" methodname="RequiredTest" classname="AddressableAssets.DocExampleCode.TestStub" runstate="Runnable" seed="11898994" result="Passed" start-time="2026-10-17 11:38:26Z" end-time="2026-10-17 11:38:26Z" duration="0.000125" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: C:/Users/Jonathas/AppData/LocalLow/JCodeArch/HUNTR_X\TestResults.xml
+Saving results to: C:/Users/Jonathas/AppData/LocalLow/JCodeArch/HUNTR_X\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

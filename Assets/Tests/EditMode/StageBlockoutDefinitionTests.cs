@@ -7,6 +7,54 @@ namespace HuntrX.Tests.EditMode
 {
     public sealed class StageBlockoutDefinitionTests
     {
+        [Test] public void AirplaneGroundSpawnsClearTheAuthoredSolids()
+        {
+            var stage = UnityEditor.AssetDatabase.LoadAssetAtPath<StageBlockoutDefinition>("Assets/Data/Stages/Aviao_Blockout.asset");
+            var prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Enemies/GroundDemon_Prototype.prefab");
+            var capsule = prefab.GetComponent<CapsuleCollider2D>();
+            {
+                for (int i = 0; i < stage.EnemySpawnCount; i++)
+                    AssertSpawnClear(stage, stage.GetEnemySpawn(i), capsule.size, capsule.offset, "ground " + i);
+            }
+        }
+
+        [Test] public void AirplaneAerialSpawnsClearTheAuthoredSolids()
+        {
+            var stage = UnityEditor.AssetDatabase.LoadAssetAtPath<StageBlockoutDefinition>("Assets/Data/Stages/Aviao_Blockout.asset");
+            var prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Enemies/FlyingDemon_Prototype.prefab");
+            var capsule = prefab.GetComponent<CapsuleCollider2D>();
+            {
+                for (int i = 0; i < stage.AerialSpawnCount; i++)
+                    AssertSpawnClear(stage, stage.GetAerialSpawn(i), capsule.size, capsule.offset, "aerial " + i);
+            }
+        }
+
+        [Test] public void AirplaneCheckpointsLeaveRoomForThePlayerBody()
+        {
+            var stage = UnityEditor.AssetDatabase.LoadAssetAtPath<StageBlockoutDefinition>("Assets/Data/Stages/Aviao_Blockout.asset");
+            var prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Characters/Rumi_Prototype.prefab");
+            var capsule = prefab.GetComponent<CapsuleCollider2D>();
+            {
+                AssertSpawnClear(stage, stage.StartPosition, capsule.size, capsule.offset, "start");
+                for (int i = 0; i < stage.CheckpointCount; i++)
+                    AssertSpawnClear(stage, stage.GetCheckpoint(i), capsule.size, capsule.offset, "checkpoint " + i);
+            }
+        }
+
+        private static void AssertSpawnClear(StageBlockoutDefinition stage, Vector2 position, Vector2 size, Vector2 offset, string label)
+        {
+            // A conservative capsule envelope also prevents marginal contacts from resolving inside a ledge.
+            Vector2 center = position + offset;
+            for (int i = 0; i < stage.PlatformCount; i++)
+            {
+                var platform = stage.GetPlatform(i);
+                Vector2 distance = center - platform.Position;
+                Vector2 extent = (size + platform.Size) * .5f;
+                bool overlaps = Mathf.Abs(distance.x) < extent.x && Mathf.Abs(distance.y) < extent.y;
+                Assert.That(overlaps, Is.False, label + " overlaps platform " + i + " at " + position);
+            }
+        }
+
         private static readonly BindingFlags PrivateInstance = BindingFlags.Instance | BindingFlags.NonPublic;
 
         private static void Set(object target, string name, object value)

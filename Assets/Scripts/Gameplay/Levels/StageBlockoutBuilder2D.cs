@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HuntrX.Data;
 using HuntrX.Gameplay.Checkpoints;
 using UnityEngine;
+
 namespace HuntrX.Gameplay.Levels
 {
     [DisallowMultipleComponent]
@@ -11,13 +12,19 @@ namespace HuntrX.Gameplay.Levels
         private readonly List<CheckpointAnchor2D> checkpoints = new List<CheckpointAnchor2D>(8);
         private Sprite tile;
         private Texture2D texture;
+        private Texture2D backdropTexture;
+        private Sprite backdropSprite;
+        private bool ownsBackdropTexture;
+        private bool ownsBackdropSprite;
         private bool building;
         private IReadOnlyList<CheckpointAnchor2D> checkpointView;
+
         public StageBlockoutDefinition Definition { get; private set; }
         public GameObject RuntimeRoot { get; private set; }
         public Transform StartPoint { get; private set; }
         public Transform EndPoint { get; private set; }
         public IReadOnlyList<CheckpointAnchor2D> CheckpointAnchors => checkpointView ?? (checkpointView = checkpoints.AsReadOnly());
+
         public bool TryBuild(StageBlockoutDefinition profile)
         {
             if (!isActiveAndEnabled || building || RuntimeRoot != null || profile == null || !profile.IsValid(out _)) return false;
@@ -26,28 +33,35 @@ namespace HuntrX.Gameplay.Levels
             candidate.SetActive(false);
             try
             {
-                texture = new Texture2D(1, 1); texture.SetPixel(0, 0, Color.white); texture.Apply();
-                tile = Sprite.Create(texture, new Rect(0, 0, 1, 1), new Vector2(.5f,.5f), 1f);
+                texture = CreateNeonDeckTexture(profile.Theme);
+                tile = Sprite.Create(texture, new Rect(0, 0, 32, 32), new Vector2(.5f, .5f), 32f);
+
+                TryCreateHdStageBackdrop(candidate.transform, profile);
+
                 for (int i = 0; i < profile.PlatformCount; i++)
                 {
                     BlockoutPlatform authored = profile.GetPlatform(i);
                     GameObject platform = new GameObject("Platform_" + i);
                     platform.transform.SetParent(candidate.transform, false);
                     platform.transform.localPosition = authored.Position;
-                    BoxCollider2D collider = platform.AddComponent<BoxCollider2D>(); collider.size = authored.Size;
-                    GameObject visual = new GameObject("Platform_Visual"); visual.transform.SetParent(platform.transform, false);
-                    // Keep collider world dimensions explicit; only the visual child is scaled.
+                    BoxCollider2D collider = platform.AddComponent<BoxCollider2D>();
+                    collider.size = authored.Size;
+                    GameObject visual = new GameObject("Platform_Visual");
+                    visual.transform.SetParent(platform.transform, false);
+                    // The visible solid must match its collision volume; a thin top hides solid walls.
                     SpriteRenderer display = visual.AddComponent<SpriteRenderer>();
-                    display.sprite = tile; display.color = PlatformColor(profile.Theme);
+                    display.sprite = tile;
+                    display.color = Color.white;
+                    display.sortingOrder = 2;
                     visual.transform.localScale = new Vector3(authored.Size.x, authored.Size.y, 1f);
                 }
+
                 StartPoint = Point(candidate.transform, "Stage_Start", profile.StartPosition);
                 EndPoint = Point(candidate.transform, "Stage_End", profile.EndPosition);
                 for (int i = 0; i < profile.CheckpointCount; i++)
                 {
                     Transform point = Point(candidate.transform, "Checkpoint_" + i, profile.GetCheckpoint(i));
                     CheckpointAnchor2D anchor = point.gameObject.AddComponent<CheckpointAnchor2D>();
-                    // Candidate is activated before configuring the anchors' validated destinations.
                     checkpoints.Add(anchor);
                 }
                 candidate.SetActive(true);
@@ -55,26 +69,231 @@ namespace HuntrX.Gameplay.Levels
                     if (!checkpoints[i].TryConfigure(profile.StageId + ":checkpoint:" + i, checkpoints[i].transform))
                         throw new InvalidOperationException("Checkpoint configuration failed.");
                 if (!isActiveAndEnabled) throw new InvalidOperationException("Stage owner disabled during construction.");
-                Definition = profile; RuntimeRoot = candidate;
+                Definition = profile;
+                RuntimeRoot = candidate;
                 return true;
             }
             catch (Exception exception)
             {
-                candidate.SetActive(false); Destroy(candidate); ClearReferences(); DestroyTiles(); Debug.LogException(exception, this); return false;
+                candidate.SetActive(false);
+                Destroy(candidate);
+                ClearReferences();
+                DestroyTiles();
+                Debug.LogException(exception, this);
+                return false;
             }
             finally { building = false; }
         }
+
+        private void TryCreateHdStageBackdrop(Transform parent, StageBlockoutDefinition profile)
+        {
+            string key = ResolveStageArtKey(profile.StageId, profile.DisplayName);
+            backdropSprite = UnityEngine.Resources.Load<Sprite>("Art/Stages/" + key);
+            ownsBackdropTexture = false;
+            ownsBackdropSprite = false;
+            if (backdropSprite == null)
+            {
+                Texture2D tex = UnityEngine.Resources.Load<Texture2D>("Art/Stages/" + key);
+                if (tex != null)
+                {
+                    backdropSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+                    ownsBackdropSprite = true;
+                }
+            }
+            if (backdropSprite == null) return;
+
+            if (key == "airplane")
+            {
+                Texture2D rawAirplaneTex = UnityEngine.Resources.Load<Texture2D>("Art/Stages/" + key);
+                float ppu = backdropSprite != null && backdropSprite.pixelsPerUnit > 0.01f ? backdropSprite.pixelsPerUnit : 100f;
+                Sprite cutoutSprite = CreateAirplaneWindowCutoutSprite(rawAirplaneTex, ppu, out Texture2D cutoutTex);
+                if (cutoutSprite != null)
+                {
+                    if (ownsBackdropSprite && backdropSprite != null) Destroy(backdropSprite);
+                    backdropTexture = cutoutTex;
+                    backdropSprite = cutoutSprite;
+                    ownsBackdropTexture = cutoutTex != null;
+                    ownsBackdropSprite = true;
+                }
+            }
+
+            float minX = profile.StartPosition.x;
+            float maxX = profile.EndPosition.x;
+            float minY = profile.StartPosition.y;
+            for (int i = 0; i < profile.PlatformCount; i++)
+            {
+                var p = profile.GetPlatform(i);
+                minX = Mathf.Min(minX, p.Position.x - p.Size.x * 0.5f);
+                maxX = Mathf.Max(maxX, p.Position.x + p.Size.x * 0.5f);
+                minY = Mathf.Min(minY, p.Position.y - p.Size.y * 0.5f);
+            }
+
+            float w = backdropSprite.bounds.size.x;
+            float h = backdropSprite.bounds.size.y;
+            float aspect = (w > 0.01f && h > 0.01f) ? (w / h) : (16f / 9f);
+
+            // Human-scale Capcom Mega Man X corridor height (9.6 world units tall, tiled horizontally across the whole stage!)
+            float panelHeight = 9.6f;
+            float panelWidth = panelHeight * aspect;
+            float totalWidth = Mathf.Max(panelWidth * 4f, (maxX - minX) + 48f);
+            int tileCount = Mathf.Clamp(Mathf.CeilToInt(totalWidth / Mathf.Max(1f, panelWidth)), 3, 12);
+            float centerX = (minX + maxX) * 0.5f;
+            float centerY = minY + (panelHeight * 0.34f);
+
+            GameObject bgRoot = new GameObject("HD_StageBackdrop_" + key);
+            bgRoot.transform.SetParent(parent, false);
+            bgRoot.transform.localPosition = new Vector3(centerX, centerY, 0f);
+            bgRoot.transform.localScale = Vector3.one;
+
+            SpriteRenderer primaryRenderer = null;
+            float startOffset = -(tileCount - 1) * 0.5f * panelWidth;
+            for (int t = 0; t < tileCount; t++)
+            {
+                GameObject panel = new GameObject("Backdrop_Tile_" + t);
+                panel.transform.SetParent(bgRoot.transform, false);
+                panel.transform.localPosition = new Vector3(startOffset + t * panelWidth, 0f, 0f);
+                if (w > 0.01f && h > 0.01f)
+                {
+                    // Alternate horizontal flip on odd panels only if not airplane corridor (airplane corridor is already symmetrical)
+                    panel.transform.localScale = new Vector3(panelWidth / w, panelHeight / h, 1f);
+                }
+                SpriteRenderer sr = panel.AddComponent<SpriteRenderer>();
+                sr.sprite = backdropSprite;
+                sr.sortingOrder = -25;
+                if (primaryRenderer == null) primaryRenderer = sr;
+            }
+
+            var anim = bgRoot.AddComponent<LivingStageBackdropAnimator2D>();
+            anim.Configure(key, primaryRenderer);
+        }
+
+        private static Sprite CreateAirplaneWindowCutoutSprite(Texture2D source, float pixelsPerUnit, out Texture2D cutoutTex)
+        {
+            cutoutTex = null;
+            if (source == null || !source.isReadable) return null;
+            int w = source.width;
+            int h = source.height;
+            Color32[] pixels = source.GetPixels32();
+
+            float[] winCentersX = { 0f, 346f / 1376f, 697f / 1376f, 1051f / 1376f, 1f };
+            float halfW = 47f * (w / 1376f);
+            float cornerR = 34f * (w / 1376f);
+            float straightHalfY = 34f * (h / 768f);
+            float centerY = h - (375f * (h / 768f));
+
+            int yStart = Mathf.Clamp(Mathf.FloorToInt(centerY - straightHalfY - cornerR - 6f), 0, h - 1);
+            int yEnd = Mathf.Clamp(Mathf.CeilToInt(centerY + straightHalfY + cornerR + 6f), 0, h - 1);
+
+            for (int y = yStart; y <= yEnd; y++)
+            {
+                float dy = Mathf.Max(0f, Mathf.Abs(y - centerY) - straightHalfY);
+                if (dy > cornerR + 4f) continue;
+                int rowOffset = y * w;
+
+                for (int c = 0; c < winCentersX.Length; c++)
+                {
+                    float cx = winCentersX[c] * w;
+                    int xMin = Mathf.Max(0, Mathf.FloorToInt(cx - halfW - 4f));
+                    int xMax = Mathf.Min(w - 1, Mathf.CeilToInt(cx + halfW + 4f));
+                    for (int x = xMin; x <= xMax; x++)
+                    {
+                        float dx = Mathf.Max(0f, Mathf.Abs(x - cx) - (halfW - cornerR));
+                        float distFromCorner = Mathf.Sqrt(dx * dx + dy * dy);
+                        float signedDist = distFromCorner - cornerR;
+                        if (signedDist < -3.5f)
+                        {
+                            // Inner window glass pane: transparent cutout so mid-plane wing & far-plane clouds show through!
+                            Color32 orig = pixels[rowOffset + x];
+                            pixels[rowOffset + x] = new Color32(orig.r, orig.g, orig.b, 8);
+                        }
+                        else if (signedDist < 1.5f)
+                        {
+                            // Subtle tinted glass bevel along the inner silver bezel rim
+                            float t = Mathf.InverseLerp(-3.5f, 1.5f, signedDist);
+                            byte alpha = (byte)Mathf.RoundToInt(Mathf.Lerp(24f, 255f, t));
+                            Color32 orig = pixels[rowOffset + x];
+                            pixels[rowOffset + x] = new Color32(orig.r, orig.g, orig.b, alpha);
+                        }
+                    }
+                }
+            }
+
+            cutoutTex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+            cutoutTex.filterMode = FilterMode.Bilinear;
+            cutoutTex.wrapMode = TextureWrapMode.Clamp;
+            cutoutTex.SetPixels32(pixels);
+            cutoutTex.Apply();
+            return Sprite.Create(cutoutTex, new Rect(0f, 0f, w, h), new Vector2(0.5f, 0.5f), pixelsPerUnit > 0.01f ? pixelsPerUnit : 100f);
+        }
+
+        private static string ResolveStageArtKey(string stageId, string displayName)
+        {
+            string s = ((stageId ?? string.Empty) + " " + (displayName ?? string.Empty)).ToLowerInvariant();
+            if (s.Contains("airplane") || s.Contains("aviao") || s.Contains("avião") || s.Contains("cabin")) return "airplane";
+            if (s.Contains("show") || s.Contains("concert") || s.Contains("palco") || s.Contains("parachute")) return "show";
+            if (s.Contains("hanok") || s.Contains("bukchon")) return "hanok";
+            if (s.Contains("cheongdam")) return "cheongdam";
+            if (s.Contains("myeongdong") || s.Contains("ramen")) return "myeongdong";
+            if (s.Contains("coex") || s.Contains("gangnam")) return "coex";
+            if (s.Contains("naksan")) return "naksan";
+            if (s.Contains("namsan") || s.Contains("tower")) return "namsan";
+            if (s.Contains("award") || s.Contains("final") || s.Contains("gwima")) return "awards";
+            return "show";
+        }
+
+        private static Texture2D CreateNeonDeckTexture(StageBlockoutTheme theme)
+        {
+            var tex = new Texture2D(32, 32, TextureFormat.RGBA32, false);
+            tex.filterMode = FilterMode.Point;
+            Color neonTop = theme == StageBlockoutTheme.DayUrban ? new Color(0.18f, 0.68f, 0.82f, 0.95f) :
+                            theme == StageBlockoutTheme.NightUrban ? new Color(0.68f, 0.24f, 0.65f, 0.95f) :
+                            theme == StageBlockoutTheme.Interior ? new Color(0.22f, 0.72f, 0.96f, 0.92f) :
+                            new Color(0.32f, 0.72f, 0.62f, 0.95f);
+            bool interior = theme == StageBlockoutTheme.Interior;
+            Color bodyDark = new Color(0.06f, 0.07f, 0.12f, interior ? 0.18f : 0.96f);
+            Color steelMid = new Color(0.12f, 0.15f, 0.24f, interior ? 0.34f : 0.96f);
+            Color trimSubtle = new Color(0.24f, 0.30f, 0.44f, interior ? 0.42f : 0.94f);
+
+            for (int y = 0; y < 32; y++)
+            {
+                for (int x = 0; x < 32; x++)
+                {
+                    Color c;
+                    if (y >= 29) c = neonTop; // Subtle top deck trim rail so character silhouettes pop
+                    else if (y >= 25 && y <= 27) c = ((x + y) % 8 < 4) ? trimSubtle : bodyDark;
+                    else if (y == 28 || y <= 2 || x == 0 || x == 31) c = steelMid;
+                    else if ((x % 4 == 0) && y >= 6 && y <= 20) c = new Color(0.03f, 0.04f, 0.08f, interior ? 0.28f : 0.96f); // Grated floor slots
+                    else c = bodyDark;
+                    tex.SetPixel(x, y, c);
+                }
+            }
+            tex.Apply();
+            return tex;
+        }
+
         public void TryClear()
         {
             if (RuntimeRoot != null) { RuntimeRoot.SetActive(false); Destroy(RuntimeRoot); }
-            ClearReferences(); DestroyTiles();
+            ClearReferences();
+            DestroyTiles();
         }
+
         private void ClearReferences() { RuntimeRoot = null; Definition = null; StartPoint = null; EndPoint = null; checkpoints.Clear(); }
-        private void DestroyTiles() { if (tile != null) Destroy(tile); if (texture != null) Destroy(texture); tile = null; texture = null; }
+        private void DestroyTiles()
+        {
+            if (ownsBackdropSprite && backdropSprite != null) Destroy(backdropSprite);
+            if (ownsBackdropTexture && backdropTexture != null) Destroy(backdropTexture);
+            backdropSprite = null;
+            backdropTexture = null;
+            ownsBackdropSprite = false;
+            ownsBackdropTexture = false;
+            if (tile != null) Destroy(tile);
+            if (texture != null) Destroy(texture);
+            tile = null;
+            texture = null;
+        }
         private static Transform Point(Transform root, string name, Vector2 position)
         { GameObject point = new GameObject(name); point.transform.SetParent(root, false); point.transform.localPosition = position; return point.transform; }
-        private static Color PlatformColor(StageBlockoutTheme theme) => theme == StageBlockoutTheme.DayUrban ? new Color(.3f,.6f,.75f) :
-            theme == StageBlockoutTheme.NightUrban ? new Color(.4f,.3f,.65f) : theme == StageBlockoutTheme.Interior ? new Color(.55f,.65f,.72f) : new Color(.45f,.7f,.55f);
         private void OnDisable() => TryClear();
         private void OnDestroy() => TryClear();
     }

@@ -1,0 +1,587 @@
+fileFormatVersion: 2
+guid: ec93a41b56b380a48a03929671f8ee22
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8112396829588298804
+    second: Mira_CoffeePot_Equipped_0
+  - first:
+      213: -1081483031711474663
+    second: Mira_CoffeePot_Equipped_1
+  - first:
+      213: 3125974882113792007
+    second: Mira_CoffeePot_Equipped_2
+  - first:
+      213: -6226709065960302651
+    second: Mira_CoffeePot_Equipped_3
+  - first:
+      213: 4240450837204337163
+    second: Mira_CoffeePot_Equipped_4
+  - first:
+      213: 3036405302628829306
+    second: Mira_CoffeePot_Equipped_5
+  - first:
+      213: 5807378722614571920
+    second: Mira_CoffeePot_Equipped_6
+  - first:
+      213: 3631020522228947784
+    second: Mira_CoffeePot_Equipped_7
+  - first:
+      213: 8525505647030213500
+    second: Mira_CoffeePot_Equipped_8
+  - first:
+      213: -1375811978774458202
+    second: Mira_CoffeePot_Equipped_9
+  - first:
+      213: -4493462722469022892
+    second: Mira_CoffeePot_Equipped_10
+  - first:
+      213: 8701588162195006888
+    second: Mira_CoffeePot_Equipped_11
+  - first:
+      213: -6808464964089665766
+    second: Mira_CoffeePot_Equipped_12
+  - first:
+      213: -4666823138612114170
+    second: Mira_CoffeePot_Equipped_13
+  - first:
+      213: 7131363847346443506
+    second: Mira_CoffeePot_Equipped_14
+  - first:
+      213: 5616854948316410980
+    second: Mira_CoffeePot_Equipped_15
+  - first:
+      213: -8169017227381422812
+    second: Mira_CoffeePot_Equipped_16
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_0
+      rect:
+        serializedVersion: 2
+        x: 268
+        y: 481
+        width: 33
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc36267901afa6f80800000000000000
+      internalID: -8112396829588298804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_1
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 461
+        width: 14
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91c9930a9eccdf0f0800000000000000
+      internalID: -1081483031711474663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_2
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 472
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 708af29d791b16b20800000000000000
+      internalID: 3125974882113792007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_3
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 453
+        width: 12
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c75bb358194699a0800000000000000
+      internalID: -6226709065960302651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_4
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 462
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b02821fc19b19da30800000000000000
+      internalID: 4240450837204337163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_5
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 462
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a78cd41098a732a20800000000000000
+      internalID: 3036405302628829306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_6
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 53
+        width: 402
+        height: 402
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0937a9ded24f79050800000000000000
+      internalID: 5807378722614571920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_7
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 445
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84b1c9f4de9f36230800000000000000
+      internalID: 3631020522228947784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_8
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 434
+        width: 60
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7b92d5473ea05670800000000000000
+      internalID: 8525505647030213500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_9
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 450
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a0db6f6b4228ece0800000000000000
+      internalID: -1375811978774458202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_10
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 446
+        width: 21
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45336c7167304a1c0800000000000000
+      internalID: -4493462722469022892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_11
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 447
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a5a06d945042c870800000000000000
+      internalID: 8701588162195006888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_12
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 414
+        width: 13
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a172ebd10397381a0800000000000000
+      internalID: -6808464964089665766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_13
+      rect:
+        serializedVersion: 2
+        x: 473
+        y: 404
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60d8371d41d1c3fb0800000000000000
+      internalID: -4666823138612114170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_14
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 387
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f4d525b2a1b7f260800000000000000
+      internalID: 7131363847346443506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_15
+      rect:
+        serializedVersion: 2
+        x: 457
+        y: 335
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4647b4de0d313fd40800000000000000
+      internalID: 5616854948316410980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mira_CoffeePot_Equipped_16
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 309
+        width: 19
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42542edec12d1ae80800000000000000
+      internalID: -8169017227381422812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Mira_CoffeePot_Equipped_0: -8112396829588298804
+      Mira_CoffeePot_Equipped_1: -1081483031711474663
+      Mira_CoffeePot_Equipped_10: -4493462722469022892
+      Mira_CoffeePot_Equipped_11: 8701588162195006888
+      Mira_CoffeePot_Equipped_12: -6808464964089665766
+      Mira_CoffeePot_Equipped_13: -4666823138612114170
+      Mira_CoffeePot_Equipped_14: 7131363847346443506
+      Mira_CoffeePot_Equipped_15: 5616854948316410980
+      Mira_CoffeePot_Equipped_16: -8169017227381422812
+      Mira_CoffeePot_Equipped_2: 3125974882113792007
+      Mira_CoffeePot_Equipped_3: -6226709065960302651
+      Mira_CoffeePot_Equipped_4: 4240450837204337163
+      Mira_CoffeePot_Equipped_5: 3036405302628829306
+      Mira_CoffeePot_Equipped_6: 5807378722614571920
+      Mira_CoffeePot_Equipped_7: 3631020522228947784
+      Mira_CoffeePot_Equipped_8: 8525505647030213500
+      Mira_CoffeePot_Equipped_9: -1375811978774458202
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

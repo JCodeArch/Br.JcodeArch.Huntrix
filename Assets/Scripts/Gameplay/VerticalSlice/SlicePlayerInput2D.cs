@@ -89,11 +89,24 @@ namespace HuntrX.Gameplay.VerticalSlice
             JumpController2D jump = actor.GetComponent<JumpController2D>();
             if (frame.JumpPressed) jump?.PressJump(); if (frame.JumpReleased) jump?.ReleaseJump();
             DashController2D dash = actor.GetComponent<DashController2D>();
-            if (frame.Dash) { if (IsGrounded) dash?.TryStartDash(facing); else dash?.TryStartAirDash(frame.Move.sqrMagnitude > 0.01f ? frame.Move : new Vector2(facing, 0f)); }
+            if (frame.Dash)
+            {
+                actor.GetComponent<AttackController2D>()?.TryCancelRecoveryForDash();
+                if (IsGrounded) dash?.TryStartDash(facing);
+                else dash?.TryStartAirDash(frame.Move.sqrMagnitude > 0.01f ? frame.Move : new Vector2(facing, 0f));
+            }
             if (!CanApply(actor)) return;
             if (frame.Attack)
             {
+                // Auto-face nearest nearby enemy in close quarters if no directional key is held
+                if (Mathf.Abs(frame.Move.x) <= 0.01f && aimTarget != null && aimTarget.isActiveAndEnabled && aimTarget.IsAlive)
+                {
+                    float dx = aimTarget.transform.position.x - actor.transform.position.x;
+                    if (Mathf.Abs(dx) > 0.05f && Mathf.Abs(dx) < 3.5f) facing = Mathf.Sign(dx);
+                }
+
                 var ranged = actor.GetComponent<ZoeyRangedAttack2D>();
+                var melee = actor.GetComponent<AttackController2D>();
                 if (ranged != null)
                 {
                     Vector2 aim = frame.Move.sqrMagnitude > 0.01f ? frame.Move : new Vector2(facing, 0f);
@@ -103,14 +116,29 @@ namespace HuntrX.Gameplay.VerticalSlice
                         Vector2 offset = aimTarget.transform.position - actor.transform.position;
                         if (offset.sqrMagnitude > 0.001f && offset.sqrMagnitude <= 64f && Vector2.Angle(aim, offset) <= 45f) aim = offset.normalized;
                     }
-                    ranged.TryFire(aim);
+                    // Hybrid Ninja Combat: fire thrown Shinkal daggers AND trigger close-quarters melee combo slash/chokehold!
+                    bool fired = ranged.TryFire(aim);
+                    if (melee != null && (!fired || (aimTarget != null && Vector2.Distance(aimTarget.transform.position, actor.transform.position) <= 2.4f)))
+                    {
+                        melee.TryStartAttack(facing, IsGrounded);
+                    }
                 }
-                else actor.GetComponent<AttackController2D>()?.TryStartAttack(facing, IsGrounded);
+                else melee?.TryStartAttack(facing, IsGrounded);
             }
             if (!CanApply(actor)) return;
             if (frame.Parry) actor.GetComponent<ParryController2D>()?.TryStartParry();
             if (!CanApply(actor)) return;
-            if (frame.Switch && switchingAllowed && characterSwitch != null) characterSwitch.TrySwitchNext(out _);
+            if (switchingAllowed && characterSwitch != null)
+            {
+                Keyboard kb = Keyboard.current;
+                if (kb != null && !waitForRelease[8])
+                {
+                    if (kb.digit1Key.wasPressedThisFrame) characterSwitch.TrySwitchTo(0, out _);
+                    else if (kb.digit2Key.wasPressedThisFrame) characterSwitch.TrySwitchTo(1, out _);
+                    else if (kb.digit3Key.wasPressedThisFrame) characterSwitch.TrySwitchTo(2, out _);
+                }
+                if (frame.Switch) characterSwitch.TrySwitchNext(out _);
+            }
             if (!CanApply(actor)) return;
             Action<SliceInputFrame> handlers = ActionsRequested;
             if (handlers != null) foreach (Action<SliceInputFrame> handler in handlers.GetInvocationList())
@@ -137,11 +165,27 @@ namespace HuntrX.Gameplay.VerticalSlice
                 held[i] = value; pressed[i] = toggle ? value && !previousHeld[i] : actions[i].WasPressedThisFrame();
                 released[i] = toggle ? !value && previousHeld[i] : actions[i].WasReleasedThisFrame(); previousHeld[i] = value;
             }
-            Vector2 move = new Vector2((held[1] ? 1f : 0f) - (held[0] ? 1f : 0f), (held[2] ? 1f : 0f) - (held[3] ? 1f : 0f));
+            Keyboard kb = Keyboard.current;
+            bool anyQuarantined = false;
+            for (int i = 0; i < waitForRelease.Length; i++) if (waitForRelease[i]) { anyQuarantined = true; break; }
+            bool arrowLeft = kb != null && !anyQuarantined && kb.leftArrowKey.isPressed;
+            bool arrowRight = kb != null && !anyQuarantined && kb.rightArrowKey.isPressed;
+            bool arrowUp = kb != null && !anyQuarantined && kb.upArrowKey.isPressed;
+            bool arrowDown = kb != null && !anyQuarantined && kb.downArrowKey.isPressed;
+
+            Vector2 move = new Vector2(((held[1] || arrowRight) ? 1f : 0f) - ((held[0] || arrowLeft) ? 1f : 0f), ((held[2] || arrowUp) ? 1f : 0f) - ((held[3] || arrowDown) ? 1f : 0f));
             Vector2 stick = Gamepad.current != null ? Gamepad.current.leftStick.ReadValue() : Vector2.zero;
             if (waitForStickNeutral) { if (stick.sqrMagnitude <= .01f) waitForStickNeutral = false; }
             else if (stick.sqrMagnitude > move.sqrMagnitude) move = stick;
-            return new SliceInputFrame { Move = Vector2.ClampMagnitude(move, 1f), JumpPressed = pressed[4], JumpReleased = released[4], Dash = pressed[5], Attack = pressed[6], Parry = pressed[7], Switch = pressed[8], Interact = pressed[9], InteractHeld = held[9], InteractReleased = released[9], FoodSelf = pressed[10], FoodFan = pressed[11], Special = pressed[12], Pause = pressed[13] };
+
+            bool altJumpPressed = kb != null && !anyQuarantined && (kb.xKey.wasPressedThisFrame || kb.upArrowKey.wasPressedThisFrame);
+            bool altJumpReleased = kb != null && !anyQuarantined && (kb.xKey.wasReleasedThisFrame || kb.upArrowKey.wasReleasedThisFrame);
+            bool altDash = kb != null && !anyQuarantined && (kb.cKey.wasPressedThisFrame || kb.rightShiftKey.wasPressedThisFrame);
+            bool altAttack = kb != null && !anyQuarantined && (kb.zKey.wasPressedThisFrame || kb.enterKey.wasPressedThisFrame);
+            bool altSwitch = kb != null && !anyQuarantined && kb.tabKey.wasPressedThisFrame;
+            bool altSpecial = kb != null && !anyQuarantined && (kb.vKey.wasPressedThisFrame || kb.uKey.wasPressedThisFrame);
+
+            return new SliceInputFrame { Move = Vector2.ClampMagnitude(move, 1f), JumpPressed = pressed[4] || altJumpPressed, JumpReleased = released[4] || altJumpReleased, Dash = pressed[5] || altDash, Attack = pressed[6] || altAttack, Parry = pressed[7], Switch = pressed[8] || altSwitch, Interact = pressed[9], InteractHeld = held[9], InteractReleased = released[9], FoodSelf = pressed[10], FoodFan = pressed[11], Special = pressed[12] || altSpecial, Pause = pressed[13] };
         }
         private bool CanApply(DamageReceiver2D actor) => isActiveAndEnabled && manager != null && manager.isActiveAndEnabled && manager.State == CharacterManagerState2D.Alive && manager.ActiveCharacter == actor && actor != null && actor.isActiveAndEnabled && actor.IsAlive;
         private void UpdateSensors(DamageReceiver2D actor)

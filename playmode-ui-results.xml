@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="48" result="Failed(Child)" total="48" passed="35" failed="13" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-17 11:42:04Z" end-time="2026-10-17 11:42:07Z" duration="2,937756">
+  <test-suite type="TestSuite" id="1600" name="HUNTR_X" fullname="HUNTR_X" runstate="Runnable" testcasecount="515" result="Failed" site="Child" start-time="2026-10-17 11:42:04Z" end-time="2026-10-17 11:42:07Z" duration="2.937756" total="48" passed="35" failed="13" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="2193" name="HuntrX.PlayModeTests.dll" fullname="D:/Workspace/Br.JcodeArch.Huntrix/Library/ScriptAssemblies/HuntrX.PlayModeTests.dll" runstate="Runnable" testcasecount="515" result="Failed" site="Child" start-time="2026-10-17 11:42:04Z" end-time="2026-10-17 11:42:07Z" duration="2.887924" total="48" passed="35" failed="13" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3296" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="2194" name="HuntrX" fullname="HuntrX" runstate="Runnable" testcasecount="515" result="Failed" site="Child" start-time="2026-10-17 11:42:04Z" end-time="2026-10-17 11:42:07Z" duration="2.875892" total="48" passed="35" failed="13" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="2195" name="Tests" fullname="HuntrX.Tests" runstate="Runnable" testcasecount="515" result="Failed" site="Child" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:07Z" duration="2.866821" total="48" passed="35" failed="13" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="SetUpFixture" id="2060" name="PlayMode" fullname="HuntrX.Tests.PlayMode.PlayModeInputTestEnvironment" classname="HuntrX.Tests.PlayMode.PlayModeInputTestEnvironment" runstate="Runnable" testcasecount="515" result="Failed" site="Child" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:07Z" duration="2.845124" total="48" passed="35" failed="13" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="1954" name="HudPauseRoutingTests" fullname="HuntrX.Tests.PlayMode.HudPauseRoutingTests" classname="HuntrX.Tests.PlayMode.HudPauseRoutingTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.192108" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1957" name="GamepadStartPausesAndRightStickFeedsFanWithoutConflict" fullname="HuntrX.Tests.PlayMode.HudPauseRoutingTests.GamepadStartPausesAndRightStickFeedsFanWithoutConflict" methodname="GamepadStartPausesAndRightStickFeedsFanWithoutConflict" classname="HuntrX.Tests.PlayMode.HudPauseRoutingTests" runstate="Runnable" seed="1034400116" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.088516" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1956" name="HudGamepadStartOpensAndClosesAcrossDisableEnable" fullname="HuntrX.Tests.PlayMode.HudPauseRoutingTests.HudGamepadStartOpensAndClosesAcrossDisableEnable" methodname="HudGamepadStartOpensAndClosesAcrossDisableEnable" classname="HuntrX.Tests.PlayMode.HudPauseRoutingTests" runstate="Runnable" seed="28142117" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.014683" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1955" name="RemappedPauseClosesWhileGameplayInputDisabledAndRestoresDefault" fullname="HuntrX.Tests.PlayMode.HudPauseRoutingTests.RemappedPauseClosesWhileGameplayInputDisabledAndRestoresDefault" methodname="RemappedPauseClosesWhileGameplayInputDisabledAndRestoresDefault" classname="HuntrX.Tests.PlayMode.HudPauseRoutingTests" runstate="Runnable" seed="471489741" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.073946" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="2050" name="PhysicalInputFocusTests" fullname="HuntrX.Tests.PlayMode.PhysicalInputFocusTests" classname="HuntrX.Tests.PlayMode.PhysicalInputFocusTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.488918" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="2052" name="HeldGamepadButtonAndStickMustReturnToNeutralAfterFocusLoss" fullname="HuntrX.Tests.PlayMode.PhysicalInputFocusTests.HeldGamepadButtonAndStickMustReturnToNeutralAfterFocusLoss" methodname="HeldGamepadButtonAndStickMustReturnToNeutralAfterFocusLoss" classname="HuntrX.Tests.PlayMode.PhysicalInputFocusTests" runstate="Runnable" seed="1134443685" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.392726" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2051" name="KeyboardToggleIsReleasedOnFocusLossAndRequiresFreshContact" fullname="HuntrX.Tests.PlayMode.PhysicalInputFocusTests.KeyboardToggleIsReleasedOnFocusLossAndRequiresFreshContact" methodname="KeyboardToggleIsReleasedOnFocusLossAndRequiresFreshContact" classname="HuntrX.Tests.PlayMode.PhysicalInputFocusTests" runstate="Runnable" seed="1884738826" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.094162" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="2053" name="PhysicalInputOptionsResumeTests" fullname="HuntrX.Tests.PlayMode.PhysicalInputOptionsResumeTests" classname="HuntrX.Tests.PlayMode.PhysicalInputOptionsResumeTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.018887" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="2059" name="FirstEnableAcceptsInputWithoutAnEarlierNeutralSample" fullname="HuntrX.Tests.PlayMode.PhysicalInputOptionsResumeTests.FirstEnableAcceptsInputWithoutAnEarlierNeutralSample" methodname="FirstEnableAcceptsInputWithoutAnEarlierNeutralSample" classname="HuntrX.Tests.PlayMode.PhysicalInputOptionsResumeTests" runstate="Runnable" seed="4715376" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.001807" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="2058" name="OptionsResumeRequiresReleaseForHeldOrMenuStartedContacts" fullname="HuntrX.Tests.PlayMode.PhysicalInputOptionsResumeTests.OptionsResumeRequiresReleaseForHeldOrMenuStartedContacts" classname="HuntrX.Tests.PlayMode.PhysicalInputOptionsResumeTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.014586" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="2054" name="OptionsResumeRequiresReleaseForHeldOrMenuStartedContacts(False,False)" fullname="HuntrX.Tests.PlayMode.PhysicalInputOptionsResumeTests.OptionsResumeRequiresReleaseForHeldOrMenuStartedContacts(False,False)" methodname="OptionsResumeRequiresReleaseForHeldOrMenuStartedContacts" classname="HuntrX.Tests.PlayMode.PhysicalInputOptionsResumeTests" runstate="Runnable" seed="1964835070" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.004042" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2055" name="OptionsResumeRequiresReleaseForHeldOrMenuStartedContacts(False,True)" fullname="HuntrX.Tests.PlayMode.PhysicalInputOptionsResumeTests.OptionsResumeRequiresReleaseForHeldOrMenuStartedContacts(False,True)" methodname="OptionsResumeRequiresReleaseForHeldOrMenuStartedContacts" classname="HuntrX.Tests.PlayMode.PhysicalInputOptionsResumeTests" runstate="Runnable" seed="607669703" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.002274" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2056" name="OptionsResumeRequiresReleaseForHeldOrMenuStartedContacts(True,False)" fullname="HuntrX.Tests.PlayMode.PhysicalInputOptionsResumeTests.OptionsResumeRequiresReleaseForHeldOrMenuStartedContacts(True,False)" methodname="OptionsResumeRequiresReleaseForHeldOrMenuStartedContacts" classname="HuntrX.Tests.PlayMode.PhysicalInputOptionsResumeTests" runstate="Runnable" seed="1465925433" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.002926" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2057" name="OptionsResumeRequiresReleaseForHeldOrMenuStartedContacts(True,True)" fullname="HuntrX.Tests.PlayMode.PhysicalInputOptionsResumeTests.OptionsResumeRequiresReleaseForHeldOrMenuStartedContacts(True,True)" methodname="OptionsResumeRequiresReleaseForHeldOrMenuStartedContacts" classname="HuntrX.Tests.PlayMode.PhysicalInputOptionsResumeTests" runstate="Runnable" seed="1915035462" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.002671" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+            <test-suite type="TestFixture" id="2064" name="RemapPanelContractTests" fullname="HuntrX.Tests.PlayMode.RemapPanelContractTests" classname="HuntrX.Tests.PlayMode.RemapPanelContractTests" runstate="Runnable" testcasecount="7" result="Failed" site="Child" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.033904" total="7" passed="6" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="2071" name="BackButtonRaisesBackRequestedEvent" fullname="HuntrX.Tests.PlayMode.RemapPanelContractTests.BackButtonRaisesBackRequestedEvent" methodname="BackButtonRaisesBackRequestedEvent" classname="HuntrX.Tests.PlayMode.RemapPanelContractTests" runstate="Runnable" seed="1309246725" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.012952" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2067" name="EmptyInputFailsWithEmptyFieldStatus" fullname="HuntrX.Tests.PlayMode.RemapPanelContractTests.EmptyInputFailsWithEmptyFieldStatus" methodname="EmptyInputFailsWithEmptyFieldStatus" classname="HuntrX.Tests.PlayMode.RemapPanelContractTests" runstate="Runnable" seed="644736005" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.002310" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2065" name="InitialStatePresentsCorrectContractDefaults" fullname="HuntrX.Tests.PlayMode.RemapPanelContractTests.InitialStatePresentsCorrectContractDefaults" methodname="InitialStatePresentsCorrectContractDefaults" classname="HuntrX.Tests.PlayMode.RemapPanelContractTests" runstate="Runnable" seed="1881994811" result="Failed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.006475" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected string length 27 but was 23. Strings differ at index 0.
+  Expected: "Ajustes valem nesta partida"
+  But was:  "Controles indisponíveis"
+  -----------^
+]]></message>
+                  <stack-trace><![CDATA[at HuntrX.Tests.PlayMode.RemapPanelContractTests.InitialStatePresentsCorrectContractDefaults () [0x00011] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\RemapPanelContractTests.cs:62
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2068" name="InvalidKeyFailsValidationAndPreservesExistingBinding" fullname="HuntrX.Tests.PlayMode.RemapPanelContractTests.InvalidKeyFailsValidationAndPreservesExistingBinding" methodname="InvalidKeyFailsValidationAndPreservesExistingBinding" classname="HuntrX.Tests.PlayMode.RemapPanelContractTests" runstate="Runnable" seed="549711465" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.003672" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2070" name="RestoringDefaultClearsCustomBindingOnlyForSelectedAction" fullname="HuntrX.Tests.PlayMode.RemapPanelContractTests.RestoringDefaultClearsCustomBindingOnlyForSelectedAction" methodname="RestoringDefaultClearsCustomBindingOnlyForSelectedAction" classname="HuntrX.Tests.PlayMode.RemapPanelContractTests" runstate="Runnable" seed="2044451484" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.001356" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2066" name="UnavailablePreferencesReflectsUnavailableState" fullname="HuntrX.Tests.PlayMode.RemapPanelContractTests.UnavailablePreferencesReflectsUnavailableState" methodname="UnavailablePreferencesReflectsUnavailableState" classname="HuntrX.Tests.PlayMode.RemapPanelContractTests" runstate="Runnable" seed="546917163" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.001255" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2069" name="ValidRemapUpdatesPreferencesAndBindingDisplay" fullname="HuntrX.Tests.PlayMode.RemapPanelContractTests.ValidRemapUpdatesPreferencesAndBindingDisplay" methodname="ValidRemapUpdatesPreferencesAndBindingDisplay" classname="HuntrX.Tests.PlayMode.RemapPanelContractTests" runstate="Runnable" seed="513718594" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:05Z" duration="0.001575" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="2090" name="SessionHudLifecycleTests" fullname="HuntrX.Tests.PlayMode.SessionHudLifecycleTests" classname="HuntrX.Tests.PlayMode.SessionHudLifecycleTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:06Z" duration="0.187505" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="2092" name="CompletingAirplaneBeatReplacesTitleWithoutRecreatingHud" fullname="HuntrX.Tests.PlayMode.SessionHudLifecycleTests.CompletingAirplaneBeatReplacesTitleWithoutRecreatingHud" methodname="CompletingAirplaneBeatReplacesTitleWithoutRecreatingHud" classname="HuntrX.Tests.PlayMode.SessionHudLifecycleTests" runstate="Runnable" seed="32631299" result="Passed" start-time="2026-10-17 11:42:05Z" end-time="2026-10-17 11:42:06Z" duration="0.089144" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2091" name="StopReleasesTelemetryAndNextFrameRestartRendersNewResources" fullname="HuntrX.Tests.PlayMode.SessionHudLifecycleTests.StopReleasesTelemetryAndNextFrameRestartRendersNewResources" methodname="StopReleasesTelemetryAndNextFrameRestartRendersNewResources" classname="HuntrX.Tests.PlayMode.SessionHudLifecycleTests" runstate="Runnable" seed="1902060363" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.096378" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="2093" name="SessionOwnedCameraLifecycleTests" fullname="HuntrX.Tests.PlayMode.SessionOwnedCameraLifecycleTests" classname="HuntrX.Tests.PlayMode.SessionOwnedCameraLifecycleTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.045055" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="2094" name="ImmediateRestartReplacesOwnedCameraBeforeDeferredDestruction" fullname="HuntrX.Tests.PlayMode.SessionOwnedCameraLifecycleTests.ImmediateRestartReplacesOwnedCameraBeforeDeferredDestruction" methodname="ImmediateRestartReplacesOwnedCameraBeforeDeferredDestruction" classname="HuntrX.Tests.PlayMode.SessionOwnedCameraLifecycleTests" runstate="Runnable" seed="1683841189" result="Failed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.023088" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at HuntrX.Tests.PlayMode.SessionOwnedCameraLifecycleTests+<ImmediateRestartReplacesOwnedCameraBeforeDeferredDestruction>d__6.MoveNext () [0x00052] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\SessionOwnedCameraLifecycleTests.cs:48
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@80f691d4262b\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:52
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[There are no audio listeners in the scene. Please ensure there is always one audio listener in the scene
+There are no audio listeners in the scene. Please ensure there is always one audio listener in the scene
+]]></output>
+              </test-case>
+              <test-case id="2095" name="StopPreservesExternallyComposedCameraForRestart" fullname="HuntrX.Tests.PlayMode.SessionOwnedCameraLifecycleTests.StopPreservesExternallyComposedCameraForRestart" methodname="StopPreservesExternallyComposedCameraForRestart" classname="HuntrX.Tests.PlayMode.SessionOwnedCameraLifecycleTests" runstate="Runnable" seed="1520542420" result="Failed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.019666" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at HuntrX.Tests.PlayMode.SessionOwnedCameraLifecycleTests+<StopPreservesExternallyComposedCameraForRestart>d__7.MoveNext () [0x00051] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\SessionOwnedCameraLifecycleTests.cs:67
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@80f691d4262b\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:52
+]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="2096" name="SessionTerminalInputTests" fullname="HuntrX.Tests.PlayMode.SessionTerminalInputTests" classname="HuntrX.Tests.PlayMode.SessionTerminalInputTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.159654" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="2097" name="CompletionSuspendsGameplayInputAndRetainsResults" fullname="HuntrX.Tests.PlayMode.SessionTerminalInputTests.CompletionSuspendsGameplayInputAndRetainsResults" methodname="CompletionSuspendsGameplayInputAndRetainsResults" classname="HuntrX.Tests.PlayMode.SessionTerminalInputTests" runstate="Runnable" seed="1258085533" result="Failed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.076563" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at HuntrX.Tests.PlayMode.SessionTerminalInputTests+<CompletionSuspendsGameplayInputAndRetainsResults>d__6.MoveNext () [0x00068] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\SessionTerminalInputTests.cs:51
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@80f691d4262b\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:52
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2098" name="LaterBeatFailureSuspendsGameplayInputWithoutDestroyingSessionState" fullname="HuntrX.Tests.PlayMode.SessionTerminalInputTests.LaterBeatFailureSuspendsGameplayInputWithoutDestroyingSessionState" methodname="LaterBeatFailureSuspendsGameplayInputWithoutDestroyingSessionState" classname="HuntrX.Tests.PlayMode.SessionTerminalInputTests" runstate="Runnable" seed="718262001" result="Failed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.079997" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at HuntrX.Tests.PlayMode.SessionTerminalInputTests+<LaterBeatFailureSuspendsGameplayInputWithoutDestroyingSessionState>d__7.MoveNext () [0x0009a] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\SessionTerminalInputTests.cs:76
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@80f691d4262b\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:52
+]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="2141" name="TouchOptionsCancellationTests" fullname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" classname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.186429" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="ParameterizedMethod" id="2151" name="ContactsStartedWithoutFocusCannotLatchActions" fullname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests.ContactsStartedWithoutFocusCannotLatchActions" classname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.136208" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="2147" name="ContactsStartedWithoutFocusCannotLatchActions(False,False)" fullname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests.ContactsStartedWithoutFocusCannotLatchActions(False,False)" methodname="ContactsStartedWithoutFocusCannotLatchActions" classname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" runstate="Runnable" seed="1088226923" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.127759" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2148" name="ContactsStartedWithoutFocusCannotLatchActions(True,False)" fullname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests.ContactsStartedWithoutFocusCannotLatchActions(True,False)" methodname="ContactsStartedWithoutFocusCannotLatchActions" classname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" runstate="Runnable" seed="383826449" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.001323" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2149" name="ContactsStartedWithoutFocusCannotLatchActions(False,True)" fullname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests.ContactsStartedWithoutFocusCannotLatchActions(False,True)" methodname="ContactsStartedWithoutFocusCannotLatchActions" classname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" runstate="Runnable" seed="991019601" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.001433" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2150" name="ContactsStartedWithoutFocusCannotLatchActions(True,True)" fullname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests.ContactsStartedWithoutFocusCannotLatchActions(True,True)" methodname="ContactsStartedWithoutFocusCannotLatchActions" classname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" runstate="Runnable" seed="1121298894" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.001191" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="2146" name="EscapeOptionsRequiresFreshContactsForJumpRescueAndMovement" fullname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests.EscapeOptionsRequiresFreshContactsForJumpRescueAndMovement" classname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.019159" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="2142" name="EscapeOptionsRequiresFreshContactsForJumpRescueAndMovement(False,False)" fullname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests.EscapeOptionsRequiresFreshContactsForJumpRescueAndMovement(False,False)" methodname="EscapeOptionsRequiresFreshContactsForJumpRescueAndMovement" classname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" runstate="Runnable" seed="2144954767" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.006488" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2143" name="EscapeOptionsRequiresFreshContactsForJumpRescueAndMovement(True,False)" fullname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests.EscapeOptionsRequiresFreshContactsForJumpRescueAndMovement(True,False)" methodname="EscapeOptionsRequiresFreshContactsForJumpRescueAndMovement" classname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" runstate="Runnable" seed="796494208" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.003623" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2144" name="EscapeOptionsRequiresFreshContactsForJumpRescueAndMovement(False,True)" fullname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests.EscapeOptionsRequiresFreshContactsForJumpRescueAndMovement(False,True)" methodname="EscapeOptionsRequiresFreshContactsForJumpRescueAndMovement" classname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" runstate="Runnable" seed="1842029628" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.002955" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2145" name="EscapeOptionsRequiresFreshContactsForJumpRescueAndMovement(True,True)" fullname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests.EscapeOptionsRequiresFreshContactsForJumpRescueAndMovement(True,True)" methodname="EscapeOptionsRequiresFreshContactsForJumpRescueAndMovement" classname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" runstate="Runnable" seed="592590383" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.002314" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="2155" name="MouseContactNeedsReleaseAfterProducerCancellation" fullname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests.MouseContactNeedsReleaseAfterProducerCancellation" classname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.026843" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="2152" name="MouseContactNeedsReleaseAfterProducerCancellation(&quot;disable&quot;)" fullname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests.MouseContactNeedsReleaseAfterProducerCancellation(&quot;disable&quot;)" methodname="MouseContactNeedsReleaseAfterProducerCancellation" classname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" runstate="Runnable" seed="1155318782" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.021909" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2153" name="MouseContactNeedsReleaseAfterProducerCancellation(&quot;focus&quot;)" fullname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests.MouseContactNeedsReleaseAfterProducerCancellation(&quot;focus&quot;)" methodname="MouseContactNeedsReleaseAfterProducerCancellation" classname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" runstate="Runnable" seed="432486611" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.000679" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2154" name="MouseContactNeedsReleaseAfterProducerCancellation(&quot;bind&quot;)" fullname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests.MouseContactNeedsReleaseAfterProducerCancellation(&quot;bind&quot;)" methodname="MouseContactNeedsReleaseAfterProducerCancellation" classname="HuntrX.Tests.PlayMode.TouchOptionsCancellationTests" runstate="Runnable" seed="342720576" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.000715" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+            <test-suite type="TestFixture" id="2159" name="UiLayoutScenePlayModeTests" fullname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" classname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" runstate="Runnable" testcasecount="14" result="Failed" site="Child" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:07Z" duration="1.367773" total="14" passed="6" failed="8" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="2173" name="AllViewRootsAndControlsRemainInsideActualSafeArea" fullname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.AllViewRootsAndControlsRemainInsideActualSafeArea" methodname="AllViewRootsAndControlsRemainInsideActualSafeArea" classname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" runstate="Runnable" seed="295958074" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.143894" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2168" name="AuthoredHudDisplaysTelemetryAndSpecialReadiness" fullname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.AuthoredHudDisplaysTelemetryAndSpecialReadiness" methodname="AuthoredHudDisplaysTelemetryAndSpecialReadiness" classname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" runstate="Runnable" seed="1856963275" result="Failed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.095092" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Control must be raycastable: confirmButton
+  Expected: greater than 0
+  But was:  0
+]]></message>
+                  <stack-trace><![CDATA[at HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.Click (System.String name) [0x00084] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\UiLayoutScenePlayModeTests.cs:413
+at HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests+<AuthoredHudDisplaysTelemetryAndSpecialReadiness>d__11.MoveNext () [0x0002c] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\UiLayoutScenePlayModeTests.cs:221
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@80f691d4262b\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:52
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2165" name="EveryScreenSelectsAnInteractableControlInItsVisibleView" fullname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.EveryScreenSelectsAnInteractableControlInItsVisibleView" methodname="EveryScreenSelectsAnInteractableControlInItsVisibleView" classname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" runstate="Runnable" seed="1569505807" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.089286" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2164" name="HidingControllerClearsOwnedFocus" fullname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.HidingControllerClearsOwnedFocus" methodname="HidingControllerClearsOwnedFocus" classname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" runstate="Runnable" seed="52326230" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:06Z" duration="0.085598" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2161" name="NavigationMoveSkipsUnavailableContinueAndSubmitOpensOptions" fullname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.NavigationMoveSkipsUnavailableContinueAndSubmitOpensOptions" methodname="NavigationMoveSkipsUnavailableContinueAndSubmitOpensOptions" classname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" runstate="Runnable" seed="1203098188" result="Passed" start-time="2026-10-17 11:42:06Z" end-time="2026-10-17 11:42:07Z" duration="0.085843" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2160" name="NavigationStartsWithoutPointerAndSubmitOpensProfile" fullname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.NavigationStartsWithoutPointerAndSubmitOpensProfile" methodname="NavigationStartsWithoutPointerAndSubmitOpensProfile" classname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" runstate="Runnable" seed="767836801" result="Passed" start-time="2026-10-17 11:42:07Z" end-time="2026-10-17 11:42:07Z" duration="0.081227" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2171" name="OptionsAndSurveyControlsEmitActualUserValues" fullname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.OptionsAndSurveyControlsEmitActualUserValues" methodname="OptionsAndSurveyControlsEmitActualUserValues" classname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" runstate="Runnable" seed="700817951" result="Failed" start-time="2026-10-17 11:42:07Z" end-time="2026-10-17 11:42:07Z" duration="0.086268" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Control must be raycastable: enLanguageButton
+  Expected: greater than 0
+  But was:  0
+]]></message>
+                  <stack-trace><![CDATA[at HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.Click (System.String name) [0x00084] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\UiLayoutScenePlayModeTests.cs:413
+at HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests+<OptionsAndSurveyControlsEmitActualUserValues>d__14.MoveNext () [0x000ae] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\UiLayoutScenePlayModeTests.cs:292
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@80f691d4262b\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:52
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2170" name="OptionsControlsUpdateDemonstrationSessionPreferences" fullname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.OptionsControlsUpdateDemonstrationSessionPreferences" methodname="OptionsControlsUpdateDemonstrationSessionPreferences" classname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" runstate="Runnable" seed="2028064732" result="Passed" start-time="2026-10-17 11:42:07Z" end-time="2026-10-17 11:42:07Z" duration="0.105289" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2167" name="PointerClicksNavigateAllFiveScreensAndReturnToCaller" fullname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.PointerClicksNavigateAllFiveScreensAndReturnToCaller" methodname="PointerClicksNavigateAllFiveScreensAndReturnToCaller" classname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" runstate="Runnable" seed="352112764" result="Failed" start-time="2026-10-17 11:42:07Z" end-time="2026-10-17 11:42:07Z" duration="0.130569" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Control must be raycastable: closeButton
+  Expected: greater than 0
+  But was:  0
+]]></message>
+                  <stack-trace><![CDATA[at HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.Click (System.String name) [0x00084] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\UiLayoutScenePlayModeTests.cs:413
+at HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests+<PointerClicksNavigateAllFiveScreensAndReturnToCaller>d__10.MoveNext () [0x0003a] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\UiLayoutScenePlayModeTests.cs:189
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@80f691d4262b\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:52
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2169" name="RemapPanelOpensFromOptionsAndBackRestoresOptionsFocus" fullname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.RemapPanelOpensFromOptionsAndBackRestoresOptionsFocus" methodname="RemapPanelOpensFromOptionsAndBackRestoresOptionsFocus" classname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" runstate="Runnable" seed="689134525" result="Failed" start-time="2026-10-17 11:42:07Z" end-time="2026-10-17 11:42:07Z" duration="0.099706" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Control must be raycastable: remapKeysButton
+  Expected: greater than 0
+  But was:  0
+]]></message>
+                  <stack-trace><![CDATA[at HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.Click (System.String name) [0x00084] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\UiLayoutScenePlayModeTests.cs:413
+at HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests+<RemapPanelOpensFromOptionsAndBackRestoresOptionsFocus>d__12.MoveNext () [0x0004b] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\UiLayoutScenePlayModeTests.cs:247
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@80f691d4262b\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:52
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2163" name="ReturningToScreenRejectsHiddenAndNavigationDisabledRememberedControls" fullname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.ReturningToScreenRejectsHiddenAndNavigationDisabledRememberedControls" methodname="ReturningToScreenRejectsHiddenAndNavigationDisabledRememberedControls" classname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" runstate="Runnable" seed="225402690" result="Failed" start-time="2026-10-17 11:42:07Z" end-time="2026-10-17 11:42:07Z" duration="0.090259" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Control must be raycastable: closeButton
+  Expected: greater than 0
+  But was:  0
+]]></message>
+                  <stack-trace><![CDATA[at HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.Click (System.String name) [0x00084] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\UiLayoutScenePlayModeTests.cs:413
+at HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests+<ReturningToScreenRejectsHiddenAndNavigationDisabledRememberedControls>d__6.MoveNext () [0x00061] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\UiLayoutScenePlayModeTests.cs:101
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@80f691d4262b\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:52
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2162" name="ReturningToScreenRestoresFocusAndRejectsDisabledRememberedControl" fullname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.ReturningToScreenRestoresFocusAndRejectsDisabledRememberedControl" methodname="ReturningToScreenRestoresFocusAndRejectsDisabledRememberedControl" classname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" runstate="Runnable" seed="825417625" result="Failed" start-time="2026-10-17 11:42:07Z" end-time="2026-10-17 11:42:07Z" duration="0.073665" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Control must be raycastable: closeButton
+  Expected: greater than 0
+  But was:  0
+]]></message>
+                  <stack-trace><![CDATA[at HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.Click (System.String name) [0x00084] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\UiLayoutScenePlayModeTests.cs:413
+at HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests+<ReturningToScreenRestoresFocusAndRejectsDisabledRememberedControl>d__5.MoveNext () [0x00084] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\UiLayoutScenePlayModeTests.cs:82
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@80f691d4262b\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:52
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2166" name="SceneBindsEveryViewControlAndContainsLegibleLabels" fullname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.SceneBindsEveryViewControlAndContainsLegibleLabels" methodname="SceneBindsEveryViewControlAndContainsLegibleLabels" classname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" runstate="Runnable" seed="609460609" result="Failed" start-time="2026-10-17 11:42:07Z" end-time="2026-10-17 11:42:07Z" duration="0.089781" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  OptionsUiView.toggleJumpRescueToggle
+  Expected: not null
+  But was:  null
+]]></message>
+                  <stack-trace><![CDATA[at HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests+<SceneBindsEveryViewControlAndContainsLegibleLabels>d__9.MoveNext () [0x000f2] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\UiLayoutScenePlayModeTests.cs:173
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@80f691d4262b\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:52
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2172" name="SurveySlidersMeetReferenceTouchMinimumAndAcceptEdgeTaps" fullname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.SurveySlidersMeetReferenceTouchMinimumAndAcceptEdgeTaps" methodname="SurveySlidersMeetReferenceTouchMinimumAndAcceptEdgeTaps" classname="HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests" runstate="Runnable" seed="1661431853" result="Failed" start-time="2026-10-17 11:42:07Z" end-time="2026-10-17 11:42:07Z" duration="0.088441" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Control must be raycastable: confirmButton
+  Expected: greater than 0
+  But was:  0
+]]></message>
+                  <stack-trace><![CDATA[at HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests.Click (System.String name) [0x00084] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\UiLayoutScenePlayModeTests.cs:413
+at HuntrX.Tests.PlayMode.UiLayoutScenePlayModeTests+<SurveySlidersMeetReferenceTouchMinimumAndAcceptEdgeTaps>d__15.MoveNext () [0x0002c] in D:\Workspace\Br.JcodeArch.Huntrix\Assets\Tests\PlayMode\UiLayoutScenePlayModeTests.cs:321
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@80f691d4262b\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:52
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Saving results to: C:/Users/Jonathas/AppData/LocalLow/JCodeArch/HUNTR_X\TestResults.xml
+Saving results to: C:/Users/Jonathas/AppData/LocalLow/JCodeArch/HUNTR_X\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -28,6 +28,7 @@ namespace HuntrX.Tests.PlayMode
 #endif
             lab = SceneManager.GetActiveScene();
             yield return null;
+            yield return NarrativeTestFlow.CompleteCurrentDialogue();
         }
         [UnityTearDown]
         public IEnumerator Cleanup()

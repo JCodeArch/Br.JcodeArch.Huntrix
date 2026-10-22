@@ -53,6 +53,33 @@ namespace HuntrX.Tests.PlayMode
             instances.Clear();
         }
 
+        [UnityTest]
+        public IEnumerator ReconfiguredRivalArtworkFollowsAuthoredIdentityInsteadOfInstanceHash()
+        {
+            var go = Spawn("Rivals/Abby_Prototype");
+            go.name = "Rival with no character name";
+            var rival = go.GetComponent<SajaRivalController2D>();
+            var visual = go.GetComponent<EnemyPrototypeVisual2D>();
+            if (visual == null) visual = go.AddComponent<EnemyPrototypeVisual2D>();
+            foreach (string key in new[] { "Abby", "Baby", "Mystery", "Romance" })
+            {
+                var template = UnityEngine.Resources.Load<GameObject>("Rivals/" + key + "_Prototype");
+                var definition = template.GetComponent<SajaRivalController2D>().Definition;
+                Assert.That(rival.TrySetDefinition(definition, out string error), Is.True, error);
+                yield return null;
+                var rendered = go.transform.Find("Prototype silhouette").GetComponent<SpriteRenderer>();
+                var expected = UnityEngine.Resources.Load<Sprite>("Art/Characters/" + key);
+                Texture2D expectedTexture = expected != null ? expected.texture :
+                    UnityEngine.Resources.Load<Texture2D>("Art/Characters/" + key);
+                Assert.That(expectedTexture, Is.Not.Null, key + " artwork");
+                if (expected != null)
+                    Assert.That(rendered.sprite, Is.SameAs(expected), key + " must keep its authored sprite identity.");
+                else
+                    Assert.That(rendered.sprite.texture, Is.SameAs(expectedTexture),
+                        key + " must retain the visual identity of its configured combat profile.");
+            }
+        }
+
         [Test]
         public void AllFourSajaBoysPrototypesLoadAndHaveDistinctIdentitiesAndTactics()
         {

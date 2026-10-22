@@ -21,3 +21,11 @@ The options pause behavior was not measured. Source inspection shows `SliceHud2D
 ## Acceptance decision and next work
 
 Presentation **rejected** for this build: gameplay-scale characters and overlapping enemy/VFX silhouettes fail combat readability, and the options/HUD are still prototype UI. Prioritize a safe first encounter/respawn review, full HD animation states, then calibrated hero/enemy scale and sorting. Rebuild and repeat visual QA after changes; do not infer a complete playable phase from passing tests.
+
+## Follow-up build — commit `32a25f3`
+
+After Antigravity's isolated RED/GREEN encounter patch was reviewed and integrated, the clone passed 154/154 EditMode and 552/552 PlayMode tests. The Windows Development build completed with 0 errors and 0 warnings; evidence is `outputs/b74/Windows.evidence.json`, SHA-256 `cbf77f633052089417656efb423ab4f7ba96f859619efdd5c7d5ec97b0478071`. It opened under Direct3D 11 without a second Firewall prompt.
+
+The initial gameplay screen showed Rumi at 100/100 HP with no enemies in view. After more than 10 real seconds with no movement, HP remained 100/100. The persistent bottom strip was shorter and no longer listed every control. Evidence: `outputs/b74/qa/safe-opening.jpg`. The player log still rejects Rumi's 384×512 `Death/0` clip against the 512×512 Idle canvas; no death occurred in this pass.
+
+This confirms the safe opening at rest for this build, not the full stage. Character scale, backdrop resolution, HUD styling, encounter legibility once enemies are reached, respawn in the actual player, and victory/restart remain unaccepted. The available Windows UI input sends momentary key presses, so it did not establish a reliable held-movement playthrough.

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using System.Reflection;
 using HuntrX.Gameplay.VerticalSlice;
 using HuntrX.Presentation.Hud;
 using HuntrX.Presentation.UI;
@@ -28,8 +29,36 @@ namespace HuntrX.Tests.PlayMode
         }
         [UnityTearDown] public IEnumerator Unload()
         {
+            var active = SceneManager.GetActiveScene();
+            var toUnload = active.name == "VerticalSlice" ? active : slice;
             SceneManager.SetActiveScene(SceneManager.CreateScene("SessionHudCleanup"));
-            yield return SceneManager.UnloadSceneAsync(slice);
+            if (toUnload.IsValid() && toUnload.isLoaded) yield return SceneManager.UnloadSceneAsync(toUnload);
+        }
+        [UnityTest] public IEnumerator CompletedSessionCanRestartWithoutSubmittingFeedback()
+        {
+            // The editor scene-loading helper leaves buildIndex at -1; replay uses the player Build Settings route.
+            yield return SceneManager.LoadSceneAsync("VerticalSlice", LoadSceneMode.Single);
+            slice = SceneManager.GetActiveScene();
+            yield return null;
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
+            var hud = Object.FindAnyObjectByType<SliceHud2D>();
+            Assert.That(hud, Is.Not.Null);
+            var recorder = Object.FindAnyObjectByType<SlicePlaytestRecorder2D>();
+            Assert.That(recorder, Is.Not.Null);
+            Assert.That(slice.buildIndex, Is.GreaterThanOrEqualTo(0), "Replay requires a scene registered in Build Settings.");
+            session.Stop();
+            typeof(VerticalSliceSession2D).GetProperty("IsComplete").SetValue(session, true);
+            Assert.That(session.IsComplete, Is.True);
+            var restart = typeof(SliceHud2D).GetMethod("RestartCompletedSession", BindingFlags.Instance | BindingFlags.NonPublic,
+                null, new[] { typeof(bool) }, null);
+            Assert.That(restart, Is.Not.Null, "The HUD needs an explicit replay path independent of feedback storage.");
+            restart.Invoke(hud, new object[] { false });
+            yield return null;
+            Assert.That(SceneManager.GetActiveScene().name, Is.EqualTo("VerticalSlice"));
+            Assert.That(hud == null, Is.True,
+                "Replay must destroy the previous HUD when it reloads the stage. Status: " +
+                typeof(SliceHud2D).GetField("feedback", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(hud));
+            Assert.That(Object.FindAnyObjectByType<SliceHud2D>(), Is.Not.Null);
         }
         [UnityTest] public IEnumerator StopReleasesTelemetryAndNextFrameRestartRendersNewResources()
         {

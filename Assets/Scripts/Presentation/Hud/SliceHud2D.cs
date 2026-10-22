@@ -129,7 +129,7 @@ namespace HuntrX.Presentation.Hud
             {
                 SetOptionsOpen(true);
             }
-            if (session.IsComplete && recorder == null && GUILayout.Button("Jogar novamente", GUILayout.Width(140f))) RestartCompletedSession();
+            if (session.IsComplete && recorder == null && GUILayout.Button("Jogar novamente", GUILayout.Width(140f))) RestartCompletedSession(false);
             GUILayout.EndHorizontal();
             if (!TelemetryPresentedExternally)
             {
@@ -301,17 +301,18 @@ namespace HuntrX.Presentation.Hud
             {
                 feedback=recorder.TrySubmitFeedback(fun,difficulty,comments) && recorder.TrySaveReport(out _)?"Avaliação salva":"Não foi possível salvar";
             }
-            if(GUILayout.Button("Salvar avaliação e jogar novamente")) RestartCompletedSession();
+            if(GUILayout.Button("Salvar avaliação e jogar novamente")) RestartCompletedSession(true);
+            if(GUILayout.Button("Jogar novamente sem salvar")) RestartCompletedSession(false);
             if(recorder.Report!=null) GUILayout.Label(recorder.Report.CompleteWindow?"Registro de 60 segundos completo":"Registro ainda incompleto");
             if(!string.IsNullOrEmpty(feedback)) GUILayout.Label(feedback);
             GUILayout.EndScrollView(); GUILayout.EndArea();
         }
-        private void RestartCompletedSession()
+        private void RestartCompletedSession(bool saveFeedback)
         {
             if(session==null || !session.IsComplete) return;
             Scene scene=gameObject.scene;
             if(!scene.IsValid() || scene.buildIndex<0) { feedback="Cena indisponível para reiniciar"; return; }
-            if(recorder!=null && (!recorder.TrySubmitFeedback(fun,difficulty,comments) || !recorder.TrySaveReport(out _)))
+            if(saveFeedback && recorder!=null && (!recorder.TrySubmitFeedback(fun,difficulty,comments) || !recorder.TrySaveReport(out _)))
             { feedback="Não foi possível salvar. Sua avaliação foi mantida; tente novamente"; return; }
             SceneManager.LoadScene(scene.buildIndex);
         }

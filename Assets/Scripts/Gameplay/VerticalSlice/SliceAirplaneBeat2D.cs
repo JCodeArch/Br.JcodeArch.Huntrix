@@ -1,5 +1,6 @@
 using HuntrX.Data;
 using HuntrX.Gameplay.Enemies;
+using HuntrX.Gameplay.Narrative;
 using HuntrX.Gameplay.Resources;
 using UnityEngine;
 namespace HuntrX.Gameplay.VerticalSlice
@@ -13,6 +14,7 @@ namespace HuntrX.Gameplay.VerticalSlice
         /// <summary>Enemies of this beat notice the heroine only within this distance, so a safe start is not defeated by the 14-unit definition range.</summary>
         public const float EncounterAggroRange = 9f;
         private VerticalSliceSession2D session;
+        private SliceNarrativeComposition2D narrative;
         private GameObject vipLoungeRoot;
         private SpriteRenderer rumiSeatRenderer;
         private SpriteRenderer zoeyMiraTableRenderer;
@@ -20,6 +22,7 @@ namespace HuntrX.Gameplay.VerticalSlice
         private Sprite[] vipIntroFrames;
         private float beatClock;
         private bool heroinesStoodUpFromTable;
+        private bool wasOpeningDialoguePresenting;
 
         public override string Title
         {
@@ -44,9 +47,11 @@ namespace HuntrX.Gameplay.VerticalSlice
                 captainEnemy.GetComponent<MinibossPhaseController2D>() == null ||
                 captainEnemy.GetComponent<EnemyPatternController2D>() == null || !owner.TryLoadStage(stage)) return false;
             session = owner;
+            narrative = owner.GetComponent<SliceNarrativeComposition2D>();
             IsComplete = false;
             beatClock = 0f;
             heroinesStoodUpFromTable = false;
+            wasOpeningDialoguePresenting = false;
 
             BuildVipRearLoungeEatingIntro(owner);
 
@@ -119,25 +124,25 @@ namespace HuntrX.Gameplay.VerticalSlice
             Vector2 startPos = stage != null ? stage.StartPosition : new Vector2(1f, 0.8f);
             vipLoungeRoot.transform.localPosition = new Vector3(startPos.x, startPos.y, 0f);
 
-            // Zoey & Mira seated at the VIP booth table feasting on kimbap, mandu & coffee pot in the rear lounge
-            var tableGo = new GameObject("VIP_Table_ZoeyAndMira_Feasting");
-            tableGo.transform.SetParent(vipLoungeRoot.transform, false);
-            tableGo.transform.localPosition = new Vector3(-1.85f, 0.18f, 0f);
-            zoeyMiraTableRenderer = tableGo.AddComponent<SpriteRenderer>();
-            zoeyMiraTableRenderer.sprite = vipIntroFrames[1];
-            zoeyMiraTableRenderer.sortingOrder = 11;
-            float tableScale = vipIntroFrames[1].bounds.size.y > 0.01f ? (2.35f / vipIntroFrames[1].bounds.size.y) : 0.45f;
-            tableGo.transform.localScale = new Vector3(tableScale, tableScale, 1f);
-
-            // Rumi starting seated in her luxury airplane VIP chair slurping ramyeon (then standing up & drawing her sword!)
+            // Rumi starting seated in her luxury airplane VIP chair slurping ramyeon (world X ~ 1.35, well inside the left camera margin)
             var rumiSeatGo = new GameObject("VIP_Seat_Rumi_EatingRamyeon");
             rumiSeatGo.transform.SetParent(vipLoungeRoot.transform, false);
-            rumiSeatGo.transform.localPosition = new Vector3(0.05f, 0.15f, 0f);
+            rumiSeatGo.transform.localPosition = new Vector3(0.35f, 0.15f, 0f);
             rumiSeatRenderer = rumiSeatGo.AddComponent<SpriteRenderer>();
             rumiSeatRenderer.sprite = vipIntroFrames[0];
             rumiSeatRenderer.sortingOrder = 16;
             float seatScale = vipIntroFrames[0].bounds.size.y > 0.01f ? (2.30f / vipIntroFrames[0].bounds.size.y) : 0.45f;
             rumiSeatGo.transform.localScale = new Vector3(seatScale, seatScale, 1f);
+
+            // Zoey & Mira seated at the VIP booth table feasting on kimbap, mandu & coffee pot (world X ~ 3.65, framed in the center-left viewport)
+            var tableGo = new GameObject("VIP_Table_ZoeyAndMira_Feasting");
+            tableGo.transform.SetParent(vipLoungeRoot.transform, false);
+            tableGo.transform.localPosition = new Vector3(2.65f, 0.18f, 0f);
+            zoeyMiraTableRenderer = tableGo.AddComponent<SpriteRenderer>();
+            zoeyMiraTableRenderer.sprite = vipIntroFrames[1];
+            zoeyMiraTableRenderer.sortingOrder = 11;
+            float tableScale = vipIntroFrames[1].bounds.size.y > 0.01f ? (2.35f / vipIntroFrames[1].bounds.size.y) : 0.45f;
+            tableGo.transform.localScale = new Vector3(tableScale, tableScale, 1f);
 
             // While Rumi is seated in the VIP chair eating ramyeon at the very start, hide the standing gameplay sprite
             owner.SetExternalCharacterArt(true);
@@ -157,8 +162,17 @@ namespace HuntrX.Gameplay.VerticalSlice
             return null;
         }
 
+        private bool IsOpeningDialoguePresenting()
+        {
+            if (narrative == null && session != null)
+                narrative = session.GetComponent<SliceNarrativeComposition2D>();
+            var presenter = narrative != null ? narrative.Presenter : null;
+            return presenter != null && presenter.isActiveAndEnabled && presenter.IsPresenting;
+        }
+
         public override void OnInput(SliceInputFrame frame)
         {
+            if (IsOpeningDialoguePresenting()) return;
             if (!heroinesStoodUpFromTable && (frame.Move.sqrMagnitude > 0.05f || frame.Attack || frame.JumpPressed || frame.Dash))
             {
                 TriggerStandUpFromVipTable();
@@ -179,10 +193,30 @@ namespace HuntrX.Gameplay.VerticalSlice
         public override void Tick(float deltaTime)
         {
             if (session == null || session.Manager.ActiveCharacter == null) return;
+
+            bool dialogueActive = IsOpeningDialoguePresenting();
+            if (dialogueActive)
+            {
+                wasOpeningDialoguePresenting = true;
+                beatClock = 0f;
+                if (!heroinesStoodUpFromTable && rumiSeatRenderer != null && vipIntroFrames != null && vipIntroFrames.Length >= 4)
+                {
+                    rumiSeatRenderer.sprite = vipIntroFrames[0];
+                    rumiSeatRenderer.transform.localPosition = new Vector3(0.35f, 0.15f, 0f);
+                }
+                return;
+            }
+
+            if (wasOpeningDialoguePresenting)
+            {
+                wasOpeningDialoguePresenting = false;
+                beatClock = 0f;
+            }
+
             beatClock += Mathf.Max(0f, deltaTime);
 
             Vector2 startPos = stage != null ? stage.StartPosition : new Vector2(1f, 0.8f);
-            float distFromStart = Vector2.Distance(session.Manager.ActiveCharacter.transform.position, startPos);
+            float distFromStart = Mathf.Abs(session.Manager.ActiveCharacter.transform.position.x - startPos.x);
 
             if (!heroinesStoodUpFromTable)
             {
@@ -198,17 +232,17 @@ namespace HuntrX.Gameplay.VerticalSlice
                     if (beatClock < 1.35f)
                     {
                         rumiSeatRenderer.sprite = vipIntroFrames[0];
-                        rumiSeatRenderer.transform.localPosition = new Vector3(0.05f, 0.15f, 0f);
+                        rumiSeatRenderer.transform.localPosition = new Vector3(0.35f, 0.15f, 0f);
                     }
                     else if (beatClock < 2.25f)
                     {
                         rumiSeatRenderer.sprite = vipIntroFrames[2];
-                        rumiSeatRenderer.transform.localPosition = new Vector3(0.16f, 0.22f, 0f);
+                        rumiSeatRenderer.transform.localPosition = new Vector3(0.46f, 0.22f, 0f);
                     }
                     else
                     {
                         rumiSeatRenderer.sprite = vipIntroFrames[3];
-                        rumiSeatRenderer.transform.localPosition = new Vector3(0.32f, 0.28f, 0f);
+                        rumiSeatRenderer.transform.localPosition = new Vector3(0.62f, 0.28f, 0f);
                     }
                 }
             }
@@ -237,6 +271,8 @@ namespace HuntrX.Gameplay.VerticalSlice
             CleanupVipLounge();
             base.Exit();
             session = null;
+            narrative = null;
+            wasOpeningDialoguePresenting = false;
         }
     }
 }

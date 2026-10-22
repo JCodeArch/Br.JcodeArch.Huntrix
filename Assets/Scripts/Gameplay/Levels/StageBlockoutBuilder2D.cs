@@ -12,7 +12,9 @@ namespace HuntrX.Gameplay.Levels
         private readonly List<CheckpointAnchor2D> checkpoints = new List<CheckpointAnchor2D>(8);
         private Sprite tile;
         private Texture2D texture;
+        private Texture2D backdropTexture;
         private Sprite backdropSprite;
+        private bool ownsBackdropTexture;
         private bool ownsBackdropSprite;
         private bool building;
         private IReadOnlyList<CheckpointAnchor2D> checkpointView;
@@ -87,6 +89,7 @@ namespace HuntrX.Gameplay.Levels
         {
             string key = ResolveStageArtKey(profile.StageId, profile.DisplayName);
             backdropSprite = UnityEngine.Resources.Load<Sprite>("Art/Stages/" + key);
+            ownsBackdropTexture = false;
             ownsBackdropSprite = false;
             if (backdropSprite == null)
             {
@@ -99,6 +102,21 @@ namespace HuntrX.Gameplay.Levels
             }
             if (backdropSprite == null) return;
 
+            if (key == "airplane")
+            {
+                Texture2D rawAirplaneTex = UnityEngine.Resources.Load<Texture2D>("Art/Stages/" + key);
+                float ppu = backdropSprite != null && backdropSprite.pixelsPerUnit > 0.01f ? backdropSprite.pixelsPerUnit : 100f;
+                Sprite cutoutSprite = CreateAirplaneWindowCutoutSprite(rawAirplaneTex, ppu, out Texture2D cutoutTex);
+                if (cutoutSprite != null)
+                {
+                    if (ownsBackdropSprite && backdropSprite != null) Destroy(backdropSprite);
+                    backdropTexture = cutoutTex;
+                    backdropSprite = cutoutSprite;
+                    ownsBackdropTexture = cutoutTex != null;
+                    ownsBackdropSprite = true;
+                }
+            }
+
             float minX = profile.StartPosition.x;
             float maxX = profile.EndPosition.x;
             float minY = profile.StartPosition.y;
@@ -107,7 +125,7 @@ namespace HuntrX.Gameplay.Levels
                 var p = profile.GetPlatform(i);
                 minX = Mathf.Min(minX, p.Position.x - p.Size.x * 0.5f);
                 maxX = Mathf.Max(maxX, p.Position.x + p.Size.x * 0.5f);
-                minY = Mathf.Min(minY, p.Position.y + p.Size.y * 0.5f);
+                minY = Mathf.Min(minY, p.Position.y - p.Size.y * 0.5f);
             }
 
             float w = backdropSprite.bounds.size.x;
@@ -149,6 +167,65 @@ namespace HuntrX.Gameplay.Levels
             anim.Configure(key, primaryRenderer);
         }
 
+        private static Sprite CreateAirplaneWindowCutoutSprite(Texture2D source, float pixelsPerUnit, out Texture2D cutoutTex)
+        {
+            cutoutTex = null;
+            if (source == null || !source.isReadable) return null;
+            int w = source.width;
+            int h = source.height;
+            Color32[] pixels = source.GetPixels32();
+
+            float[] winCentersX = { 0f, 346f / 1376f, 697f / 1376f, 1051f / 1376f, 1f };
+            float halfW = 47f * (w / 1376f);
+            float cornerR = 34f * (w / 1376f);
+            float straightHalfY = 34f * (h / 768f);
+            float centerY = h - (375f * (h / 768f));
+
+            int yStart = Mathf.Clamp(Mathf.FloorToInt(centerY - straightHalfY - cornerR - 6f), 0, h - 1);
+            int yEnd = Mathf.Clamp(Mathf.CeilToInt(centerY + straightHalfY + cornerR + 6f), 0, h - 1);
+
+            for (int y = yStart; y <= yEnd; y++)
+            {
+                float dy = Mathf.Max(0f, Mathf.Abs(y - centerY) - straightHalfY);
+                if (dy > cornerR + 4f) continue;
+                int rowOffset = y * w;
+
+                for (int c = 0; c < winCentersX.Length; c++)
+                {
+                    float cx = winCentersX[c] * w;
+                    int xMin = Mathf.Max(0, Mathf.FloorToInt(cx - halfW - 4f));
+                    int xMax = Mathf.Min(w - 1, Mathf.CeilToInt(cx + halfW + 4f));
+                    for (int x = xMin; x <= xMax; x++)
+                    {
+                        float dx = Mathf.Max(0f, Mathf.Abs(x - cx) - (halfW - cornerR));
+                        float distFromCorner = Mathf.Sqrt(dx * dx + dy * dy);
+                        float signedDist = distFromCorner - cornerR;
+                        if (signedDist < -3.5f)
+                        {
+                            // Inner window glass pane: transparent cutout so mid-plane wing & far-plane clouds show through!
+                            Color32 orig = pixels[rowOffset + x];
+                            pixels[rowOffset + x] = new Color32(orig.r, orig.g, orig.b, 8);
+                        }
+                        else if (signedDist < 1.5f)
+                        {
+                            // Subtle tinted glass bevel along the inner silver bezel rim
+                            float t = Mathf.InverseLerp(-3.5f, 1.5f, signedDist);
+                            byte alpha = (byte)Mathf.RoundToInt(Mathf.Lerp(24f, 255f, t));
+                            Color32 orig = pixels[rowOffset + x];
+                            pixels[rowOffset + x] = new Color32(orig.r, orig.g, orig.b, alpha);
+                        }
+                    }
+                }
+            }
+
+            cutoutTex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+            cutoutTex.filterMode = FilterMode.Bilinear;
+            cutoutTex.wrapMode = TextureWrapMode.Clamp;
+            cutoutTex.SetPixels32(pixels);
+            cutoutTex.Apply();
+            return Sprite.Create(cutoutTex, new Rect(0f, 0f, w, h), new Vector2(0.5f, 0.5f), pixelsPerUnit > 0.01f ? pixelsPerUnit : 100f);
+        }
+
         private static string ResolveStageArtKey(string stageId, string displayName)
         {
             string s = ((stageId ?? string.Empty) + " " + (displayName ?? string.Empty)).ToLowerInvariant();
@@ -170,11 +247,12 @@ namespace HuntrX.Gameplay.Levels
             tex.filterMode = FilterMode.Point;
             Color neonTop = theme == StageBlockoutTheme.DayUrban ? new Color(0.18f, 0.68f, 0.82f, 0.95f) :
                             theme == StageBlockoutTheme.NightUrban ? new Color(0.68f, 0.24f, 0.65f, 0.95f) :
-                            theme == StageBlockoutTheme.Interior ? new Color(0.22f, 0.58f, 0.78f, 0.94f) :
+                            theme == StageBlockoutTheme.Interior ? new Color(0.22f, 0.72f, 0.96f, 0.92f) :
                             new Color(0.32f, 0.72f, 0.62f, 0.95f);
-            Color bodyDark = new Color(0.06f, 0.07f, 0.12f, 0.96f);
-            Color steelMid = new Color(0.12f, 0.15f, 0.24f, 0.96f);
-            Color trimSubtle = new Color(0.24f, 0.30f, 0.44f, 0.94f);
+            bool interior = theme == StageBlockoutTheme.Interior;
+            Color bodyDark = new Color(0.06f, 0.07f, 0.12f, interior ? 0.18f : 0.96f);
+            Color steelMid = new Color(0.12f, 0.15f, 0.24f, interior ? 0.34f : 0.96f);
+            Color trimSubtle = new Color(0.24f, 0.30f, 0.44f, interior ? 0.42f : 0.94f);
 
             for (int y = 0; y < 32; y++)
             {
@@ -184,7 +262,7 @@ namespace HuntrX.Gameplay.Levels
                     if (y >= 29) c = neonTop; // Subtle top deck trim rail so character silhouettes pop
                     else if (y >= 25 && y <= 27) c = ((x + y) % 8 < 4) ? trimSubtle : bodyDark;
                     else if (y == 28 || y <= 2 || x == 0 || x == 31) c = steelMid;
-                    else if ((x % 4 == 0) && y >= 6 && y <= 20) c = new Color(0.03f, 0.04f, 0.08f, 0.96f); // Grated floor slots
+                    else if ((x % 4 == 0) && y >= 6 && y <= 20) c = new Color(0.03f, 0.04f, 0.08f, interior ? 0.28f : 0.96f); // Grated floor slots
                     else c = bodyDark;
                     tex.SetPixel(x, y, c);
                 }
@@ -204,8 +282,11 @@ namespace HuntrX.Gameplay.Levels
         private void DestroyTiles()
         {
             if (ownsBackdropSprite && backdropSprite != null) Destroy(backdropSprite);
+            if (ownsBackdropTexture && backdropTexture != null) Destroy(backdropTexture);
             backdropSprite = null;
+            backdropTexture = null;
             ownsBackdropSprite = false;
+            ownsBackdropTexture = false;
             if (tile != null) Destroy(tile);
             if (texture != null) Destroy(texture);
             tile = null;

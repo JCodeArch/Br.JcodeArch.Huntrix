@@ -10,6 +10,8 @@ namespace HuntrX.Gameplay.VerticalSlice
         [SerializeField] private GameObject groundEnemy;
         [SerializeField] private GameObject flyingEnemy;
         [SerializeField] private GameObject captainEnemy;
+        /// <summary>Enemies of this beat notice the heroine only within this distance, so a safe start is not defeated by the 14-unit definition range.</summary>
+        public const float EncounterAggroRange = 9f;
         private VerticalSliceSession2D session;
         private GameObject vipLoungeRoot;
         private SpriteRenderer rumiSeatRenderer;
@@ -55,6 +57,7 @@ namespace HuntrX.Gameplay.VerticalSlice
                 if (!owner.TrySpawnEnemy(groundEnemy, stage.GetEnemySpawn(i), out EnemyAgent2D spawned)) return false;
                 if (spawned != null)
                 {
+                    spawned.TrySetAggroRangeLimit(EncounterAggroRange);
                     spawned.gameObject.name = crewRoles[i % crewRoles.Length] + "_" + i;
                     var vis = spawned.GetComponent<EnemyPrototypeVisual2D>();
                     if (vis != null) vis.RefreshCasteAssignment();
@@ -62,17 +65,16 @@ namespace HuntrX.Gameplay.VerticalSlice
             }
 
             // Additional corridor guards + Front Cockpit Captain Dokkaebi Boss at the right end of the plane!
+            // Spawns keep >= 5 units from every checkpoint (x=14, x=33) and outside the opening viewport.
             Vector2[] extraCabinSpawns =
             {
-                new Vector2(15.5f, 0.8f),
-                new Vector2(28.5f, 0.8f),
-                new Vector2(36.0f, 1.5f),
+                new Vector2(26.0f, 0.8f),
+                new Vector2(39.5f, 0.8f),
                 new Vector2(42.5f, 0.8f) // Cockpit Boss Captain Dokkaebi right in front of the Cockpit Door!
             };
             string[] extraRoles =
             {
                 "FlightCrew_BlueCyclops_Corridor1",
-                "FlightCrew_MagentaStewardess_Corridor2",
                 "FlightCrew_MagentaStewardess_CockpitGuard",
                 "BOSS_Cockpit_CaptainDokkaebi"
             };
@@ -82,6 +84,7 @@ namespace HuntrX.Gameplay.VerticalSlice
                 if (owner.TrySpawnEnemy(prefab, extraCabinSpawns[i], out EnemyAgent2D extra) && extra != null)
                 {
                     extra.gameObject.name = extraRoles[i];
+                    extra.TrySetAggroRangeLimit(EncounterAggroRange);
                     var vis = extra.GetComponent<EnemyPrototypeVisual2D>();
                     if (vis != null) vis.RefreshCasteAssignment();
                 }
@@ -93,7 +96,9 @@ namespace HuntrX.Gameplay.VerticalSlice
                 if (prop == null) prop = owner.Manager.ActiveCharacter.gameObject.AddComponent<TemporaryPropWeapon2D>();
                 prop.EquipProp(StagePropType2D.AirlineCoffeePot, 5);
             }
-            return owner.Aerial.Configure(owner.Stage, owner.Manager, flyingEnemy) && owner.Aerial.TrySpawn() && owner.TryBeginPerformance();
+            if (!owner.Aerial.Configure(owner.Stage, owner.Manager, flyingEnemy) || !owner.Aerial.TrySpawn()) return false;
+            for (int i = 0; i < owner.Aerial.Count; i++) owner.Aerial.GetAt(i)?.TrySetAggroRangeLimit(EncounterAggroRange);
+            return owner.TryBeginPerformance();
         }
 
         private void BuildVipRearLoungeEatingIntro(VerticalSliceSession2D owner)

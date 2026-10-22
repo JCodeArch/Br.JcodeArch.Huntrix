@@ -23,8 +23,15 @@ namespace HuntrX.Gameplay.Enemies
         private float facing = 1f;
         private bool resolving;
         private bool configuring;
+        private float aggroRangeLimit = float.PositiveInfinity;
+        private float aggroSuppressedUntil;
         public EnemyDefinition Definition => definition;
         public DamageReceiver2D Self { get; private set; }
+        /// <summary>Encounter-authored cap on the definition's detection range (infinity = definition only).</summary>
+        public float AggroRangeLimit => aggroRangeLimit;
+        /// <summary>True while an encounter has asked this enemy to hold back (e.g. player breathing room after respawn).</summary>
+        public bool IsAggroSuppressed => Time.time < aggroSuppressedUntil;
+        private float EffectiveDetectionRange => Mathf.Min(definition.DetectionRange, aggroRangeLimit);
         public DamageReceiver2D Target => target;
         public EnemyState2D State { get; private set; }
         public bool HasValidTarget => Operational && target != null && target.isActiveAndEnabled &&
@@ -44,7 +51,7 @@ namespace HuntrX.Gameplay.Enemies
             if(!gameObject.scene.IsValid()||gameObject.activeInHierarchy||resolving||configuring||!HuntrX.Pooling.GroundEnemyPoolLease.Supports(gameObject))return false;
             Self=GetComponent<DamageReceiver2D>();body=GetComponent<Rigidbody2D>();
             if(Self==null||!Self.TryResetForEnemySpawn()||body==null||definition==null||!definition.IsValid(out _))return false;
-            target=null;timer=0f;facing=1f;resolved.Clear();State=EnemyState2D.Idle;
+            target=null;timer=0f;facing=1f;resolved.Clear();State=EnemyState2D.Idle;aggroRangeLimit=float.PositiveInfinity;aggroSuppressedUntil=0f;
             body.linearVelocity=Vector2.zero;body.angularVelocity=0f;return true;
         }
         private void Awake() { Self = GetComponent<DamageReceiver2D>(); body = GetComponent<Rigidbody2D>(); }
@@ -89,6 +96,23 @@ namespace HuntrX.Gameplay.Enemies
             }
             finally { configuring = false; }
         }
+        /// <summary>Caps how far this enemy notices its target; never raises the definition's own range.</summary>
+        public bool TrySetAggroRangeLimit(float range)
+        {
+            if (!Finite(range) || range <= 0f) return false;
+            aggroRangeLimit = range;
+            return true;
+        }
+
+        /// <summary>Cancels any telegraph/chase/attack in progress and blocks new ones for the given scaled-time seconds.</summary>
+        public bool TrySuppressAggro(float seconds)
+        {
+            if (!Finite(seconds) || seconds <= 0f || seconds > 10f) return false;
+            aggroSuppressedUntil = Mathf.Max(aggroSuppressedUntil, Time.time + seconds);
+            if (!resolving && !configuring && State != EnemyState2D.Dead) Stop();
+            return true;
+        }
+
         public void Stop()
         {
             timer = 0f; StopMotion();
@@ -113,7 +137,8 @@ namespace HuntrX.Gameplay.Enemies
             if (configuring || !HasValidTarget || !Finite(destination.x) || !Finite(destination.y) ||
                 (State != EnemyState2D.Idle && State != EnemyState2D.Chasing)) return;
             Vector2 offset = destination - body.position;
-            if (offset.sqrMagnitude > definition.DetectionRange * definition.DetectionRange) { StopMotion(); SetState(EnemyState2D.Idle); return; }
+            float detection = EffectiveDetectionRange;
+            if (IsAggroSuppressed || offset.sqrMagnitude > detection * detection) { StopMotion(); SetState(EnemyState2D.Idle); return; }
             if (!flying && target != null && Mathf.Abs(destination.x - target.transform.position.x) < 0.05f)
             {
                 float desiredSpacing = Mathf.Clamp(definition.AttackRange * 0.72f, 0.75f, 1.35f);
@@ -130,7 +155,7 @@ namespace HuntrX.Gameplay.Enemies
         }
         public bool TryBeginTelegraph()
         {
-            if (configuring || !HasValidTarget || (State != EnemyState2D.Idle && State != EnemyState2D.Chasing) ||
+            if (configuring || IsAggroSuppressed || !HasValidTarget || (State != EnemyState2D.Idle && State != EnemyState2D.Chasing) ||
                 Vector2.Distance(body.position, target.transform.position) > definition.AttackRange ||
                 !HasLineOfSight(target.transform.position)) return false;
             facing = target.transform.position.x < transform.position.x ? -1f : 1f;

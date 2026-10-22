@@ -33,6 +33,8 @@ namespace HuntrX.Gameplay.VerticalSlice
         private DamageReceiver2D[] externalTargets = Array.Empty<DamageReceiver2D>();
         private GameObject slot, ownedCamera;
         private bool transitioning, stopping;
+        /// <summary>Seconds enemies hold back after the player returns to a checkpoint (death or fall).</summary>
+        public const float RespawnBreathingRoom = 1.5f;
         private float targetRefresh;
         public CharacterManager2D Manager { get; private set; }
         public CheckpointAttemptFlow2D CheckpointFlow { get; private set; }
@@ -89,6 +91,7 @@ namespace HuntrX.Gameplay.VerticalSlice
             FoodDelivery = slot.AddComponent<ScoreMilestoneFoodDelivery2D>();
             FoodDelivery.Configure(Manager, Inventory, ramen, Fans);
             Manager.ActiveCharacterChanged += HandleActor;
+            CheckpointFlow.RespawnRequested += HandleRespawnRequested;
             IsRunning = true; IsComplete = false; BeatIndex = -1;
             if (!Advance()) { Stop(); return false; }
             return isActiveAndEnabled && IsRunning && BeatIndex == 0;
@@ -124,6 +127,15 @@ namespace HuntrX.Gameplay.VerticalSlice
         {
             get { int count = 0; foreach (EnemyAgent2D agent in ownedEnemies) if (Live(agent)) count++; return count; }
         }
+        private void HandleRespawnRequested(RespawnRequest request) => SuppressEnemyAggro(RespawnBreathingRoom);
+
+        /// <summary>Makes every living enemy (ground, aerial, boss) stand down briefly; the player cannot be re-hit while returning.</summary>
+        public void SuppressEnemyAggro(float seconds)
+        {
+            foreach (EnemyAgent2D agent in ownedEnemies) if (agent != null) agent.TrySuppressAggro(seconds);
+            if (Aerial != null) for (int i = 0; i < Aerial.Count; i++) { var flyer = Aerial.GetAt(i); if (flyer != null) flyer.TrySuppressAggro(seconds); }
+            if (BossArena != null && BossArena.Boss != null) BossArena.Boss.TrySuppressAggro(seconds);
+        }
         public void ClearEnemies()
         {
             while (ownedEnemies.Count > 0) { int i = ownedEnemies.Count-1; var agent = ownedEnemies[i]; ownedEnemies.RemoveAt(i); if (agent != null) { agent.Stop(); agent.gameObject.SetActive(false); Destroy(agent.gameObject); } }
@@ -150,7 +162,7 @@ namespace HuntrX.Gameplay.VerticalSlice
                 }
                 if (Manager.ActiveCharacter.transform.position.y < Stage.Definition.StartPosition.y - 20f)
                 {
-                    var body = Manager.ActiveCharacter.GetComponent<Rigidbody2D>(); body.position = CheckpointFlow.ActiveCheckpointPosition; body.linearVelocity = Vector2.zero;
+                    var body = Manager.ActiveCharacter.GetComponent<Rigidbody2D>(); body.position = CheckpointFlow.ActiveCheckpointPosition; body.linearVelocity = Vector2.zero; SuppressEnemyAggro(RespawnBreathingRoom);
                 }
             }
             targetRefresh -= Time.deltaTime;
@@ -237,7 +249,7 @@ namespace HuntrX.Gameplay.VerticalSlice
         {
             if (stopping) return; stopping = true; IsRunning = false;
             try { foreach (SliceBeat2D beat in beats) if (beat != null) beat.Exit(); ClearEnemies(); if (Stage != null) { Stage.TryClear(); Destroy(Stage.gameObject); Stage = null; }
-                if (Input != null) Input.ActionsRequested -= HandleInput; if (Manager != null) Manager.ActiveCharacterChanged -= HandleActor;
+                if (Input != null) Input.ActionsRequested -= HandleInput; if (Manager != null) Manager.ActiveCharacterChanged -= HandleActor; if (CheckpointFlow != null) CheckpointFlow.RespawnRequested -= HandleRespawnRequested;
                 if (slot != null) { slot.SetActive(false); Destroy(slot); slot = null; }
                 if (ownedCamera != null)
                 {

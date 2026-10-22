@@ -117,16 +117,15 @@ namespace HuntrX.Presentation.Hud
         {
             var delivery = session.FoodDelivery;
             int score = delivery != null ? delivery.ArcadeScore : (session.Performance != null ? Mathf.RoundToInt(session.Performance.Snapshot.Points * 100f) : 0);
-            int nextFood = delivery != null ? delivery.NextMilestoneTarget : 1000;
             int subTanks = session.Inventory != null ? session.Inventory.TotalCount : 0;
 
-            // Sleek bottom-center Capcom Arcade Control Legend & Score bar (no ugly overlapping top-left debug boxes!)
-            float barW = Mathf.Min(920f, width - 32f);
-            float barX = (width - barW) * 0.5f;
+            // Keep the persistent strip brief; the full control legend belongs in Options.
+            float barW = Mathf.Min(340f, width - 32f);
+            float barX = width - barW - 16f;
             GUILayout.BeginArea(new Rect(barX, height - 56f, barW, 50f), GUI.skin.box);
             GUILayout.BeginHorizontal();
-            GUILayout.Label($"★ SCORE: {score:D6} (Próx. Marmita: {nextFood})  |  🍜 SUB-TANK [R]: {subTanks}x  |  [Setas/WASD] Mover  [Z/J] Ataque/Combo  [Espaço/X] Pulo  [C/Shift] Dash  [1/2/3/Q] Trocar Heroína");
-            if (GUILayout.Button("Fases / Opções [ESC]", GUILayout.Width(175f)))
+            GUILayout.Label($"★ {score:D6}  •  🍜 {subTanks}x", GUILayout.ExpandWidth(true));
+            if (GUILayout.Button("Opções", GUILayout.Width(90f)))
             {
                 SetOptionsOpen(true);
             }

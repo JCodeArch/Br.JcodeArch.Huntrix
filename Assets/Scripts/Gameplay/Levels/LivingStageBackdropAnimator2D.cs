@@ -25,12 +25,21 @@ namespace HuntrX.Gameplay.Levels
         private readonly List<Transform> windowFlightStreaks = new List<Transform>(32);
         private readonly List<float> windowStreakSpeeds = new List<float>(32);
         private readonly List<SpriteRenderer> cockpitBeaconLights = new List<SpriteRenderer>(4);
+        private Transform farSkyLayer;
+        private Transform midWingLayer;
+        private SpriteRenderer wingStrobeRenderer;
         private Transform honmoonPulseOverlay;
         private SpriteRenderer honmoonPulseRenderer;
         private Texture2D softGlowTex;
         private Sprite softGlowSprite;
         private Texture2D solidBlockTex;
         private Sprite solidBlockSprite;
+        private Texture2D farSkyTex;
+        private Sprite farSkySprite;
+        private Texture2D midWingTex;
+        private Sprite midWingSprite;
+        private Texture2D ownedCockpitDoorTex;
+        private Sprite ownedCockpitDoorSprite;
 
         public void Configure(string resolvedStageKey, SpriteRenderer sr)
         {
@@ -105,7 +114,7 @@ namespace HuntrX.Gameplay.Levels
                 emberBasePositions.Add(pos);
             }
 
-            // 4. Airplane Window High-Speed Flight Clouds & Honmoon Jet-Stream Streaks + Right-End Cockpit Boss Bulkhead!
+            // 4. Airplane Multi-Plane Parallax (Far Night Sky/Clouds + Mid Jet Wing/Engine + Window Flight Streaks + Cockpit Bulkhead)
             if (stageKey == "airplane")
             {
                 BuildAirplaneWindowFlightMotionAndCockpitDoor();
@@ -114,7 +123,55 @@ namespace HuntrX.Gameplay.Levels
 
         private void BuildAirplaneWindowFlightMotionAndCockpitDoor()
         {
-            // High-speed scrolling clouds, city lights & Honmoon streaks moving right-to-left across the window band (y in [-0.2f .. +1.25f])
+            farSkyTex = CreateNightSkyCloudBankTexture();
+            farSkySprite = Sprite.Create(farSkyTex, new Rect(0, 0, farSkyTex.width, farSkyTex.height), new Vector2(0.5f, 0.5f), 32f);
+            midWingTex = CreateJetWingTexture();
+            midWingSprite = Sprite.Create(midWingTex, new Rect(0, 0, midWingTex.width, midWingTex.height), new Vector2(0.5f, 0.5f), 32f);
+
+            // Plane 0 (Far): Deep Seoul Night Sky, Cloud Bank & Distant City Lights behind the alpha-cutout windows (sortingOrder = -29)
+            var farGo = new GameObject("Parallax_Far_NightSkyClouds");
+            farGo.transform.SetParent(transform, false);
+            farGo.transform.localPosition = new Vector3(0f, 0.25f, 0f);
+            farSkyLayer = farGo.transform;
+
+            for (int t = -2; t <= 2; t++)
+            {
+                var skyTile = new GameObject("FarSky_Panel_" + (t + 2));
+                skyTile.transform.SetParent(farSkyLayer, false);
+                skyTile.transform.localPosition = new Vector3(t * 24f, 0f, 0f);
+                skyTile.transform.localScale = new Vector3(3.1f, 1.8f, 1f);
+                var skySr = skyTile.AddComponent<SpriteRenderer>();
+                skySr.sprite = farSkySprite;
+                skySr.sortingOrder = -29;
+            }
+
+            // Plane 1 (Mid): Swept-Back HUNTR/X Private Jet Wing, Honmoon Engine Nacelle & Wingtip Strobe (sortingOrder = -27)
+            var midGo = new GameObject("Parallax_Mid_JetWing");
+            midGo.transform.SetParent(transform, false);
+            midGo.transform.localPosition = new Vector3(-2.5f, 0.12f, 0f);
+            midWingLayer = midGo.transform;
+
+            for (int w = 0; w < 2; w++)
+            {
+                var wingSection = new GameObject(w == 0 ? "JetWing_MainFoil" : "JetWing_ForwardStrake");
+                wingSection.transform.SetParent(midWingLayer, false);
+                wingSection.transform.localPosition = new Vector3(-11f + w * 22f, w == 0 ? 0.05f : -0.08f, 0f);
+                wingSection.transform.localScale = new Vector3(w == 0 ? 2.8f : 2.2f, 1.35f, 1f);
+                var wingSr = wingSection.AddComponent<SpriteRenderer>();
+                wingSr.sprite = midWingSprite;
+                wingSr.sortingOrder = -27;
+            }
+
+            var strobeGo = new GameObject("JetWing_NavigationStrobe");
+            strobeGo.transform.SetParent(midWingLayer, false);
+            strobeGo.transform.localPosition = new Vector3(-14.5f, 0.18f, 0f);
+            strobeGo.transform.localScale = new Vector3(1.1f, 0.55f, 1f);
+            wingStrobeRenderer = strobeGo.AddComponent<SpriteRenderer>();
+            wingStrobeRenderer.sprite = softGlowSprite;
+            wingStrobeRenderer.sortingOrder = -26;
+            wingStrobeRenderer.color = new Color(0.2f, 0.95f, 1f, 0.85f);
+
+            // High-speed scrolling clouds, city lights & Honmoon streaks moving right-to-left between Far Sky (-29) and Near Fuselage (-25)
             for (int i = 0; i < 28; i++)
             {
                 var streakGo = new GameObject("Airplane_WindowFlightStreak_" + i);
@@ -130,10 +187,10 @@ namespace HuntrX.Gameplay.Levels
 
                 var sr = streakGo.AddComponent<SpriteRenderer>();
                 sr.sprite = softGlowSprite;
-                sr.sortingOrder = -24; // Renders across the window glass band behind characters and platforms
+                sr.sortingOrder = isCloud ? -28 : -26; // Renders behind the alpha-cutout cabin fuselage (-25)
                 sr.color = isCloud
-                    ? new Color(0.55f, 0.42f, 0.98f, 0.38f)
-                    : ((i % 2 == 0) ? new Color(0.20f, 0.95f, 1f, 0.52f) : new Color(1f, 0.30f, 0.85f, 0.46f));
+                    ? new Color(0.55f, 0.42f, 0.98f, 0.52f)
+                    : ((i % 2 == 0) ? new Color(0.20f, 0.95f, 1f, 0.65f) : new Color(1f, 0.30f, 0.85f, 0.58f));
 
                 windowFlightStreaks.Add(streakGo.transform);
                 windowStreakSpeeds.Add(isCloud ? (8.5f + (i % 4) * 2.2f) : (18f + (i % 5) * 4.5f));
@@ -147,33 +204,27 @@ namespace HuntrX.Gameplay.Levels
                 ? new Vector3(baseLocalPos.x + 22.2f, baseLocalPos.y - 0.2f, 0f)
                 : new Vector3(22.2f, -0.2f, 0f);
 
-            var doorFrame = new GameObject("Cockpit_ArmorDoorFrame");
-            doorFrame.transform.SetParent(bulkheadRoot.transform, false);
-            doorFrame.transform.localScale = new Vector3(4.2f, 7.2f, 1f);
-            var frameSr = doorFrame.AddComponent<SpriteRenderer>();
-            frameSr.sprite = solidBlockSprite;
-            frameSr.sortingOrder = -18;
-            frameSr.color = new Color(0.11f, 0.13f, 0.24f, 0.98f);
-
-            var innerDoor = new GameObject("Cockpit_BlastDoor");
-            innerDoor.transform.SetParent(bulkheadRoot.transform, false);
-            innerDoor.transform.localScale = new Vector3(3.2f, 6.2f, 1f);
-            var innerSr = innerDoor.AddComponent<SpriteRenderer>();
-            innerSr.sprite = solidBlockSprite;
-            innerSr.sortingOrder = -17;
-            innerSr.color = new Color(0.05f, 0.06f, 0.13f, 0.98f);
+            Sprite cockpitDoorArt = LoadCockpitDoorSprite();
+            var artDoor = new GameObject("Cockpit_ArmorDoorFrame");
+            artDoor.transform.SetParent(bulkheadRoot.transform, false);
+            artDoor.transform.localPosition = new Vector3(0.4f, 0.25f, 0f);
+            float h = (cockpitDoorArt != null && cockpitDoorArt.bounds.size.y > 0.01f) ? (7.4f / cockpitDoorArt.bounds.size.y) : 1f;
+            artDoor.transform.localScale = new Vector3(h, h, 1f);
+            var artSr = artDoor.AddComponent<SpriteRenderer>();
+            artSr.sprite = cockpitDoorArt != null ? cockpitDoorArt : solidBlockSprite;
+            artSr.sortingOrder = -24;
 
             // Glowing red/amber Capcom Boss Warning Stripes & Radar Beacons on the Cockpit Door
             for (int b = 0; b < 3; b++)
             {
                 var beacon = new GameObject("Cockpit_WarningBeacon_" + b);
                 beacon.transform.SetParent(bulkheadRoot.transform, false);
-                beacon.transform.localPosition = new Vector3(0f, 2.2f - b * 1.4f, 0f);
-                beacon.transform.localScale = new Vector3(2.6f, 0.28f, 1f);
+                beacon.transform.localPosition = new Vector3(0.4f, 2.55f - b * 1.15f, 0f);
+                beacon.transform.localScale = new Vector3(0.62f, 0.12f, 1f);
                 var bSr = beacon.AddComponent<SpriteRenderer>();
                 bSr.sprite = solidBlockSprite;
-                bSr.sortingOrder = -16;
-                bSr.color = new Color(1f, 0.18f, 0.28f, 0.92f);
+                bSr.sortingOrder = -23;
+                bSr.color = new Color(1f, 0.18f, 0.28f, 0.85f);
                 cockpitBeaconLights.Add(bSr);
             }
         }
@@ -185,6 +236,7 @@ namespace HuntrX.Gameplay.Levels
 
             if (activeCamera == null) activeCamera = Camera.main;
             Vector3 parallaxOffset = Vector3.zero;
+            Vector3 camDelta = Vector3.zero;
             if (activeCamera != null)
             {
                 if (!cameraSampled)
@@ -192,12 +244,11 @@ namespace HuntrX.Gameplay.Levels
                     initialCameraPos = activeCamera.transform.position;
                     cameraSampled = true;
                 }
-                Vector3 camDelta = activeCamera.transform.position - initialCameraPos;
-                if (!float.IsNaN(camDelta.x) && !float.IsInfinity(camDelta.x))
-                {
-                    // Smooth parallax tracking so backdrop moves subtly with the camera
-                    parallaxOffset = new Vector3(camDelta.x * 0.14f, camDelta.y * 0.08f, 0f);
-                }
+                camDelta = activeCamera.transform.position - initialCameraPos;
+                if (float.IsNaN(camDelta.x) || float.IsInfinity(camDelta.x)) camDelta.x = 0f;
+                if (float.IsNaN(camDelta.y) || float.IsInfinity(camDelta.y)) camDelta.y = 0f;
+                // Near plane (Cabin Fuselage with alpha-cutout windows): 0.14x world shift
+                parallaxOffset = new Vector3(camDelta.x * 0.14f, camDelta.y * 0.08f, 0f);
             }
 
             // Subtle living background motion (gentle breathing zoom + stage-specific sway)
@@ -216,6 +267,26 @@ namespace HuntrX.Gameplay.Levels
             transform.localPosition = baseLocalPos + parallaxOffset + new Vector3(swayX, swayY, 0f);
             transform.localScale = new Vector3(baseLocalScale.x * breathScale, baseLocalScale.y * breathScale, 1f);
             transform.localRotation = Quaternion.Euler(0f, 0f, rollDeg);
+
+            if (farSkyLayer != null)
+            {
+                // Far Night Sky & Clouds shift at 0.72x total world delta (0.14 parent + 0.58 child), plus slow cloud drift
+                float cloudDrift = -((clock * 0.65f) % 12f);
+                farSkyLayer.localPosition = new Vector3(camDelta.x * 0.58f + cloudDrift, 0.25f + camDelta.y * 0.12f, 0f);
+            }
+
+            if (midWingLayer != null)
+            {
+                // Mid Jet Wing shifts at 0.42x total world delta (0.14 parent + 0.28 child), sliding visibly past the cabin windows!
+                float wingBob = Mathf.Sin(clock * 3.1f) * 0.04f;
+                midWingLayer.localPosition = new Vector3(-2.5f + camDelta.x * 0.28f, 0.12f + wingBob, 0f);
+            }
+
+            if (wingStrobeRenderer != null)
+            {
+                float strobe = Mathf.Pow(0.5f + 0.5f * Mathf.Sin(clock * 6.5f), 3f);
+                wingStrobeRenderer.color = new Color(0.25f, 0.95f, 1f, 0.25f + 0.70f * strobe);
+            }
 
             // Animate high-speed airplane window flight clouds & streaks moving right-to-left!
             for (int i = 0; i < windowFlightStreaks.Count; i++)
@@ -271,6 +342,156 @@ namespace HuntrX.Gameplay.Levels
             }
         }
 
+        private Sprite LoadCockpitDoorSprite()
+        {
+            Sprite s = UnityEngine.Resources.Load<Sprite>("Art/Stages/airplane_cockpit_door");
+            if (s != null) return s;
+            Texture2D tex = UnityEngine.Resources.Load<Texture2D>("Art/Stages/airplane_cockpit_door");
+            if (tex != null)
+            {
+                ownedCockpitDoorSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+                return ownedCockpitDoorSprite;
+            }
+            ownedCockpitDoorTex = CreateArmoredCockpitDoorTexture();
+            ownedCockpitDoorSprite = Sprite.Create(
+                ownedCockpitDoorTex,
+                new Rect(0, 0, ownedCockpitDoorTex.width, ownedCockpitDoorTex.height),
+                new Vector2(0.5f, 0.5f),
+                26f);
+            return ownedCockpitDoorSprite;
+        }
+
+        private static Texture2D CreateArmoredCockpitDoorTexture()
+        {
+            const int w = 96;
+            const int h = 192;
+            var tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+            tex.filterMode = FilterMode.Bilinear;
+            tex.wrapMode = TextureWrapMode.Clamp;
+
+            for (int y = 0; y < h; y++)
+            {
+                float ny = y / (float)(h - 1);
+                for (int x = 0; x < w; x++)
+                {
+                    // Outer metallic bulkhead frame matching cabin ribs
+                    Color col = Color.Lerp(
+                        new Color(0.20f, 0.23f, 0.38f, 0.96f),
+                        new Color(0.32f, 0.36f, 0.56f, 0.96f),
+                        0.5f + 0.5f * Mathf.Sin(ny * Mathf.PI * 6f));
+
+                    // Outer neon cyan/magenta conduit trim
+                    if (x < 4 || x >= w - 4)
+                    {
+                        col = (ny > 0.5f)
+                            ? new Color(0.18f, 0.92f, 1.0f, 0.98f)
+                            : new Color(0.95f, 0.28f, 0.82f, 0.98f);
+                    }
+                    // Top hazard header stripe
+                    else if (ny > 0.88f && ny < 0.95f && x > 10 && x < w - 10)
+                    {
+                        bool stripe = (((x + y) / 6) % 2) == 0;
+                        col = stripe
+                            ? new Color(0.98f, 0.72f, 0.14f, 0.98f)
+                            : new Color(0.14f, 0.12f, 0.22f, 0.98f);
+                    }
+                    // Inner blast door panels with central hydraulic seam
+                    else if (x >= 12 && x < w - 12 && ny >= 0.06f && ny <= 0.85f)
+                    {
+                        bool centerSeam = Mathf.Abs(x - w / 2) <= 2;
+                        bool ribLine = (y % 28) <= 2;
+                        if (centerSeam)
+                        {
+                            col = new Color(0.12f, 0.82f, 0.96f, 0.95f);
+                        }
+                        else if (ribLine)
+                        {
+                            col = new Color(0.42f, 0.48f, 0.68f, 0.96f);
+                        }
+                        else
+                        {
+                            col = new Color(0.24f, 0.28f, 0.45f, 0.94f);
+                        }
+                    }
+
+                    tex.SetPixel(x, y, col);
+                }
+            }
+
+            tex.Apply();
+            return tex;
+        }
+
+        private static Texture2D CreateNightSkyCloudBankTexture()
+        {
+            const int w = 256;
+            const int h = 96;
+            var tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+            tex.filterMode = FilterMode.Bilinear;
+            tex.wrapMode = TextureWrapMode.Repeat;
+            for (int y = 0; y < h; y++)
+            {
+                float ny = y / (float)(h - 1);
+                Color sky = Color.Lerp(new Color(0.08f, 0.05f, 0.24f, 1f), new Color(0.22f, 0.10f, 0.48f, 1f), Mathf.SmoothStep(0f, 1f, 1f - Mathf.Abs(ny - 0.35f) * 1.5f));
+                for (int x = 0; x < w; x++)
+                {
+                    float nx = x / (float)w;
+                    float wave1 = Mathf.Sin(nx * Mathf.PI * 6f) * 0.09f + Mathf.Cos(nx * Mathf.PI * 14f) * 0.04f;
+                    float cloudBand = 1f - Mathf.Clamp01(Mathf.Abs(ny - (0.38f + wave1)) / 0.18f);
+                    Color c = Color.Lerp(sky, new Color(0.48f, 0.34f, 0.88f, 1f), cloudBand * 0.72f);
+                    if (ny < 0.26f && ((x * 17 + y * 31) % 29 == 0))
+                    {
+                        c = Color.Lerp(c, new Color(1f, 0.78f, 0.32f, 1f), 0.85f); // Distant Seoul city horizon lights
+                    }
+                    tex.SetPixel(x, y, c);
+                }
+            }
+            tex.Apply();
+            return tex;
+        }
+
+        private static Texture2D CreateJetWingTexture()
+        {
+            const int w = 256;
+            const int h = 64;
+            var tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+            tex.filterMode = FilterMode.Bilinear;
+            tex.wrapMode = TextureWrapMode.Clamp;
+            for (int y = 0; y < h; y++)
+            {
+                float ny = y / (float)(h - 1);
+                for (int x = 0; x < w; x++)
+                {
+                    float nx = x / (float)(w - 1);
+                    // Swept-back metallic wing silhouette across the lower half of the window band
+                    float leadingEdgeY = 0.62f - nx * 0.22f;
+                    float trailingEdgeY = 0.14f + nx * 0.08f;
+                    if (ny <= leadingEdgeY && ny >= trailingEdgeY)
+                    {
+                        float foilT = Mathf.InverseLerp(trailingEdgeY, leadingEdgeY, ny);
+                        Color hull = Color.Lerp(new Color(0.16f, 0.20f, 0.34f, 0.96f), new Color(0.46f, 0.56f, 0.76f, 0.96f), foilT);
+                        if (Mathf.Abs(foilT - 0.85f) < 0.07f)
+                        {
+                            // Glowing cyan Honmoon leading-edge trim strip on the HUNTR/X jet wing
+                            hull = new Color(0.18f, 0.94f, 1f, 0.98f);
+                        }
+                        else if (Mathf.Abs(foilT - 0.22f) < 0.06f && ((x / 12) % 2 == 0))
+                        {
+                            // Magenta/gold flap actuator accents
+                            hull = new Color(0.95f, 0.28f, 0.78f, 0.95f);
+                        }
+                        tex.SetPixel(x, y, hull);
+                    }
+                    else
+                    {
+                        tex.SetPixel(x, y, new Color(0f, 0f, 0f, 0f));
+                    }
+                }
+            }
+            tex.Apply();
+            return tex;
+        }
+
         private static Texture2D CreateSoftGlowTexture()
         {
             var tex = new Texture2D(32, 32, TextureFormat.RGBA32, false);
@@ -313,6 +534,12 @@ namespace HuntrX.Gameplay.Levels
             if (softGlowTex != null) Destroy(softGlowTex);
             if (solidBlockSprite != null) Destroy(solidBlockSprite);
             if (solidBlockTex != null) Destroy(solidBlockTex);
+            if (farSkySprite != null) Destroy(farSkySprite);
+            if (farSkyTex != null) Destroy(farSkyTex);
+            if (midWingSprite != null) Destroy(midWingSprite);
+            if (midWingTex != null) Destroy(midWingTex);
+            if (ownedCockpitDoorSprite != null) Destroy(ownedCockpitDoorSprite);
+            if (ownedCockpitDoorTex != null) Destroy(ownedCockpitDoorTex);
         }
     }
 }

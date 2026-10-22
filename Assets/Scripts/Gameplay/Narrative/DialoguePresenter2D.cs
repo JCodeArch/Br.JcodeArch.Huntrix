@@ -49,6 +49,8 @@ namespace HuntrX.Gameplay.Narrative
         public void SetCaptionsEnabled(bool value) { captionsEnabled = value; }
         public void SetEnglish(bool value){english=value;}
         public void SetAudio(GameAudioManager2D value){audioManager=value;}
+        public static Rect GetCutsceneInsetViewportRect(float width, float height) => new Rect(width * 0.72f, height * 0.03f, width * 0.24f, height * 0.22f);
+        public static Rect GetDialoguePanelViewportRect(float width, float height) => new Rect(width * 0.08f, height * 0.72f, width * 0.84f, height * 0.23f);
         public bool Advance()
         {
             if(!isActiveAndEnabled||publishing||sequence==null)return false;
@@ -73,20 +75,21 @@ namespace HuntrX.Gameplay.Narrative
             if(uiBlocked||sequence==null)return;NarrativeLine line=sequence.GetLine(index);if(!Resolve(sequence,index,out string text)){Cancel();return;}
             float w=Screen.width,h=Screen.height;
 
-            // Mega Man X4 Style Anime Cutscene Backdrop Panel above dialogue
+            // Compact Mega Man X4 Style Anime Cutscene Picture-in-Picture Card (top-right, never occluding the in-world VIP stage tableau!)
             Texture2D animeScene = ResolveAnimeCutsceneTexture(sequence.CueId, line.Speaker);
             if (animeScene != null)
             {
-                Rect cinemaRect = new Rect(w * .14f, h * .08f, w * .72f, h * .56f);
+                Rect cinemaRect = GetCutsceneInsetViewportRect(w, h);
                 Color prev = GUI.color;
                 GUI.color = new Color(0.05f, 0.03f, 0.12f, 0.92f);
-                GUI.DrawTexture(new Rect(cinemaRect.x - 4, cinemaRect.y - 4, cinemaRect.width + 8, cinemaRect.height + 8), Texture2D.whiteTexture);
+                GUI.DrawTexture(new Rect(cinemaRect.x - 3, cinemaRect.y - 3, cinemaRect.width + 6, cinemaRect.height + 6), Texture2D.whiteTexture);
                 GUI.color = Color.white;
                 GUI.DrawTexture(cinemaRect, animeScene, ScaleMode.ScaleAndCrop);
                 GUI.color = prev;
             }
 
-            Rect panel=new Rect(w*.08f,h*.67f,w*.84f,h*.28f);GUI.Box(panel,GUIContent.none);
+            Rect panel = GetDialoguePanelViewportRect(w, h);
+            GUI.Box(panel,GUIContent.none);
             Texture2D portraitTex = ResolveSpeakerPortrait(line.Speaker);
             if (portraitTex != null)
             {

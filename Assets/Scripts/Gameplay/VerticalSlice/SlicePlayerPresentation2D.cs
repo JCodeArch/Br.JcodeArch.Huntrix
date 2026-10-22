@@ -208,7 +208,8 @@ namespace HuntrX.Gameplay.VerticalSlice
             vfxSlashObject = new GameObject("Capcom_WeaponSlash_VFX");
             vfxSlashObject.transform.SetParent(after.transform, false);
             vfxSlashRenderer = vfxSlashObject.AddComponent<SpriteRenderer>();
-            vfxSlashRenderer.sortingOrder = 22;
+            // Keep the weapon arc visible over enemies without covering the active heroine.
+            vfxSlashRenderer.sortingOrder = mainRenderer.sortingOrder - 1;
             vfxSlashRenderer.enabled = false;
 
             for (int i = 0; i < ghostRenderers.Length; i++)

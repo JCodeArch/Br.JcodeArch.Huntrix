@@ -34,6 +34,49 @@ namespace HuntrX.Tests.PlayMode
         private static void SetHealth(DamageReceiver2D receiver, float value) =>
             typeof(DamageReceiver2D).GetField("<CurrentHealth>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(receiver, value);
 
+        [UnityTest] public IEnumerator ActiveHeroineRendererIsNotSmallerThanRegularCrew()
+        {
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
+            var actor = session.Manager.ActiveCharacter;
+            var heroine = actor.transform.Find("Player prototype silhouette")?.GetComponent<SpriteRenderer>();
+            Assert.That(heroine != null && heroine.sprite != null, Is.True, "The active heroine needs a gameplay sprite.");
+
+            EnemyAgent2D crew = null;
+            foreach (var enemy in Object.FindObjectsByType<EnemyAgent2D>(FindObjectsSortMode.None))
+                if (enemy.name.StartsWith("FlightCrew_MagentaStewardess_")) { crew = enemy; break; }
+            Assert.That(crew, Is.Not.Null, "The airplane needs a regular crew reference for scale calibration.");
+            var demon = crew.transform.Find("Prototype silhouette")?.GetComponent<SpriteRenderer>();
+            Assert.That(demon != null && demon.sprite != null, Is.True);
+
+            float heroineHeight = heroine.bounds.size.y;
+            float demonHeight = demon.bounds.size.y;
+            Debug.Log($"Combat renderer scale: heroine={heroineHeight:F3} world units, crew={demonHeight:F3}, ratio={heroineHeight / demonHeight:F3}; hero PPU={heroine.sprite.pixelsPerUnit:F1}, scale={heroine.transform.lossyScale.y:F3}");
+            Assert.That(heroineHeight / demonHeight, Is.GreaterThanOrEqualTo(0.75f),
+                "Keep the heroine's renderer height above three quarters of a regular crew demon; perceptual readability still needs player review.");
+            yield return null;
+        }
+
+        [UnityTest] public IEnumerator AttackTrailDrawsBehindHeroineAndAheadOfCrew()
+        {
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
+            var actor = session.Manager.ActiveCharacter;
+            var heroine = actor.transform.Find("Player prototype silhouette")?.GetComponent<SpriteRenderer>();
+            var trail = actor.transform.Find("Capcom_WeaponSlash_VFX")?.GetComponent<SpriteRenderer>();
+            Assert.That(heroine, Is.Not.Null);
+            Assert.That(trail, Is.Not.Null);
+
+            EnemyAgent2D crew = null;
+            foreach (var enemy in Object.FindObjectsByType<EnemyAgent2D>(FindObjectsSortMode.None))
+                if (enemy.name.StartsWith("FlightCrew_MagentaStewardess_")) { crew = enemy; break; }
+            Assert.That(crew, Is.Not.Null);
+            var demon = crew.transform.Find("Prototype silhouette")?.GetComponent<SpriteRenderer>();
+            Assert.That(demon, Is.Not.Null);
+
+            Assert.That(trail.sortingOrder, Is.GreaterThan(demon.sortingOrder).And.LessThan(heroine.sortingOrder),
+                "The sword trail must show impact without painting over the heroine's silhouette.");
+            yield return null;
+        }
+
         [UnityTest] public IEnumerator OpeningViewportIsEmptyOfEnemiesAndAHeroineStandingStillIsNotHurt()
         {
             var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();

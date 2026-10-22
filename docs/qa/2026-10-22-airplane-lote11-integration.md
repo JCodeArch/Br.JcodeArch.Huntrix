@@ -1,0 +1,11 @@
+# Airplane Lot 11 integration — 22/10/2026
+
+The isolated Antigravity patch `outputs/airplane-lote11-narrative-parallax.patch` applied cleanly on merged `develop` (`3919852`) and was committed as `402289e` on `feature/airplane-lote11`. It changes only five C# files. The mandatory Captain Dokkaebi spawn guard from `dff8521` remains present.
+
+The VIP opening now holds its authored frames until dialogue ends, frames Rumi, Mira, and Zoey inside the initial camera view, and displays the anime still as a smaller top-right card. The airplane backdrop has alpha-cutout windows with distinct far-sky, wing, and fuselage motion, translucent interior platforms, and an anchored armored cockpit door.
+
+In the Codex clone, Unity 6000.6.4f1 passed the complete PlayMode suite **561/561** (`outputs/lote11-codex-playmode.xml`) and EditMode suite **156/156** (`outputs/lote11-codex-editmode.xml`). Windows Development build of commit `402289e` succeeded with **0 errors and 0 warnings** (`outputs/b86/Windows.evidence.json`; artifact SHA-256 manifest `f4c43b9cffaf38c1f9facc12199e9dbe59876c483406eea83896bfff2431e6b1`). An initial Windows build also succeeded but lacked a machine-readable evidence manifest because the invocation omitted `-huntrxEvidence`; b86 is the accepted packaging run.
+
+Antigravity supplied native 1280×720 GameView captures in `D:/Workspace/Br.JcodeArch.Huntrix/outputs/lote11-player-native-1280x720/`. They show the opening, intro frames, corridor, and cockpit with HUD and Rumi visible. The heroine was positioned at selected checkpoints for those frames; they establish visual staging, not a continuous traversal or combat completion. The separate camera-buffer renders have no HUD and are not player evidence. We did not accept the D-checkout Windows build because its dirty package manifest produced 495 `ConvGeneric.compute` warnings.
+
+The airplane is still **not accepted as fully playable**. An end-to-end player run from x=1 to x=47 without teleport or `ClearEnemies()` remains necessary. The crew morph should start when the player approaches, and the cockpit needs an unlock cue. Essential gameplay audio, boss entrance, and exit transition remain separate work.

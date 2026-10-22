@@ -81,13 +81,11 @@ namespace HuntrX.Gameplay.VerticalSlice
             for (int i = 0; i < extraCabinSpawns.Length; i++)
             {
                 GameObject prefab = i == extraCabinSpawns.Length - 1 ? captainEnemy : groundEnemy;
-                if (owner.TrySpawnEnemy(prefab, extraCabinSpawns[i], out EnemyAgent2D extra) && extra != null)
-                {
-                    extra.gameObject.name = extraRoles[i];
-                    extra.TrySetAggroRangeLimit(EncounterAggroRange);
-                    var vis = extra.GetComponent<EnemyPrototypeVisual2D>();
-                    if (vis != null) vis.RefreshCasteAssignment();
-                }
+                if (!owner.TrySpawnEnemy(prefab, extraCabinSpawns[i], out EnemyAgent2D extra) || extra == null) return false;
+                extra.gameObject.name = extraRoles[i];
+                extra.TrySetAggroRangeLimit(EncounterAggroRange);
+                var vis = extra.GetComponent<EnemyPrototypeVisual2D>();
+                if (vis != null) vis.RefreshCasteAssignment();
             }
 
             if (owner.Manager != null && owner.Manager.ActiveCharacter != null)

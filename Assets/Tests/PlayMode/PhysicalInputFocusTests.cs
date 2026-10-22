@@ -30,6 +30,7 @@ namespace HuntrX.Tests.PlayMode
 #endif
             slice = SceneManager.GetActiveScene();
             yield return null;
+            yield return NarrativeTestFlow.CompleteCurrentDialogue();
             input = Object.FindAnyObjectByType<VerticalSliceSession2D>().Input;
             input.ActionsRequested += observed.Add;
         }

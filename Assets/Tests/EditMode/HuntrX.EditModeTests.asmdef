@@ -4,7 +4,8 @@
   "references": [
     "HuntrX.Runtime",
     "HuntrX.Editor",
-    "UnityEngine.UI"
+    "UnityEngine.UI",
+    "Unity.2D.Sprite.Editor"
   ],
   "includePlatforms": [
     "Editor"

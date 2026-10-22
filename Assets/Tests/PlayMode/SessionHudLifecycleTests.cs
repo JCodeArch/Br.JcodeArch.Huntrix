@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using System.Reflection;
 using HuntrX.Gameplay.VerticalSlice;
 using HuntrX.Presentation.Hud;
 using HuntrX.Presentation.UI;
@@ -24,11 +25,40 @@ namespace HuntrX.Tests.PlayMode
 #endif
             slice = SceneManager.GetActiveScene();
             yield return null;
+            yield return NarrativeTestFlow.CompleteCurrentDialogue();
         }
         [UnityTearDown] public IEnumerator Unload()
         {
+            var active = SceneManager.GetActiveScene();
+            var toUnload = active.name == "VerticalSlice" ? active : slice;
             SceneManager.SetActiveScene(SceneManager.CreateScene("SessionHudCleanup"));
-            yield return SceneManager.UnloadSceneAsync(slice);
+            if (toUnload.IsValid() && toUnload.isLoaded) yield return SceneManager.UnloadSceneAsync(toUnload);
+        }
+        [UnityTest] public IEnumerator CompletedSessionCanRestartWithoutSubmittingFeedback()
+        {
+            // The editor scene-loading helper leaves buildIndex at -1; replay uses the player Build Settings route.
+            yield return SceneManager.LoadSceneAsync("VerticalSlice", LoadSceneMode.Single);
+            slice = SceneManager.GetActiveScene();
+            yield return null;
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
+            var hud = Object.FindAnyObjectByType<SliceHud2D>();
+            Assert.That(hud, Is.Not.Null);
+            var recorder = Object.FindAnyObjectByType<SlicePlaytestRecorder2D>();
+            Assert.That(recorder, Is.Not.Null);
+            Assert.That(slice.buildIndex, Is.GreaterThanOrEqualTo(0), "Replay requires a scene registered in Build Settings.");
+            session.Stop();
+            typeof(VerticalSliceSession2D).GetProperty("IsComplete").SetValue(session, true);
+            Assert.That(session.IsComplete, Is.True);
+            var restart = typeof(SliceHud2D).GetMethod("RestartCompletedSession", BindingFlags.Instance | BindingFlags.NonPublic,
+                null, new[] { typeof(bool) }, null);
+            Assert.That(restart, Is.Not.Null, "The HUD needs an explicit replay path independent of feedback storage.");
+            restart.Invoke(hud, new object[] { false });
+            yield return null;
+            Assert.That(SceneManager.GetActiveScene().name, Is.EqualTo("VerticalSlice"));
+            Assert.That(hud == null, Is.True,
+                "Replay must destroy the previous HUD when it reloads the stage. Status: " +
+                typeof(SliceHud2D).GetField("feedback", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(hud));
+            Assert.That(Object.FindAnyObjectByType<SliceHud2D>(), Is.Not.Null);
         }
         [UnityTest] public IEnumerator StopReleasesTelemetryAndNextFrameRestartRendersNewResources()
         {
@@ -48,6 +78,8 @@ namespace HuntrX.Tests.PlayMode
             // Waited one frame so this tests presentation rebinding, independent of same-frame camera teardown.
             Assert.That(session.TryBegin(), Is.True);
             Assert.That(session.Manager, Is.Not.SameAs(previousManager));
+            // Finish the restarted composition's intro, just as the initial Load setup does.
+            yield return NarrativeTestFlow.CompleteCurrentDialogue();
             Assert.That(session.Honmoon.TrySetValue(47), Is.True);
             yield return null;
             Assert.That(hud.GetComponentInChildren<Canvas>(true).enabled, Is.True);
@@ -66,12 +98,67 @@ namespace HuntrX.Tests.PlayMode
             var body = session.Manager.ActiveCharacter.GetComponent<Rigidbody2D>();
             body.position = session.Stage.EndPoint.position;
             body.linearVelocity = Vector2.zero;
+            // A render-frame count does not guarantee a physics step in a fast batch run.
+            yield return new WaitForFixedUpdate();
             for (int frame = 0; frame < 10 && session.BeatIndex == 0; frame++) yield return null;
-            Assert.That(session.BeatIndex, Is.EqualTo(1));
+            Assert.That(session.BeatIndex, Is.EqualTo(1),
+                $"actor={session.Manager.ActiveCharacter.transform.position}, body={body.position}, " +
+                $"alive={session.Manager.ActiveCharacter.IsAlive}, running={session.IsRunning}, " +
+                $"canEnter={session.Manager.CanEnterStage}, enemies={session.LivingEnemies}, aerial={session.Aerial.Count}");
             yield return null;
             Assert.That(Label(hud, "Beat"), Is.EqualTo(session.BeatTitle).And.Not.EqualTo(previous));
             Assert.That(hud.GetComponentInChildren<Canvas>(true), Is.SameAs(canvas));
             Assert.That(canvas.enabled, Is.True);
+        }
+        [UnityTest] public IEnumerator AirplaneIntroReleasesAllSeatedCharacterArtBeforeCombatPresentation()
+        {
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
+            var beat = Object.FindAnyObjectByType<SliceAirplaneBeat2D>();
+            var intro = session.Stage.RuntimeRoot.transform.Find("VIP_RearLounge_EatingScene");
+            Assert.That(intro, Is.Not.Null);
+            Assert.That(intro.GetComponentsInChildren<SpriteRenderer>().Length, Is.EqualTo(2));
+            beat.Tick(3.3f);
+            beat.Tick(0f);
+            Assert.That(intro.GetComponentsInChildren<SpriteRenderer>().All(renderer => !renderer.enabled), Is.True,
+                "Seated heroines must not remain as giant duplicate characters over live combat.");
+            Assert.That(session.Manager.ActiveCharacter, Is.Not.Null);
+            yield return null;
+        }
+        [UnityTest] public IEnumerator AirplaneRuntimeEnemiesStartOutsideSolidPlatforms()
+        {
+            var session = Object.FindAnyObjectByType<VerticalSliceSession2D>();
+            session.Stop();
+            yield return null;
+            Assert.That(session.TryBegin(), Is.True);
+            Physics2D.SyncTransforms();
+            var platforms = session.Stage.RuntimeRoot.GetComponentsInChildren<BoxCollider2D>();
+            var enemies = Object.FindObjectsByType<HuntrX.Gameplay.Enemies.EnemyAgent2D>();
+            Assert.That(enemies.Length, Is.GreaterThanOrEqualTo(6), "Include the extra corridor guards, not only authored spawn points.");
+            foreach (var enemy in enemies)
+            {
+                var capsule = enemy.GetComponent<CapsuleCollider2D>();
+                Assert.That(capsule, Is.Not.Null);
+                foreach (var platform in platforms)
+                {
+                    var a = capsule.bounds;
+                    var b = platform.bounds;
+                    bool overlaps = a.min.x < b.max.x && a.max.x > b.min.x && a.min.y < b.max.y && a.max.y > b.min.y;
+                    Assert.That(overlaps, Is.False, enemy.name + " starts inside " + platform.name + " at " + enemy.transform.position);
+                }
+            }
+        }
+        [UnityTest] public IEnumerator AirplaneCaptainUsesThePhasedMinibossController()
+        {
+            var enemies = Object.FindObjectsByType<HuntrX.Gameplay.Enemies.EnemyAgent2D>();
+            var captain = enemies.Single(enemy => enemy.name == "BOSS_Cockpit_CaptainDokkaebi");
+            var guard = enemies.First(enemy => enemy.name.StartsWith("FlightCrew_"));
+            Assert.That(captain.GetComponent<HuntrX.Gameplay.Enemies.MinibossPhaseController2D>(), Is.Not.Null,
+                "The captain must have a phased fight, rather than only a new name on a ground guard.");
+            var pattern = captain.GetComponent<HuntrX.Gameplay.Enemies.EnemyPatternController2D>();
+            Assert.That(pattern, Is.Not.Null);
+            Assert.That(pattern.Definition.IsValid(out string reason), Is.True, reason);
+            Assert.That(captain.Self.MaximumHealth, Is.GreaterThan(guard.Self.MaximumHealth));
+            yield return null;
         }
         private static string Label(Component hud, string name) =>
             hud.GetComponentsInChildren<Text>(true).Single(text => text.name == name).text;

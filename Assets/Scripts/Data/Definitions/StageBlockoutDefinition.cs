@@ -41,6 +41,27 @@ namespace HuntrX.Data
         public Vector2 GetAerialSpawn(int index) => aerialSpawns[index];
         public int FanSpawnCount => fanSpawns?.Length ?? 0;
         public Vector2 GetFanSpawn(int index) => fanSpawns[index];
+        /// <summary>Union of platform extents with start, end and arena points; false when the stage has no valid geometry.</summary>
+        public bool TryGetWorldBounds(out Rect bounds)
+        {
+            bounds = default;
+            if (platforms == null || platforms.Length == 0 || !IsValid(out _)) return false;
+            float minX = float.MaxValue, minY = float.MaxValue, maxX = float.MinValue, maxY = float.MinValue;
+            foreach (BlockoutPlatform platform in platforms)
+            {
+                minX = Mathf.Min(minX, platform.Position.x - platform.Size.x * .5f);
+                maxX = Mathf.Max(maxX, platform.Position.x + platform.Size.x * .5f);
+                minY = Mathf.Min(minY, platform.Position.y - platform.Size.y * .5f);
+                maxY = Mathf.Max(maxY, platform.Position.y + platform.Size.y * .5f);
+            }
+            foreach (Vector2 point in new[] { startPosition, endPosition, arenaCenter })
+            {
+                minX = Mathf.Min(minX, point.x); maxX = Mathf.Max(maxX, point.x);
+                minY = Mathf.Min(minY, point.y); maxY = Mathf.Max(maxY, point.y);
+            }
+            bounds = Rect.MinMaxRect(minX, minY, maxX, maxY);
+            return true;
+        }
         public bool IsValid(out string error)
         {
             bool valid = !string.IsNullOrWhiteSpace(stageId) && !string.IsNullOrWhiteSpace(displayName) &&

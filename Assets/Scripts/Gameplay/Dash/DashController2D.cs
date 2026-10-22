@@ -29,6 +29,7 @@ namespace HuntrX.Gameplay.Dash
         public event Action<bool> DashStateChanged;
 
         public bool IsDashing { get; private set; }
+        public bool IsGrounded => isGrounded;
 
         public bool IsInvulnerable => IsDashing;
 

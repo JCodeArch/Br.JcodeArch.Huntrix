@@ -31,6 +31,7 @@ namespace HuntrX.Presentation.Hud
         private AgeVisualFeedback2D ageVisual;
         private bool english, narrativeOwned, priorNarrativeBlocked;
         private DialoguePresenter2D blockedPresenter;
+        private SliceNarrativeComposition2D observedNarrative;
         private CharacterManager2D boundManager, scopedManager;
         private HordeController2D boundHorde;
         private bool options, pauseOwned, inputOwned, priorInputEnabled;
@@ -79,10 +80,9 @@ namespace HuntrX.Presentation.Hud
         private void OnDestroy() { pauseAction?.Dispose(); }
         private void Update()
         {
+            ObserveNarrative();
             if(PausePressed()) options=!options;
-            SetPause(options);
-            SetInputBlocked(options || (session != null && session.IsComplete));
-            SetNarrativeBlocked(options);
+            ApplyGameplayPolicy();
             RefreshVisualSource();
             if(narrative != null && narrative.Presenter != null) { narrative.Presenter.SetEnglish(english); narrative.Presenter.SetCaptionsEnabled(preferences == null || preferences.CaptionsEnabled); }
             if(session==null || session.Manager==null || !session.Manager.isActiveAndEnabled) return;
@@ -107,22 +107,54 @@ namespace HuntrX.Presentation.Hud
             try
             {
                 if(options) { DrawOptions(width,height); return; }
-                GUILayout.BeginArea(new Rect(8,8,Mathf.Min(620,width-16),180),GUI.skin.box);
-                if (!TelemetryPresentedExternally)
-                {
-                GUILayout.Label(session.IsComplete?"Chegamos ao show!":session.BeatTitle);
-                var actor=session.Manager!=null?session.Manager.ActiveCharacter:null;
-                if(actor!=null) GUILayout.Label("Vida "+Mathf.CeilToInt(actor.CurrentHealth)+" / "+Mathf.CeilToInt(actor.MaximumHealth));
-                if(session.Honmoon!=null) GUILayout.Label("Honmoon "+Mathf.RoundToInt(session.Honmoon.Value));
-                if(session.Special!=null) GUILayout.Label("Special "+(session.Special.IsReady?"pronto":"carregando "+Mathf.RoundToInt(session.Special.Charge)));
-                if(session.Inventory!=null) GUILayout.Label("Comida "+session.Inventory.TotalCount+" • R: você • F: fã");
-                }
-                if(GUILayout.Button("Opções e acessibilidade")) { options=true; SetPause(true); SetInputBlocked(true); SetNarrativeBlocked(true); }
-                if(session.IsComplete && recorder==null && GUILayout.Button("Jogar novamente")) RestartCompletedSession();
-                GUILayout.EndArea();
+                DrawCapcomArcadeOverlay(width, height);
                 if(session.IsComplete && recorder!=null) DrawFeedback(width,height);
             }
             finally { GUI.matrix=previous; GUI.skin.label.fontSize=labelFont; GUI.skin.button.fontSize=buttonFont; GUI.skin.textField.fontSize=textFont; GUI.skin.toggle.fontSize=toggleFont; }
+        }
+
+        private void DrawCapcomArcadeOverlay(float width, float height)
+        {
+            var delivery = session.FoodDelivery;
+            int score = delivery != null ? delivery.ArcadeScore : (session.Performance != null ? Mathf.RoundToInt(session.Performance.Snapshot.Points * 100f) : 0);
+            int subTanks = session.Inventory != null ? session.Inventory.TotalCount : 0;
+
+            // Keep the persistent strip brief; the full control legend belongs in Options.
+            float barW = Mathf.Min(340f, width - 32f);
+            float barX = width - barW - 16f;
+            GUILayout.BeginArea(new Rect(barX, height - 56f, barW, 50f), GUI.skin.box);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"★ {score:D6}  •  🍜 {subTanks}x", GUILayout.ExpandWidth(true));
+            if (GUILayout.Button("Opções", GUILayout.Width(90f)))
+            {
+                SetOptionsOpen(true);
+            }
+            if (session.IsComplete && recorder == null && GUILayout.Button("Jogar novamente", GUILayout.Width(140f))) RestartCompletedSession(false);
+            GUILayout.EndHorizontal();
+            if (!TelemetryPresentedExternally)
+            {
+                var actor = session.Manager != null ? session.Manager.ActiveCharacter : null;
+                if (actor != null) GUILayout.Label("Vida " + Mathf.CeilToInt(actor.CurrentHealth) + " / " + Mathf.CeilToInt(actor.MaximumHealth) + " • " + (session.IsComplete ? "Chegamos ao show!" : session.BeatTitle));
+            }
+            GUILayout.EndArea();
+
+            // Live Film Signature Move Banner (Rumi Kick, Zoey Leg Chokehold, Mira Coffee Pot Smash!)
+            if (delivery != null && delivery.SignatureMoveBannerTimer > 0f)
+            {
+                Color prev = GUI.color;
+                GUI.color = new Color(0.2f, 0.95f, 1f, 0.95f);
+                GUI.Box(new Rect(width * 0.5f - 260f, 64f, 520f, 32f), delivery.LastSignatureMoveLabel);
+                GUI.color = prev;
+            }
+
+            // Live Backstage Korean Food Delivery Toast ("Temos que comer antes do show!")
+            if (delivery != null && delivery.DeliveryBannerTimer > 0f)
+            {
+                Color prev = GUI.color;
+                GUI.color = new Color(1f, 0.88f, 0.25f, 0.98f);
+                GUI.Box(new Rect(width * 0.5f - 290f, 100f, 580f, 34f), "🍜 " + delivery.LastDeliveredFoodLabel);
+                GUI.color = prev;
+            }
         }
         private void RefreshVisualSource()
         {
@@ -165,6 +197,28 @@ namespace HuntrX.Presentation.Hud
             if(visualProfile!=null) visualProfile.ProfileChanged-=VisualProfileChanged;
             visualManager=null; visualActor=null; visualProfile=null; ageVisual=null;
         }
+        private void ObserveNarrative()
+        {
+            if(observedNarrative == narrative) return;
+            if(observedNarrative != null) observedNarrative.PresentationChanged -= ApplyGameplayPolicy;
+            observedNarrative = narrative;
+            if(observedNarrative != null) observedNarrative.PresentationChanged += ApplyGameplayPolicy;
+        }
+        private void ApplyGameplayPolicy()
+        {
+            var presenter = narrative != null ? narrative.Presenter : null;
+            bool dialogue = presenter != null && presenter.isActiveAndEnabled && presenter.IsPresenting;
+            SetPause(options || dialogue);
+            SetInputBlocked(options || dialogue || (session != null && session.IsComplete));
+            SetNarrativeBlocked(options);
+        }
+        public void SetOptionsOpen(bool value)
+        {
+            if(!isActiveAndEnabled) return;
+            options = value;
+            ObserveNarrative();
+            ApplyGameplayPolicy();
+        }
         private void SetNarrativeBlocked(bool value)
         {
             DialoguePresenter2D current=narrative!=null?narrative.Presenter:null;
@@ -195,12 +249,12 @@ namespace HuntrX.Presentation.Hud
             if(inputOwned && (!value || blockedInput!=current)) { if(blockedInput!=null) blockedInput.enabled=priorInputEnabled; inputOwned=false; blockedInput=null; }
             if(value && !inputOwned && current!=null) { blockedInput=current; priorInputEnabled=current.enabled; inputOwned=true; current.enabled=false; }
         }
-        private void OnDisable() { pauseAction?.Disable(); options=false; SetPause(false); SetInputBlocked(false); SetNarrativeBlocked(false); UnbindVisualSource(); effects?.SetPresentationPolicy(0f,true,false); }
+        private void OnDisable() { if(observedNarrative!=null) observedNarrative.PresentationChanged-=ApplyGameplayPolicy; observedNarrative=null; pauseAction?.Disable(); options=false; SetPause(false); SetInputBlocked(false); SetNarrativeBlocked(false); UnbindVisualSource(); effects?.SetPresentationPolicy(0f,true,false); }
         private void DrawOptions(float width,float height)
         {
             GUILayout.BeginArea(new Rect(8,8,Mathf.Min(430,width-16),height-16),GUI.skin.box);
             optionsScroll=GUILayout.BeginScrollView(optionsScroll);
-            if(GUILayout.Button("Voltar ao jogo")) { options=false; SetPause(false); SetInputBlocked(session.IsComplete); SetNarrativeBlocked(false); }
+            if(GUILayout.Button("Voltar ao jogo")) { SetOptionsOpen(false); }
             if(ageSelection!=null && ageOptions!=null && ageOptions.Length>0 && ageOptions.Length<=5)
             {
                 GUILayout.Label("Faixa etária: "+(ageSelection.Current!=null?ageSelection.Current.Band.ToString():"Escolher"));
@@ -222,13 +276,13 @@ namespace HuntrX.Presentation.Hud
             GUILayout.Label("A/D: mover • Espaço: pulo • Shift: dash\nJ: ataque • K: parry • Q: troca\nE: resgate • L: Special\nR: comida (você) • F: comida (fã)\nEsc / Start: pausar e opções");
             GUILayout.Space(6);
             GUILayout.Label("Navegação de Fases (Seul):");
-            string[] stageScenes = { "Aviao_Blockout", "Show_Blockout", "Cheongdam_Blockout", "Myeongdong_Blockout", "COEX_Blockout", "Hanok_Blockout", "Naksan_Blockout", "Namsan_Blockout", "Awards_Blockout", "UiLayoutLab" };
-            string[] stageLabels = { "1. Avião (Abertura)", "2. Show (Estádio)", "3. Cheongdam", "4. Myeongdong", "5. COEX Square", "6. Bukchon Hanok", "7. Naksan Park", "8. Namsan Tower", "9. Idol Awards", "Menu / Telas HD" };
+            string[] stageScenes = { "VerticalSlice", "Show_Blockout", "Cheongdam_Blockout", "Myeongdong_Blockout", "COEX_Blockout", "Hanok_Blockout", "Naksan_Blockout", "Namsan_Blockout", "Awards_Blockout", "UiLayoutLab" };
+            string[] stageLabels = { "1. Avião (Abertura - Campanha)", "2. Show (Estádio)", "3. Cheongdam", "4. Myeongdong", "5. COEX Square", "6. Bukchon Hanok", "7. Naksan Park", "8. Namsan Tower", "9. Idol Awards", "Menu / Telas HD" };
             for (int i = 0; i < stageScenes.Length; i++)
             {
                 if (GUILayout.Button(stageLabels[i]))
                 {
-                    options = false; SetPause(false); SetInputBlocked(false); SetNarrativeBlocked(false);
+                    SetOptionsOpen(false);
                     SceneManager.LoadScene(stageScenes[i]);
                 }
             }
@@ -247,17 +301,18 @@ namespace HuntrX.Presentation.Hud
             {
                 feedback=recorder.TrySubmitFeedback(fun,difficulty,comments) && recorder.TrySaveReport(out _)?"Avaliação salva":"Não foi possível salvar";
             }
-            if(GUILayout.Button("Salvar avaliação e jogar novamente")) RestartCompletedSession();
+            if(GUILayout.Button("Salvar avaliação e jogar novamente")) RestartCompletedSession(true);
+            if(GUILayout.Button("Jogar novamente sem salvar")) RestartCompletedSession(false);
             if(recorder.Report!=null) GUILayout.Label(recorder.Report.CompleteWindow?"Registro de 60 segundos completo":"Registro ainda incompleto");
             if(!string.IsNullOrEmpty(feedback)) GUILayout.Label(feedback);
             GUILayout.EndScrollView(); GUILayout.EndArea();
         }
-        private void RestartCompletedSession()
+        private void RestartCompletedSession(bool saveFeedback)
         {
             if(session==null || !session.IsComplete) return;
             Scene scene=gameObject.scene;
             if(!scene.IsValid() || scene.buildIndex<0) { feedback="Cena indisponível para reiniciar"; return; }
-            if(recorder!=null && (!recorder.TrySubmitFeedback(fun,difficulty,comments) || !recorder.TrySaveReport(out _)))
+            if(saveFeedback && recorder!=null && (!recorder.TrySubmitFeedback(fun,difficulty,comments) || !recorder.TrySaveReport(out _)))
             { feedback="Não foi possível salvar. Sua avaliação foi mantida; tente novamente"; return; }
             SceneManager.LoadScene(scene.buildIndex);
         }

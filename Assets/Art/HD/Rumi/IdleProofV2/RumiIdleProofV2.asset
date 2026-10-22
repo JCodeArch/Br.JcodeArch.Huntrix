@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a04f337648307f849a3ecf83c5386bac, type: 3}
+  m_Name: RumiIdleProofV2
+  m_EditorClassIdentifier: HuntrX.Runtime::HuntrX.Data.CharacterSpriteSet2D
+  id: huntrx.proof.rumi_idle_v2
+  characterName: Rumi
+  pixelsPerUnit: 200
+  worldScale: 1
+  footAnchor: {x: 0.6, y: 0.03629}
+  states:
+  - id: Idle
+    clip:
+      frames:
+      - {fileID: -1805507168, guid: 432fc55f9a923324a8698f91e8c06de3, type: 3}
+      - {fileID: -2073942624, guid: 432fc55f9a923324a8698f91e8c06de3, type: 3}
+      - {fileID: -1268636256, guid: 432fc55f9a923324a8698f91e8c06de3, type: 3}
+      - {fileID: -1537071712, guid: 432fc55f9a923324a8698f91e8c06de3, type: 3}
+      durations:
+      - 2
+      - 0.4
+      - 0.1
+      - 0.4
+      loop: 1

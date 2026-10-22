@@ -29,6 +29,8 @@ namespace HuntrX.Gameplay.Jump
         private bool wallJumpConsumed;
         private bool invalidWallJumpSpeedReported;
 
+        public bool IsGrounded => isGrounded;
+
         internal void ConfigureValidated(float jumpSpeed, float wallJumpSpeed, float gravity,
             float coyoteDuration, float jumpBufferDuration, float cutMultiplier)
         {

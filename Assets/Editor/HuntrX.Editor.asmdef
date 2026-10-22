@@ -3,7 +3,8 @@
   "rootNamespace": "HuntrX.Editor",
   "references": [
     "HuntrX.Runtime",
-    "UnityEngine.UI"
+    "UnityEngine.UI",
+    "Unity.2D.Sprite.Editor"
   ],
   "includePlatforms": [
     "Editor"

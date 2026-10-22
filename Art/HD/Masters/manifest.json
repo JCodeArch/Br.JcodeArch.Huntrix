@@ -1,0 +1,20 @@
+[
+  {
+    "character": "rumi",
+    "file": "rumi-master-cel-v1.png",
+    "sha256": "1B8A073E58B695DDE8A481733C11B841F93B9FFE683ACC171B0CB14B128B0B9B",
+    "status": "static production master; specialist reviewed; not animation or runtime integration"
+  },
+  {
+    "character": "mira",
+    "file": "mira-master-cel-v1.png",
+    "sha256": "258B0787059D3C41EDC0CFC69D9EF64228A675191DAACF4A57272451418751CB",
+    "status": "static production master; specialist reviewed; not animation or runtime integration"
+  },
+  {
+    "character": "zoey",
+    "file": "zoey-master-cel-v1.png",
+    "sha256": "CF70567D986F5F50C936CC1EC8137C69BEFDAFB74D58C105EF7BD63039851D9D",
+    "status": "static production master; specialist reviewed; not animation or runtime integration"
+  }
+]
